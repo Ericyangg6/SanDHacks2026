@@ -5,6 +5,8 @@ export type SiteKind =
   | 'cool_zone' | 'library' | 'rec_center' | 'community_center'
   | 'senior_center' | 'mall' | 'other';
 export type SiteTier = 'official' | 'discovered';
+export type SiteAccess = 'open_to_all' | 'students_only' | 'members_only' | 'residents_only' | 'age_restricted' | 'unknown';
+export type SiteVerification = 'confirmed' | 'conflict' | 'single_source' | 'web_only';
 export type Language = 'en' | 'es' | 'tl' | 'vi' | 'zh';
 /** messenger: Facebook Messenger through Twilio (M4). whatsapp: WhatsApp through Twilio (M4). */
 export type Channel = 'voice' | 'sms' | 'messenger' | 'whatsapp';
@@ -48,6 +50,27 @@ export interface Site {
   phone: string | null;
   source_url: string;
   last_verified_at: string;  // ISO 8601
+  // M2 provenance and access (additive; present on rows from the database)
+  access_level?: SiteAccess;
+  access_notes?: string | null;
+  requires_id?: boolean | null;
+  has_fee?: boolean | null;
+  verification?: SiteVerification;
+  conflicts?: string[];
+  evidence?: string | null;
+  source_urls?: string[];
+  maps_place_id?: string | null;
+  external_key?: string | null;
+  pet_policy?: string | null;
+  official_name?: string | null;
+  ac_source?: 'official_program' | 'site_page' | 'reviews' | null;
+}
+
+export interface ZipGap {
+  zip: string; name: string | null; population: number; age65plus: number; households_no_vehicle: number; below_poverty: number;
+  residents_at_risk: number; sites_within_5km: number; official_within_5km: number; nearest_site_km: number | null; nearest_site: string | null;
+  forecast_zone: string | null; peak_temp_f: number | null; peak_heat_index: number | null; peak_time: string | null;
+  hours_90f_plus_72h: number | null; heat_factor: number; gap_score: number; scenario_heat_index: number | null; generated_at: string;
 }
 
 export interface CallerNeeds {

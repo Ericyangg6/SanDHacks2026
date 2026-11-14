@@ -6,6 +6,7 @@
 //   data/seed/sites.extras.json  provenance not in the schema yet (access rules, verification, evidence,
 //                                review signals), keyed by site id. See data/schema/proposals/.
 import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
 import { geocode } from "./geocode.ts";
 
 const DAY = { sun: 0, mon: 1, tue: 2, wed: 3, thu: 4, fri: 5, sat: 6 } as const;
@@ -50,10 +51,21 @@ function acFromReviews(sig: any): boolean | null {
   return sig && sig.ac_positive >= 2 && sig.ac_negative === 0 ? true : null;
 }
 
+// STABLE IDS. calls.site_id and the SMS tool reference sites by id, so a site must keep its id on every rebuild.
+// Each site has a natural key (Google place id, county layer object id, else a hash of name + address). data/seed/site_ids.json
+// remembers key -> id forever; new sites get the next free id. Output order is still sorted for readability.
+type Registry = { next_id: number; ids: Record<string, number> };
+const naturalKey = (s: any): string =>
+  s.place_id ? `maps:${s.place_id}` : s.official_objectid != null ? `county:${s.official_objectid}`
+  : `web:${createHash("sha1").update(`${String(s.name).toLowerCase()}|${String(s.address).toLowerCase()}`).digest("hex").slice(0, 16)}`;
+
 async function main() {
   const merged: any[] = await load("merged.json", []);
   const signals: Record<string, any> = await load("review_signals.json", {});
-  const built: { site: any; extra: any }[] = [];
+  const registryFile = new URL("../data/seed/site_ids.json", import.meta.url);
+  const registry: Registry | null = JSON.parse(await readFile(registryFile, "utf8").catch(() => "null"));
+  const built: { site: any; extra: any; key: string }[] = [];
+  const keysSeen = new Set<string>();
   const skipped: Record<string, number> = { no_coords: 0, no_hours: 0, no_address: 0 };
   let geocoded = 0;
 
@@ -75,7 +87,11 @@ async function main() {
     if (lat < 32.5 || lat > 33.52 || lon < -117.62 || lon > -116.07) { skipped.out_of_county = (skipped.out_of_county ?? 0) + 1; continue; }
     const sig = signals[s.place_id];
     const confirmed = s.verification === "confirmed";
+    let key = naturalKey(s);
+    for (let n = 2; keysSeen.has(key); n++) key = `${naturalKey(s)}#${n}`; // two different places never share a key
+    keysSeen.add(key);
     built.push({
+      key,
       site: {
         name: s.name,
         kind: openAirCenter(s) ? "other" : kindOf(s),
@@ -122,9 +138,14 @@ async function main() {
     rank(a) - rank(b) || (a.site.zip ?? "").localeCompare(b.site.zip ?? "") ||
     a.site.kind.localeCompare(b.site.kind) || a.site.name.localeCompare(b.site.name));
 
+  // First run (no registry): number in the sorted order above. Later runs: keep every existing id, give new sites the next free one.
+  const reg: Registry = registry ?? { next_id: 1, ids: {} };
+  for (const b of built) if (reg.ids[b.key] == null) reg.ids[b.key] = reg.next_id++;
   const sites: any[] = [];
   const extras: Record<number, any> = {};
-  built.forEach((b, i) => { sites.push({ id: i + 1, ...b.site }); extras[i + 1] = b.extra; });
+  for (const b of built) { const id = reg.ids[b.key]; sites.push({ id, ...b.site }); extras[id] = { ...b.extra, external_key: b.key }; }
+  await writeFile(registryFile, JSON.stringify(reg, null, 1) + "\n");
+  const newIds = registry ? built.filter((b) => !registry.ids[b.key]).length : built.length;
 
   // Contract check: required, non-null fields from schema.sql.
   const bad = sites.filter((x) => !x.name || !x.kind || !x.address || x.lat == null || x.lon == null || !x.source_url || !x.last_verified_at);
@@ -135,7 +156,7 @@ async function main() {
   await writeFile(new URL("../data/seed/sites.extras.json", import.meta.url), JSON.stringify(extras, null, 2) + "\n");
 
   const by = (f: (x: any) => string) => sites.reduce((m: any, x) => ((m[f(x)] = (m[f(x)] ?? 0) + 1), m), {});
-  console.log(`${sites.length} sites → data/seed/sites.json  (geocoded ${geocoded}; skipped: ${JSON.stringify(skipped)})`);
+  console.log(`${sites.length} sites → data/seed/sites.json  (${newIds} new ids; geocoded ${geocoded}; skipped: ${JSON.stringify(skipped)})`);
   console.log("by tier:", by((x) => x.tier), "| by kind:", by((x) => x.kind));
   console.log("confirmed on source:", sites.filter((x) => x.hours_confirmed_on_source).length, "| has_ac known:", sites.filter((x) => x.has_ac !== null).length);
   console.log("zips covered:", new Set(sites.map((x) => x.zip).filter(Boolean)).size);

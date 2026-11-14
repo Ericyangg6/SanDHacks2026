@@ -63,7 +63,7 @@ export function parseHours(open_hours: Record<string, string> | null) {
 }
 
 // One Bright Data snapshot: trigger, poll until ready, download.
-async function snapshot(input: any[]): Promise<any[]> {
+export async function snapshot(input: any[]): Promise<any[]> {
   const res = await fetch(
     `https://api.brightdata.com/datasets/v3/trigger?dataset_id=${DATASET}&type=discover_new&discover_by=location&limit_per_input=${LIMIT}&include_errors=true`,
     { method: "POST", headers: H, body: JSON.stringify(input) },

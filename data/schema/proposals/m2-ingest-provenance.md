@@ -1,7 +1,6 @@
 # Proposal (M2): provenance and change tracking for `sites`
 
-**Status:** draft for review by all four members. It does not edit `schema.sql` or `types.ts`.
-If approved, apply the SQL below to `schema.sql` and the types to `types.ts` in one PR, per the README.
+**Status:** ADOPTED (approved by all four members, 2026-11-14). Applied to `schema.sql` and `types.ts`; existing databases use `data/schema/migrations/20261114_m2_sites_provenance.sql`. This file is kept for the reasoning.
 
 ## Why
 

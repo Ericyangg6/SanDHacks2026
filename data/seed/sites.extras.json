@@ -25,7 +25,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJoQjUaNVR2YARZRbLdnX2Lgs"
   },
   "2": {
     "access_level": "open_to_all",
@@ -60,7 +61,8 @@
           "rating": 5
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJZwLX4_xN2YARNfslqi808Bs"
   },
   "3": {
     "access_level": "unknown",
@@ -79,7 +81,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJwWCRIONN2YARuYvjr2eYLnQ"
   },
   "4": {
     "access_level": "open_to_all",
@@ -107,7 +110,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJ765_bYVO2YARHLEIM2I0kzI"
   },
   "5": {
     "access_level": "open_to_all",
@@ -136,7 +140,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJHUfTje5O2YARpioEbvKybtM"
   },
   "6": {
     "access_level": "open_to_all",
@@ -162,7 +167,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJcc82L5VO2YARGKcqvE-yass"
   },
   "7": {
     "access_level": "open_to_all",
@@ -190,7 +196,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJU_F-xj1X2YARrIWeiw3_wvE"
   },
   "8": {
     "access_level": "open_to_all",
@@ -219,7 +226,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJc5TXs9NQ2YARxsXE0Jac174"
   },
   "9": {
     "access_level": "open_to_all",
@@ -273,7 +281,8 @@
           "rating": 5
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJZzqVtEBS2YARmfs0QPh__wo"
   },
   "10": {
     "access_level": "open_to_all",
@@ -293,7 +302,8 @@
     "ac_from": "official_program",
     "official_name": "Westfield Plaza Bonita",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJ8edfSftR2YARkcftm6nIe_Y"
   },
   "11": {
     "access_level": "age_restricted",
@@ -320,7 +330,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJHfDOa9xT2YAR7EG5zWaQJb4"
   },
   "12": {
     "access_level": "open_to_all",
@@ -360,7 +371,8 @@
           "rating": 5
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJFx8PyKoM3IARG9L7qLiJE_Y"
   },
   "13": {
     "access_level": "open_to_all",
@@ -384,7 +396,8 @@
     "ac_from": "official_program",
     "official_name": "San Diego County Library: El Cajon Branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJgwtD67dZ2YAR-C9a9P4epIQ"
   },
   "14": {
     "access_level": "open_to_all",
@@ -413,7 +426,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJZcfDMZtX2YARHjer8vzLY1o"
   },
   "15": {
     "access_level": "open_to_all",
@@ -435,7 +449,8 @@
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Crest Branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJO-4fAsBe2YAReMKVLQdBO5o"
   },
   "16": {
     "access_level": "open_to_all",
@@ -455,7 +470,8 @@
     "ac_from": "official_program",
     "official_name": "City of Escondido: East Valley Community Center",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJbWAQZT3z24ARg-_tAF0_aU4"
   },
   "17": {
     "access_level": "open_to_all",
@@ -483,7 +499,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJ1fWL3qH024ARrEQHM4HizHY"
   },
   "18": {
     "access_level": "open_to_all",
@@ -503,7 +520,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJQwizpmLz24ARjxIcpS46t6A"
   },
   "19": {
     "access_level": "open_to_all",
@@ -526,7 +544,8 @@
     "ac_from": "official_program",
     "official_name": "San Diego Public Library: La Jolla/Riford Branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJlaFOS-QD3IARV7RbEzc6ZgQ"
   },
   "20": {
     "access_level": "open_to_all",
@@ -546,7 +565,8 @@
     "ac_from": "official_program",
     "official_name": "Oceanside Public Library: Civic Center Branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJwy0MOzFu3IARxpL16X9RQfI"
   },
   "21": {
     "access_level": "unknown",
@@ -574,7 +594,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJf_KUX1tx3IAR3Qi1fup6bkI"
   },
   "22": {
     "access_level": "open_to_all",
@@ -601,7 +622,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJdxXCbU9w3IARtBqlF6Jd6Yk"
   },
   "23": {
     "access_level": "open_to_all",
@@ -623,7 +645,8 @@
     "ac_from": "official_program",
     "official_name": "City of San Marcos: San Marcos Senior Center",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJ9TVGH6WK24ARL9-CBTWObaw"
   },
   "24": {
     "access_level": "open_to_all",
@@ -654,7 +677,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJoTWGxpx23IARS2uxl-QtKvk"
   },
   "25": {
     "access_level": "open_to_all",
@@ -695,7 +719,8 @@
           "rating": 1
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJq_1kX1xT2YARJsfApHRz6xo"
   },
   "26": {
     "access_level": "open_to_all",
@@ -725,7 +750,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJLwhgJdFU2YARQUgbIxcQ-6g"
   },
   "27": {
     "access_level": "open_to_all",
@@ -752,7 +778,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJd0JujPVU2YAROWldDazm9FI"
   },
   "28": {
     "access_level": "open_to_all",
@@ -786,7 +813,8 @@
           "rating": 3
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJRxeP8glV2YARdcDH9RTM5Bg"
   },
   "29": {
     "access_level": "open_to_all",
@@ -836,7 +864,8 @@
           "rating": 5
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJbfAWEuwB3IAROggchOICpmA"
   },
   "30": {
     "access_level": "open_to_all",
@@ -861,7 +890,8 @@
     "ac_from": "official_program",
     "official_name": "San Diego Public Library: San Carlos Branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJ2SHX4UhW2YARB8yZWZCYjAU"
   },
   "31": {
     "access_level": "open_to_all",
@@ -881,7 +911,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJyZDG2e7424ARB1cQZV9QNnE"
   },
   "32": {
     "access_level": "open_to_all",
@@ -923,7 +954,8 @@
           "rating": 5
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJA0UNEoMI3IARv8PaLYk1_AQ"
   },
   "33": {
     "access_level": "open_to_all",
@@ -961,7 +993,8 @@
           "rating": 5
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJI31CJwAJ3IAR3rqtPSoQqrY"
   },
   "34": {
     "access_level": "open_to_all",
@@ -992,7 +1025,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJCQGlg-tR2YARlKkErhGjVNU"
   },
   "35": {
     "access_level": "open_to_all",
@@ -1012,7 +1046,8 @@
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Alpine Branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:230"
   },
   "36": {
     "access_level": "open_to_all",
@@ -1033,7 +1068,8 @@
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Campo-Morena Branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:244"
   },
   "37": {
     "access_level": "open_to_all",
@@ -1055,7 +1091,8 @@
     "ac_from": "official_program",
     "official_name": "City of Chula Vista: Norman Park Senior Center",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJKRy1jwdO2YAR85ENMelsXh8"
   },
   "38": {
     "access_level": "open_to_all",
@@ -1073,7 +1110,8 @@
     "ac_from": "site_page",
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "web:ec83fb6530ed754e"
   },
   "39": {
     "access_level": "open_to_all",
@@ -1091,7 +1129,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "web:8b561d2ce8260e6a"
   },
   "40": {
     "access_level": "open_to_all",
@@ -1109,7 +1148,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "web:5a8157d9a14067ac"
   },
   "41": {
     "access_level": "open_to_all",
@@ -1128,7 +1168,8 @@
     "ac_from": "official_program",
     "official_name": "Chula Vista Public Library: Otay Ranch",
     "pet_policy": "Service Animals & Pets Allowed",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:215"
   },
   "42": {
     "access_level": "open_to_all",
@@ -1149,7 +1190,8 @@
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Descanso Branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:169"
   },
   "43": {
     "access_level": "open_to_all",
@@ -1169,7 +1211,8 @@
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Imperial Beach Branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:200"
   },
   "44": {
     "access_level": "age_restricted",
@@ -1188,7 +1231,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "web:f1ca458952e0cfc5"
   },
   "45": {
     "access_level": "open_to_all",
@@ -1209,7 +1253,8 @@
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Jacumba Branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:171"
   },
   "46": {
     "access_level": "open_to_all",
@@ -1236,7 +1281,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJzY619SJX2YARKg4KEKYqWlE"
   },
   "47": {
     "access_level": "open_to_all",
@@ -1255,7 +1301,8 @@
     "ac_from": "official_program",
     "official_name": "Christian Science Reading Room",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:217"
   },
   "48": {
     "access_level": "open_to_all",
@@ -1274,7 +1321,8 @@
     "ac_from": "official_program",
     "official_name": "Grossmont Healthcare District",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:239"
   },
   "49": {
     "access_level": "open_to_all",
@@ -1294,7 +1342,8 @@
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Lincoln Acres Branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:203"
   },
   "50": {
     "access_level": "open_to_all",
@@ -1315,7 +1364,8 @@
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Pine Valley Branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:173"
   },
   "51": {
     "access_level": "open_to_all",
@@ -1336,7 +1386,8 @@
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Potrero Branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:174"
   },
   "52": {
     "access_level": "open_to_all",
@@ -1355,7 +1406,8 @@
     "ac_from": "official_program",
     "official_name": "County of San Diego: Spring Valley Community Center",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:216"
   },
   "53": {
     "access_level": "open_to_all",
@@ -1374,7 +1426,8 @@
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Casa de Oro Branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:166"
   },
   "54": {
     "access_level": "open_to_all",
@@ -1394,7 +1447,8 @@
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Spring Valley Branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:204"
   },
   "55": {
     "access_level": "open_to_all",
@@ -1414,7 +1468,8 @@
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Borrego Springs Branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:214"
   },
   "56": {
     "access_level": "open_to_all",
@@ -1435,7 +1490,8 @@
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Cardiff-by-the-Sea Branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:165"
   },
   "57": {
     "access_level": "open_to_all",
@@ -1454,7 +1510,8 @@
     "ac_from": "official_program",
     "official_name": "County of San Diego: San Elijo Lagoon Nature Center",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:219"
   },
   "58": {
     "access_level": "unknown",
@@ -1481,7 +1538,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJQ5OKKhdy3IARytQfz1JcHgI"
   },
   "59": {
     "access_level": "open_to_all",
@@ -1500,7 +1558,8 @@
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Del Mar Branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:168"
   },
   "60": {
     "access_level": "open_to_all",
@@ -1521,7 +1580,8 @@
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Rancho San Diego Branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:175"
   },
   "61": {
     "access_level": "unknown",
@@ -1540,7 +1600,8 @@
     "ac_from": "site_page",
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJZ3IsV0pa2YARLk_AqDqivoA"
   },
   "62": {
     "access_level": "unknown",
@@ -1567,7 +1628,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJ29JE4CRZ2YAR2uGSyxZ0-MA"
   },
   "63": {
     "access_level": "unknown",
@@ -1588,7 +1650,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJFQej67dZ2YARLCgMsf0ig1s"
   },
   "64": {
     "access_level": "unknown",
@@ -1615,7 +1678,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJ_Q0RvoRX2YARIeeHy7sLTqY"
   },
   "65": {
     "access_level": "unknown",
@@ -1642,7 +1706,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJhZEW55IB3IARWJdG6ux9BM0"
   },
   "66": {
     "access_level": "unknown",
@@ -1669,7 +1734,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJq6rp4wFZ2YARKeXFlAU02t8"
   },
   "67": {
     "access_level": "open_to_all",
@@ -1689,7 +1755,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "web:afd8b8da5fb7a6da"
   },
   "68": {
     "access_level": "open_to_all",
@@ -1710,7 +1777,8 @@
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Encinitas Branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:198"
   },
   "69": {
     "access_level": "unknown",
@@ -1729,7 +1797,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJIf4CfD7z24AR3Ll9mV9v52Y"
   },
   "70": {
     "access_level": "unknown",
@@ -1755,7 +1824,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJ99KB-ePz24ARx29o6BtI-e4"
   },
   "71": {
     "access_level": "open_to_all",
@@ -1774,7 +1844,8 @@
     "ac_from": "official_program",
     "official_name": "County of San Diego: Fallbrook Community Center",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:212"
   },
   "72": {
     "access_level": "open_to_all",
@@ -1794,7 +1865,8 @@
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Fallbrook Branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:201"
   },
   "73": {
     "access_level": "open_to_all",
@@ -1813,7 +1885,8 @@
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Julian Branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:240"
   },
   "74": {
     "access_level": "unknown",
@@ -1832,7 +1905,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJUTj59Ddu3IARS-DOeL0GOhE"
   },
   "75": {
     "access_level": "open_to_all",
@@ -1853,7 +1927,8 @@
     "ac_from": "official_program",
     "official_name": "City of Oceanside: Country Club Senior Center",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:235"
   },
   "76": {
     "access_level": "open_to_all",
@@ -1872,7 +1947,8 @@
     "ac_from": "official_program",
     "official_name": "Joe & Mary Mottino YMCA",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:228"
   },
   "77": {
     "access_level": "open_to_all",
@@ -1894,7 +1970,8 @@
     "ac_from": "official_program",
     "official_name": "City of Oceanside: El Corazon Senior Center",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:243"
   },
   "78": {
     "access_level": "unknown",
@@ -1920,7 +1997,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJN-IUsC1u3IARFf6utE0TDLM"
   },
   "79": {
     "access_level": "open_to_all",
@@ -1941,7 +2019,8 @@
     "ac_from": "official_program",
     "official_name": "City of Poway Community Center",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:224"
   },
   "80": {
     "access_level": "open_to_all",
@@ -1961,7 +2040,8 @@
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Poway Branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:205"
   },
   "81": {
     "access_level": "open_to_all",
@@ -1982,7 +2062,8 @@
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Ramona Branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:206"
   },
   "82": {
     "access_level": "open_to_all",
@@ -2002,7 +2083,8 @@
     "ac_from": "official_program",
     "official_name": "Ramona Senior Center",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:223"
   },
   "83": {
     "access_level": "open_to_all",
@@ -2022,7 +2104,8 @@
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Rancho Santa Fe Branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:176"
   },
   "84": {
     "access_level": "open_to_all",
@@ -2041,7 +2124,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "web:d3a7cbac2918391e"
   },
   "85": {
     "access_level": "unknown",
@@ -2059,7 +2143,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "web:58be8acf4e668e2f"
   },
   "86": {
     "access_level": "open_to_all",
@@ -2078,7 +2163,8 @@
     "ac_from": "official_program",
     "official_name": "County of San Diego: Santa Ysabel Nature Center",
     "pet_policy": "Service Animals & Pets Allowed",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:229"
   },
   "87": {
     "access_level": "open_to_all",
@@ -2099,7 +2185,8 @@
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Solana Beach Branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:179"
   },
   "88": {
     "access_level": "open_to_all",
@@ -2118,7 +2205,8 @@
     "ac_from": "official_program",
     "official_name": "County of San Diego: Valley Center Community Hall",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:232"
   },
   "89": {
     "access_level": "open_to_all",
@@ -2139,7 +2227,8 @@
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Valley Center Branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:241"
   },
   "90": {
     "access_level": "unknown",
@@ -2157,7 +2246,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "web:bb9db2a35fcef828"
   },
   "91": {
     "access_level": "open_to_all",
@@ -2179,7 +2269,8 @@
     "ac_from": "official_program",
     "official_name": "San Diego Public Library: University Heights Branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:194"
   },
   "92": {
     "access_level": "open_to_all",
@@ -2201,7 +2292,8 @@
     "ac_from": "official_program",
     "official_name": "San Diego Public Library: Point Loma/Hervey branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:190"
   },
   "93": {
     "access_level": "open_to_all",
@@ -2229,7 +2321,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJzQ4m_B4A3IARwjUkotF-TqY"
   },
   "94": {
     "access_level": "open_to_all",
@@ -2251,7 +2344,8 @@
     "ac_from": "official_program",
     "official_name": "San Diego Public Library: Linda Vista Branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:184"
   },
   "95": {
     "access_level": "open_to_all",
@@ -2270,7 +2364,8 @@
     "ac_from": "official_program",
     "official_name": "St. David's Church",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:195"
   },
   "96": {
     "access_level": "open_to_all",
@@ -2292,7 +2387,8 @@
     "ac_from": "official_program",
     "official_name": "San Diego Public Library: Logan Heights Branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:185"
   },
   "97": {
     "access_level": "open_to_all",
@@ -2314,7 +2410,8 @@
     "ac_from": "official_program",
     "official_name": "San Diego Public Library: Mountain View/Beckwourth Branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:187"
   },
   "98": {
     "access_level": "unknown",
@@ -2332,7 +2429,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "web:3f11888f274332af"
   },
   "99": {
     "access_level": "open_to_all",
@@ -2359,7 +2457,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJaeokZ1gA3IARoKcY9Pal1U0"
   },
   "100": {
     "access_level": "unknown",
@@ -2392,7 +2491,8 @@
           "rating": 5
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJJ5fbkSxT2YARPSIQyLK8-TQ"
   },
   "101": {
     "access_level": "open_to_all",
@@ -2415,7 +2515,8 @@
     "ac_from": "official_program",
     "official_name": "San Diego Public Library: Allied Gardens/Benjamin Branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:181"
   },
   "102": {
     "access_level": "open_to_all",
@@ -2438,7 +2539,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJN-foiMkA3IARh97TSN8EcnM"
   },
   "103": {
     "access_level": "open_to_all",
@@ -2462,7 +2564,8 @@
     "ac_from": "official_program",
     "official_name": "San Diego Public Library: University Community Branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:193"
   },
   "104": {
     "access_level": "open_to_all",
@@ -2485,7 +2588,8 @@
     "ac_from": "official_program",
     "official_name": "San Diego Public Library: Serra Mesa-Kearny Mesa Branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:192"
   },
   "105": {
     "access_level": "open_to_all",
@@ -2508,7 +2612,8 @@
     "ac_from": "official_program",
     "official_name": "San Diego Public Library: Tierrasanta Branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:210"
   },
   "106": {
     "access_level": "open_to_all",
@@ -2528,7 +2633,8 @@
     "ac_from": "official_program",
     "official_name": "San Diego County Library: 4S Ranch Branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:220"
   },
   "107": {
     "access_level": "open_to_all",
@@ -2549,7 +2655,8 @@
     "ac_from": "official_program",
     "official_name": "City of San Diego: Lois J. Mangarelli Recreation Center",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:218"
   },
   "108": {
     "access_level": "open_to_all",
@@ -2572,7 +2679,8 @@
     "ac_from": "official_program",
     "official_name": "San Diego Public Library: Skyline Hills Branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "county:209"
   },
   "109": {
     "access_level": "unknown",
@@ -2597,7 +2705,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJqWt5SOUD3IARAvP8J7xjOqk"
   },
   "110": {
     "access_level": "open_to_all",
@@ -2638,7 +2747,8 @@
           "rating": 5
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJOyROHXTi24ARYGha4BJpmfs"
   },
   "111": {
     "access_level": "open_to_all",
@@ -2672,7 +2782,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJ9cF3qXbi24AR5CJsirWpOZo"
   },
   "112": {
     "access_level": "open_to_all",
@@ -2705,7 +2816,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJ0Y_ubQCL24ARLRdBxzcmv04"
   },
   "113": {
     "access_level": "open_to_all",
@@ -2729,7 +2841,8 @@
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Santee Branch",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJMTV1hVr924ARoccT1ogmuXk"
   },
   "114": {
     "access_level": "unknown",
@@ -2762,7 +2875,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJi4Dk-xRU2YARbCi6I0kDxb0"
   },
   "115": {
     "access_level": "unknown",
@@ -2787,7 +2901,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJKVzU-RdJ2YARORrWmmY-X90"
   },
   "116": {
     "access_level": "unknown",
@@ -2813,7 +2928,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJ2bQHZd4D3IARFyN3E8GUpq0"
   },
   "117": {
     "access_level": "open_to_all",
@@ -2839,7 +2955,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJ0bUk3DZu3IARJj8ksblC3Jk"
   },
   "118": {
     "access_level": "unknown",
@@ -2884,7 +3001,8 @@
           "rating": 3
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJs2n-qRlV2YARq_acCtnYnGA"
   },
   "119": {
     "access_level": "open_to_all",
@@ -2903,7 +3021,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJyatccZUB3IAR1rzIwhoQXFc"
   },
   "120": {
     "access_level": "open_to_all",
@@ -2922,7 +3041,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJX89qj_z_24AR4Nu2zaP5A_Y"
   },
   "121": {
     "access_level": "open_to_all",
@@ -2948,7 +3068,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJN2IN7q9X2YARj0avQWwu8Oo"
   },
   "122": {
     "access_level": "unknown",
@@ -2966,7 +3087,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJ08_pRwdJ2YARUxutVFsLHtU"
   },
   "123": {
     "access_level": "unknown",
@@ -2991,7 +3113,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJrV16W_5I2YAREeg7-4jOLYg"
   },
   "124": {
     "access_level": "unknown",
@@ -3016,7 +3139,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJPdC8rVFI2YARO-bTZ83lZC4"
   },
   "125": {
     "access_level": "unknown",
@@ -3034,7 +3158,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "web:54ea4fcc5c4e7ea0"
   },
   "126": {
     "access_level": "unknown",
@@ -3059,7 +3184,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJ71fF3eJN2YARvVMZwo-Xd_w"
   },
   "127": {
     "access_level": "unknown",
@@ -3077,7 +3203,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJuXrcK-dN2YAR_cWHGwb6xwQ"
   },
   "128": {
     "access_level": "unknown",
@@ -3127,7 +3254,8 @@
           "rating": 5
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJ4fY3Q_NN2YAR2Ov4oghqtik"
   },
   "129": {
     "access_level": "unknown",
@@ -3145,7 +3273,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJVe9Yyj5O2YAR6o9yEWB9ui8"
   },
   "130": {
     "access_level": "unknown",
@@ -3172,7 +3301,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJK7jow-JN2YAREkw-IW2BDZc"
   },
   "131": {
     "access_level": "unknown",
@@ -3191,7 +3321,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "web:d88997e8bcf57147"
   },
   "132": {
     "access_level": "unknown",
@@ -3216,7 +3347,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJS7UuJt9O2YARTLDxkiu4iKI"
   },
   "133": {
     "access_level": "unknown",
@@ -3241,7 +3373,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJg7KfSddN2YARSWsdeS5uicg"
   },
   "134": {
     "access_level": "unknown",
@@ -3266,7 +3399,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJRRhmygVP2YARGryuWYSJ2hY"
   },
   "135": {
     "access_level": "unknown",
@@ -3291,7 +3425,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJKxQ5JH1P2YAR5DfV1yb0Dks"
   },
   "136": {
     "access_level": "unknown",
@@ -3316,7 +3451,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJXxxtgndP2YARNXsmkuvKxxU"
   },
   "137": {
     "access_level": "unknown",
@@ -3361,7 +3497,8 @@
           "rating": 5
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJoQKXwGxX2YARsbjBUUILz8E"
   },
   "138": {
     "access_level": "unknown",
@@ -3405,7 +3542,8 @@
           "rating": 5
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJoS9NKdZX2YARnE7bRMSOMKk"
   },
   "139": {
     "access_level": "unknown",
@@ -3423,7 +3561,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJ3x4brSNX2YARnQWPM6f_F_s"
   },
   "140": {
     "access_level": "unknown",
@@ -3448,7 +3587,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJmx5yKm5X2YARoHQzY5c3p6c"
   },
   "141": {
     "access_level": "unknown",
@@ -3473,7 +3613,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJASYsB3JX2YAR9wECwHcm0lA"
   },
   "142": {
     "access_level": "unknown",
@@ -3498,7 +3639,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJ__ffUxdy3IARpT_XWhqgPCk"
   },
   "143": {
     "access_level": "unknown",
@@ -3523,7 +3665,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJi3a9CBFz3IARvlxZqlPbzRc"
   },
   "144": {
     "access_level": "unknown",
@@ -3548,7 +3691,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJkQdTRRhy3IARQz9WahjIscs"
   },
   "145": {
     "access_level": "unknown",
@@ -3566,7 +3710,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJlxjbIxZy3IAR56SdrX4Lh38"
   },
   "146": {
     "access_level": "unknown",
@@ -3591,7 +3736,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJD8eK6alz3IARLaa8G7E94_U"
   },
   "147": {
     "access_level": "unknown",
@@ -3609,7 +3755,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJU1iJN_ty3IAR8lZ5wHoL9rQ"
   },
   "148": {
     "access_level": "unknown",
@@ -3627,7 +3774,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJEwz0D4lx3IAR7qUT96yL9GE"
   },
   "149": {
     "access_level": "unknown",
@@ -3652,7 +3800,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJF94c5Q9y3IARz6gy0OsIa6c"
   },
   "150": {
     "access_level": "unknown",
@@ -3670,7 +3819,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJBTAE0jpy3IARmEuNX52-Wos"
   },
   "151": {
     "access_level": "unknown",
@@ -3688,7 +3838,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJS9TTkqh03IARSswgRMhPbJk"
   },
   "152": {
     "access_level": "unknown",
@@ -3713,7 +3864,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJh3uuk6R03IARlRbwb7b46-Y"
   },
   "153": {
     "access_level": "unknown",
@@ -3745,7 +3897,8 @@
           "rating": 2
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJVRKUrb103IARDDOtU95XCYk"
   },
   "154": {
     "access_level": "unknown",
@@ -3770,7 +3923,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJKw0HksZz3IARt43ZwKTbdog"
   },
   "155": {
     "access_level": "unknown",
@@ -3795,7 +3949,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJEbh3J8J03IARl6uS8IpXZeg"
   },
   "156": {
     "access_level": "unknown",
@@ -3857,7 +4012,8 @@
           "rating": 1
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJc9jChzNY2YARFxz7Fjd06b4"
   },
   "157": {
     "access_level": "unknown",
@@ -3875,7 +4031,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "web:59989869ddf369b1"
   },
   "158": {
     "access_level": "unknown",
@@ -3900,7 +4057,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJ438Imk4H3IARZYos9A6VV7U"
   },
   "159": {
     "access_level": "unknown",
@@ -3918,7 +4076,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJmWx8KbZZ2YAREjSGfdSYHr8"
   },
   "160": {
     "access_level": "unknown",
@@ -3936,7 +4095,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJsRTClBNY2YARwTThhONHT5o"
   },
   "161": {
     "access_level": "unknown",
@@ -3961,7 +4121,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJQ4ilmNtZ2YARI7ZzW-odxLI"
   },
   "162": {
     "access_level": "age_restricted",
@@ -3979,7 +4140,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "web:743d40b678a24ba8"
   },
   "163": {
     "access_level": "unknown",
@@ -4041,7 +4203,8 @@
           "rating": 5
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJJfZkLWHz24AREQyiU1Dy7Ww"
   },
   "164": {
     "access_level": "unknown",
@@ -4103,7 +4266,8 @@
           "rating": 5
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJ968rNFjx24AR1OjYH85S7YA"
   },
   "165": {
     "access_level": "unknown",
@@ -4128,7 +4292,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJpZAh7Jj024AR6M3zi4vu0bA"
   },
   "166": {
     "access_level": "unknown",
@@ -4160,7 +4325,8 @@
           "rating": 5
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJCQ4w7qL024ARKMlB_Ux2YUg"
   },
   "167": {
     "access_level": "unknown",
@@ -4178,7 +4344,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJh8vtApz024AR5iQWnfbFYFM"
   },
   "168": {
     "access_level": "unknown",
@@ -4203,7 +4370,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJ7xOtyJ7024ARESw-3B4NFFo"
   },
   "169": {
     "access_level": "unknown",
@@ -4221,7 +4389,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJtTd4UQD124ARuoOFgtMrn8U"
   },
   "170": {
     "access_level": "unknown",
@@ -4246,7 +4415,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJf_dGWNzz24AR4EZfiV4O_fQ"
   },
   "171": {
     "access_level": "unknown",
@@ -4271,7 +4441,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJ9yaz2mfy24ARs2Kzjda22HE"
   },
   "172": {
     "access_level": "unknown",
@@ -4296,7 +4467,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJRbkMSoz024ARVsyczkcB1T8"
   },
   "173": {
     "access_level": "unknown",
@@ -4330,7 +4502,8 @@
           "rating": 5
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJ-9AIVtwD3IARo9Z9qOnb-FE"
   },
   "174": {
     "access_level": "unknown",
@@ -4348,7 +4521,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJ2el6d80G3IAR01B8PQS7UQ8"
   },
   "175": {
     "access_level": "unknown",
@@ -4366,7 +4540,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "web:8ebacd5982561286"
   },
   "176": {
     "access_level": "unknown",
@@ -4391,7 +4566,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJM1vlt_oD3IARGQNIQLKUskY"
   },
   "177": {
     "access_level": "unknown",
@@ -4416,7 +4592,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJcdGexPoD3IARa9bYGjDVbtY"
   },
   "178": {
     "access_level": "unknown",
@@ -4441,7 +4618,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJcTYeP4Dj24ARFgyg7SNhQi8"
   },
   "179": {
     "access_level": "unknown",
@@ -4485,7 +4663,8 @@
           "rating": 3
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJa2WuDo1x3IARf-tHP5FxCB0"
   },
   "180": {
     "access_level": "unknown",
@@ -4517,7 +4696,8 @@
           "rating": 4
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJ6VGGn41x3IARJOOOqqIyvwA"
   },
   "181": {
     "access_level": "unknown",
@@ -4535,7 +4715,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "web:984910ab10212ed1"
   },
   "182": {
     "access_level": "unknown",
@@ -4560,7 +4741,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJM8TM3C5u3IARDGVAnLh2Ljo"
   },
   "183": {
     "access_level": "unknown",
@@ -4592,7 +4774,8 @@
           "rating": 5
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJJf63ETdu3IARtvttv6ZqKN8"
   },
   "184": {
     "access_level": "unknown",
@@ -4610,7 +4793,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJ1XJhCR5u3IARPdxuomN6s0Q"
   },
   "185": {
     "access_level": "unknown",
@@ -4635,7 +4819,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJb5_xESZu3IARCI83z61PT1Y"
   },
   "186": {
     "access_level": "unknown",
@@ -4660,7 +4845,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJd7PLIZpv3IARob80pWrDgm4"
   },
   "187": {
     "access_level": "unknown",
@@ -4698,7 +4884,8 @@
           "rating": 5
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJd7CJLTRx3IARmvVGByWyIjk"
   },
   "188": {
     "access_level": "unknown",
@@ -4716,7 +4903,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJQddMD95z3IARQX9W3XSGf5A"
   },
   "189": {
     "access_level": "unknown",
@@ -4734,7 +4922,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJ8_DwHZhw3IARMjjDpoLgf2E"
   },
   "190": {
     "access_level": "unknown",
@@ -4759,7 +4948,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJ2SfPREz624ARantD5EdNnKU"
   },
   "191": {
     "access_level": "unknown",
@@ -4777,7 +4967,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJF-j7FrCK24ARo8s241Bqgvk"
   },
   "192": {
     "access_level": "unknown",
@@ -4802,7 +4993,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJabtoixjm24ARTKqXrZ3_3I4"
   },
   "193": {
     "access_level": "unknown",
@@ -4827,7 +5019,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJx0dyiV113IARB-tWbf0EgH0"
   },
   "194": {
     "access_level": "unknown",
@@ -4865,7 +5058,8 @@
           "rating": 5
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJx3XP8gBY2YARM7vAHkXTaUo"
   },
   "195": {
     "access_level": "unknown",
@@ -4883,7 +5077,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJO_QRkD5a2YARHatLXvXU9NI"
   },
   "196": {
     "access_level": "unknown",
@@ -4908,7 +5103,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJWxQPZ7ri24AR2x8K2MVnSJA"
   },
   "197": {
     "access_level": "unknown",
@@ -4933,7 +5129,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJYea9cKfi24ARodafLa_PvjI"
   },
   "198": {
     "access_level": "unknown",
@@ -4951,7 +5148,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJXXDKJYFZ2YARWxeWkT3qUHI"
   },
   "199": {
     "access_level": "unknown",
@@ -4969,7 +5167,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJK5n_U67i24ARX85cV1CUiIE"
   },
   "200": {
     "access_level": "unknown",
@@ -5001,7 +5200,8 @@
           "rating": 5
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJs2MiQFd13IARYBZE-SMbRWo"
   },
   "201": {
     "access_level": "unknown",
@@ -5026,7 +5226,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJ51KCME3124AR3zXaFI2eI4Q"
   },
   "202": {
     "access_level": "unknown",
@@ -5044,7 +5245,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJcR1xGml03IARVi8ncpPRpMw"
   },
   "203": {
     "access_level": "unknown",
@@ -5062,7 +5264,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJd-5Koat13IARcLVlFxJHmsc"
   },
   "204": {
     "access_level": "unknown",
@@ -5100,7 +5303,8 @@
           "rating": 5
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJO2yNmaF23IARK8S7ey47sng"
   },
   "205": {
     "access_level": "unknown",
@@ -5125,7 +5329,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJr-FP3zF33IARZUd3WASWfHI"
   },
   "206": {
     "access_level": "unknown",
@@ -5150,7 +5355,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJC-M1GMcG3IAR3fFgoPmPC1k"
   },
   "207": {
     "access_level": "unknown",
@@ -5168,7 +5374,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJvcSjadgG3IARkJUCWFTm3MM"
   },
   "208": {
     "access_level": "unknown",
@@ -5193,7 +5400,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJvxcrpU3124ARpx1bdN72hGY"
   },
   "209": {
     "access_level": "unknown",
@@ -5211,7 +5419,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJj6yU_VRT2YARRK_XY0FcTD4"
   },
   "210": {
     "access_level": "unknown",
@@ -5229,7 +5438,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJdRGe0MKq3oARRvGm04rrbPg"
   },
   "211": {
     "access_level": "unknown",
@@ -5247,7 +5457,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJW3MFtlKr3oARYkZGRPnweDs"
   },
   "212": {
     "access_level": "unknown",
@@ -5265,7 +5476,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJH6VyMxxT2YARd2f8XaSqj_A"
   },
   "213": {
     "access_level": "unknown",
@@ -5283,7 +5495,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJITq8z71U2YARtcp6IYi3thE"
   },
   "214": {
     "access_level": "unknown",
@@ -5333,7 +5546,8 @@
           "rating": 4
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJpZPqMqNU2YARvWok4Fl9Thc"
   },
   "215": {
     "access_level": "unknown",
@@ -5377,7 +5591,8 @@
           "rating": 4
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJN0BfV5ZU2YARe0K26koVPa4"
   },
   "216": {
     "access_level": "unknown",
@@ -5402,7 +5617,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJqWrgZgtV2YAR3VU3E1qzj2I"
   },
   "217": {
     "access_level": "unknown",
@@ -5427,7 +5643,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJ5xNoUKdU2YARRxgO27aNy70"
   },
   "218": {
     "access_level": "unknown",
@@ -5452,7 +5669,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJjxI6OPlT2YAR7DzLqatxrBk"
   },
   "219": {
     "access_level": "unknown",
@@ -5470,7 +5688,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJ4flusIJU2YARpsY09810oAo"
   },
   "220": {
     "access_level": "unknown",
@@ -5520,7 +5739,8 @@
           "rating": 5
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJLyIl671U2YAREAPW56PTL3k"
   },
   "221": {
     "access_level": "open_to_all",
@@ -5546,7 +5766,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJnaUxyexU2YARIsezfIshS3M"
   },
   "222": {
     "access_level": "unknown",
@@ -5571,7 +5792,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJ50VElfBU2YARf2QT27i0Df4"
   },
   "223": {
     "access_level": "unknown",
@@ -5589,7 +5811,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "web:3def5bc86ff50230"
   },
   "224": {
     "access_level": "unknown",
@@ -5614,7 +5837,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJkaq7Tjaq3oARPTae9cZ2T5M"
   },
   "225": {
     "access_level": "unknown",
@@ -5658,7 +5882,8 @@
           "rating": 5
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJ-Vi3YjFV2YARwrGaFNvAayQ"
   },
   "226": {
     "access_level": "unknown",
@@ -5683,7 +5908,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJUdl3tDtV2YARcNhVCjBL5n0"
   },
   "227": {
     "access_level": "unknown",
@@ -5715,7 +5941,8 @@
           "rating": 5
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJ7RemNWtV2YARB7GjhKQFK4g"
   },
   "228": {
     "access_level": "unknown",
@@ -5740,7 +5967,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJfUW8KwBT2YARhRUgCNUM82c"
   },
   "229": {
     "access_level": "unknown",
@@ -5758,7 +5986,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJb2vgV7ZT2YARMMlBtpws0uQ"
   },
   "230": {
     "access_level": "unknown",
@@ -5783,7 +6012,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJKbBY32tT2YARonXacbDdISQ"
   },
   "231": {
     "access_level": "unknown",
@@ -5808,7 +6038,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJSQjFBHVR2YARyPOwnKEsR90"
   },
   "232": {
     "access_level": "unknown",
@@ -5827,7 +6058,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJ6fXHCXVR2YARYfuAQoJ4YUk"
   },
   "233": {
     "access_level": "unknown",
@@ -5852,7 +6084,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJKTfpvcpW2YAR0fmDKYxP8wM"
   },
   "234": {
     "access_level": "unknown",
@@ -5877,7 +6110,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJUwKOrJBW2YARsJqjG2xYFss"
   },
   "235": {
     "access_level": "unknown",
@@ -5902,7 +6136,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJ0dnESvUA3IARrLQOdqIaISM"
   },
   "236": {
     "access_level": "unknown",
@@ -5920,7 +6155,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJeWuwej4A3IARcF6-yPyr5-4"
   },
   "237": {
     "access_level": "unknown",
@@ -5945,7 +6181,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJC_mfACoB3IARqroE9qj8aZU"
   },
   "238": {
     "access_level": "unknown",
@@ -5970,7 +6207,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJ5RJVmXEA3IAR4_xIH2YLPCk"
   },
   "239": {
     "access_level": "unknown",
@@ -6002,7 +6240,8 @@
           "rating": 4
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJEeh4mrWs3oARHZ_QpJdg4LU"
   },
   "240": {
     "access_level": "unknown",
@@ -6027,7 +6266,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJyZ-_nLas3oARC7WiQsE2O8I"
   },
   "241": {
     "access_level": "unknown",
@@ -6052,7 +6292,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJJ5fbkSxT2YAROeoswbpqykw"
   },
   "242": {
     "access_level": "unknown",
@@ -6070,7 +6311,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJCxnkLqNX2YARgFqSsV1FI8g"
   },
   "243": {
     "access_level": "unknown",
@@ -6102,7 +6344,8 @@
           "rating": 5
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJV8BQeGIH3IARv13tkwrZhX4"
   },
   "244": {
     "access_level": "unknown",
@@ -6134,7 +6377,8 @@
           "rating": 5
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJaW3KVtsG3IARHeqWjDrI7o8"
   },
   "245": {
     "access_level": "unknown",
@@ -6166,7 +6410,8 @@
           "rating": 5
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJQ2Lcx9QA3IARiu4Ax8Sq61k"
   },
   "246": {
     "access_level": "unknown",
@@ -6191,7 +6436,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJpZiybCoB3IARiyWCwIU1G5Q"
   },
   "247": {
     "access_level": "open_to_all",
@@ -6217,7 +6463,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJ3Y8rZWQB3IARsbYJFBlLUrY"
   },
   "248": {
     "access_level": "unknown",
@@ -6235,7 +6482,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJn_uKPd0A3IARiRMDojjxCs0"
   },
   "249": {
     "access_level": "unknown",
@@ -6253,7 +6501,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJb2pTPd0A3IARFAwowzDhC5o"
   },
   "250": {
     "access_level": "unknown",
@@ -6278,7 +6527,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJz8T2yyb524ARtBtKAjcxTH4"
   },
   "251": {
     "access_level": "unknown",
@@ -6297,7 +6547,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJa3RaJe_424ARcBPNPrno9Dw"
   },
   "252": {
     "access_level": "unknown",
@@ -6322,7 +6573,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJWV-IIoMI3IARWVN1VjYjNs4"
   },
   "253": {
     "access_level": "unknown",
@@ -6360,7 +6612,8 @@
           "rating": 5
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJAzaa1ZwI3IARheNs8Rneqbo"
   },
   "254": {
     "access_level": "unknown",
@@ -6385,7 +6638,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJ3x-EYnz524ARhYLZukl3G7U"
   },
   "255": {
     "access_level": "unknown",
@@ -6417,7 +6671,8 @@
           "rating": 5
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJycvEpp5U2YARj1uzwW3K46Y"
   },
   "256": {
     "access_level": "unknown",
@@ -6442,7 +6697,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJSevqC1JQ2YARct0PeBaulM8"
   },
   "257": {
     "access_level": "unknown",
@@ -6467,7 +6723,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJfyR12aJR2YARDdqR8zohRuc"
   },
   "258": {
     "access_level": "unknown",
@@ -6517,7 +6774,8 @@
           "rating": 3
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJ2VdigURG2YARz31oRVHdCT0"
   },
   "259": {
     "access_level": "unknown",
@@ -6555,7 +6813,8 @@
           "rating": 5
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJ-5AxuiJM2YARHHSnk_rT_6o"
   },
   "260": {
     "access_level": "unknown",
@@ -6593,7 +6852,8 @@
           "rating": 3
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJqYsS9xBM2YARMZOQTPxCwh4"
   },
   "261": {
     "access_level": "unknown",
@@ -6618,7 +6878,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJ_RK9OnVH2YARA4xrjqO90BE"
   },
   "262": {
     "access_level": "unknown",
@@ -6636,7 +6897,8 @@
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
-    "review_signals": null
+    "review_signals": null,
+    "external_key": "maps:ChIJRSZcQDBJ2YARhlskvDmuqOQ"
   },
   "263": {
     "access_level": "unknown",
@@ -6661,7 +6923,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJS7JA5hFJ2YARwzdsxdSMjDE"
   },
   "264": {
     "access_level": "unknown",
@@ -6686,7 +6949,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJka06sBpJ2YAR9T9ROsIgisk"
   },
   "265": {
     "access_level": "unknown",
@@ -6711,7 +6975,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJwd_aRRBJ2YARHF7C8IFSv-E"
   },
   "266": {
     "access_level": "unknown",
@@ -6736,7 +7001,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJDTtB7EtJ2YARnLXbdapwka4"
   },
   "267": {
     "access_level": "unknown",
@@ -6762,7 +7028,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJs33j9xdJ2YAR2wqS1EE6pPU"
   },
   "268": {
     "access_level": "unknown",
@@ -6794,7 +7061,8 @@
           "rating": 1
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJM4O4uipU2YARgJNTHtYClxI"
   },
   "269": {
     "access_level": "unknown",
@@ -6819,7 +7087,8 @@
       "crowded": 0,
       "spacious": 0,
       "quotes": []
-    }
+    },
+    "external_key": "maps:ChIJj4hxBoFW2YARJGTs9gRHfAU"
   },
   "270": {
     "access_level": "open_to_all",
@@ -6856,7 +7125,8 @@
           "rating": 5
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJ4YOwG7lT2YARfq57pGQFFQs"
   },
   "271": {
     "access_level": "open_to_all",
@@ -6920,6 +7190,7 @@
           "rating": 5
         }
       ]
-    }
+    },
+    "external_key": "maps:ChIJ9YPXLNMA3IARmF2_yZ7j3os"
   }
 }
