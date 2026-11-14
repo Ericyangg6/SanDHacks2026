@@ -73,6 +73,31 @@ async function main() {
   await db.query(`select setval(pg_get_serial_sequence('sites','id'), (select coalesce(max(id),1) from sites))`);
   await db.query("commit");
 
+  // 2b. NWS readings (contract table `readings`) and the ZIP gap analysis (proposed table `zip_gap`).
+  await db.query(`create table if not exists zip_gap (
+    zip text primary key, name text, population int, age65plus int, households_no_vehicle int, below_poverty int,
+    residents_at_risk int, sites_within_5km int, official_within_5km int, nearest_site_km real, nearest_site text,
+    forecast_zone text, peak_temp_f real, peak_heat_index real, peak_time timestamptz, hours_90f_plus_72h int,
+    heat_factor real, gap_score int, scenario_heat_index real, generated_at timestamptz)`);
+  const gap = JSON.parse(await read("../data/seed/zip_gap.json").catch(() => "null"));
+  if (gap?.zips) {
+    await db.query("begin");
+    await db.query("truncate zip_gap");
+    for (const z of gap.zips) {
+      await db.query(
+        `insert into zip_gap values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20)`,
+        [z.zip, z.name, z.population, z.age65plus, z.households_no_vehicle, z.below_poverty, z.residents_at_risk, z.sites_within_5km,
+         z.official_within_5km, z.nearest_site_km, z.nearest_site, z.forecast_zone, z.peak_temp_f, z.peak_heat_index, z.peak_time,
+         z.hours_90f_plus_72h, z.heat_factor, z.gap_score, gap.scenario_heat_index, gap.generated_at]);
+    }
+    await db.query("commit");
+  }
+  const readings = JSON.parse(await read("../data/seed/readings.json").catch(() => "[]"));
+  await db.query("begin");
+  await db.query("delete from readings where source = 'nws'"); // replace our own rows only; never touch mock or other sources
+  for (const r of readings) await db.query("insert into readings (time, zip, temp_f, heat_index, aqi, source) values ($1,$2,$3,$4,$5,$6)", [r.time, r.zip, r.temp_f, r.heat_index, r.aqi, r.source]);
+  await db.query("commit");
+
   // 3. Page version history (replace: the log file is the source of truth).
   const log = (await read("./data/history.jsonl").catch(() => "")).split("\n").filter(Boolean).map((l) => JSON.parse(l));
   await db.query("begin");
@@ -94,6 +119,7 @@ async function main() {
   console.log("by kind:", await q("select kind, count(*)::int n from sites group by 1 order by 2 desc"));
   console.log("zips:", (await q("select count(distinct zip)::int n from sites"))[0].n, "| capacity known:", (await q("select count(capacity_est)::int n from sites"))[0].n, "| ac known:", (await q("select count(has_ac)::int n from sites"))[0].n);
   console.log("by access:", await q("select access_level, count(*)::int n from sites group by 1 order by 2 desc"));
+  console.log("zip_gap rows:", (await q("select count(*)::int n from zip_gap"))[0].n, "| nws readings:", (await q("select count(*)::int n from readings where source='nws'"))[0].n);
   console.log("page versions:", (await q("select count(*)::int n from source_page_versions"))[0].n);
   await db.end();
 }

@@ -90,3 +90,18 @@ export type SiteVerification = 'confirmed' | 'conflict' | 'single_source' | 'web
 ## Interim
 
 Until approved, ingest writes the extra fields to `data/seed/sites.extras.json`, keyed by site id, so nothing is lost and no one's code depends on them.
+
+## Addition: `zip_gap` (M2 writes, M1 dashboard reads)
+
+Cooling-gap analysis per ZIP: NWS heat forecast x Census residents at risk x sites within 5 km. This is what the ops dashboard
+needs to show "where demand is building and where we have no coverage". `readings` (already in the schema) receives the NWS
+forecast peaks with `source = 'nws'`.
+
+```sql
+create table zip_gap (
+  zip text primary key, name text, population int, age65plus int, households_no_vehicle int, below_poverty int,
+  residents_at_risk int, sites_within_5km int, official_within_5km int, nearest_site_km real, nearest_site text,
+  forecast_zone text, peak_temp_f real, peak_heat_index real, peak_time timestamptz, hours_90f_plus_72h int,
+  heat_factor real, gap_score int, scenario_heat_index real, generated_at timestamptz
+);
+```
