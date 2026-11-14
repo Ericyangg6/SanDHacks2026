@@ -22,6 +22,7 @@ import type {
 
 export interface UpsertSubscriberInput {
   phoneHash: string;
+  phoneE164: string; // stored in subscribers.phone_e164 so alerts have a number to send to
   zip: string;
   language: Language;
   needs?: CallerNeeds;
@@ -32,16 +33,18 @@ export async function getSubscriber(phoneHash: string): Promise<SubscriberRow | 
   return notImplemented('db.getSubscriber');
 }
 
-// Re-subscribing clears opted_out_at and refreshes consent_at.
+// Keyed on phone_hash. Re-subscribing clears opted_out_at, refreshes consent_at and stores phone_e164 again.
 export async function upsertSubscriber(input: UpsertSubscriberInput): Promise<SubscriberRow> {
   return notImplemented('db.upsertSubscriber');
 }
 
+// Stamps opted_out_at and sets phone_e164 to null: the raw number is kept only while the opt-in stands.
+// The row and its phone_hash stay, so send_sms can still refuse the number.
 export async function setOptedOut(phoneHash: string, at: Date): Promise<void> {
   return notImplemented('db.setOptedOut');
 }
 
-// Only rows with opted_out_at null. See SubscriberContact for the missing phone number column.
+// Only rows with opted_out_at null and phone_e164 not null.
 export async function listActiveSubscribersByZips(zips: string[]): Promise<SubscriberContact[]> {
   return notImplemented('db.listActiveSubscribersByZips');
 }
@@ -106,6 +109,12 @@ export async function insertCall(call: NewCall): Promise<{ id: number }> {
 // Guards against texting the same subscriber twice for one alert.
 export async function hasAlertText(phoneHash: string, alertId: number): Promise<boolean> {
   return notImplemented('db.hasAlertText');
+}
+
+// Cooldown guard: true when the subscriber was sent a text for any alert of this kind at or after `since`.
+// Reads calls joined to alerts on alert_id (outcome 'sms_sent', alerts.kind = kind). No schema change needed.
+export async function hasRecentAlertText(phoneHash: string, kind: AlertKind, since: Date): Promise<boolean> {
+  return notImplemented('db.hasRecentAlertText');
 }
 
 // ---- read-only (M2 writes these) ----

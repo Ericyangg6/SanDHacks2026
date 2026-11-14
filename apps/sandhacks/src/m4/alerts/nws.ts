@@ -39,9 +39,9 @@ export async function fetchActiveAlerts(): Promise<NwsAlert[]> {
   //          p.expires is when this message goes stale; p.ends is when the hazard ends, and it is null on
   //          Air Quality Alerts.
   // TODO: 5. Keep only alerts where toAlertKind(event) is not null, in case the event filter changes.
-  // TODO: 6. Decide how to treat p.messageType === 'Update'. NWS gives every update a new id and lists the ids it
-  //          replaces in p.references[].identifier, so deduping on nws_id alone texts subscribers once per update.
-  //          NwsAlert has no field for the replaced ids yet.
+  // TODO: 6. Return updates (p.messageType === 'Update') like any other alert. NWS gives every update a new id and
+  //          lists the ids it replaces in p.references[].identifier, so each one becomes its own alerts row. The
+  //          cooldown in dispatchAlert is what keeps subscribers from being texted once per update.
   // TODO: 7. Decide whether to add the county code CAC073 to the zone list. Some offices issue Air Quality Alerts
   //          against county codes instead of forecast zones, and no San Diego sample was available to check.
   return notImplemented('nws.fetchActiveAlerts');

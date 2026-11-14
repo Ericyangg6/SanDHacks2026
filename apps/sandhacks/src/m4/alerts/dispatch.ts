@@ -2,6 +2,7 @@ import {
   addTextsSent,
   getAlertByNwsId,
   hasAlertText,
+  hasRecentAlertText,
   insertAlert,
   listActiveSubscribersByZips,
 } from '../db';
@@ -29,25 +30,32 @@ export async function recordAlert(alert: NwsAlert): Promise<{ alert: AlertRow; i
   return notImplemented('dispatch.recordAlert');
 }
 
-// Texts every active subscriber in alert.zips their nearest open site, once per alert.
+// NWS gives every update to an alert a new id, so a heat wave that is extended twice a day arrives as several
+// "new" alerts. A subscriber gets at most one text per alert kind inside this window.
+export const ALERT_TEXT_COOLDOWN_HOURS = 12;
+
+// Texts every active subscriber in alert.zips their nearest open site: once per alert, and at most once per
+// alert kind every ALERT_TEXT_COOLDOWN_HOURS.
 export async function dispatchAlert(alert: AlertRow): Promise<{ textsSent: number }> {
-  // TODO: 1. subscribers = await listActiveSubscribersByZips(alert.zips). Blocked by the schema gap documented on
-  //          SubscriberContact in ../types: subscribers stores only phone_hash, so there is no number to send to
-  //          until the team agrees a schema change.
+  // TODO: 1. subscribers = await listActiveSubscribersByZips(alert.zips).
   // TODO: 2. For each subscriber, skip when await hasAlertText(subscriber.phone_hash, alert.id). This is the
   //          "no repeat texts for the same alert" guard, and it makes a re-run after a crash safe.
-  // TODO: 3. { sites } = await findSites({ location: subscriber.zip, needs: subscriber.needs,
+  // TODO: 3. Unless alert.kind === 'mock', also skip when await hasRecentAlertText(subscriber.phone_hash,
+  //          alert.kind, since), with since = now minus ALERT_TEXT_COOLDOWN_HOURS. The check is per kind so that a
+  //          Heat Advisory upgraded to an Extreme Heat Warning still gets its own text. Mock alerts skip it so
+  //          the demo button works every time it is pressed.
+  // TODO: 4. { sites } = await findSites({ location: subscriber.zip, needs: subscriber.needs,
   //          language: subscriber.language }); site = sites[0] ?? null. For kind 'air_quality_alert' pass
   //          needs_clean_air: true. M2 owns the ranking: never re-sort or filter the result here.
-  // TODO: 4. body = alertMessage({ alert, site, language: subscriber.language }).
-  // TODO: 5. result = await sendText({ to: subscriber.phone_e164, body, purpose: 'alert', alertId: alert.id,
+  // TODO: 5. body = alertMessage({ alert, site, language: subscriber.language }).
+  // TODO: 6. result = await sendText({ to: subscriber.phone_e164, body, purpose: 'alert', alertId: alert.id,
   //          siteId: site?.site_id, zip: subscriber.zip, language: subscriber.language }).
-  //          sendText writes the calls row with alert_id, which is the row hasAlertText reads. Do not insertCall
-  //          here as well. If failed sends ever get a calls row too, hasAlertText must count only 'sms_sent'.
-  // TODO: 6. Count result.ok. One failed send must not stop the loop. Log failures with maskPhone only, never the
+  //          sendText writes the calls row with alert_id, which is the row both guards read. Do not insertCall
+  //          here as well. If failed sends ever get a calls row too, the guards must count only 'sms_sent'.
+  // TODO: 7. Count result.ok. One failed send must not stop the loop. Log failures with maskPhone only, never the
   //          raw number.
-  // TODO: 7. Pace the sends to stay under Twilio's rate limit (M4.md: rate limits).
-  // TODO: 8. await addTextsSent(alert.id, textsSent) once at the end, then return { textsSent }.
+  // TODO: 8. Pace the sends to stay under Twilio's rate limit (M4.md: rate limits).
+  // TODO: 9. await addTextsSent(alert.id, textsSent) once at the end, then return { textsSent }.
   return notImplemented('dispatch.dispatchAlert');
 }
 

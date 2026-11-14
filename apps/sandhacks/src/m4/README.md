@@ -17,6 +17,7 @@ app behaves exactly as before.
 | `alerts/` | NWS polling, zones, re-crawl request, dispatch, mock alerts |
 | `agent/` | Text agent prompt, the 911 pre-check, one conversation turn |
 | `mastra/` | The Mastra objects: `textAgent`, `alertWorkflow`, `m4ApiRoutes`, `sendSmsTool`, `findSitesTool` |
+| `dev/` | `webhook-proxy.mjs`, the only thing a public tunnel should point at (see "Receiving texts on a laptop") |
 
 Already implemented: `toE164`, `hashPhone`, `validateTwilioSignature`, `detectKeyword`, `toAlertKind`, the zone
 list, the fixed English and Spanish strings, both HTTP route handlers, the workflow wiring, both tools and the
@@ -40,10 +41,27 @@ export const mastra = new Mastra({
 Custom routes mount at the server root, so the Twilio messaging webhook is `POST ${PUBLIC_BASE_URL}/m4/twilio/sms`
 and the dashboard's demo button calls `POST /m4/alerts/mock` with `{ "zips": ["92105"], "headline": "..." }`.
 
-Before the server gets a public URL: no `server.auth` is configured, so every route is public, including the mock
-alert trigger and the starter agent with its file and shell tools.
+No `server.auth` is configured, so every route on port 4111 is open to whoever can reach it, including the mock
+alert trigger and the starter agent with its file and shell tools. Never point a tunnel at 4111. `npm run dev`
+also listens on every network interface, so on shared Wi-Fi those routes are open to the room:
+`MASTRA_HOST=127.0.0.1 npm run dev` keeps the server to this machine.
 
 To poll NWS on a timer, add the `schedule` field described in `mastra/alert-workflow.ts`. It is off on purpose.
+
+## Receiving texts on a laptop
+
+Sending needs no public URL. Receiving does: Twilio has to reach the webhook. `dev/webhook-proxy.mjs` listens on
+4114 and forwards only `POST /m4/twilio/sms` to the Mastra server, answering 404 to everything else, so the tunnel
+goes to the proxy:
+
+```shell
+node src/m4/dev/webhook-proxy.mjs                 # terminal 1, from apps/sandhacks
+cloudflared tunnel --url http://127.0.0.1:4114    # terminal 2, prints https://<words>.trycloudflare.com
+```
+
+Set `PUBLIC_BASE_URL` to that address before starting the dev server, and set the Twilio number's messaging
+webhook to `<address>/m4/twilio/sms` (HTTP POST). The address changes every time the tunnel restarts, and both
+places have to change with it: the signature check fails with 403 if `PUBLIC_BASE_URL` is stale.
 
 ## Environment
 
@@ -74,19 +92,25 @@ For a Gemini text agent, set `TEXT_AGENT_MODEL=google/<model id>`. Mastra reads 
 diff <(tail -n +5 apps/sandhacks/src/m4/shared-types.ts) data/schema/types.ts
 ```
 
+## Decided
+
+- **A sendable number.** `phone_hash` stays the key everywhere. `subscribers` has one nullable `phone_e164`
+  column, set on opt-in and cleared on STOP, so an alert has a number to send to. The column is in the shared
+  `data/schema/schema.sql`. A database already created from the old schema needs
+  `alter table subscribers add column phone_e164 text;`.
+- **NWS updates.** Every update to an alert gets a new id, so deduping on `nws_id` alone would text subscribers
+  once per update. `dispatchAlert` adds a cooldown: at most one text per subscriber per alert kind every
+  `ALERT_TEXT_COOLDOWN_HOURS` (12), read from the `calls` rows we already write. Mock alerts skip it.
+
 ## Decisions that block real work
 
-1. **No sendable number.** `subscribers` stores only `phone_hash`, so an alert has nobody to text. Needs a schema
-   change agreed by all four workstreams (see `SubscriberContact` in `types.ts`).
-2. **STOP from a non-subscriber.** `zip` and `consent_at` are `NOT NULL`, so an opt-out from someone who only got a
+1. **STOP from a non-subscriber.** `zip` and `consent_at` are `NOT NULL`, so an opt-out from someone who only got a
    one-off text from a voice call cannot be recorded.
-3. **NWS updates.** Every update to an alert gets a new id, so deduping on `nws_id` alone texts subscribers once per
-   update.
-4. **Zone to zip.** NWS alerts name forecast zones; nothing maps those to zips yet.
-5. **Re-crawl.** How M4 asks M2 for one, and whether texts wait for it to finish.
-6. **Double counting.** A voice call that sends a text would log `site_id` twice (M3's row and ours), which the
+2. **Zone to zip.** NWS alerts name forecast zones; nothing maps those to zips yet.
+3. **Re-crawl.** How M4 asks M2 for one, and whether texts wait for it to finish.
+4. **Double counting.** A voice call that sends a text would log `site_id` twice (M3's row and ours), which the
    ranking's recent-referrals count would see as two.
-7. **Alert texts and memory.** The alert text has to be stored in `messages`, or a reply like "something closer?"
+5. **Alert texts and memory.** The alert text has to be stored in `messages`, or a reply like "something closer?"
    reaches the agent with no context.
-8. **Review before real users.** The emergency phrase list, the 911 wording, the 211 free-ride claim and all
+6. **Review before real users.** The emergency phrase list, the 911 wording, the 211 free-ride claim and all
    Spanish copy are unreviewed first drafts.

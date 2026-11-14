@@ -31,6 +31,9 @@ export const LANGUAGES = ['en', 'es', 'tl', 'vi', 'zh'] as const satisfies reado
 export interface SubscriberRow {
   id: number;
   phone_hash: string;
+  // The one raw number at rest: alerts need somewhere to send. Null once the subscriber opts out.
+  // Every other table, and every log line, uses phone_hash.
+  phone_e164: string | null;
   language: Language;
   zip: string;
   needs: CallerNeeds;
@@ -38,8 +41,7 @@ export interface SubscriberRow {
   opted_out_at: string | null;
 }
 
-// Schema gap: subscribers stores only phone_hash, so there is no number to send an alert to.
-// Outbound alerts need a sendable number, which is a schema change for the whole team.
+// An opted-in subscriber, whose number is still on file.
 export interface SubscriberContact extends SubscriberRow {
   phone_e164: string;
 }

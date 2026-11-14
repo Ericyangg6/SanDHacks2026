@@ -45,18 +45,17 @@ export async function subscribe(args: {
   needs?: CallerNeeds;
 }): Promise<SubscriberRow> {
   // TODO: 1. Reject a zip that is not exactly five digits. Zip stays text, never a number.
-  // TODO: 2. phoneHash = hashPhone(args.phoneE164). The raw number is never stored or logged (maskPhone for log lines).
+  // TODO: 2. phoneHash = hashPhone(args.phoneE164). The raw number is never logged (maskPhone for log lines).
   // TODO: 3. getSubscriber(phoneHash) so a re-subscribe keeps the stored language and needs when args omit them. Default language 'en'.
-  // TODO: 4. upsertSubscriber({ phoneHash, zip, language, needs, consentAt: new Date() }) and return the row.
-  // TODO: 5. Schema gap: upsertSubscriber has nowhere to put a sendable number, so alerts cannot reach this subscriber yet
-  //          (see SubscriberContact in ../types).
+  // TODO: 4. upsertSubscriber({ phoneHash, phoneE164: args.phoneE164, zip, language, needs, consentAt: new Date() })
+  //          and return the row. subscribers.phone_e164 is the only place a raw number is stored.
   return notImplemented('consent.subscribe');
 }
 
 // Handles STOP: stamps opted_out_at so send_sms and the alert fan-out skip this number.
 export async function optOut(phoneE164: string): Promise<void> {
   // TODO: 1. phoneHash = hashPhone(phoneE164).
-  // TODO: 2. setOptedOut(phoneHash, new Date()).
+  // TODO: 2. setOptedOut(phoneHash, new Date()). It also clears the stored phone_e164.
   // TODO: 3. Decide what STOP means for a number with no subscriber row, e.g. a voice caller who got a one-off text.
   //          zip and consent_at are NOT NULL, so there is no row to mark and nothing here stops the next send to them.
   return notImplemented('consent.optOut');
