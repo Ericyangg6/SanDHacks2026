@@ -10,8 +10,12 @@ import {
 } from '@mastra/observability';
 import { agent } from './agents/agent';
 import { startScheduleTool, stopScheduleTool } from './tools/schedule-tools';
+import { elevenLabsRoutes } from '../elevenlabs/routes';
 
 export const mastra = new Mastra({
+  server: {
+    apiRoutes: [...elevenLabsRoutes],
+  },
   bundler: {
     externals: ['@duckdb/node-bindings'],
   },
