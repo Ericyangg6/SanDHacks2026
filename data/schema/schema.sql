@@ -101,7 +101,7 @@ alter table calls add foreign key (alert_id) references alerts (id);
 create table messages (
   id          serial primary key,
   phone_hash  text not null,              -- or the Messenger hash, as in calls.phone_hash
-  role       text not null check (role in ('user', 'assistant')),
+  role        text not null check (role in ('user', 'assistant')),
   body        text not null,
   created_at  timestamptz not null default now()
 );
