@@ -11,11 +11,14 @@ import {
 } from '../db';
 import { env } from '../env';
 import { findSites } from '../find-sites';
+import { messengerLogLabel } from '../messenger/identity';
+import { sendMessengerAlert } from '../messenger/send';
 import { maskPhone } from '../phone';
 import { sendText } from '../sms/send-sms';
 import { alertMessage, whatsAppAlertVariables } from '../sms/templates';
 import type { WhatsAppTemplate } from '../sms/twilio';
-import type { AlertRow, SiteResult, SubscriberContact } from '../types';
+import { isMessengerContact } from '../types';
+import type { AlertRow, SendSmsOutput, SiteResult, SubscriberContact, SubscriberRow } from '../types';
 import { toAlertKind, type NwsAlert } from './nws';
 import { zipsForZones } from './zones';
 
@@ -57,7 +60,7 @@ function reason(error: unknown): string {
 
 // True when this subscriber should get a text for this alert. Mock alerts skip the cooldown so the demo button
 // works every time it is pressed. The per-alert guard always applies, which makes a re-run after a crash safe.
-async function shouldText(subscriber: SubscriberContact, alert: AlertRow, since: Date): Promise<boolean> {
+async function shouldText(subscriber: SubscriberRow, alert: AlertRow, since: Date): Promise<boolean> {
   if (await hasAlertText(subscriber.phone_hash, alert.id)) return false;
   // Per kind, so a Heat Advisory upgraded to an Extreme Heat Warning still gets its own text.
   if (alert.kind !== 'mock' && (await hasRecentAlertText(subscriber.phone_hash, alert.kind, since))) return false;
@@ -65,7 +68,7 @@ async function shouldText(subscriber: SubscriberContact, alert: AlertRow, since:
 }
 
 // The nearest open site for this subscriber, or null. M2 owns the ranking: the result is never re-sorted here.
-async function nearestSite(subscriber: SubscriberContact, alert: AlertRow): Promise<SiteResult | null> {
+async function nearestSite(subscriber: SubscriberRow, alert: AlertRow): Promise<SiteResult | null> {
   const needs = alert.kind === 'air_quality_alert' ? { ...subscriber.needs, needs_clean_air: true } : subscriber.needs;
   const { sites } = await findSites({ location: subscriber.zip, needs, language: subscriber.language });
   return sites[0] ?? null;
@@ -94,8 +97,11 @@ async function whatsAppDelivery(
   return { contentSid, variables: whatsAppAlertVariables({ alert, site, language: subscriber.language }) };
 }
 
-// Texts every active subscriber in alert.zips their nearest open site, by SMS or WhatsApp (alert_channel): once per alert, and at most once per
-// alert kind every ALERT_TEXT_COOLDOWN_HOURS. One subscriber's failure never stops the others.
+// Messages every active subscriber in alert.zips their nearest open site, on the channel they joined on
+// (alert_channel: Messenger, SMS or WhatsApp): once per alert, and at most once per alert kind every
+// ALERT_TEXT_COOLDOWN_HOURS. One subscriber's failure never stops the others.
+// Messenger subscribers are reached only if they wrote in the last 24 hours (see messenger/send.ts); the rest are
+// skipped and logged.
 export async function dispatchAlert(alert: AlertRow): Promise<{ textsSent: number }> {
   const subscribers = await listActiveSubscribersByZips(alert.zips);
   const since = new Date(Date.now() - ALERT_TEXT_COOLDOWN_HOURS * 3600_000);
@@ -105,7 +111,8 @@ export async function dispatchAlert(alert: AlertRow): Promise<{ textsSent: numbe
   // beyond the sending number's per-second rate itself. For a list in the thousands, check Twilio's queue limits
   // (error 30001) first.
   for (const subscriber of subscribers) {
-    const who = maskPhone(subscriber.phone_e164);
+    const messenger = isMessengerContact(subscriber);
+    const who = messenger ? messengerLogLabel(subscriber.phone_hash) : maskPhone(subscriber.phone_e164 ?? '');
     try {
       if (!(await shouldText(subscriber, alert, since))) continue;
     } catch (error) {
@@ -121,25 +128,38 @@ export async function dispatchAlert(alert: AlertRow): Promise<{ textsSent: numbe
     });
 
     const body = alertMessage({ alert, site, language: subscriber.language });
-    const channel = subscriber.alert_channel === 'whatsapp' ? 'whatsapp' : 'sms';
-    let template: WhatsAppTemplate | undefined;
-    if (channel === 'whatsapp') {
-      const delivery = await whatsAppDelivery(subscriber, alert, site);
-      if (delivery === 'skip') continue;
-      template = delivery ?? undefined;
+    let result: SendSmsOutput;
+    if (messenger) {
+      // Writes the calls row with alert_id, which is the row both guards read.
+      result = await sendMessengerAlert({
+        contact: subscriber,
+        body,
+        alertId: alert.id,
+        siteId: site?.site_id,
+        zip: subscriber.zip,
+        language: subscriber.language,
+      });
+    } else {
+      const channel = subscriber.alert_channel === 'whatsapp' ? 'whatsapp' : 'sms';
+      let template: WhatsAppTemplate | undefined;
+      if (channel === 'whatsapp') {
+        const delivery = await whatsAppDelivery(subscriber, alert, site);
+        if (delivery === 'skip') continue;
+        template = delivery ?? undefined;
+      }
+      // sendText writes the calls row with alert_id, which is the row both guards read.
+      result = await sendText({
+        to: subscriber.phone_e164,
+        body,
+        purpose: 'alert',
+        channel,
+        template,
+        alertId: alert.id,
+        siteId: site?.site_id,
+        zip: subscriber.zip,
+        language: subscriber.language,
+      });
     }
-    // sendText writes the calls row with alert_id, which is the row both guards read.
-    const result = await sendText({
-      to: subscriber.phone_e164,
-      body,
-      purpose: 'alert',
-      channel,
-      template,
-      alertId: alert.id,
-      siteId: site?.site_id,
-      zip: subscriber.zip,
-      language: subscriber.language,
-    });
     if (!result.ok) {
       console.warn(`[m4] alert ${alert.id}: not sent to ${who} (${result.error})`);
       continue;

@@ -1,5 +1,7 @@
 .env
 CLAUDE.md
+node_modules/
+.neon
 
 # Claude Code worktrees (full checkouts nested in the repo)
 .claude/worktrees/

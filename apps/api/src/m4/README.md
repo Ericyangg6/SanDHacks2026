@@ -37,7 +37,8 @@ is not handled twice. That memory lives in the server process, so a restart clea
 
 ## Facebook Messenger
 
-People can also write to the Facebook Page (Shadoes) on Messenger. Twilio's Messenger sender posts to its own
+**Messenger is Shade's live channel** (see `AGENTS.md`): SMS waits on carrier registration and WhatsApp outbound is
+blocked by Meta. People write to the Facebook Page (Shadoes) on Messenger. Twilio's Messenger sender posts to its own
 route, `POST ${PUBLIC_BASE_URL}/m4/twilio/messenger`, never to the SMS one: the sender is `messenger:<psid>`, a
 page-scoped id, not a phone number, so it never goes through `toE164` or `hashPhone`.
 
@@ -48,18 +49,25 @@ page-scoped id, not a phone number, so it never goes through `toE164` or `hashPh
   `messenger:<psid>`. A repeated `MessageSid` within 10 minutes is dropped.
 - **Identity.** `hashMessengerId(psid)` = `sha256(PHONE_SALT + 'messenger:' + psid)`, stored where a `phone_hash`
   goes (`messages`, `calls`). It can never equal a phone hash. Logs show `messenger:<first 8 hash chars>`.
-- **Keywords.** No subscriber rows. Messenger allows a reply for 24 hours after the person writes, and Twilio tags a
-  later message `ACCOUNT_UPDATE`, which alerts may not use, so alerts stay on SMS. JOIN and START point people at
-  `TWILIO_PHONE_NUMBER`, HELP gets a Messenger help text, and STOP gets an acknowledgement: Shade never starts a
-  Messenger conversation, so there is nothing to switch off.
+- **Keywords, as on SMS.** `JOIN <zip>` (or `UNIRME <zip>`) signs the person up for alerts here: a `subscribers`
+  row keyed by the Messenger hash, `alert_channel = 'messenger'`, with the psid and Page id stored in
+  `messenger_psid` / `messenger_page_id` so alerts can be sent. `START` signs a past subscriber up again with the
+  zip on file. `STOP` stamps `opted_out_at` and clears the stored ids. `HELP` explains. Questions are still answered
+  after STOP: it cancels alerts, and the person wrote to us.
+- **Alerts.** `dispatchAlert` sends Messenger subscribers the alert from the Page they joined on
+  (`sendMessengerAlert`), with the same per-alert and cooldown guards as SMS. Facebook lets a Page message someone
+  only within 24 hours of their last message, and no Messenger message tag covers alerts, so a subscriber who has
+  not written in 24 hours is skipped and logged (`messenger_window_closed`). The opt-in confirmation tells people
+  this.
 - **Agent.** Any other message goes to `generateTextReply` with `channel: 'messenger'`, so the 911 pre-check, the
-  AI disclosure and `find_sites` work as for SMS.
-- **Logging.** Each inbound message gets a `calls` row (`inbound`, `messenger`). The reply gets no row, as SMS
-  replies get none.
+  AI disclosure and `find_sites` work as for SMS, and a subscriber's zip is on file for the agent.
+- **Logging.** Each inbound message gets a `calls` row (`inbound`, `messenger`), which is also what the 24-hour
+  window is read from. Replies get no row, as SMS replies get none; a sent alert gets one (`outbound`, `sms_sent`,
+  `alert_id`).
 
-**Database.** `messenger` is a new value of the `channel` enum in `data/schema/schema.sql`. A database created
-before it needs `alter type channel add value 'messenger';`. Until then, Messenger `calls` inserts fail with a log
-line, and replies still go out.
+**Database.** `data/schema/schema.sql` has the Messenger pieces: the `messenger` value of the `channel` enum,
+`'messenger'` in `subscribers.alert_channel`, and `subscribers.messenger_psid` / `messenger_page_id`. The comment
+under the `subscribers` table has the `alter` statements for a database created before them.
 
 **Twilio Console.** Open the Page's sender under Numbers & senders > Facebook Messenger and set its incoming-message
 webhook to `${PUBLIC_BASE_URL}/m4/twilio/messenger`, HTTP POST. If the sender sits in a Messaging Service, the

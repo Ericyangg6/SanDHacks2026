@@ -103,6 +103,8 @@ export async function fetchPage(url: string, opts: { fresh?: boolean } = {}): Pr
     if (hit) return { ok: true, status: 200, markdown: hit, from_cache: true, attempts: 0 };
   }
 
+  // OFFLINE=1: only use what is already cached (rebuild outputs from earlier fetches without any network calls).
+  if (process.env.OFFLINE === "1") return { ok: false, status: 0, markdown: "", error: "offline (not cached)", from_cache: false, attempts: 0 };
   let last: PageResult = { ok: false, status: 0, markdown: "", from_cache: false, attempts: 0 };
   for (let attempt = 1; attempt <= 3; attempt++) {
     const raw = await brd({
@@ -213,4 +215,33 @@ export async function scrapeMain(url: string): Promise<string | null> {
   });
   const md = d.markdown?.success ? d.markdown.data : null;
   return typeof md === "string" && md.trim().length > 150 ? md : null;
+}
+
+export type NewsResult = { title: string; link: string; source: string; date: string };
+
+/** Google News results via the SERP API. freshness: h=hour d=day w=week m=month y=year. Redirect-only links are dropped. */
+export async function serpNews(query: string, freshness = "m"): Promise<NewsResult[]> {
+  const key = `news:${freshness}:${query}`;
+  let raw = await readCache(key);
+  let data: any = raw ? JSON.parse(raw) : null;
+  for (let attempt = 0; !data && attempt < 3; attempt++) {
+    const url = `https://www.google.com/search?q=${encodeURIComponent(query)}&tbm=nws&tbs=qdr:${freshness}&brd_json=1&gl=us&hl=en`;
+    const text = await brd({ zone: SERP_ZONE, url, format: "raw" });
+    try { data = JSON.parse(text); await writeCache(key, text); } catch { await new Promise((r) => setTimeout(r, 1500 * (attempt + 1))); }
+  }
+  return (data?.news ?? [])
+    .map((r: any) => ({ title: r.title ?? "", link: directLink(r), source: r.source ?? "", date: r.date ?? "" }))
+    .filter((r: NewsResult) => r.link);
+}
+
+export type Review = { rating: number | null; isoDate: string | null; text: string };
+
+/** Newest Google Maps reviews for a place URL (prebuilt parser on the second fetcher; Bright Data's own reviews scraper has been failing). */
+export async function mapsReviews(placeUrl: string, limit = 100): Promise<Review[]> {
+  const d = await fallbackCall("/web/scrape", {
+    method: "POST",
+    body: JSON.stringify({ url: placeUrl, formats: { parse: true }, parseParams: { type: "prebuilt", parser: "google-maps-reviews", sort: "newest", limit } }),
+  });
+  const rows: any[] = d.parsed?.success ? d.parsed.data?.reviews ?? [] : [];
+  return rows.filter((r) => r.snippet).map((r) => ({ rating: Number(r.rating) || null, isoDate: r.isoDate ?? null, text: String(r.snippet) }));
 }

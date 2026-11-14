@@ -39,7 +39,7 @@ async function main() {
       }
     }
   }
-  await Promise.all(Array.from({ length: 4 }, worker));
+  await Promise.all(Array.from({ length: Number(process.env.FETCH_CONCURRENCY ?? 4) }, worker));
 
   await writeFile(new URL("./data/pages_maps.json", import.meta.url), JSON.stringify(pages, null, 2));
   console.log(`\n${pages.length} pages → ingest/data/pages_maps.json | direct ${tally.ok}, fallback ${tally.fallback}, cached ${tally.cached}, failed ${tally.failed} (${stats().requests} API requests)`);

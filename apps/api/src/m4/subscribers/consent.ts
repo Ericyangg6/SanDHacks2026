@@ -1,4 +1,4 @@
-import { getSubscriber, setOptedOut, upsertSubscriber } from '../db';
+import { getSubscriber, setOptedOut, upsertMessengerSubscriber, upsertSubscriber } from '../db';
 import { hashPhone, toE164 } from '../phone';
 import type { AlertChannel, CallerNeeds, Language, SubscriberRow } from '../types';
 
@@ -85,6 +85,36 @@ export async function subscribe(args: {
 // A number with no subscriber row (a voice caller who got a one-off text) has nothing to mark: zip and consent_at
 // are NOT NULL, so no row can be made for them. For those, Twilio's own STOP list is the only block: it refuses
 // the send with error 21610. That covers Twilio's English keywords, not the Spanish ones above.
+// Records a Messenger opt-in: upserts the subscriber by Messenger hash, stores the ids alerts are sent with and
+// stamps consent_at. Re-subscribing clears opted_out_at and keeps the stored language and needs unless new ones
+// are given. Throws on a bad zip.
+export async function subscribeMessenger(args: {
+  contactHash: string; // hashMessengerId(psid)
+  psid: string;
+  pageId: string;
+  zip: string;
+  language?: Language;
+  needs?: CallerNeeds;
+}): Promise<SubscriberRow> {
+  if (!/^\d{5}$/.test(args.zip)) throw new Error('subscribeMessenger: the zip must be five digits');
+  const existing = await getSubscriber(args.contactHash);
+  return upsertMessengerSubscriber({
+    phoneHash: args.contactHash,
+    psid: args.psid,
+    pageId: args.pageId,
+    zip: args.zip,
+    language: args.language ?? existing?.language ?? 'en',
+    needs: args.needs ?? existing?.needs ?? {},
+    consentAt: new Date(),
+  });
+}
+
+// STOP on Messenger: stamps opted_out_at and clears the stored Messenger ids, so alerts skip this person.
+// Someone who never joined has no row and nothing to mark.
+export async function optOutMessenger(contactHash: string): Promise<void> {
+  await setOptedOut(contactHash, new Date());
+}
+
 export async function optOut(phoneE164: string): Promise<void> {
   await setOptedOut(hashPhone(phoneE164), new Date());
 }
