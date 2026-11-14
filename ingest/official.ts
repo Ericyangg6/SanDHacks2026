@@ -13,7 +13,9 @@ const CITIES = [
   "El Cajon", "Escondido", "Chula Vista", "Oceanside", "National City", "La Mesa", "Santee", "Vista",
   "Carlsbad", "Encinitas", "Poway", "Lemon Grove", "Imperial Beach", "San Marcos", "San Diego",
 ];
+const PLACE = process.env.PLACE; // on-demand search: add queries for one place
 const QUERIES = [
+  ...(PLACE ? [`${PLACE} CA cooling center heat relief hours`, `${PLACE} CA cool zone library community center`, `City of ${PLACE} extreme heat resources`] : []),
   "San Diego County Cool Zones list of locations hours",
   "County of San Diego Cool Zones map directory",
   "211 San Diego cooling centers cool zones",

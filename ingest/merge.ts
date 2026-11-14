@@ -72,12 +72,22 @@ async function main() {
   const zones: any[] = await load("official_cool_zones.json");
   const usedM = new Set<number>(), usedW = new Set<number>();
   const merged: any[] = [];
+  // Among all unused web records that match, prefer one WITH hours, then official, then the extractor's confidence.
+  const bestWeb = (match: (w: any) => boolean): number => {
+    let best = -1, bestScore = -1;
+    web.forEach((w, i) => {
+      if (usedW.has(i) || !match(w)) return;
+      const sc = ((w.hours?.length ?? 0) > 0 ? 100 : 0) + (w.tier === "official" ? 10 : 0) + (w.confidence ?? 0);
+      if (sc > bestScore) { best = i; bestScore = sc; }
+    });
+    return best;
+  };
 
   // 1) The county's official Cool Zones are the spine: authoritative location, capacity, phone, pet policy.
   //    Hours come from the official PDF/page (web) and Google Maps; two agreeing sources = confirmed.
   for (const z of zones) {
     const mi = maps.findIndex((m, i) => !usedM.has(i) && typeof m.lat === "number" && meters(m, z) < 150);
-    const wi = web.findIndex((w, i) => !usedW.has(i) && matchZone(z, w));
+    const wi = bestWeb((w) => matchZone(z, w));
     const M = mi >= 0 ? maps[mi] : null, W = wi >= 0 ? web[wi] : null;
     if (M) usedM.add(mi);
     if (W) usedW.add(wi);
@@ -113,7 +123,7 @@ async function main() {
   // 2) Everything else: Google Maps sites, cross-checked against their own web page when we have one.
   for (const [mi, m] of maps.entries()) {
     if (usedM.has(mi)) continue;
-    const wi = web.findIndex((w, i) => !usedW.has(i) && sameSite(m, w));
+    const wi = bestWeb((w) => sameSite(m, w));
     if (wi === -1) {
       merged.push({ ...m, verification: "maps_only", sources: ["google_maps"], conflicts: [] });
       continue;

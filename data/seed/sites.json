@@ -198,34 +198,6 @@
   },
   {
     "id": 5,
-    "name": "Veterans Park Recreation Center",
-    "kind": "rec_center",
-    "tier": "official",
-    "confidence": 0.9,
-    "address": "785 E Palomar St, Chula Vista, CA 91911, United States",
-    "zip": "91911",
-    "lat": 32.6146325,
-    "lon": -117.0237036,
-    "hours": {
-      "weekly": [
-        {
-          "day": 6,
-          "open": "09:00",
-          "close": "13:00"
-        }
-      ],
-      "raw_text": "{\"Sunday\":\"Closed\",\"Saturday\":\"9 AM–1 PM\",\"Friday\":\"9 AM–12 PM\\n1–6 PM\",\"Thursday\":\"9 AM–12 PM\\n2–8 PM\",\"Wednesday\":\"9 AM–12 PM\\n2–8 PM\",\"Tuesday\":\"9 AM–12 PM\\n2–8 PM\",\"Monday\":\"9 AM–12 PM\\n2–8 PM\"}"
-    },
-    "hours_confirmed_on_source": true,
-    "has_ac": true,
-    "has_filtration": null,
-    "capacity_est": null,
-    "phone": "+1 619-691-5260",
-    "source_url": "https://www.chulavistaca.gov/departments/parks-and-recreation/community-centers/veterans-community-center",
-    "last_verified_at": "2026-11-14T20:30:45.758Z"
-  },
-  {
-    "id": 6,
     "name": "La Mesa Adult Enrichment Center",
     "kind": "senior_center",
     "tier": "official",
@@ -273,7 +245,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 7,
+    "id": 6,
     "name": "Lemon Grove Library",
     "kind": "library",
     "tier": "official",
@@ -322,64 +294,11 @@
     "has_filtration": null,
     "capacity_est": 200,
     "phone": "+1 (619) 337-1454",
-    "source_url": "https://www.sdcl.org/locations/23/",
-    "last_verified_at": "2026-11-14T20:49:14.268Z"
+    "source_url": "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
+    "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 8,
-    "name": "National City Public Library",
-    "kind": "library",
-    "tier": "official",
-    "confidence": 0.9,
-    "address": "1401 National City Blvd, National City, CA 91950",
-    "zip": "91950",
-    "lat": 32.67057340621694,
-    "lon": -117.10424548840726,
-    "hours": {
-      "weekly": [
-        {
-          "day": 1,
-          "open": "10:00",
-          "close": "20:00"
-        },
-        {
-          "day": 2,
-          "open": "10:00",
-          "close": "20:00"
-        },
-        {
-          "day": 3,
-          "open": "10:00",
-          "close": "20:00"
-        },
-        {
-          "day": 4,
-          "open": "10:00",
-          "close": "20:00"
-        },
-        {
-          "day": 5,
-          "open": "10:00",
-          "close": "18:00"
-        },
-        {
-          "day": 6,
-          "open": "10:00",
-          "close": "17:00"
-        }
-      ],
-      "raw_text": "{\"Sunday\":\"Closed\",\"Saturday\":\"10 AM–5 PM\",\"Friday\":\"10 AM–6 PM\",\"Thursday\":\"10 AM–8 PM\",\"Wednesday\":\"10 AM–8 PM\",\"Tuesday\":\"10 AM–8 PM\",\"Monday\":\"10 AM–8 PM\"}"
-    },
-    "hours_confirmed_on_source": true,
-    "has_ac": true,
-    "has_filtration": null,
-    "capacity_est": 500,
-    "phone": "+1 (619) 470-5800",
-    "source_url": "https://www.nationalcityca.gov/government/library/",
-    "last_verified_at": "2026-11-14T20:47:29.568Z"
-  },
-  {
-    "id": 9,
+    "id": 7,
     "name": "George H. Waters Nutrition Center",
     "kind": "senior_center",
     "tier": "official",
@@ -423,11 +342,11 @@
     "has_filtration": null,
     "capacity_est": null,
     "phone": "+1 619-336-6750",
-    "source_url": "https://www.nationalcityca.gov/government/community-services/senior-services",
+    "source_url": "https://www.nationalcityca.gov/community/senior-services",
     "last_verified_at": "2026-11-14T20:32:41.654Z"
   },
   {
-    "id": 10,
+    "id": 8,
     "name": "Georgina Cole Library",
     "kind": "library",
     "tier": "official",
@@ -485,7 +404,7 @@
     "last_verified_at": "2026-11-14T20:33:50.265Z"
   },
   {
-    "id": 11,
+    "id": 9,
     "name": "Library Learning Center",
     "kind": "library",
     "tier": "official",
@@ -538,7 +457,7 @@
     "last_verified_at": "2026-11-14T20:33:17.161Z"
   },
   {
-    "id": 12,
+    "id": 10,
     "name": "El Cajon Branch Library",
     "kind": "library",
     "tier": "official",
@@ -592,11 +511,11 @@
     "has_filtration": null,
     "capacity_est": 300,
     "phone": "+1 (619) 588-3718",
-    "source_url": "https://www.sdcl.org/locations/13/",
-    "last_verified_at": "2026-11-14T20:31:25.477Z"
+    "source_url": "https://www.elcajon.gov/resident-services/living-in-el-cajon/el-cajon-library",
+    "last_verified_at": "2026-11-14T21:49:57.984Z"
   },
   {
-    "id": 13,
+    "id": 11,
     "name": "Renette Park & Recreation Center",
     "kind": "rec_center",
     "tier": "official",
@@ -649,7 +568,7 @@
     "last_verified_at": "2026-11-14T20:30:47.134Z"
   },
   {
-    "id": 14,
+    "id": 12,
     "name": "Bostonia Recreation Center",
     "kind": "rec_center",
     "tier": "official",
@@ -697,7 +616,7 @@
     "last_verified_at": "2026-11-14T20:31:10.909Z"
   },
   {
-    "id": 15,
+    "id": 13,
     "name": "La Jolla Riford Library",
     "kind": "library",
     "tier": "official",
@@ -750,7 +669,7 @@
     "last_verified_at": "2026-11-14T20:46:40.631Z"
   },
   {
-    "id": 16,
+    "id": 14,
     "name": "Oceanside Public Library",
     "kind": "library",
     "tier": "official",
@@ -803,7 +722,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 17,
+    "id": 15,
     "name": "Oceanside Public Library Mission Branch",
     "kind": "library",
     "tier": "official",
@@ -861,7 +780,60 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 18,
+    "id": 16,
+    "name": "Santee Public Library",
+    "kind": "library",
+    "tier": "official",
+    "confidence": 0.9,
+    "address": "9225 Carlton Hills Blvd #17, Santee, CA 92071",
+    "zip": "92071",
+    "lat": 32.84484396158443,
+    "lon": -116.99686208757767,
+    "hours": {
+      "weekly": [
+        {
+          "day": 1,
+          "open": "10:00",
+          "close": "18:00"
+        },
+        {
+          "day": 2,
+          "open": "12:00",
+          "close": "19:00"
+        },
+        {
+          "day": 3,
+          "open": "10:00",
+          "close": "18:00"
+        },
+        {
+          "day": 4,
+          "open": "10:00",
+          "close": "18:00"
+        },
+        {
+          "day": 5,
+          "open": "10:00",
+          "close": "17:00"
+        },
+        {
+          "day": 6,
+          "open": "10:00",
+          "close": "17:00"
+        }
+      ],
+      "raw_text": "{\"Sunday\":\"Closed\",\"Saturday\":\"10 am–5 pm\",\"Friday\":\"10 am–5 pm\",\"Thursday\":\"10 am–6 pm\",\"Wednesday\":\"10 am–6 pm\",\"Tuesday\":\"12–7 pm\",\"Monday\":\"10 am–6 pm\"}"
+    },
+    "hours_confirmed_on_source": true,
+    "has_ac": true,
+    "has_filtration": null,
+    "capacity_est": 300,
+    "phone": "+1 (619) 448-1863",
+    "source_url": "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
+    "last_verified_at": "2026-11-14T21:33:58.293Z"
+  },
+  {
+    "id": 17,
     "name": "San Diego Central Library",
     "kind": "library",
     "tier": "official",
@@ -914,7 +886,7 @@
     "last_verified_at": "2026-11-14T20:33:53.072Z"
   },
   {
-    "id": 19,
+    "id": 18,
     "name": "Mission Hills - Hillcrest/Knox Branch Library",
     "kind": "library",
     "tier": "official",
@@ -962,7 +934,7 @@
     "last_verified_at": "2026-11-14T20:50:00.828Z"
   },
   {
-    "id": 20,
+    "id": 19,
     "name": "North Park Branch Library",
     "kind": "library",
     "tier": "official",
@@ -1015,7 +987,7 @@
     "last_verified_at": "2026-11-14T20:33:50.363Z"
   },
   {
-    "id": 21,
+    "id": 20,
     "name": "North Park Recreation Center",
     "kind": "rec_center",
     "tier": "official",
@@ -1073,7 +1045,7 @@
     "last_verified_at": "2026-11-14T20:30:46.991Z"
   },
   {
-    "id": 22,
+    "id": 21,
     "name": "Pacific Beach Taylor Branch Library",
     "kind": "library",
     "tier": "official",
@@ -1121,7 +1093,7 @@
     "last_verified_at": "2026-11-14T20:46:47.887Z"
   },
   {
-    "id": 23,
+    "id": 22,
     "name": "Clairemont Branch Library",
     "kind": "library",
     "tier": "official",
@@ -1169,7 +1141,7 @@
     "last_verified_at": "2026-11-14T20:30:54.622Z"
   },
   {
-    "id": 24,
+    "id": 23,
     "name": "North Clairemont Branch Library",
     "kind": "library",
     "tier": "official",
@@ -1217,7 +1189,7 @@
     "last_verified_at": "2026-11-14T20:33:35.337Z"
   },
   {
-    "id": 25,
+    "id": 24,
     "name": "San Carlos Branch Library",
     "kind": "library",
     "tier": "official",
@@ -1265,7 +1237,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 26,
+    "id": 25,
     "name": "North University Community Branch Library",
     "kind": "library",
     "tier": "official",
@@ -1313,7 +1285,7 @@
     "last_verified_at": "2026-11-14T20:30:31.036Z"
   },
   {
-    "id": 27,
+    "id": 26,
     "name": "Doyle Recreation Center",
     "kind": "rec_center",
     "tier": "official",
@@ -1366,7 +1338,7 @@
     "last_verified_at": "2026-11-14T20:31:55.462Z"
   },
   {
-    "id": 28,
+    "id": 27,
     "name": "Paradise Hills Branch Library",
     "kind": "library",
     "tier": "official",
@@ -1414,7 +1386,7 @@
     "last_verified_at": "2026-11-14T20:49:05.243Z"
   },
   {
-    "id": 29,
+    "id": 28,
     "name": "Paradise Hills Recreation Center",
     "kind": "rec_center",
     "tier": "official",
@@ -1472,6 +1444,53 @@
     "last_verified_at": "2026-11-14T20:30:45.454Z"
   },
   {
+    "id": 29,
+    "name": "McClellan Senior Center",
+    "kind": "senior_center",
+    "tier": "official",
+    "confidence": 0.7,
+    "address": "1400 Vale Terrace Drive, Vista",
+    "zip": null,
+    "lat": 33.206260655318,
+    "lon": -117.21935635538,
+    "hours": {
+      "weekly": [
+        {
+          "day": 1,
+          "open": "08:00",
+          "close": "15:30"
+        },
+        {
+          "day": 2,
+          "open": "08:00",
+          "close": "15:30"
+        },
+        {
+          "day": 3,
+          "open": "08:00",
+          "close": "15:30"
+        },
+        {
+          "day": 4,
+          "open": "08:00",
+          "close": "15:30"
+        },
+        {
+          "day": 5,
+          "open": "08:00",
+          "close": "15:30"
+        }
+      ]
+    },
+    "hours_confirmed_on_source": false,
+    "has_ac": true,
+    "has_filtration": null,
+    "capacity_est": null,
+    "phone": null,
+    "source_url": "https://www.vista.gov/Home/Components/News/News/6930/3255",
+    "last_verified_at": "2026-11-14T21:57:15.834Z"
+  },
+  {
     "id": 30,
     "name": "San Diego County Library: Alpine Branch",
     "kind": "library",
@@ -1483,11 +1502,6 @@
     "lon": -116.77612268852998,
     "hours": {
       "weekly": [
-        {
-          "day": 1,
-          "open": "10:00",
-          "close": "18:00"
-        },
         {
           "day": 2,
           "open": "12:00",
@@ -1572,6 +1586,73 @@
   },
   {
     "id": 32,
+    "name": "PARKWAY AQUATIC CENTER",
+    "kind": "community_center",
+    "tier": "official",
+    "confidence": 0.5,
+    "address": "385 Park Way Chula Vista, CA 91910",
+    "zip": "91910",
+    "lat": 32.63770167315,
+    "lon": -117.082653121977,
+    "hours": {
+      "weekly": [
+        {
+          "day": 1,
+          "open": "08:00",
+          "close": "14:00"
+        },
+        {
+          "day": 1,
+          "open": "16:00",
+          "close": "19:00"
+        },
+        {
+          "day": 2,
+          "open": "08:00",
+          "close": "14:00"
+        },
+        {
+          "day": 2,
+          "open": "16:00",
+          "close": "19:00"
+        },
+        {
+          "day": 3,
+          "open": "08:00",
+          "close": "14:00"
+        },
+        {
+          "day": 3,
+          "open": "16:00",
+          "close": "19:00"
+        },
+        {
+          "day": 4,
+          "open": "08:00",
+          "close": "14:00"
+        },
+        {
+          "day": 4,
+          "open": "16:00",
+          "close": "19:00"
+        },
+        {
+          "day": 5,
+          "open": "08:00",
+          "close": "14:00"
+        }
+      ]
+    },
+    "hours_confirmed_on_source": false,
+    "has_ac": null,
+    "has_filtration": null,
+    "capacity_est": null,
+    "phone": "(619) 409-1985",
+    "source_url": "https://www.chulavistaca.gov/departments/parks-and-recreation/community-centers/parkway-aquatic-center",
+    "last_verified_at": "2026-11-14T21:57:15.835Z"
+  },
+  {
+    "id": 33,
     "name": "Norman Park Senior Center",
     "kind": "senior_center",
     "tier": "official",
@@ -1619,11 +1700,11 @@
     "has_filtration": null,
     "capacity_est": 220,
     "phone": "+1 (619) 409-1930",
-    "source_url": "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
-    "last_verified_at": "2026-11-14T21:33:58.293Z"
+    "source_url": "https://www.chulavistaca.gov/departments/parks-and-recreation/community-centers/norman-park-senior-center",
+    "last_verified_at": "2026-11-14T21:48:52.300Z"
   },
   {
-    "id": 33,
+    "id": 34,
     "name": "City of Chula Vista: Loma Verde Community Center",
     "kind": "community_center",
     "tier": "official",
@@ -1675,7 +1756,188 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 34,
+    "id": 35,
+    "name": "VETERANS COMMUNITY CENTER",
+    "kind": "community_center",
+    "tier": "official",
+    "confidence": 0.7,
+    "address": "785 East Palomar St. Chula Vista, CA 91911",
+    "zip": "91911",
+    "lat": 32.604088995577,
+    "lon": -117.087814755339,
+    "hours": {
+      "weekly": [
+        {
+          "day": 1,
+          "open": "09:00",
+          "close": "12:00"
+        },
+        {
+          "day": 1,
+          "open": "14:00",
+          "close": "20:00"
+        },
+        {
+          "day": 2,
+          "open": "09:00",
+          "close": "12:00"
+        },
+        {
+          "day": 2,
+          "open": "14:00",
+          "close": "20:00"
+        },
+        {
+          "day": 3,
+          "open": "09:00",
+          "close": "12:00"
+        },
+        {
+          "day": 3,
+          "open": "14:00",
+          "close": "20:00"
+        },
+        {
+          "day": 4,
+          "open": "09:00",
+          "close": "12:00"
+        },
+        {
+          "day": 4,
+          "open": "14:00",
+          "close": "20:00"
+        },
+        {
+          "day": 5,
+          "open": "09:00",
+          "close": "12:00"
+        },
+        {
+          "day": 5,
+          "open": "13:00",
+          "close": "18:00"
+        },
+        {
+          "day": 6,
+          "open": "09:00",
+          "close": "13:00"
+        }
+      ]
+    },
+    "hours_confirmed_on_source": false,
+    "has_ac": true,
+    "has_filtration": null,
+    "capacity_est": null,
+    "phone": "(619) 691-5260",
+    "source_url": "https://www.chulavistaca.gov/departments/parks-and-recreation/community-centers/veterans-community-center",
+    "last_verified_at": "2026-11-14T21:57:15.835Z"
+  },
+  {
+    "id": 36,
+    "name": "MONTEVALLE COMMUNITY CENTER",
+    "kind": "community_center",
+    "tier": "official",
+    "confidence": 0.5,
+    "address": "840 Duncan Ranch Road Chula Vista, CA 91914",
+    "zip": "91914",
+    "lat": 32.657562055725,
+    "lon": -116.950021371256,
+    "hours": {
+      "weekly": [
+        {
+          "day": 1,
+          "open": "09:00",
+          "close": "20:00"
+        },
+        {
+          "day": 2,
+          "open": "09:00",
+          "close": "20:00"
+        },
+        {
+          "day": 3,
+          "open": "09:00",
+          "close": "20:00"
+        },
+        {
+          "day": 4,
+          "open": "09:00",
+          "close": "20:00"
+        },
+        {
+          "day": 5,
+          "open": "09:00",
+          "close": "18:00"
+        },
+        {
+          "day": 6,
+          "open": "09:00",
+          "close": "13:00"
+        }
+      ]
+    },
+    "hours_confirmed_on_source": false,
+    "has_ac": null,
+    "has_filtration": null,
+    "capacity_est": null,
+    "phone": "(619) 691-5269",
+    "source_url": "https://www.chulavistaca.gov/departments/parks-and-recreation/community-centers/montevalle-community-center",
+    "last_verified_at": "2026-11-14T21:57:15.835Z"
+  },
+  {
+    "id": 37,
+    "name": "SALT CREEK COMMUNITY CENTER",
+    "kind": "community_center",
+    "tier": "official",
+    "confidence": 0.6,
+    "address": "2710 Otay Lakes Road Chula Vista, CA 91915",
+    "zip": "91915",
+    "lat": 32.649426458394,
+    "lon": -116.961600717924,
+    "hours": {
+      "weekly": [
+        {
+          "day": 1,
+          "open": "09:00",
+          "close": "20:00"
+        },
+        {
+          "day": 2,
+          "open": "09:00",
+          "close": "20:00"
+        },
+        {
+          "day": 3,
+          "open": "09:00",
+          "close": "20:00"
+        },
+        {
+          "day": 4,
+          "open": "09:00",
+          "close": "20:00"
+        },
+        {
+          "day": 5,
+          "open": "09:00",
+          "close": "18:00"
+        },
+        {
+          "day": 6,
+          "open": "09:00",
+          "close": "13:00"
+        }
+      ]
+    },
+    "hours_confirmed_on_source": false,
+    "has_ac": null,
+    "has_filtration": null,
+    "capacity_est": null,
+    "phone": "(619) 585-5739",
+    "source_url": "https://www.chulavistaca.gov/departments/parks-and-recreation/community-centers/salt-creek-community-center",
+    "last_verified_at": "2026-11-14T21:57:15.835Z"
+  },
+  {
+    "id": 38,
     "name": "Chula Vista Public Library: Otay Ranch",
     "kind": "library",
     "tier": "official",
@@ -1732,7 +1994,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 35,
+    "id": 39,
     "name": "San Diego County Library: Descanso Branch",
     "kind": "library",
     "tier": "official",
@@ -1743,11 +2005,6 @@
     "lon": -116.61344804574324,
     "hours": {
       "weekly": [
-        {
-          "day": 1,
-          "open": "10:00",
-          "close": "18:00"
-        },
         {
           "day": 2,
           "open": "12:00",
@@ -1784,7 +2041,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 36,
+    "id": 40,
     "name": "San Diego County Library: Imperial Beach Branch",
     "kind": "library",
     "tier": "official",
@@ -1831,7 +2088,54 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 37,
+    "id": 41,
+    "name": "Senior Community Center",
+    "kind": "senior_center",
+    "tier": "official",
+    "confidence": 0.6,
+    "address": "1075 8th Street, Imperial Beach, CA 91932",
+    "zip": "91932",
+    "lat": 32.578117220623,
+    "lon": -117.116476293075,
+    "hours": {
+      "weekly": [
+        {
+          "day": 1,
+          "open": "08:00",
+          "close": "14:00"
+        },
+        {
+          "day": 2,
+          "open": "08:00",
+          "close": "14:00"
+        },
+        {
+          "day": 3,
+          "open": "08:00",
+          "close": "14:00"
+        },
+        {
+          "day": 4,
+          "open": "08:00",
+          "close": "14:00"
+        },
+        {
+          "day": 5,
+          "open": "08:00",
+          "close": "14:00"
+        }
+      ]
+    },
+    "hours_confirmed_on_source": false,
+    "has_ac": null,
+    "has_filtration": null,
+    "capacity_est": null,
+    "phone": "619-424-7077",
+    "source_url": "https://www.imperialbeachca.gov/563/Senior-Community-Center",
+    "last_verified_at": "2026-11-14T21:57:15.835Z"
+  },
+  {
+    "id": 42,
     "name": "San Diego County Library: Jacumba Branch",
     "kind": "library",
     "tier": "official",
@@ -1878,65 +2182,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 38,
-    "name": "La Mesa Branch Library",
-    "kind": "library",
-    "tier": "official",
-    "confidence": 0.4,
-    "address": "8074 Allison Ave, La Mesa, CA, CA 91942",
-    "zip": "91942",
-    "lat": 32.76622463895849,
-    "lon": -117.02358242449984,
-    "hours": {
-      "weekly": [
-        {
-          "day": 1,
-          "open": "10:00",
-          "close": "18:00"
-        },
-        {
-          "day": 2,
-          "open": "12:00",
-          "close": "19:00"
-        },
-        {
-          "day": 3,
-          "open": "12:00",
-          "close": "19:00"
-        },
-        {
-          "day": 4,
-          "open": "10:00",
-          "close": "18:00"
-        },
-        {
-          "day": 5,
-          "open": "10:00",
-          "close": "17:00"
-        },
-        {
-          "day": 6,
-          "open": "10:00",
-          "close": "17:00"
-        },
-        {
-          "day": 0,
-          "open": "10:00",
-          "close": "17:00"
-        }
-      ],
-      "raw_text": "{\"Sunday\":\"10 a.m.–5 p.m.\",\"Saturday\":\"10 a.m.–5 p.m.\",\"Friday\":\"10 a.m.–5 p.m.\",\"Thursday\":\"10 a.m.–6 p.m.\",\"Wednesday\":\"12–7 p.m.\",\"Tuesday\":\"12–7 p.m.\",\"Monday\":\"10 a.m.–6 p.m.\"}"
-    },
-    "hours_confirmed_on_source": false,
-    "has_ac": true,
-    "has_filtration": null,
-    "capacity_est": 143,
-    "phone": "+1 (619) 469-2151",
-    "source_url": "https://www.sdcl.org/locations/24/",
-    "last_verified_at": "2026-11-14T20:48:48.078Z"
-  },
-  {
-    "id": 39,
+    "id": 43,
     "name": "Christian Science Reading Room",
     "kind": "other",
     "tier": "official",
@@ -1978,7 +2224,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 40,
+    "id": 44,
     "name": "Grossmont Healthcare District",
     "kind": "other",
     "tier": "official",
@@ -2030,7 +2276,59 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 41,
+    "id": 45,
+    "name": "National City Public Library",
+    "kind": "library",
+    "tier": "official",
+    "confidence": 0.7,
+    "address": "1401 National City Blvd, National City, CA 91950",
+    "zip": "91950",
+    "lat": 32.670678399211,
+    "lon": -117.104833139148,
+    "hours": {
+      "weekly": [
+        {
+          "day": 1,
+          "open": "10:00",
+          "close": "20:00"
+        },
+        {
+          "day": 2,
+          "open": "10:00",
+          "close": "20:00"
+        },
+        {
+          "day": 3,
+          "open": "10:00",
+          "close": "20:00"
+        },
+        {
+          "day": 4,
+          "open": "10:00",
+          "close": "20:00"
+        },
+        {
+          "day": 5,
+          "open": "10:00",
+          "close": "18:00"
+        },
+        {
+          "day": 6,
+          "open": "10:00",
+          "close": "17:00"
+        }
+      ]
+    },
+    "hours_confirmed_on_source": false,
+    "has_ac": null,
+    "has_filtration": null,
+    "capacity_est": null,
+    "phone": "(619) 470-5800",
+    "source_url": "https://www.nationalcityca.gov/government/library",
+    "last_verified_at": "2026-11-14T21:57:15.835Z"
+  },
+  {
+    "id": 46,
     "name": "San Diego County Library: Lincoln Acres Branch",
     "kind": "library",
     "tier": "official",
@@ -2077,7 +2375,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 42,
+    "id": 47,
     "name": "Westfield Plaza Bonita",
     "kind": "mall",
     "tier": "official",
@@ -2134,7 +2432,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 43,
+    "id": 48,
     "name": "San Diego County Library: Pine Valley Branch",
     "kind": "library",
     "tier": "official",
@@ -2181,7 +2479,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 44,
+    "id": 49,
     "name": "San Diego County Library: Potrero Branch",
     "kind": "library",
     "tier": "official",
@@ -2193,14 +2491,19 @@
     "hours": {
       "weekly": [
         {
+          "day": 1,
+          "open": "10:00",
+          "close": "18:00"
+        },
+        {
           "day": 2,
           "open": "12:00",
           "close": "19:00"
         },
         {
           "day": 3,
-          "open": "10:00",
-          "close": "18:00"
+          "open": "12:00",
+          "close": "19:00"
         },
         {
           "day": 4,
@@ -2216,6 +2519,11 @@
           "day": 6,
           "open": "10:00",
           "close": "17:00"
+        },
+        {
+          "day": 0,
+          "open": "10:00",
+          "close": "17:00"
         }
       ]
     },
@@ -2228,7 +2536,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 45,
+    "id": 50,
     "name": "County of San Diego: Spring Valley Community Center",
     "kind": "community_center",
     "tier": "official",
@@ -2285,7 +2593,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 46,
+    "id": 51,
     "name": "San Diego County Library: Casa de Oro Branch",
     "kind": "library",
     "tier": "official",
@@ -2332,7 +2640,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 47,
+    "id": 52,
     "name": "San Diego County Library: Spring Valley Branch",
     "kind": "library",
     "tier": "official",
@@ -2379,7 +2687,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 48,
+    "id": 53,
     "name": "San Diego County Library: Borrego Springs Branch",
     "kind": "library",
     "tier": "official",
@@ -2426,7 +2734,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 49,
+    "id": 54,
     "name": "San Diego County Library: Cardiff-by-the-Sea Branch",
     "kind": "library",
     "tier": "official",
@@ -2473,7 +2781,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 50,
+    "id": 55,
     "name": "County of San Diego: San Elijo Lagoon Nature Center",
     "kind": "other",
     "tier": "official",
@@ -2530,7 +2838,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 51,
+    "id": 56,
     "name": "Carlsbad City Library",
     "kind": "library",
     "tier": "official",
@@ -2587,7 +2895,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 52,
+    "id": 57,
     "name": "San Diego County Library: Del Mar Branch",
     "kind": "library",
     "tier": "official",
@@ -2634,7 +2942,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 53,
+    "id": 58,
     "name": "San Diego County Library: Rancho San Diego Branch",
     "kind": "library",
     "tier": "official",
@@ -2645,6 +2953,11 @@
     "lon": -116.92938427711994,
     "hours": {
       "weekly": [
+        {
+          "day": 1,
+          "open": "10:00",
+          "close": "18:00"
+        },
         {
           "day": 2,
           "open": "12:00",
@@ -2681,7 +2994,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 54,
+    "id": 59,
     "name": "Kennedy Recreation Center",
     "kind": "rec_center",
     "tier": "official",
@@ -2734,11 +3047,11 @@
     "last_verified_at": "2026-11-14T20:30:46.226Z"
   },
   {
-    "id": 55,
+    "id": 60,
     "name": "Kennedy Recreation Center & Skate Park",
     "kind": "rec_center",
     "tier": "official",
-    "confidence": 0.6,
+    "confidence": 0.5,
     "address": "1675 East Madison Avenue, El Cajon CA 92019",
     "zip": "92019",
     "lat": 32.800143307866,
@@ -2783,10 +3096,10 @@
     "capacity_est": null,
     "phone": "(619) 441-1676",
     "source_url": "https://www.elcajon.gov/your-government/departments/recreation/recreation-centers/kennedy-recreation-center-skate-park",
-    "last_verified_at": "2026-11-14T21:37:33.284Z"
+    "last_verified_at": "2026-11-14T21:57:15.835Z"
   },
   {
-    "id": 56,
+    "id": 61,
     "name": "Ronald Reagan Community Center",
     "kind": "community_center",
     "tier": "official",
@@ -2834,7 +3147,7 @@
     "last_verified_at": "2026-11-14T20:32:29.877Z"
   },
   {
-    "id": 57,
+    "id": 62,
     "name": "San Diego County Library: Fletcher Hills Branch",
     "kind": "library",
     "tier": "official",
@@ -2881,11 +3194,152 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 58,
-    "name": "Community and Senior Center",
-    "kind": "community_center",
+    "id": 63,
+    "name": "San Diego County Library: Crest Branch",
+    "kind": "library",
     "tier": "official",
-    "confidence": 0.6,
+    "confidence": 0.4,
+    "address": "105 Juanita Ln, El Cajon, CA 92021",
+    "zip": "92021",
+    "lat": 32.804005844857755,
+    "lon": -116.86750456629021,
+    "hours": {
+      "weekly": [
+        {
+          "day": 2,
+          "open": "12:00",
+          "close": "19:00"
+        },
+        {
+          "day": 3,
+          "open": "10:00",
+          "close": "18:00"
+        },
+        {
+          "day": 4,
+          "open": "10:00",
+          "close": "18:00"
+        },
+        {
+          "day": 5,
+          "open": "10:00",
+          "close": "17:00"
+        },
+        {
+          "day": 6,
+          "open": "10:00",
+          "close": "17:00"
+        }
+      ]
+    },
+    "hours_confirmed_on_source": false,
+    "has_ac": true,
+    "has_filtration": null,
+    "capacity_est": 32,
+    "phone": "+1 (619) 442-7083",
+    "source_url": "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
+    "last_verified_at": "2026-11-14T21:33:58.293Z"
+  },
+  {
+    "id": 64,
+    "name": "San Diego County Library: Encinitas Branch",
+    "kind": "library",
+    "tier": "official",
+    "confidence": 0.4,
+    "address": "540 Cornish Dr, Encinitas, CA 92024",
+    "zip": "92024",
+    "lat": 33.04580493553202,
+    "lon": -117.29040609381718,
+    "hours": {
+      "weekly": [
+        {
+          "day": 1,
+          "open": "10:00",
+          "close": "18:00"
+        },
+        {
+          "day": 2,
+          "open": "12:00",
+          "close": "19:00"
+        },
+        {
+          "day": 3,
+          "open": "10:00",
+          "close": "18:00"
+        },
+        {
+          "day": 4,
+          "open": "10:00",
+          "close": "18:00"
+        },
+        {
+          "day": 5,
+          "open": "10:00",
+          "close": "17:00"
+        }
+      ]
+    },
+    "hours_confirmed_on_source": false,
+    "has_ac": true,
+    "has_filtration": null,
+    "capacity_est": 150,
+    "phone": "+1 (760) 753-7376",
+    "source_url": "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
+    "last_verified_at": "2026-11-14T21:33:58.293Z"
+  },
+  {
+    "id": 65,
+    "name": "Pacific View Arts Center",
+    "kind": "other",
+    "tier": "official",
+    "confidence": 0.3,
+    "address": "380 West F Street, Encinitas CA 92024",
+    "zip": "92024",
+    "lat": 33.043150735898,
+    "lon": -117.296261026459,
+    "hours": {
+      "weekly": [
+        {
+          "day": 2,
+          "open": "09:30",
+          "close": "17:30"
+        },
+        {
+          "day": 3,
+          "open": "09:30",
+          "close": "17:30"
+        },
+        {
+          "day": 4,
+          "open": "09:30",
+          "close": "17:30"
+        },
+        {
+          "day": 6,
+          "open": "09:30",
+          "close": "16:00"
+        },
+        {
+          "day": 0,
+          "open": "09:30",
+          "close": "16:00"
+        }
+      ]
+    },
+    "hours_confirmed_on_source": false,
+    "has_ac": null,
+    "has_filtration": null,
+    "capacity_est": null,
+    "phone": "(760) 943-2160",
+    "source_url": "https://www.encinitasca.gov/services/contact",
+    "last_verified_at": "2026-11-14T21:57:15.834Z"
+  },
+  {
+    "id": 66,
+    "name": "Community and Senior Center",
+    "kind": "senior_center",
+    "tier": "official",
+    "confidence": 0.7,
     "address": "1140 Oakcrest Park Drive Encinitas, CA 92024",
     "zip": "92024",
     "lat": 33.043880157547,
@@ -2935,206 +3389,18 @@
     "capacity_est": null,
     "phone": "(760) 943-2260",
     "source_url": "https://www.encinitasca.gov/services/contact",
-    "last_verified_at": "2026-11-14T21:37:32.400Z"
+    "last_verified_at": "2026-11-14T21:57:15.834Z"
   },
   {
-    "id": 59,
-    "name": "San Diego County Library: Encinitas Branch",
-    "kind": "library",
-    "tier": "official",
-    "confidence": 0.4,
-    "address": "540 Cornish Dr, Encinitas, CA 92024",
-    "zip": "92024",
-    "lat": 33.04580493553202,
-    "lon": -117.29040609381718,
-    "hours": {
-      "weekly": [
-        {
-          "day": 2,
-          "open": "12:00",
-          "close": "19:00"
-        },
-        {
-          "day": 3,
-          "open": "10:00",
-          "close": "18:00"
-        },
-        {
-          "day": 4,
-          "open": "10:00",
-          "close": "18:00"
-        },
-        {
-          "day": 5,
-          "open": "10:00",
-          "close": "17:00"
-        },
-        {
-          "day": 6,
-          "open": "10:00",
-          "close": "17:00"
-        }
-      ]
-    },
-    "hours_confirmed_on_source": false,
-    "has_ac": true,
-    "has_filtration": null,
-    "capacity_est": 150,
-    "phone": "+1 (760) 753-7376",
-    "source_url": "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
-    "last_verified_at": "2026-11-14T21:33:58.293Z"
-  },
-  {
-    "id": 60,
-    "name": "City Hall",
-    "kind": "other",
-    "tier": "official",
-    "confidence": 0.6,
-    "address": "505 S. Vulcan Avenue Encinitas, CA 92024",
-    "zip": "92024",
-    "lat": 33.046003452384,
-    "lon": -117.292538341247,
-    "hours": {
-      "weekly": [
-        {
-          "day": 1,
-          "open": "07:30",
-          "close": "17:30"
-        },
-        {
-          "day": 2,
-          "open": "07:30",
-          "close": "17:30"
-        },
-        {
-          "day": 3,
-          "open": "07:30",
-          "close": "17:30"
-        },
-        {
-          "day": 4,
-          "open": "07:30",
-          "close": "17:30"
-        },
-        {
-          "day": 5,
-          "open": "07:30",
-          "close": "16:30"
-        }
-      ]
-    },
-    "hours_confirmed_on_source": false,
-    "has_ac": null,
-    "has_filtration": null,
-    "capacity_est": null,
-    "phone": "(760) 633-2600",
-    "source_url": "https://www.encinitasca.gov/services/contact",
-    "last_verified_at": "2026-11-14T21:37:32.546Z"
-  },
-  {
-    "id": 61,
-    "name": "Pacific View Arts Center",
-    "kind": "other",
-    "tier": "official",
-    "confidence": 0.5,
-    "address": "380 West F Street, Encinitas CA 92024",
-    "zip": "92024",
-    "lat": 33.043150735898,
-    "lon": -117.296261026459,
-    "hours": {
-      "weekly": [
-        {
-          "day": 2,
-          "open": "09:30",
-          "close": "17:30"
-        },
-        {
-          "day": 3,
-          "open": "09:30",
-          "close": "17:30"
-        },
-        {
-          "day": 4,
-          "open": "09:30",
-          "close": "17:30"
-        },
-        {
-          "day": 6,
-          "open": "09:30",
-          "close": "16:00"
-        },
-        {
-          "day": 0,
-          "open": "09:30",
-          "close": "16:00"
-        }
-      ]
-    },
-    "hours_confirmed_on_source": false,
-    "has_ac": null,
-    "has_filtration": null,
-    "capacity_est": null,
-    "phone": "(760) 943-2160",
-    "source_url": "https://www.encinitasca.gov/services/contact",
-    "last_verified_at": "2026-11-14T21:37:32.841Z"
-  },
-  {
-    "id": 62,
-    "name": "San Dieguito Water District",
-    "kind": "other",
-    "tier": "official",
-    "confidence": 0.5,
-    "address": "160 Calle Magdalena Encinitas, CA 92024",
-    "zip": "92024",
-    "lat": 33.046799332259,
-    "lon": -117.284104143186,
-    "hours": {
-      "weekly": [
-        {
-          "day": 1,
-          "open": "08:00",
-          "close": "17:00"
-        },
-        {
-          "day": 2,
-          "open": "08:00",
-          "close": "17:00"
-        },
-        {
-          "day": 3,
-          "open": "08:00",
-          "close": "17:00"
-        },
-        {
-          "day": 4,
-          "open": "08:00",
-          "close": "17:00"
-        },
-        {
-          "day": 5,
-          "open": "08:00",
-          "close": "16:00"
-        }
-      ]
-    },
-    "hours_confirmed_on_source": false,
-    "has_ac": null,
-    "has_filtration": null,
-    "capacity_est": null,
-    "phone": "(760) 633-2650",
-    "source_url": "https://www.encinitasca.gov/services/contact",
-    "last_verified_at": "2026-11-14T21:37:32.699Z"
-  },
-  {
-    "id": 63,
+    "id": 67,
     "name": "City of Escondido: East Valley Community Center",
     "kind": "community_center",
     "tier": "official",
-    "confidence": 0.8,
-    "address": "2245 East Valley Parkway, Escondido, 92025",
+    "confidence": 0.4,
+    "address": "2245 East Valley Parkway, Escondido, CA 92025",
     "zip": "92025",
-    "lat": 33.139897292835,
-    "lon": -117.046451475109,
+    "lat": 33.13846774959596,
+    "lon": -117.04615466663006,
     "hours": {
       "weekly": [
         {
@@ -3175,23 +3441,23 @@
       ]
     },
     "hours_confirmed_on_source": false,
-    "has_ac": null,
+    "has_ac": true,
     "has_filtration": null,
-    "capacity_est": null,
-    "phone": "(760) 839-4382",
+    "capacity_est": 20,
+    "phone": "+1 (760) 839-4382",
     "source_url": "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
-    "last_verified_at": "2026-11-14T21:37:33.524Z"
+    "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 64,
+    "id": 68,
     "name": "City of Escondido: Park Avenue Community Center",
     "kind": "community_center",
     "tier": "official",
-    "confidence": 0.75,
-    "address": "210 East Park Avenue, Escondido, 92025",
+    "confidence": 0.4,
+    "address": "210 East Park Ave, Escondido, CA 92025",
     "zip": "92025",
-    "lat": 33.128874199989,
-    "lon": -117.084391743413,
+    "lat": 33.12959031916882,
+    "lon": -117.08373991041968,
     "hours": {
       "weekly": [
         {
@@ -3222,72 +3488,15 @@
       ]
     },
     "hours_confirmed_on_source": false,
-    "has_ac": null,
+    "has_ac": true,
     "has_filtration": null,
-    "capacity_est": null,
-    "phone": "(760) 839-4678",
+    "capacity_est": 75,
+    "phone": "+1 (760) 839-4678",
     "source_url": "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
-    "last_verified_at": "2026-11-14T21:37:33.823Z"
+    "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 65,
-    "name": "City of Escondido: Escondido Public Library",
-    "kind": "library",
-    "tier": "official",
-    "confidence": 0.8,
-    "address": "239 S Kalmia St, Escondido, 92025",
-    "zip": "92025",
-    "lat": 33.121040106277,
-    "lon": -117.079256568931,
-    "hours": {
-      "weekly": [
-        {
-          "day": 1,
-          "open": "09:00",
-          "close": "19:00"
-        },
-        {
-          "day": 2,
-          "open": "09:00",
-          "close": "19:00"
-        },
-        {
-          "day": 3,
-          "open": "09:00",
-          "close": "19:00"
-        },
-        {
-          "day": 4,
-          "open": "09:00",
-          "close": "19:00"
-        },
-        {
-          "day": 5,
-          "open": "09:00",
-          "close": "17:00"
-        },
-        {
-          "day": 6,
-          "open": "09:00",
-          "close": "17:00"
-        },
-        {
-          "day": 0,
-          "open": "13:00",
-          "close": "17:00"
-        }
-      ]
-    },
-    "hours_confirmed_on_source": false,
-    "has_ac": null,
-    "has_filtration": null,
-    "capacity_est": null,
-    "phone": "(760) 839-4678",
-    "source_url": "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
-    "last_verified_at": "2026-11-14T21:37:33.671Z"
-  },
-  {
-    "id": 66,
+    "id": 69,
     "name": "County of San Diego: Fallbrook Community Center",
     "kind": "community_center",
     "tier": "official",
@@ -3301,27 +3510,27 @@
         {
           "day": 1,
           "open": "09:00",
-          "close": "18:30"
+          "close": "20:00"
         },
         {
           "day": 2,
           "open": "09:00",
-          "close": "18:30"
+          "close": "20:00"
         },
         {
           "day": 3,
           "open": "09:00",
-          "close": "18:30"
+          "close": "20:00"
         },
         {
           "day": 4,
           "open": "09:00",
-          "close": "18:30"
+          "close": "20:00"
         },
         {
           "day": 5,
           "open": "09:00",
-          "close": "18:30"
+          "close": "20:00"
         }
       ]
     },
@@ -3334,7 +3543,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 67,
+    "id": 70,
     "name": "San Diego County Library: Fallbrook Branch",
     "kind": "library",
     "tier": "official",
@@ -3391,7 +3600,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 68,
+    "id": 71,
     "name": "San Diego County Library: Julian Branch",
     "kind": "library",
     "tier": "official",
@@ -3400,6 +3609,105 @@
     "zip": "92036",
     "lat": 33.07665799971181,
     "lon": -116.59674500042073,
+    "hours": {
+      "weekly": [
+        {
+          "day": 1,
+          "open": "10:00",
+          "close": "18:00"
+        },
+        {
+          "day": 2,
+          "open": "00:00",
+          "close": "19:00"
+        },
+        {
+          "day": 3,
+          "open": "10:00",
+          "close": "18:00"
+        },
+        {
+          "day": 4,
+          "open": "10:00",
+          "close": "18:00"
+        },
+        {
+          "day": 5,
+          "open": "10:00",
+          "close": "17:00"
+        },
+        {
+          "day": 6,
+          "open": "10:00",
+          "close": "17:00"
+        }
+      ]
+    },
+    "hours_confirmed_on_source": false,
+    "has_ac": true,
+    "has_filtration": null,
+    "capacity_est": 250,
+    "phone": "+1 (760) 765-0370",
+    "source_url": "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
+    "last_verified_at": "2026-11-14T21:33:58.293Z"
+  },
+  {
+    "id": 72,
+    "name": "County of San Diego: Lakeside Community Center",
+    "kind": "community_center",
+    "tier": "official",
+    "confidence": 0.4,
+    "address": "9841 Vine St, Lakeside, CA 92040",
+    "zip": "92040",
+    "lat": 32.859094675760154,
+    "lon": -116.92039925039306,
+    "hours": {
+      "weekly": [
+        {
+          "day": 1,
+          "open": "09:00",
+          "close": "18:30"
+        },
+        {
+          "day": 2,
+          "open": "09:00",
+          "close": "18:30"
+        },
+        {
+          "day": 3,
+          "open": "09:00",
+          "close": "18:30"
+        },
+        {
+          "day": 4,
+          "open": "09:00",
+          "close": "18:30"
+        },
+        {
+          "day": 5,
+          "open": "09:00",
+          "close": "18:30"
+        }
+      ]
+    },
+    "hours_confirmed_on_source": false,
+    "has_ac": true,
+    "has_filtration": null,
+    "capacity_est": 20,
+    "phone": "+1 (619) 443-9176",
+    "source_url": "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
+    "last_verified_at": "2026-11-14T21:33:58.293Z"
+  },
+  {
+    "id": 73,
+    "name": "San Diego County Library: Lakeside Branch",
+    "kind": "library",
+    "tier": "official",
+    "confidence": 0.4,
+    "address": "12428 Woodside Ave, Lakeside, CA 92040",
+    "zip": "92040",
+    "lat": 32.85718684866317,
+    "lon": -116.92407063351821,
     "hours": {
       "weekly": [
         {
@@ -3426,53 +3734,11 @@
           "day": 5,
           "open": "10:00",
           "close": "17:00"
-        }
-      ]
-    },
-    "hours_confirmed_on_source": false,
-    "has_ac": true,
-    "has_filtration": null,
-    "capacity_est": 250,
-    "phone": "+1 (760) 765-0370",
-    "source_url": "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
-    "last_verified_at": "2026-11-14T21:33:58.293Z"
-  },
-  {
-    "id": 69,
-    "name": "San Diego County Library: Lakeside Branch",
-    "kind": "library",
-    "tier": "official",
-    "confidence": 0.4,
-    "address": "12428 Woodside Ave, Lakeside, CA 92040",
-    "zip": "92040",
-    "lat": 32.85718684866317,
-    "lon": -116.92407063351821,
-    "hours": {
-      "weekly": [
-        {
-          "day": 1,
-          "open": "09:00",
-          "close": "20:00"
         },
         {
-          "day": 2,
-          "open": "09:00",
-          "close": "20:00"
-        },
-        {
-          "day": 3,
-          "open": "09:00",
-          "close": "20:00"
-        },
-        {
-          "day": 4,
-          "open": "09:00",
-          "close": "20:00"
-        },
-        {
-          "day": 5,
-          "open": "09:00",
-          "close": "20:00"
+          "day": 6,
+          "open": "10:00",
+          "close": "17:00"
         }
       ]
     },
@@ -3485,7 +3751,60 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 70,
+    "id": 74,
+    "name": "Junior Seau Beach Community Center",
+    "kind": "community_center",
+    "tier": "official",
+    "confidence": 0.4,
+    "address": "300 The Strand N, Oceanside, CA 92054, United States",
+    "zip": "92054",
+    "lat": 33.1949807,
+    "lon": -117.3844337,
+    "hours": {
+      "weekly": [
+        {
+          "day": 0,
+          "open": "10:00",
+          "close": "12:00"
+        },
+        {
+          "day": 5,
+          "open": "09:00",
+          "close": "16:00"
+        },
+        {
+          "day": 4,
+          "open": "09:00",
+          "close": "16:00"
+        },
+        {
+          "day": 3,
+          "open": "13:00",
+          "close": "21:00"
+        },
+        {
+          "day": 2,
+          "open": "09:00",
+          "close": "16:00"
+        },
+        {
+          "day": 1,
+          "open": "09:00",
+          "close": "21:00"
+        }
+      ],
+      "raw_text": "{\"Sunday\":\"10 AM–12 PM\",\"Saturday\":\"Closed\",\"Friday\":\"9 AM–4 PM\",\"Thursday\":\"9 AM–4 PM\",\"Wednesday\":\"1–9 PM\",\"Tuesday\":\"9 AM–4 PM\",\"Monday\":\"9 AM–9 PM\"}"
+    },
+    "hours_confirmed_on_source": false,
+    "has_ac": null,
+    "has_filtration": null,
+    "capacity_est": null,
+    "phone": "+1 760-435-5233",
+    "source_url": "https://www.google.com/maps/place/Junior%20Seau%20Beach%20Community%20Center/data=!4m7!3m6!1s0x80dc6e37f4f93851:0x113a06bd78cee04b!8m2!3d33.1949807!4d-117.3844337!16s%2Fg%2F11cn5mz_g2!19sChIJUTj59Ddu3IARS-DOeL0GOhE?authuser=0&hl=en&rclk=1",
+    "last_verified_at": "2026-11-14T20:30:46.071Z"
+  },
+  {
+    "id": 75,
     "name": "City of Oceanside: Country Club Senior Center",
     "kind": "senior_center",
     "tier": "official",
@@ -3537,7 +3856,54 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 71,
+    "id": 76,
+    "name": "Landes Community Center",
+    "kind": "community_center",
+    "tier": "official",
+    "confidence": 0.6,
+    "address": "2855 Cedar Rd Oceanside, CA 92056",
+    "zip": "92056",
+    "lat": 33.195076774431,
+    "lon": -117.285222737965,
+    "hours": {
+      "weekly": [
+        {
+          "day": 1,
+          "open": "09:00",
+          "close": "18:00"
+        },
+        {
+          "day": 2,
+          "open": "09:00",
+          "close": "18:00"
+        },
+        {
+          "day": 3,
+          "open": "09:00",
+          "close": "18:00"
+        },
+        {
+          "day": 4,
+          "open": "09:00",
+          "close": "18:00"
+        },
+        {
+          "day": 5,
+          "open": "09:00",
+          "close": "18:00"
+        }
+      ]
+    },
+    "hours_confirmed_on_source": false,
+    "has_ac": null,
+    "has_filtration": null,
+    "capacity_est": null,
+    "phone": "(760) 435-5545",
+    "source_url": "https://www.ci.oceanside.ca.us/government/housing-neighborhood-services/community-services-programs/community-resource-centers/landes-community-center",
+    "last_verified_at": "2026-11-14T21:57:15.835Z"
+  },
+  {
+    "id": 77,
     "name": "Joe & Mary Mottino YMCA",
     "kind": "other",
     "tier": "official",
@@ -3594,7 +3960,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 72,
+    "id": 78,
     "name": "City of Oceanside: El Corazon Senior Center",
     "kind": "senior_center",
     "tier": "official",
@@ -3641,7 +4007,55 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 73,
+    "id": 79,
+    "name": "Joseph Balderrama Park",
+    "kind": "rec_center",
+    "tier": "official",
+    "confidence": 0.4,
+    "address": "709 San Diego St, Oceanside, CA 92058, United States",
+    "zip": "92058",
+    "lat": 33.2040349,
+    "lon": -117.3713792,
+    "hours": {
+      "weekly": [
+        {
+          "day": 5,
+          "open": "07:00",
+          "close": "17:00"
+        },
+        {
+          "day": 4,
+          "open": "07:00",
+          "close": "17:00"
+        },
+        {
+          "day": 3,
+          "open": "07:00",
+          "close": "17:00"
+        },
+        {
+          "day": 2,
+          "open": "07:00",
+          "close": "17:00"
+        },
+        {
+          "day": 1,
+          "open": "07:00",
+          "close": "17:00"
+        }
+      ],
+      "raw_text": "{\"Sunday\":\"Closed\",\"Saturday\":\"Closed\",\"Friday\":\"7 AM–5 PM\",\"Thursday\":\"7 AM–5 PM\",\"Wednesday\":\"7 AM–5 PM\",\"Tuesday\":\"7 AM–5 PM\",\"Monday\":\"7 AM–5 PM\"}"
+    },
+    "hours_confirmed_on_source": false,
+    "has_ac": null,
+    "has_filtration": null,
+    "capacity_est": null,
+    "phone": "+1 760-435-5530",
+    "source_url": "https://www.google.com/maps/place/Joseph%20Balderrama%20Park/data=!4m7!3m6!1s0x80dc6e2db014e237:0xb30c134db4aefe15!8m2!3d33.2040349!4d-117.3713792!16s%2Fg%2F1tdmksj4!19sChIJN-IUsC1u3IARFf6utE0TDLM?authuser=0&hl=en&rclk=1",
+    "last_verified_at": "2026-11-14T20:33:59.839Z"
+  },
+  {
+    "id": 80,
     "name": "City of Poway Community Center",
     "kind": "community_center",
     "tier": "official",
@@ -3688,7 +4102,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 74,
+    "id": 81,
     "name": "San Diego County Library: Poway Branch",
     "kind": "library",
     "tier": "official",
@@ -3699,11 +4113,6 @@
     "lon": -117.04630960445702,
     "hours": {
       "weekly": [
-        {
-          "day": 1,
-          "open": "10:00",
-          "close": "18:00"
-        },
         {
           "day": 2,
           "open": "12:00",
@@ -3740,7 +4149,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 75,
+    "id": 82,
     "name": "San Diego County Library: Ramona Branch",
     "kind": "library",
     "tier": "official",
@@ -3752,19 +4161,14 @@
     "hours": {
       "weekly": [
         {
-          "day": 1,
-          "open": "10:00",
-          "close": "18:00"
-        },
-        {
           "day": 2,
           "open": "12:00",
           "close": "19:00"
         },
         {
           "day": 3,
-          "open": "12:00",
-          "close": "19:00"
+          "open": "10:00",
+          "close": "18:00"
         },
         {
           "day": 4,
@@ -3780,11 +4184,6 @@
           "day": 6,
           "open": "10:00",
           "close": "17:00"
-        },
-        {
-          "day": 0,
-          "open": "10:00",
-          "close": "17:00"
         }
       ]
     },
@@ -3797,7 +4196,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 76,
+    "id": 83,
     "name": "Ramona Senior Center",
     "kind": "senior_center",
     "tier": "official",
@@ -3844,7 +4243,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 77,
+    "id": 84,
     "name": "San Diego County Library: Rancho Santa Fe Branch",
     "kind": "library",
     "tier": "official",
@@ -3896,11 +4295,11 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 78,
+    "id": 85,
     "name": "San Diego County Library: Rancho Santa Fe Branch",
     "kind": "library",
     "tier": "official",
-    "confidence": 0.75,
+    "confidence": 0.7,
     "address": "17040 Avenida de Acacias, Rancho Santa Fe 92067",
     "zip": "92067",
     "lat": 33.020172541661,
@@ -3945,10 +4344,57 @@
     "capacity_est": null,
     "phone": "(760) 891-3000",
     "source_url": "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
-    "last_verified_at": "2026-11-14T21:37:33.977Z"
+    "last_verified_at": "2026-11-14T21:57:15.835Z"
   },
   {
-    "id": 79,
+    "id": 86,
+    "name": "San Marcos Community Center",
+    "kind": "community_center",
+    "tier": "official",
+    "confidence": 0.4,
+    "address": "3 Civic Center Drive, San Marcos, CA 92069",
+    "zip": "92069",
+    "lat": 33.141073429907,
+    "lon": -117.158931733322,
+    "hours": {
+      "weekly": [
+        {
+          "day": 1,
+          "open": "08:30",
+          "close": "17:30"
+        },
+        {
+          "day": 2,
+          "open": "08:30",
+          "close": "17:30"
+        },
+        {
+          "day": 3,
+          "open": "08:30",
+          "close": "17:30"
+        },
+        {
+          "day": 4,
+          "open": "08:30",
+          "close": "17:30"
+        },
+        {
+          "day": 5,
+          "open": "08:30",
+          "close": "16:30"
+        }
+      ]
+    },
+    "hours_confirmed_on_source": false,
+    "has_ac": null,
+    "has_filtration": null,
+    "capacity_est": null,
+    "phone": "760-744-9000",
+    "source_url": "https://www.sanmarcosca.gov/Parks-Recreation/Find-Parks-Pools-Facilities/San-Marcos-Community-Center",
+    "last_verified_at": "2026-11-14T21:57:15.835Z"
+  },
+  {
+    "id": 87,
     "name": "San Diego County Library: San Marcos Branch",
     "kind": "library",
     "tier": "official",
@@ -3960,14 +4406,19 @@
     "hours": {
       "weekly": [
         {
+          "day": 1,
+          "open": "10:00",
+          "close": "18:00"
+        },
+        {
           "day": 2,
           "open": "12:00",
           "close": "19:00"
         },
         {
           "day": 3,
-          "open": "10:00",
-          "close": "18:00"
+          "open": "12:00",
+          "close": "19:00"
         },
         {
           "day": 4,
@@ -3983,6 +4434,11 @@
           "day": 6,
           "open": "10:00",
           "close": "17:00"
+        },
+        {
+          "day": 0,
+          "open": "10:00",
+          "close": "17:00"
         }
       ]
     },
@@ -3995,7 +4451,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 80,
+    "id": 88,
     "name": "City of San Marcos: San Marcos Senior Center",
     "kind": "senior_center",
     "tier": "official",
@@ -4042,7 +4498,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 81,
+    "id": 89,
     "name": "County of San Diego: Santa Ysabel Nature Center",
     "kind": "other",
     "tier": "official",
@@ -4099,11 +4555,11 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 82,
-    "name": "Santee Public Library",
+    "id": 90,
+    "name": "Santee",
     "kind": "library",
     "tier": "official",
-    "confidence": 0.8,
+    "confidence": 0.7,
     "address": "9225 Carlton Hills Blvd #17, Santee, CA 92071",
     "zip": "92071",
     "lat": 32.845078417397,
@@ -4143,15 +4599,15 @@
       ]
     },
     "hours_confirmed_on_source": false,
-    "has_ac": true,
+    "has_ac": null,
     "has_filtration": null,
     "capacity_est": null,
     "phone": "(619) 448-1863",
     "source_url": "https://www.sdcl.org/locations/33/",
-    "last_verified_at": "2026-11-14T21:37:33.140Z"
+    "last_verified_at": "2026-11-14T21:57:15.835Z"
   },
   {
-    "id": 83,
+    "id": 91,
     "name": "San Diego County Library: Solana Beach Branch",
     "kind": "library",
     "tier": "official",
@@ -4203,7 +4659,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 84,
+    "id": 92,
     "name": "San Diego County Library: Valley Center Branch",
     "kind": "library",
     "tier": "official",
@@ -4250,7 +4706,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 85,
+    "id": 93,
     "name": "San Diego County Library: Vista Branch",
     "kind": "library",
     "tier": "official",
@@ -4307,7 +4763,54 @@
     "last_verified_at": "2026-11-14T21:33:15.724Z"
   },
   {
-    "id": 86,
+    "id": 94,
+    "name": "Balboa Senior Lounge",
+    "kind": "senior_center",
+    "tier": "official",
+    "confidence": 0.4,
+    "address": "650 El Prado, Room 105 San Diego, CA 92101",
+    "zip": "92101",
+    "lat": 32.731454354355,
+    "lon": -117.158700791073,
+    "hours": {
+      "weekly": [
+        {
+          "day": 2,
+          "open": "09:00",
+          "close": "01:00"
+        },
+        {
+          "day": 3,
+          "open": "09:00",
+          "close": "01:00"
+        },
+        {
+          "day": 4,
+          "open": "09:00",
+          "close": "01:00"
+        },
+        {
+          "day": 5,
+          "open": "09:00",
+          "close": "01:00"
+        },
+        {
+          "day": 6,
+          "open": "09:00",
+          "close": "01:00"
+        }
+      ]
+    },
+    "hours_confirmed_on_source": false,
+    "has_ac": null,
+    "has_filtration": null,
+    "capacity_est": null,
+    "phone": "619-235-1191",
+    "source_url": "https://www.sandiego.gov/park-and-recreation/centers/recctr/balboasenior",
+    "last_verified_at": "2026-11-14T21:57:15.835Z"
+  },
+  {
+    "id": 95,
     "name": "San Diego Public Library: University Heights Branch",
     "kind": "library",
     "tier": "official",
@@ -4359,7 +4862,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 87,
+    "id": 96,
     "name": "San Diego Public Library: Point Loma/Hervey branch",
     "kind": "library",
     "tier": "official",
@@ -4411,7 +4914,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 88,
+    "id": 97,
     "name": "San Diego Public Library:  Mission Valley Branch",
     "kind": "library",
     "tier": "official",
@@ -4422,11 +4925,6 @@
     "lon": -117.12772157046061,
     "hours": {
       "weekly": [
-        {
-          "day": 1,
-          "open": "11:30",
-          "close": "20:00"
-        },
         {
           "day": 2,
           "open": "11:30",
@@ -4463,7 +4961,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 89,
+    "id": 98,
     "name": "San Diego Public Library: Linda Vista Branch",
     "kind": "library",
     "tier": "official",
@@ -4515,7 +5013,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 90,
+    "id": 99,
     "name": "St. David's Church",
     "kind": "other",
     "tier": "official",
@@ -4572,7 +5070,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 91,
+    "id": 100,
     "name": "San Diego Public Library: Logan Heights Branch",
     "kind": "library",
     "tier": "official",
@@ -4624,7 +5122,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 92,
+    "id": 101,
     "name": "San Diego Public Library: Mountain View/Beckwourth Branch",
     "kind": "library",
     "tier": "official",
@@ -4671,94 +5169,41 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 93,
-    "name": "North Clairemont Recreation Center",
-    "kind": "rec_center",
+    "id": 102,
+    "name": "Memorial Senior Center",
+    "kind": "senior_center",
     "tier": "official",
-    "confidence": 0.4,
-    "address": "4421 Bannock Ave, San Diego, CA 92117, United States",
-    "zip": "92117",
-    "lat": 32.8323975,
-    "lon": -117.1974175,
+    "confidence": 0.6,
+    "address": "610 South 30th Street, San Diego, CA 92113",
+    "zip": "92113",
+    "lat": 32.699806607646,
+    "lon": -117.129571584087,
     "hours": {
       "weekly": [
-        {
-          "day": 6,
-          "open": "09:00",
-          "close": "16:00"
-        },
-        {
-          "day": 5,
-          "open": "13:00",
-          "close": "20:00"
-        },
-        {
-          "day": 4,
-          "open": "09:00",
-          "close": "21:00"
-        },
-        {
-          "day": 3,
-          "open": "13:00",
-          "close": "21:00"
-        },
-        {
-          "day": 2,
-          "open": "09:00",
-          "close": "21:00"
-        },
         {
           "day": 1,
-          "open": "12:00",
-          "close": "21:00"
-        }
-      ],
-      "raw_text": "{\"Sunday\":\"Closed\",\"Saturday\":\"9 am–4 pm\",\"Friday\":\"1–8 pm\",\"Thursday\":\"9 am–9 pm\",\"Wednesday\":\"1–9 pm\",\"Tuesday\":\"9 am–9 pm\",\"Monday\":\"12–9 pm\"}"
-    },
-    "hours_confirmed_on_source": false,
-    "has_ac": null,
-    "has_filtration": null,
-    "capacity_est": null,
-    "phone": "+1 858-581-9926",
-    "source_url": "https://www.google.com/maps/place/North%20Clairemont%20Recreation%20Center/data=!4m7!3m6!1s0x80dc00f54ac4d9d1:0x23211aa2760eb4ac!8m2!3d32.8323975!4d-117.1974175!16s%2Fg%2F1tdzg8vp!19sChIJ0dnESvUA3IARrLQOdqIaISM?authuser=0&hl=en&rclk=1",
-    "last_verified_at": "2026-11-14T20:30:55.699Z"
-  },
-  {
-    "id": 94,
-    "name": "San Carlos Library",
-    "kind": "library",
-    "tier": "official",
-    "confidence": 0.8,
-    "address": "7265 Jackson Drive San Diego, CA 92119",
-    "zip": "92119",
-    "lat": 32.801508149419,
-    "lon": -117.04055399195,
-    "hours": {
-      "weekly": [
+          "open": "09:00",
+          "close": "15:00"
+        },
         {
           "day": 2,
-          "open": "11:30",
-          "close": "20:00"
+          "open": "09:00",
+          "close": "15:00"
         },
         {
           "day": 3,
-          "open": "09:30",
-          "close": "18:00"
+          "open": "09:00",
+          "close": "15:00"
         },
         {
           "day": 4,
-          "open": "09:30",
-          "close": "18:00"
+          "open": "09:00",
+          "close": "15:00"
         },
         {
           "day": 5,
-          "open": "09:30",
-          "close": "18:00"
-        },
-        {
-          "day": 6,
-          "open": "09:30",
-          "close": "18:00"
+          "open": "09:00",
+          "close": "15:00"
         }
       ]
     },
@@ -4766,12 +5211,70 @@
     "has_ac": null,
     "has_filtration": null,
     "capacity_est": null,
-    "phone": "619-527-3430",
-    "source_url": "https://www.sandiego.gov/public-library/locations/san-carlos-library",
-    "last_verified_at": "2026-11-14T21:37:32.982Z"
+    "phone": "619-668-2027",
+    "source_url": "https://www.sandiego.gov/park-and-recreation/centers/recctr/memorialsenior",
+    "last_verified_at": "2026-11-14T21:57:15.835Z"
   },
   {
-    "id": 95,
+    "id": 103,
+    "name": "Coronado Community Center",
+    "kind": "community_center",
+    "tier": "official",
+    "confidence": 0.4,
+    "address": "1845 Strand Way, Coronado, CA 92118, United States",
+    "zip": "92118",
+    "lat": 32.676729,
+    "lon": -117.1712863,
+    "hours": {
+      "weekly": [
+        {
+          "day": 0,
+          "open": "10:00",
+          "close": "16:00"
+        },
+        {
+          "day": 6,
+          "open": "07:00",
+          "close": "17:00"
+        },
+        {
+          "day": 5,
+          "open": "05:30",
+          "close": "19:00"
+        },
+        {
+          "day": 4,
+          "open": "05:30",
+          "close": "21:00"
+        },
+        {
+          "day": 3,
+          "open": "05:30",
+          "close": "21:00"
+        },
+        {
+          "day": 2,
+          "open": "05:30",
+          "close": "21:00"
+        },
+        {
+          "day": 1,
+          "open": "05:30",
+          "close": "21:00"
+        }
+      ],
+      "raw_text": "{\"Sunday\":\"10 AM–4 PM\",\"Saturday\":\"7 AM–5 PM\",\"Friday\":\"5:30 AM–7 PM\",\"Thursday\":\"5:30 AM–9 PM\",\"Wednesday\":\"5:30 AM–9 PM\",\"Tuesday\":\"5:30 AM–9 PM\",\"Monday\":\"5:30 AM–9 PM\"}"
+    },
+    "hours_confirmed_on_source": false,
+    "has_ac": null,
+    "has_filtration": null,
+    "capacity_est": null,
+    "phone": "+1 619-522-7342",
+    "source_url": "https://www.google.com/maps/place/Coronado%20Community%20Center/data=!4m7!3m6!1s0x80d9532c91db9727:0x34f9bcb2c810223d!8m2!3d32.6767290!4d-117.1712863!16s%2Fm%2F0k775v9!19sChIJJ5fbkSxT2YARPSIQyLK8-TQ?authuser=0&hl=en&rclk=1",
+    "last_verified_at": "2026-11-14T20:32:08.152Z"
+  },
+  {
+    "id": 104,
     "name": "San Diego Public Library: Allied Gardens/Benjamin Branch",
     "kind": "library",
     "tier": "official",
@@ -4823,7 +5326,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 96,
+    "id": 105,
     "name": "San Diego Public Library: University Community Branch",
     "kind": "library",
     "tier": "official",
@@ -4866,11 +5369,11 @@
     "has_filtration": null,
     "capacity_est": 166,
     "phone": "+1 (858) 552-1655",
-    "source_url": "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
-    "last_verified_at": "2026-11-14T21:33:58.293Z"
+    "source_url": "https://www.sandiego.gov/public-library/locations/university-community-library",
+    "last_verified_at": "2026-11-14T21:48:33.960Z"
   },
   {
-    "id": 97,
+    "id": 106,
     "name": "San Diego Public Library: Serra Mesa-Kearny Mesa Branch",
     "kind": "library",
     "tier": "official",
@@ -4917,7 +5420,54 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 98,
+    "id": 107,
+    "name": "San Diego Public Library: Tierrasanta Branch",
+    "kind": "library",
+    "tier": "official",
+    "confidence": 0.4,
+    "address": "4985 La Cuenta Dr, San Diego, CA 92124",
+    "zip": "92124",
+    "lat": 32.8209184804072,
+    "lon": -117.0980945772315,
+    "hours": {
+      "weekly": [
+        {
+          "day": 2,
+          "open": "11:30",
+          "close": "20:00"
+        },
+        {
+          "day": 3,
+          "open": "09:30",
+          "close": "18:00"
+        },
+        {
+          "day": 4,
+          "open": "09:30",
+          "close": "18:00"
+        },
+        {
+          "day": 5,
+          "open": "09:30",
+          "close": "18:00"
+        },
+        {
+          "day": 6,
+          "open": "09:30",
+          "close": "18:00"
+        }
+      ]
+    },
+    "hours_confirmed_on_source": false,
+    "has_ac": true,
+    "has_filtration": null,
+    "capacity_est": 67,
+    "phone": "+1 (858) 573-1384",
+    "source_url": "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
+    "last_verified_at": "2026-11-14T21:33:58.293Z"
+  },
+  {
+    "id": 108,
     "name": "San Diego County Library: 4S Ranch Branch",
     "kind": "library",
     "tier": "official",
@@ -4974,7 +5524,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 99,
+    "id": 109,
     "name": "City of San Diego: Lois J. Mangarelli Recreation Center",
     "kind": "rec_center",
     "tier": "official",
@@ -5026,7 +5576,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 100,
+    "id": 110,
     "name": "San Diego Public Library: Carmel Valley Branch",
     "kind": "library",
     "tier": "official",
@@ -5037,6 +5587,11 @@
     "lon": -117.23077085247091,
     "hours": {
       "weekly": [
+        {
+          "day": 1,
+          "open": "11:30",
+          "close": "20:00"
+        },
         {
           "day": 2,
           "open": "11:30",
@@ -5073,7 +5628,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 101,
+    "id": 111,
     "name": "San Diego Public Library: Pacific Highlands Ranch Branch",
     "kind": "library",
     "tier": "official",
@@ -5120,7 +5675,7 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 102,
+    "id": 112,
     "name": "San Diego Public Library: Skyline Hills Branch",
     "kind": "library",
     "tier": "official",
@@ -5172,7 +5727,112 @@
     "last_verified_at": "2026-11-14T21:33:58.293Z"
   },
   {
-    "id": 103,
+    "id": 113,
+    "name": "San Ysidro Senior Center",
+    "kind": "senior_center",
+    "tier": "official",
+    "confidence": 0.6,
+    "address": "125 East Park Ave. San Ysidro, CA 92173",
+    "zip": "92173",
+    "lat": 32.553126381282,
+    "lon": -117.044155852287,
+    "hours": {
+      "weekly": [
+        {
+          "day": 1,
+          "open": "11:00",
+          "close": "19:00"
+        },
+        {
+          "day": 2,
+          "open": "11:00",
+          "close": "19:00"
+        },
+        {
+          "day": 3,
+          "open": "11:00",
+          "close": "19:30"
+        },
+        {
+          "day": 4,
+          "open": "11:00",
+          "close": "19:30"
+        },
+        {
+          "day": 5,
+          "open": "10:00",
+          "close": "18:00"
+        }
+      ]
+    },
+    "hours_confirmed_on_source": false,
+    "has_ac": null,
+    "has_filtration": null,
+    "capacity_est": null,
+    "phone": "619-247-4207",
+    "source_url": "https://www.sandiego.gov/park-and-recreation/centers/recctr/syseniorcenter",
+    "last_verified_at": "2026-11-14T21:57:15.835Z"
+  },
+  {
+    "id": 114,
+    "name": "National City Public Library",
+    "kind": "library",
+    "tier": "official",
+    "confidence": 0.3,
+    "address": "1401 National City Blvd, National City, CA 91950",
+    "zip": "91950",
+    "lat": 32.67057340621694,
+    "lon": -117.10424548840726,
+    "hours": {
+      "weekly": [
+        {
+          "day": 1,
+          "open": "09:00",
+          "close": "19:00"
+        },
+        {
+          "day": 2,
+          "open": "09:00",
+          "close": "19:00"
+        },
+        {
+          "day": 3,
+          "open": "09:00",
+          "close": "19:00"
+        },
+        {
+          "day": 4,
+          "open": "09:00",
+          "close": "19:00"
+        },
+        {
+          "day": 5,
+          "open": "09:00",
+          "close": "17:00"
+        },
+        {
+          "day": 6,
+          "open": "09:00",
+          "close": "17:00"
+        },
+        {
+          "day": 0,
+          "open": "13:00",
+          "close": "17:00"
+        }
+      ],
+      "raw_text": "{\"Sunday\":\"Closed\",\"Saturday\":\"10 AM–5 PM\",\"Friday\":\"10 AM–6 PM\",\"Thursday\":\"10 AM–8 PM\",\"Wednesday\":\"10 AM–8 PM\",\"Tuesday\":\"10 AM–8 PM\",\"Monday\":\"10 AM–8 PM\"}"
+    },
+    "hours_confirmed_on_source": false,
+    "has_ac": true,
+    "has_filtration": null,
+    "capacity_est": 500,
+    "phone": "+1 (619) 470-5800",
+    "source_url": "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
+    "last_verified_at": "2026-11-14T21:33:58.293Z"
+  },
+  {
+    "id": 115,
     "name": "La Jolla Recreation Center",
     "kind": "rec_center",
     "tier": "official",
@@ -5225,60 +5885,7 @@
     "last_verified_at": "2026-11-14T20:31:34.280Z"
   },
   {
-    "id": 104,
-    "name": "Santee Public Library",
-    "kind": "library",
-    "tier": "official",
-    "confidence": 0.3,
-    "address": "9225 Carlton Hills Blvd #17, Santee, CA 92071",
-    "zip": "92071",
-    "lat": 32.84484396158443,
-    "lon": -116.99686208757767,
-    "hours": {
-      "weekly": [
-        {
-          "day": 1,
-          "open": "10:00",
-          "close": "18:00"
-        },
-        {
-          "day": 2,
-          "open": "00:00",
-          "close": "19:00"
-        },
-        {
-          "day": 3,
-          "open": "10:00",
-          "close": "18:00"
-        },
-        {
-          "day": 4,
-          "open": "10:00",
-          "close": "18:00"
-        },
-        {
-          "day": 5,
-          "open": "10:00",
-          "close": "17:00"
-        },
-        {
-          "day": 6,
-          "open": "10:00",
-          "close": "17:00"
-        }
-      ],
-      "raw_text": "{\"Sunday\":\"Closed\",\"Saturday\":\"10 am–5 pm\",\"Friday\":\"10 am–5 pm\",\"Thursday\":\"10 am–6 pm\",\"Wednesday\":\"10 am–6 pm\",\"Tuesday\":\"12–7 pm\",\"Monday\":\"10 am–6 pm\"}"
-    },
-    "hours_confirmed_on_source": false,
-    "has_ac": true,
-    "has_filtration": null,
-    "capacity_est": 300,
-    "phone": "+1 (619) 448-1863",
-    "source_url": "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
-    "last_verified_at": "2026-11-14T21:33:58.293Z"
-  },
-  {
-    "id": 105,
+    "id": 116,
     "name": "Golden Hill Recreation Center",
     "kind": "rec_center",
     "tier": "official",
@@ -5336,7 +5943,7 @@
     "last_verified_at": "2026-11-14T20:31:51.168Z"
   },
   {
-    "id": 106,
+    "id": 117,
     "name": "Pacific Beach Recreation Center",
     "kind": "rec_center",
     "tier": "official",
@@ -5389,7 +5996,7 @@
     "last_verified_at": "2026-11-14T20:32:19.767Z"
   },
   {
-    "id": 107,
+    "id": 118,
     "name": "Kearny Mesa Recreation Center",
     "kind": "rec_center",
     "tier": "official",
@@ -5442,7 +6049,7 @@
     "last_verified_at": "2026-11-14T20:31:03.074Z"
   },
   {
-    "id": 108,
+    "id": 119,
     "name": "Southcrest Recreation Center",
     "kind": "rec_center",
     "tier": "official",
@@ -5500,7 +6107,60 @@
     "last_verified_at": "2026-11-14T20:31:38.546Z"
   },
   {
-    "id": 109,
+    "id": 120,
+    "name": "North Clairemont Recreation Center",
+    "kind": "rec_center",
+    "tier": "official",
+    "confidence": 0.3,
+    "address": "4421 Bannock Ave, San Diego, CA 92117, United States",
+    "zip": "92117",
+    "lat": 32.8323975,
+    "lon": -117.1974175,
+    "hours": {
+      "weekly": [
+        {
+          "day": 6,
+          "open": "09:00",
+          "close": "16:00"
+        },
+        {
+          "day": 5,
+          "open": "13:00",
+          "close": "20:00"
+        },
+        {
+          "day": 4,
+          "open": "09:00",
+          "close": "21:00"
+        },
+        {
+          "day": 3,
+          "open": "13:00",
+          "close": "21:00"
+        },
+        {
+          "day": 2,
+          "open": "09:00",
+          "close": "21:00"
+        },
+        {
+          "day": 1,
+          "open": "12:00",
+          "close": "21:00"
+        }
+      ],
+      "raw_text": "{\"Sunday\":\"Closed\",\"Saturday\":\"9 am–4 pm\",\"Friday\":\"1–8 pm\",\"Thursday\":\"9 am–9 pm\",\"Wednesday\":\"1–9 pm\",\"Tuesday\":\"9 am–9 pm\",\"Monday\":\"12–9 pm\"}"
+    },
+    "hours_confirmed_on_source": false,
+    "has_ac": null,
+    "has_filtration": null,
+    "capacity_est": null,
+    "phone": "+1 858-581-9926",
+    "source_url": "https://www.google.com/maps/place/North%20Clairemont%20Recreation%20Center/data=!4m7!3m6!1s0x80dc00f54ac4d9d1:0x23211aa2760eb4ac!8m2!3d32.8323975!4d-117.1974175!16s%2Fg%2F1tdzg8vp!19sChIJ0dnESvUA3IARrLQOdqIaISM?authuser=0&hl=en&rclk=1",
+    "last_verified_at": "2026-11-14T20:30:55.699Z"
+  },
+  {
+    "id": 121,
     "name": "San Carlos Recreation Center",
     "kind": "rec_center",
     "tier": "official",
@@ -5553,7 +6213,7 @@
     "last_verified_at": "2026-11-14T20:31:51.145Z"
   },
   {
-    "id": 110,
+    "id": 122,
     "name": "Standley Recreation Center",
     "kind": "rec_center",
     "tier": "official",
@@ -5611,7 +6271,7 @@
     "last_verified_at": "2026-11-14T20:31:59.479Z"
   },
   {
-    "id": 111,
+    "id": 123,
     "name": "San Diego PACE Chula Vista",
     "kind": "senior_center",
     "tier": "discovered",
@@ -5659,7 +6319,7 @@
     "last_verified_at": "2026-11-14T20:32:39.661Z"
   },
   {
-    "id": 112,
+    "id": 124,
     "name": "San Diego PACE El Cajon",
     "kind": "senior_center",
     "tier": "discovered",
@@ -5707,7 +6367,7 @@
     "last_verified_at": "2026-11-14T20:30:53.921Z"
   },
   {
-    "id": 113,
+    "id": 125,
     "name": "Gary and Mary West Senior Wellness Center",
     "kind": "senior_center",
     "tier": "discovered",
@@ -5765,7 +6425,7 @@
     "last_verified_at": "2026-11-14T20:30:56.636Z"
   },
   {
-    "id": 114,
+    "id": 126,
     "name": "George L. Stevens Senior Center",
     "kind": "senior_center",
     "tier": "discovered",
@@ -5799,11 +6459,11 @@
     "has_filtration": null,
     "capacity_est": null,
     "phone": "+1 619-266-2066",
-    "source_url": "https://fdsrc.org/",
+    "source_url": "http://fdsrc.org/",
     "last_verified_at": "2026-11-14T20:30:41.261Z"
   },
   {
-    "id": 115,
+    "id": 127,
     "name": "Coronado Public Library",
     "kind": "library",
     "tier": "discovered",
@@ -5861,7 +6521,7 @@
     "last_verified_at": "2026-11-14T20:33:49.181Z"
   },
   {
-    "id": 116,
+    "id": 128,
     "name": "St. Paul's PACE Chula Vista",
     "kind": "other",
     "tier": "discovered",
@@ -5909,7 +6569,35 @@
     "last_verified_at": "2026-11-14T20:31:56.367Z"
   },
   {
-    "id": 117,
+    "id": 129,
+    "name": "Veterans Park Recreation Center",
+    "kind": "rec_center",
+    "tier": "discovered",
+    "confidence": 0.6,
+    "address": "785 E Palomar St, Chula Vista, CA 91911, United States",
+    "zip": "91911",
+    "lat": 32.6146325,
+    "lon": -117.0237036,
+    "hours": {
+      "weekly": [
+        {
+          "day": 6,
+          "open": "09:00",
+          "close": "13:00"
+        }
+      ],
+      "raw_text": "{\"Sunday\":\"Closed\",\"Saturday\":\"9 AM–1 PM\",\"Friday\":\"9 AM–12 PM\\n1–6 PM\",\"Thursday\":\"9 AM–12 PM\\n2–8 PM\",\"Wednesday\":\"9 AM–12 PM\\n2–8 PM\",\"Tuesday\":\"9 AM–12 PM\\n2–8 PM\",\"Monday\":\"9 AM–12 PM\\n2–8 PM\"}"
+    },
+    "hours_confirmed_on_source": false,
+    "has_ac": null,
+    "has_filtration": null,
+    "capacity_est": null,
+    "phone": "+1 619-691-5260",
+    "source_url": "https://www.google.com/maps/place/Veterans%20Park%20Recreation%20Center/data=!4m7!3m6!1s0x80d94f05ca661845:0x16da898459aebc1a!8m2!3d32.6146325!4d-117.0237036!16s%2Fg%2F1tn4yfxy!19sChIJRRhmygVP2YARGryuWYSJ2hY?authuser=0&hl=en&rclk=1",
+    "last_verified_at": "2026-11-14T20:30:45.758Z"
+  },
+  {
+    "id": 130,
     "name": "Heritage Community Center",
     "kind": "community_center",
     "tier": "discovered",
@@ -5962,11 +6650,11 @@
     "last_verified_at": "2026-11-14T20:31:56.722Z"
   },
   {
-    "id": 118,
+    "id": 131,
     "name": "Sharp Community Resource Center",
     "kind": "senior_center",
     "tier": "discovered",
-    "confidence": 0.4,
+    "confidence": 0.6,
     "address": "9000 Wakarusa St, La Mesa, CA 91942, United States",
     "zip": "91942",
     "lat": 32.7831484,
@@ -6010,7 +6698,7 @@
     "last_verified_at": "2026-11-14T20:30:50.351Z"
   },
   {
-    "id": 119,
+    "id": 132,
     "name": "Harding Community Center",
     "kind": "community_center",
     "tier": "discovered",
@@ -6058,7 +6746,7 @@
     "last_verified_at": "2026-11-14T20:30:32.137Z"
   },
   {
-    "id": 120,
+    "id": 133,
     "name": "Calavera Hills Community Center",
     "kind": "community_center",
     "tier": "discovered",
@@ -6116,7 +6804,64 @@
     "last_verified_at": "2026-11-14T20:30:22.101Z"
   },
   {
-    "id": 121,
+    "id": 134,
+    "name": "Boardwalk",
+    "kind": "other",
+    "tier": "discovered",
+    "confidence": 0.4,
+    "address": "1280 Fletcher Parkway, El Cajon CA 92020",
+    "zip": "92020",
+    "lat": 32.807476541534,
+    "lon": -116.979160338739,
+    "hours": {
+      "weekly": [
+        {
+          "day": 1,
+          "open": "15:00",
+          "close": "20:00"
+        },
+        {
+          "day": 2,
+          "open": "15:00",
+          "close": "20:00"
+        },
+        {
+          "day": 3,
+          "open": "15:00",
+          "close": "20:00"
+        },
+        {
+          "day": 4,
+          "open": "15:00",
+          "close": "20:00"
+        },
+        {
+          "day": 5,
+          "open": "15:00",
+          "close": "22:00"
+        },
+        {
+          "day": 6,
+          "open": "12:00",
+          "close": "22:00"
+        },
+        {
+          "day": 0,
+          "open": "12:00",
+          "close": "20:00"
+        }
+      ]
+    },
+    "hours_confirmed_on_source": false,
+    "has_ac": null,
+    "has_filtration": null,
+    "capacity_est": null,
+    "phone": "(619) 449-7805",
+    "source_url": "https://www.loc8nearme.com/california/el-cajon/boardwalk/6958112/",
+    "last_verified_at": "2026-11-14T21:57:15.835Z"
+  },
+  {
+    "id": 135,
     "name": "Thermo King El Cajon",
     "kind": "other",
     "tier": "discovered",
@@ -6164,7 +6909,7 @@
     "last_verified_at": "2026-11-14T20:33:04.402Z"
   },
   {
-    "id": 122,
+    "id": 136,
     "name": "La Jolla Community Center",
     "kind": "community_center",
     "tier": "discovered",
@@ -6212,60 +6957,7 @@
     "last_verified_at": "2026-11-14T20:31:01.865Z"
   },
   {
-    "id": 123,
-    "name": "Junior Seau Beach Community Center",
-    "kind": "community_center",
-    "tier": "discovered",
-    "confidence": 0.4,
-    "address": "300 The Strand N, Oceanside, CA 92054, United States",
-    "zip": "92054",
-    "lat": 33.1949807,
-    "lon": -117.3844337,
-    "hours": {
-      "weekly": [
-        {
-          "day": 0,
-          "open": "10:00",
-          "close": "12:00"
-        },
-        {
-          "day": 5,
-          "open": "09:00",
-          "close": "16:00"
-        },
-        {
-          "day": 4,
-          "open": "09:00",
-          "close": "16:00"
-        },
-        {
-          "day": 3,
-          "open": "13:00",
-          "close": "21:00"
-        },
-        {
-          "day": 2,
-          "open": "09:00",
-          "close": "16:00"
-        },
-        {
-          "day": 1,
-          "open": "09:00",
-          "close": "21:00"
-        }
-      ],
-      "raw_text": "{\"Sunday\":\"10 AM–12 PM\",\"Saturday\":\"Closed\",\"Friday\":\"9 AM–4 PM\",\"Thursday\":\"9 AM–4 PM\",\"Wednesday\":\"1–9 PM\",\"Tuesday\":\"9 AM–4 PM\",\"Monday\":\"9 AM–9 PM\"}"
-    },
-    "hours_confirmed_on_source": false,
-    "has_ac": null,
-    "has_filtration": null,
-    "capacity_est": null,
-    "phone": "+1 760-435-5233",
-    "source_url": "https://www.google.com/maps/place/Junior%20Seau%20Beach%20Community%20Center/data=!4m7!3m6!1s0x80dc6e37f4f93851:0x113a06bd78cee04b!8m2!3d33.1949807!4d-117.3844337!16s%2Fg%2F11cn5mz_g2!19sChIJUTj59Ddu3IARS-DOeL0GOhE?authuser=0&hl=en&rclk=1",
-    "last_verified_at": "2026-11-14T20:30:46.071Z"
-  },
-  {
-    "id": 124,
+    "id": 137,
     "name": "Civic Center Library Community Rooms",
     "kind": "library",
     "tier": "discovered",
@@ -6318,7 +7010,7 @@
     "last_verified_at": "2026-11-14T20:33:46.681Z"
   },
   {
-    "id": 125,
+    "id": 138,
     "name": "21 Area Active Duty Recreation Center",
     "kind": "rec_center",
     "tier": "discovered",
@@ -6376,7 +7068,7 @@
     "last_verified_at": "2026-11-14T20:33:44.528Z"
   },
   {
-    "id": 126,
+    "id": 139,
     "name": "Cooler Head Care, Inc.",
     "kind": "other",
     "tier": "discovered",
@@ -6424,7 +7116,7 @@
     "last_verified_at": "2026-11-14T20:31:00.441Z"
   },
   {
-    "id": 127,
+    "id": 140,
     "name": "City Heights Recreation Center",
     "kind": "rec_center",
     "tier": "discovered",
@@ -6477,7 +7169,7 @@
     "last_verified_at": "2026-11-14T20:31:47.961Z"
   },
   {
-    "id": 128,
+    "id": 141,
     "name": "Energy Center San Diego East Village",
     "kind": "cool_zone",
     "tier": "discovered",
@@ -6525,7 +7217,7 @@
     "last_verified_at": "2026-11-14T20:30:26.458Z"
   },
   {
-    "id": 129,
+    "id": 142,
     "name": "Paradise Senior Center",
     "kind": "senior_center",
     "tier": "discovered",
@@ -6583,7 +7275,7 @@
     "last_verified_at": "2026-11-14T20:30:44.797Z"
   },
   {
-    "id": 130,
+    "id": 143,
     "name": "Senior Service Center",
     "kind": "senior_center",
     "tier": "discovered",
@@ -6607,10 +7299,10 @@
     "capacity_est": null,
     "phone": "(858) 221-2225",
     "source_url": "https://www.neighborhoodhouse.org/nha-programs/senior-services/senior-service-center/",
-    "last_verified_at": "2026-11-14T21:37:34.371Z"
+    "last_verified_at": "2026-11-14T21:57:15.835Z"
   },
   {
-    "id": 131,
+    "id": 144,
     "name": "Fourth District Seniors Resource Center",
     "kind": "senior_center",
     "tier": "discovered",
@@ -6648,7 +7340,7 @@
     "last_verified_at": "2026-11-14T20:31:49.839Z"
   },
   {
-    "id": 132,
+    "id": 145,
     "name": "South Clairemont Recreation Center",
     "kind": "rec_center",
     "tier": "discovered",
@@ -6706,7 +7398,7 @@
     "last_verified_at": "2026-11-14T20:31:36.305Z"
   },
   {
-    "id": 133,
+    "id": 146,
     "name": "Cathy Hopper Clairemont Friendship Center",
     "kind": "senior_center",
     "tier": "discovered",
@@ -6754,7 +7446,7 @@
     "last_verified_at": "2026-11-14T20:31:47.989Z"
   },
   {
-    "id": 134,
+    "id": 147,
     "name": "Judith L. Seltz Senior Wellness Center",
     "kind": "senior_center",
     "tier": "discovered",
@@ -6802,65 +7494,7 @@
     "last_verified_at": "2026-11-14T20:30:41.584Z"
   },
   {
-    "id": 135,
-    "name": "Coronado Community Center",
-    "kind": "community_center",
-    "tier": "discovered",
-    "confidence": 0.6,
-    "address": "1845 Strand Way, Coronado, CA 92118, United States",
-    "zip": "92118",
-    "lat": 32.676729,
-    "lon": -117.1712863,
-    "hours": {
-      "weekly": [
-        {
-          "day": 0,
-          "open": "10:00",
-          "close": "16:00"
-        },
-        {
-          "day": 6,
-          "open": "07:00",
-          "close": "17:00"
-        },
-        {
-          "day": 5,
-          "open": "05:30",
-          "close": "19:00"
-        },
-        {
-          "day": 4,
-          "open": "05:30",
-          "close": "21:00"
-        },
-        {
-          "day": 3,
-          "open": "05:30",
-          "close": "21:00"
-        },
-        {
-          "day": 2,
-          "open": "05:30",
-          "close": "21:00"
-        },
-        {
-          "day": 1,
-          "open": "05:30",
-          "close": "21:00"
-        }
-      ],
-      "raw_text": "{\"Sunday\":\"10 AM–4 PM\",\"Saturday\":\"7 AM–5 PM\",\"Friday\":\"5:30 AM–7 PM\",\"Thursday\":\"5:30 AM–9 PM\",\"Wednesday\":\"5:30 AM–9 PM\",\"Tuesday\":\"5:30 AM–9 PM\",\"Monday\":\"5:30 AM–9 PM\"}"
-    },
-    "hours_confirmed_on_source": false,
-    "has_ac": null,
-    "has_filtration": null,
-    "capacity_est": null,
-    "phone": "+1 619-522-7342",
-    "source_url": "https://www.google.com/maps/place/Coronado%20Community%20Center/data=!4m7!3m6!1s0x80d9532c91db9727:0x34f9bcb2c810223d!8m2!3d32.6767290!4d-117.1712863!16s%2Fm%2F0k775v9!19sChIJJ5fbkSxT2YARPSIQyLK8-TQ?authuser=0&hl=en&rclk=1",
-    "last_verified_at": "2026-11-14T20:32:08.152Z"
-  },
-  {
-    "id": 136,
+    "id": 148,
     "name": "Hillsborough Recreation Center",
     "kind": "rec_center",
     "tier": "discovered",
@@ -6918,7 +7552,7 @@
     "last_verified_at": "2026-11-14T20:31:01.863Z"
   },
   {
-    "id": 137,
+    "id": 149,
     "name": "Aztec Recreation Center",
     "kind": "rec_center",
     "tier": "discovered",
@@ -6974,53 +7608,5 @@
     "phone": "+1 619-594-7529",
     "source_url": "https://www.google.com/maps/place/Aztec%20Recreation%20Center/data=!4m7!3m6!1s0x80d956810671888f:0x57c4704f6ec6424!8m2!3d32.7740892!4d-117.0756642!16s%2Fg%2F1tj4y_k_!19sChIJj4hxBoFW2YARJGTs9gRHfAU?authuser=0&hl=en&rclk=1",
     "last_verified_at": "2026-11-14T20:32:33.697Z"
-  },
-  {
-    "id": 138,
-    "name": "Joseph Balderrama Park",
-    "kind": "rec_center",
-    "tier": "discovered",
-    "confidence": 0.3,
-    "address": "709 San Diego St, Oceanside, CA 92058, United States",
-    "zip": "92058",
-    "lat": 33.2040349,
-    "lon": -117.3713792,
-    "hours": {
-      "weekly": [
-        {
-          "day": 5,
-          "open": "07:00",
-          "close": "17:00"
-        },
-        {
-          "day": 4,
-          "open": "07:00",
-          "close": "17:00"
-        },
-        {
-          "day": 3,
-          "open": "07:00",
-          "close": "17:00"
-        },
-        {
-          "day": 2,
-          "open": "07:00",
-          "close": "17:00"
-        },
-        {
-          "day": 1,
-          "open": "07:00",
-          "close": "17:00"
-        }
-      ],
-      "raw_text": "{\"Sunday\":\"Closed\",\"Saturday\":\"Closed\",\"Friday\":\"7 AM–5 PM\",\"Thursday\":\"7 AM–5 PM\",\"Wednesday\":\"7 AM–5 PM\",\"Tuesday\":\"7 AM–5 PM\",\"Monday\":\"7 AM–5 PM\"}"
-    },
-    "hours_confirmed_on_source": false,
-    "has_ac": null,
-    "has_filtration": null,
-    "capacity_est": null,
-    "phone": "+1 760-435-5530",
-    "source_url": "https://www.google.com/maps/place/Joseph%20Balderrama%20Park/data=!4m7!3m6!1s0x80dc6e2db014e237:0xb30c134db4aefe15!8m2!3d33.2040349!4d-117.3713792!16s%2Fg%2F1tdmksj4!19sChIJN-IUsC1u3IARFf6utE0TDLM?authuser=0&hl=en&rclk=1",
-    "last_verified_at": "2026-11-14T20:33:59.839Z"
   }
 ]

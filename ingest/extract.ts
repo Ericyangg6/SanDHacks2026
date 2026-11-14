@@ -85,8 +85,24 @@ Page URL: ${url}
 --- PAGE TEXT ---
 ${md.slice(0, 15000)}`;
 
+// Same text + same model + same prompt => same answer, so cache it. Re-runs and searches only pay for NEW pages.
+import { createHash } from "node:crypto";
+import { mkdir } from "node:fs/promises";
+const PROMPT_VERSION = "v3"; // bump when the prompt or schema changes to invalidate the cache
+async function extract(url: string, md: string): Promise<any[]> {
+  const model = PROVIDER === "claude" ? CLAUDE_MODEL : MODEL;
+  const key = createHash("sha1").update(`${PROMPT_VERSION}|${PROVIDER}|${model}|${md}`).digest("hex");
+  const dir = new URL("./cache/extract/", import.meta.url);
+  const file = new URL(`${key}.json`, dir);
+  try { return JSON.parse(await readFile(file, "utf8")); } catch {}
+  const sites = await extractRetry(url, md);
+  await mkdir(dir, { recursive: true });
+  await writeFile(file, JSON.stringify(sites));
+  return sites;
+}
+
 // Gemini returns 503/429 under load and the connection sometimes drops: retry with backoff.
-async function extract(url: string, md: string) {
+async function extractRetry(url: string, md: string) {
   let lastErr: unknown;
   for (let attempt = 0; attempt < 4; attempt++) {
     try {

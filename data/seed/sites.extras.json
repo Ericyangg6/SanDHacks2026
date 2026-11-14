@@ -12,7 +12,7 @@
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
     ],
     "conflicts": [],
-    "evidence": "Monday ... 10:00AM - 6:00PM ... Friday ... 10:00AM - 5:00PM ... Sunday ... Closed ... [Cool Zone](https://www.sandiegocounty.gov/hhsa/programs/ais/cool_zones/)",
+    "evidence": "Monday 10:00AM - 6:00PM ... Tuesday 12:00PM - 7:00PM ... Wednesday 10:00AM - 6:00PM ... Thursday 10:00AM - 6:00PM ... Friday 10:00AM - 5:00PM ... Saturday 10:00AM - 5:00PM ... Sunday Closed ... Cool Zone",
     "maps_place_id": "ChIJoQjUaNVR2YARZRbLdnX2Lgs",
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
@@ -30,10 +30,10 @@
       "county_cool_zones_layer",
       "google_maps",
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
-      "http://www.chulavistaca.gov/departments/library"
+      "https://www.chulavistaca.gov/departments/library"
     ],
     "conflicts": [],
-    "evidence": "Mon 10:00am-8:00pm ... Sun 1:00pm-5:00pm",
+    "evidence": "Mon 10:00am-8:00pm",
     "maps_place_id": "ChIJZwLX4_xN2YARNfslqi808Bs",
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
@@ -53,7 +53,7 @@
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
     ],
     "conflicts": [],
-    "evidence": "Mon 10:00am-8:00pm ... Sun 1:00pm-5:00pm",
+    "evidence": "Mon 10:00am-8:00pm",
     "maps_place_id": "ChIJ765_bYVO2YARHLEIM2I0kzI",
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
@@ -63,7 +63,7 @@
   },
   "4": {
     "access_level": "open_to_all",
-    "access_notes": "Gymnasium and game room open to the public during facility hours. Fitness center for ages 10+; ages 10-14 must be accompanied by an adult, and ages 15-17 need a signed parent waiver.",
+    "access_notes": "Gymnasium and game room open to the public during facility hours. Fitness center for ages 10+; ages 10-14 must be accompanied by an adult, and age 15-17 a waiver must be signed by a parent but may come without an adult.",
     "requires_id": null,
     "has_fee": null,
     "verification": "confirmed",
@@ -72,7 +72,7 @@
       "https://www.chulavistaca.gov/departments/parks-and-recreation/community-centers/otay-community-center"
     ],
     "conflicts": [],
-    "evidence": "Built in 2000, the Otay Community Center includes a gymnasium, game room and patio that is open to the public for use during facility hours. ... Monday- Thursday | 9:00am- 12:00pm & 2:00pm- 8:00pm ... Friday | 9:00am- 12:00pm & 1:00pm- 6:00pm ... Saturday | 9:00am- 1:00pm",
+    "evidence": "| Monday- Thursday | 9:00am- 12:00pm & 2:00pm- 8:00pm | ... | Friday | 9:00am- 12:00pm & 1:00pm- 6:00pm | ... | Saturday | 9:00am- 1:00pm | ... open to the public for use during facility hours",
     "maps_place_id": "ChIJcc82L5VO2YARGKcqvE-yass",
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
@@ -81,25 +81,6 @@
     "review_signals": null
   },
   "5": {
-    "access_level": "unknown",
-    "access_notes": null,
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "confirmed",
-    "sources": [
-      "google_maps",
-      "https://www.chulavistaca.gov/departments/parks-and-recreation/community-centers/veterans-community-center"
-    ],
-    "conflicts": [],
-    "evidence": "| Monday- Thursday | 9:00am- 12:00pm & 2:00pm- 8:00pm | ... | Friday | 9:00am- 12:00pm & 1:00pm- 6:00pm | ... | Saturday | 9:00am- 1:00pm | ... AC In all Room (excluding Gym)",
-    "maps_place_id": "ChIJRRhmygVP2YARGryuWYSJ2hY",
-    "coords_from": "county_cool_zones_layer",
-    "ac_from": "site_page",
-    "official_name": null,
-    "pet_policy": null,
-    "review_signals": null
-  },
-  "6": {
     "access_level": "open_to_all",
     "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
     "requires_id": null,
@@ -112,7 +93,7 @@
       "https://cityoflamesa.gov/416/Adult-Services"
     ],
     "conflicts": [],
-    "evidence": "Mon 8:00am-5:00pm ... Fri 8:00am-1:00pm",
+    "evidence": "Mon 8:00am-5:00pm",
     "maps_place_id": "ChIJU_F-xj1X2YARrIWeiw3_wvE",
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
@@ -120,7 +101,7 @@
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
-  "7": {
+  "6": {
     "access_level": "open_to_all",
     "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
     "requires_id": null,
@@ -129,11 +110,12 @@
     "sources": [
       "county_cool_zones_layer",
       "google_maps",
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
       "https://www.sdcl.org/locations/23/",
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
+      "https://www.lemongrove.ca.gov/living-in-lemon-grove/lemon-grove-library"
     ],
     "conflicts": [],
-    "evidence": "Monday \n\n10:00AM - 6:00PM ... Facilities ... [Cool Zone](https://www.sandiegocounty.gov/hhsa/programs/ais/cool_zones/)",
+    "evidence": "Mon 10:00am-6:00pm ... Sun Closed",
     "maps_place_id": "ChIJc5TXs9NQ2YARxsXE0Jac174",
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
@@ -141,28 +123,7 @@
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
-  "8": {
-    "access_level": "open_to_all",
-    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "confirmed",
-    "sources": [
-      "county_cool_zones_layer",
-      "google_maps",
-      "https://www.nationalcityca.gov/government/library/",
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
-    ],
-    "conflicts": [],
-    "evidence": "Monday-Thursday: 10:00 am - 8:00 pm ... Friday: 10:00 am - 6:00 pm ... Saturday: 10:00 am - 5:00 pm ... Sunday: Closed ... NCPL will be CLOSED Thursday, Nov. 26 - Sunday, Nov. 29. The library will be open Monday, Nov. 30, 2026. ... National City Public Library",
-    "maps_place_id": "ChIJZzqVtEBS2YARmfs0QPh__wo",
-    "coords_from": "county_cool_zones_layer",
-    "ac_from": "official_program",
-    "official_name": "National City Public Library",
-    "pet_policy": "Service Animals Only",
-    "review_signals": null
-  },
-  "9": {
+  "7": {
     "access_level": "age_restricted",
     "access_notes": "Seniors are invited to join us at this site",
     "requires_id": null,
@@ -170,10 +131,11 @@
     "verification": "confirmed",
     "sources": [
       "google_maps",
+      "https://www.nationalcityca.gov/community/senior-services",
       "https://www.nationalcityca.gov/government/community-services/senior-services"
     ],
     "conflicts": [],
-    "evidence": "Seniors are invited to join us at this site ... Monday to Friday ... 10:30am to 12:30pm ... Mon - Fri: 11:00am to 12:30pm",
+    "evidence": "Seniors are invited to join us at this site for a fantastic meal artfully prepared by Chef Hilda Perez ... Lunchtime: \nMonday to Friday \n10:30am to 12:30pm",
     "maps_place_id": "ChIJHfDOa9xT2YAR7EG5zWaQJb4",
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
@@ -181,7 +143,7 @@
     "pet_policy": null,
     "review_signals": null
   },
-  "10": {
+  "8": {
     "access_level": "open_to_all",
     "access_notes": null,
     "requires_id": null,
@@ -200,9 +162,9 @@
     "pet_policy": null,
     "review_signals": null
   },
-  "11": {
+  "9": {
     "access_level": "open_to_all",
-    "access_notes": null,
+    "access_notes": "Public library; no restriction stated on the page. First floor closed, second floor open.",
     "requires_id": null,
     "has_fee": null,
     "verification": "confirmed",
@@ -211,7 +173,7 @@
       "https://library.carlsbadca.gov/"
     ],
     "conflicts": [],
-    "evidence": "Mondays – Thursdays, 9 a.m. – 7 p.m. ... Fridays and Saturdays, 9 a.m. – 5 p.m. ... The first floor of the Library Learning Center is temporarily closed due to maintenance issues.",
+    "evidence": "Mondays – Thursdays, 9 a.m. – 7 p.m. ... Fridays and Saturdays, 9 a.m. – 5 p.m. ... The first floor of the Library Learning Center is temporarily closed due to maintenance issues. Access to the second floor, including Adult Literacy Services and limited programs are currently available.",
     "maps_place_id": "ChIJlxjbIxZy3IAR56SdrX4Lh38",
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
@@ -219,7 +181,7 @@
     "pet_policy": null,
     "review_signals": null
   },
-  "12": {
+  "10": {
     "access_level": "open_to_all",
     "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
     "requires_id": null,
@@ -228,12 +190,13 @@
     "sources": [
       "county_cool_zones_layer",
       "google_maps",
+      "https://www.elcajon.gov/resident-services/living-in-el-cajon/el-cajon-library",
       "https://www.sdcl.org/locations/13/",
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
       "https://public-district2.sandiegocounty.gov/news/email/show.aspx?ID=PLYWNG2N75WJW"
     ],
     "conflicts": [],
-    "evidence": "Monday 10:00AM - 6:00PM ... Tuesday 12:00PM - 7:00PM ... Wednesday 12:00PM - 7:00PM ... Thursday 10:00AM - 6:00PM ... Friday 10:00AM - 5:00PM ... Saturday 10:00AM - 5:00PM ... Sunday 10:00AM - 5:00PM",
+    "evidence": "Facilities - ADA Accessible - Community Room - Cool Zone - Friends Bookstore - Wi-Fi ... Monday 10:00AM - 6:00PM ... Sunday 10:00AM - 5:00PM ... Closed All Day",
     "maps_place_id": "ChIJgwtD67dZ2YAR-C9a9P4epIQ",
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
@@ -241,15 +204,16 @@
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
-  "13": {
+  "11": {
     "access_level": "open_to_all",
-    "access_notes": "Gymnasium available for all ages with scheduled drop-in play; game room; community center",
+    "access_notes": "Gymnasium available for all ages with scheduled drop-in play; game room available",
     "requires_id": null,
     "has_fee": null,
     "verification": "confirmed",
     "sources": [
       "google_maps",
       "https://www.elcajon.gov/your-government/departments/recreation/recreation-centers/renette-recreation-center",
+      "https://www.elcajon.gov/your-government/departments/recreation/recreation-centers",
       "https://www.elcajon.gov/resident-services/recreation/recreation-centers"
     ],
     "conflicts": [],
@@ -261,7 +225,7 @@
     "pet_policy": null,
     "review_signals": null
   },
-  "14": {
+  "12": {
     "access_level": "unknown",
     "access_notes": null,
     "requires_id": null,
@@ -270,6 +234,7 @@
     "sources": [
       "google_maps",
       "https://www.elcajon.gov/your-government/departments/recreation/recreation-centers/bostonia-community-center",
+      "https://www.elcajon.gov/your-government/departments/recreation/recreation-centers",
       "https://www.elcajon.gov/resident-services/recreation/recreation-centers"
     ],
     "conflicts": [],
@@ -281,9 +246,9 @@
     "pet_policy": null,
     "review_signals": null
   },
-  "15": {
+  "13": {
     "access_level": "open_to_all",
-    "access_notes": "Public library; the page states the IDEA Lab is open to any community member",
+    "access_notes": "Public library; the page does not state any entry restriction",
     "requires_id": null,
     "has_fee": null,
     "verification": "confirmed",
@@ -303,7 +268,7 @@
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
-  "16": {
+  "14": {
     "access_level": "open_to_all",
     "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
     "requires_id": null,
@@ -316,7 +281,7 @@
       "https://www.oceansidelibrary.org/"
     ],
     "conflicts": [],
-    "evidence": "Mon 9:00am-7:00pm",
+    "evidence": "Mon 9:00am-7:00pm ... Sat 9:00am-6:00pm",
     "maps_place_id": "ChIJwy0MOzFu3IARxpL16X9RQfI",
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
@@ -324,7 +289,7 @@
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
-  "17": {
+  "15": {
     "access_level": "open_to_all",
     "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
     "requires_id": null,
@@ -336,7 +301,7 @@
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
     ],
     "conflicts": [],
-    "evidence": "Sun 1:00pm-5:00pm",
+    "evidence": "Mon 9:00am-7:00pm ... Sun 1:00pm-5:00pm",
     "maps_place_id": "ChIJdxXCbU9w3IARtBqlF6Jd6Yk",
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
@@ -344,7 +309,27 @@
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
-  "18": {
+  "16": {
+    "access_level": "open_to_all",
+    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "confirmed",
+    "sources": [
+      "county_cool_zones_layer",
+      "google_maps",
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
+    ],
+    "conflicts": [],
+    "evidence": "Mon 10:00am-6:00pm ... Sun Closed",
+    "maps_place_id": "ChIJMTV1hVr924ARoccT1ogmuXk",
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": "official_program",
+    "official_name": "San Diego County Library: Santee Branch",
+    "pet_policy": "Service Animals Only",
+    "review_signals": null
+  },
+  "17": {
     "access_level": "open_to_all",
     "access_notes": "Public library; free educational and cultural resources for the diverse community",
     "requires_id": null,
@@ -356,7 +341,7 @@
       "https://www.sandiego.gov/PlacesToCoolDown"
     ],
     "conflicts": [],
-    "evidence": "| Monday | 11:30 a.m. - 8 p.m. |\n| --- | --- |\n| Tuesday | 11:30 a.m. - 8 p.m. |\n| Wednesday | 9:30 a.m. - 6 p.m. |\n| Thursday | 9:30 a.m. - 6 p.m. |\n| Friday | 9:30 a.m. - 6 p.m. |\n| Saturday | 10 a.m. - 4 p.m. |\n| Sunday | Closed |",
+    "evidence": "| Monday | 11:30 a.m. - 8 p.m. |\n| --- | --- |\n| Tuesday | 11:30 a.m. - 8 p.m. |\n| Wednesday | 9:30 a.m. - 6 p.m. |\n| Thursday | 9:30 a.m. - 6 p.m. |\n| Friday | 9:30 a.m. - 6 p.m. |\n| Saturday | 10 a.m. - 4 p.m. ... The San Diego Public Library is a popular destination that connects our diverse community to free educational and cultural resources that will enrich their lives.",
     "maps_place_id": "ChIJq_1kX1xT2YARJsfApHRz6xo",
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
@@ -364,7 +349,7 @@
     "pet_policy": null,
     "review_signals": null
   },
-  "19": {
+  "18": {
     "access_level": "open_to_all",
     "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
     "requires_id": null,
@@ -378,7 +363,7 @@
       "https://www.sandiego.gov/PlacesToCoolDown"
     ],
     "conflicts": [],
-    "evidence": "Saturday: ... 9:30 a.m. - 6:00 p.m. ... Tuesday: ... 11:30 a.m. - 8:00 p.m.",
+    "evidence": "Saturday:\n\n9:30 a.m. - 6:00 p.m. ... Tuesday:\n\n11:30 a.m. - 8:00 p.m.",
     "maps_place_id": "ChIJLwhgJdFU2YARQUgbIxcQ-6g",
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
@@ -386,11 +371,11 @@
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
-  "20": {
+  "19": {
     "access_level": "open_to_all",
     "access_notes": null,
     "requires_id": null,
-    "has_fee": false,
+    "has_fee": null,
     "verification": "confirmed",
     "sources": [
       "google_maps",
@@ -398,7 +383,7 @@
       "https://www.sandiego.gov/PlacesToCoolDown"
     ],
     "conflicts": [],
-    "evidence": "11:30 a.m. - 8:00 p.m. ... 9:30 a.m. - 6:00 p.m. ... free educational and cultural resources",
+    "evidence": "Currently open ... Saturday: ... 9:30 a.m. - 6:00 p.m. ... Sunday: ... Closed ... Monday: ... 11:30 a.m. - 8:00 p.m. ... Tuesday: ... 11:30 a.m. - 8:00 p.m. ... Wednesday: ... 9:30 a.m. - 6:00 p.m. ... Thursday: ... 9:30 a.m. - 6:00 p.m. ... Friday: ... 9:30 a.m. - 6:00 p.m.",
     "maps_place_id": "ChIJd0JujPVU2YAROWldDazm9FI",
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
@@ -406,7 +391,7 @@
     "pet_policy": null,
     "review_signals": null
   },
-  "21": {
+  "20": {
     "access_level": "unknown",
     "access_notes": null,
     "requires_id": null,
@@ -425,11 +410,11 @@
     "pet_policy": null,
     "review_signals": null
   },
-  "22": {
+  "21": {
     "access_level": "open_to_all",
-    "access_notes": "Public library; no entry restriction stated on page",
+    "access_notes": "Free public library; no restriction stated on the page",
     "requires_id": null,
-    "has_fee": null,
+    "has_fee": false,
     "verification": "confirmed",
     "sources": [
       "county_cool_zones_layer",
@@ -439,7 +424,7 @@
       "https://www.sandiego.gov/PlacesToCoolDown"
     ],
     "conflicts": [],
-    "evidence": "Saturday: ... 9:30 a.m. - 6:00 p.m. ... Sunday: Closed ... Monday: Closed ... Tuesday: ... 11:30 a.m. - 8:00 p.m. ... Wednesday: ... 9:30 a.m. - 6:00 p.m. ... Thursday: ... 9:30 a.m. - 6:00 p.m. ... Friday: ... 9:30 a.m. - 6:00 p.m.",
+    "evidence": "The San Diego Public Library is a popular destination that connects our diverse community to free educational and cultural resources ... Saturday: 9:30 a.m. - 6:00 p.m. ... Sunday: Closed ... Monday: Closed ... Tuesday: 11:30 a.m. - 8:00 p.m. ... Wednesday: 9:30 a.m. - 6:00 p.m. ... Thursday: 9:30 a.m. - 6:00 p.m. ... Friday: 9:30 a.m. - 6:00 p.m.",
     "maps_place_id": "ChIJbfAWEuwB3IAROggchOICpmA",
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
@@ -447,9 +432,9 @@
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
-  "23": {
+  "22": {
     "access_level": "open_to_all",
-    "access_notes": "Public library; no restriction stated on page",
+    "access_notes": "Public library; no restriction stated on the page",
     "requires_id": null,
     "has_fee": null,
     "verification": "confirmed",
@@ -459,7 +444,7 @@
       "https://www.sandiego.gov/PlacesToCoolDown"
     ],
     "conflicts": [],
-    "evidence": "Saturday: ... 9:30 a.m. - 6:00 p.m. ... Sunday: Closed ... Monday: Closed ... Tuesday: 11:30 a.m. - 8:00 p.m. ... Wednesday: 9:30 a.m. - 6:00 p.m. ... Thursday: 9:30 a.m. - 6:00 p.m. ... Friday: 9:30 a.m. - 6:00 p.m.",
+    "evidence": "Saturday: ... 9:30 a.m. - 6:00 p.m. ... Sunday: Closed ... Monday: Closed ... Tuesday: ... 11:30 a.m. - 8:00 p.m.",
     "maps_place_id": "ChIJzQ4m_B4A3IARwjUkotF-TqY",
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
@@ -467,18 +452,18 @@
     "pet_policy": null,
     "review_signals": null
   },
-  "24": {
+  "23": {
     "access_level": "open_to_all",
-    "access_notes": null,
+    "access_notes": "Public library; the page states no entry restriction. Patrons with a valid library card can use the 3-D printer.",
     "requires_id": null,
-    "has_fee": false,
+    "has_fee": null,
     "verification": "confirmed",
     "sources": [
       "google_maps",
       "https://www.sandiego.gov/public-library/locations/clairemont-library"
     ],
     "conflicts": [],
-    "evidence": "11:00 a.m. - 8:00 p.m. ... 9:30 a.m. - 6:00 p.m. ... including air conditioning and automatic doors ... free educational and cultural resources",
+    "evidence": "The San Diego Public Library is a popular destination that connects our diverse community to free educational and cultural resources ... including air conditioning and automatic doors ... Tuesday:\n\n11:00 a.m. - 8:00 p.m. ... Wednesday:\n\n9:30 a.m. - 6:00 p.m. ... Thursday:\n\n9:30 a.m. - 6:00 p.m. ... Friday:\n\n9:30 a.m. - 6:00 p.m. ... Saturday:\n\n9:30 a.m. - 6:00 p.m. ... Sunday:\n\nClosed ... Monday:\n\nClosed",
     "maps_place_id": "ChIJaeokZ1gA3IARoKcY9Pal1U0",
     "coords_from": "county_cool_zones_layer",
     "ac_from": "site_page",
@@ -486,7 +471,7 @@
     "pet_policy": null,
     "review_signals": null
   },
-  "25": {
+  "24": {
     "access_level": "open_to_all",
     "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
     "requires_id": null,
@@ -500,7 +485,7 @@
       "https://www.sandiego.gov/PlacesToCoolDown"
     ],
     "conflicts": [],
-    "evidence": "Mon Closed ... Tues 11:30am-8:00pm ... Wed 9:30am-6:00pm ... Sun Closed",
+    "evidence": "Mon Closed ... Tues 11:30am-8:00pm ... Wed 9:30am-6:00pm ... Thurs 9:30am-6:00pm ... Fri 9:30am-6:00pm ... Sat 9:30am-6:00pm ... Sun Closed",
     "maps_place_id": "ChIJ2SHX4UhW2YARB8yZWZCYjAU",
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
@@ -508,9 +493,9 @@
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
-  "26": {
+  "25": {
     "access_level": "open_to_all",
-    "access_notes": "Public library; no entry restriction stated on the page",
+    "access_notes": "Public library; no restriction stated on the page",
     "requires_id": null,
     "has_fee": null,
     "verification": "confirmed",
@@ -520,7 +505,7 @@
       "https://www.sandiego.gov/PlacesToCoolDown"
     ],
     "conflicts": [],
-    "evidence": "Saturday: ... 9:30 a.m. - 6:00 p.m. ... Sunday: Closed ... Monday: Closed ... Tuesday: 11:30 a.m. - 8:00 p.m. ... Wednesday: 9:30 a.m. - 6:00 p.m. ... Thursday: 9:30 a.m. - 6:00 p.m. ... Friday: 9:30 a.m. - 6:00 p.m.",
+    "evidence": "Saturday: ... 9:30 a.m. - 6:00 p.m. ... Sunday: ... Closed ... Monday: ... Closed ... Tuesday: ... 11:30 a.m. - 8:00 p.m. ... Wednesday: ... 9:30 a.m. - 6:00 p.m. ... Thursday: ... 9:30 a.m. - 6:00 p.m. ... Friday: ... 9:30 a.m. - 6:00 p.m.",
     "maps_place_id": "ChIJN-foiMkA3IARh97TSN8EcnM",
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
@@ -528,7 +513,7 @@
     "pet_policy": null,
     "review_signals": null
   },
-  "27": {
+  "26": {
     "access_level": "open_to_all",
     "access_notes": null,
     "requires_id": null,
@@ -539,7 +524,7 @@
       "https://www.sandiego.gov/park-and-recreation/centers/recctr/doyle"
     ],
     "conflicts": [],
-    "evidence": "| Mon | 9:00 a.m. - 9:00 p.m. | ... | Sun | CLOSED | ... The center is closed on City Holidays.",
+    "evidence": "| Mon | 9:00 a.m. - 9:00 p.m. | ... | Fri | 1:00 p.m. - 7:00 p.m. | ... | Sat | 9:00 a.m. - 3:00 p.m. | ... | Sun | CLOSED | ... The center is closed on City Holidays.",
     "maps_place_id": "ChIJpZiybCoB3IARiyWCwIU1G5Q",
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
@@ -547,7 +532,7 @@
     "pet_policy": null,
     "review_signals": null
   },
-  "28": {
+  "27": {
     "access_level": "open_to_all",
     "access_notes": "Public library; no entry restriction stated on the page",
     "requires_id": null,
@@ -561,7 +546,7 @@
       "https://www.sandiego.gov/PlacesToCoolDown"
     ],
     "conflicts": [],
-    "evidence": "The San Diego Public Library is a popular destination that connects our diverse community to free educational and cultural resources ... Saturday: ... 9:30 a.m. - 6:00 p.m. ... Sunday: ... Closed ... Monday: ... Closed ... Tuesday: ... 11:30 a.m. - 8:00 p.m.",
+    "evidence": "Currently open\n\nSaturday:\n\n9:30 a.m. - 6:00 p.m. ... Sunday:\n\nClosed ... Monday:\n\nClosed ... Tuesday:\n\n11:30 a.m. - 8:00 p.m.",
     "maps_place_id": "ChIJCQGlg-tR2YARlKkErhGjVNU",
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
@@ -569,7 +554,7 @@
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
-  "29": {
+  "28": {
     "access_level": "unknown",
     "access_notes": null,
     "requires_id": null,
@@ -588,6 +573,27 @@
     "pet_policy": null,
     "review_signals": null
   },
+  "29": {
+    "access_level": "open_to_all",
+    "access_notes": "accessible to all seeking relief from the heat",
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "web_only",
+    "sources": [
+      "https://www.vista.gov/Home/Components/News/News/6930/3255",
+      "https://www.vista.gov/residents/cool-zones",
+      "https://www.vista.gov/residents/senior-services",
+      "https://www.vista.gov/departments/recreation-comm-services/senior-services"
+    ],
+    "conflicts": [],
+    "evidence": "The City of Vista's McClellan Senior Center is a designated Cool Zone and is accessible to all seeking relief from the heat. ... Weekdays from 8 am until 3:30 pm",
+    "maps_place_id": null,
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": "site_page",
+    "official_name": null,
+    "pet_policy": null,
+    "review_signals": null
+  },
   "30": {
     "access_level": "open_to_all",
     "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
@@ -599,7 +605,7 @@
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
     ],
     "conflicts": [],
-    "evidence": "Mon 10:00am-6:00pm ... Sat 10:00am-5:00pm ... Sun Closed",
+    "evidence": "Mon Closed ... Tues 12:00pm-7:00pm ... Wed 10:00am-6:00pm",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
@@ -619,7 +625,7 @@
       "https://public-district2.sandiegocounty.gov/news/email/show.aspx?ID=PLYWNG2N75WJW"
     ],
     "conflicts": [],
-    "evidence": "Tues 12:00am-7:00pm",
+    "evidence": "Tues 12:00am-7:00pm ... Sat 10:00am-5:00pm",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
@@ -629,23 +635,20 @@
   },
   "32": {
     "access_level": "open_to_all",
-    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
+    "access_notes": "No entry restriction stated; city facility with posted public hours. Rental and program fees apply to reservations, not stated for general entry.",
     "requires_id": null,
     "has_fee": null,
-    "verification": "single_hours_source",
+    "verification": "web_only",
     "sources": [
-      "county_cool_zones_layer",
-      "google_maps",
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
-      "https://www.chulavistaca.gov/departments/parks-and-recreation/community-centers/norman-park-senior-center"
+      "https://www.chulavistaca.gov/departments/parks-and-recreation/community-centers/parkway-aquatic-center"
     ],
     "conflicts": [],
-    "evidence": "Mon 8:00am-5:00pm ... Sat 8:00am-1:00pm",
-    "maps_place_id": "ChIJKRy1jwdO2YAR85ENMelsXh8",
+    "evidence": "8:00am- 2:00pm / 4:00pm- 7:00pm ... 8:00am- 2:00pm ... Parkway Aquatic Center has been serving the community since 1955.",
+    "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
-    "ac_from": "official_program",
-    "official_name": "City of Chula Vista: Norman Park Senior Center",
-    "pet_policy": "Service Animals Only",
+    "ac_from": null,
+    "official_name": null,
+    "pet_policy": null,
     "review_signals": null
   },
   "33": {
@@ -653,17 +656,19 @@
     "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
     "requires_id": null,
     "has_fee": null,
-    "verification": "web_only",
+    "verification": "single_hours_source",
     "sources": [
       "county_cool_zones_layer",
+      "google_maps",
+      "https://www.chulavistaca.gov/departments/parks-and-recreation/community-centers/norman-park-senior-center",
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
     ],
     "conflicts": [],
-    "evidence": "Mon 9:00am-12:00pm, ... Sat 9:00am-1:00pm",
-    "maps_place_id": null,
+    "evidence": "| **Monday-Friday** | 8:00am- 5:00pm | ... | **Saturday** | 8:00am- 1:00pm | ... we have been able to install a new AC System keeping our patrons cool in the summer and warm in the winter",
+    "maps_place_id": "ChIJKRy1jwdO2YAR85ENMelsXh8",
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
-    "official_name": "City of Chula Vista: Loma Verde Community Center",
+    "official_name": "City of Chula Vista: Norman Park Senior Center",
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
@@ -675,74 +680,71 @@
     "verification": "web_only",
     "sources": [
       "county_cool_zones_layer",
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
+      "https://www.chulavistaca.gov/departments/parks-and-recreation/community-centers/loma-verde-community-center-copy",
+      "https://www.chulavistaca.gov/departments/parks-and-recreation/community-centers/loma-verde-aquatic-center"
     ],
     "conflicts": [],
-    "evidence": "Mon 11:00am-7:00pm ... Sun 12:00pm-6:00pm",
+    "evidence": "Mon 9:00am-12:00pm, ... 2:00pm-8:00pm",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
-    "official_name": "Chula Vista Public Library: Otay Ranch",
-    "pet_policy": "Service Animals & Pets Allowed",
+    "official_name": "City of Chula Vista: Loma Verde Community Center",
+    "pet_policy": "Service Animals Only",
     "review_signals": null
   },
   "35": {
     "access_level": "open_to_all",
-    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
+    "access_notes": "Public city recreation center; no entry restriction stated on the page",
     "requires_id": null,
     "has_fee": null,
     "verification": "web_only",
     "sources": [
-      "county_cool_zones_layer",
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
-      "https://public-district2.sandiegocounty.gov/news/email/show.aspx?ID=PLYWNG2N75WJW"
+      "https://www.chulavistaca.gov/departments/parks-and-recreation/community-centers/veterans-community-center"
     ],
     "conflicts": [],
-    "evidence": "Mon 10:00am-6:00pm",
+    "evidence": "Monday- Thursday | 9:00am- 12:00pm & 2:00pm- 8:00pm ... Friday | 9:00am- 12:00pm & 1:00pm- 6:00pm ... Saturday | 9:00am- 1:00pm ... AC In all Room (excluding Gym)",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
-    "ac_from": "official_program",
-    "official_name": "San Diego County Library: Descanso Branch",
-    "pet_policy": "Service Animals Only",
+    "ac_from": "site_page",
+    "official_name": null,
+    "pet_policy": null,
     "review_signals": null
   },
   "36": {
     "access_level": "open_to_all",
-    "access_notes": "Public library",
+    "access_notes": null,
     "requires_id": null,
     "has_fee": null,
     "verification": "web_only",
     "sources": [
-      "county_cool_zones_layer",
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
+      "https://www.chulavistaca.gov/departments/parks-and-recreation/community-centers/montevalle-community-center"
     ],
     "conflicts": [],
-    "evidence": "Mon 10:00am-6:00pm\nTues 12:00pm-7:00pm\nWed 10:00am-6:00pm\nThurs 10:00am-6:00pm\nFri 10:00am-5:00pm\nSat Closed\nSun Closed",
+    "evidence": "**Monday- Thursday** | 9:00am- 12:00pm & 2:00pm- 8:00pm ... **Friday** | 9:00am- 12:00pm & 1:00pm- 6:00pm ... **Saturday** | 9:00am- 1:00pm",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
-    "ac_from": "official_program",
-    "official_name": "San Diego County Library: Imperial Beach Branch",
-    "pet_policy": "Service Animals Only",
+    "ac_from": null,
+    "official_name": null,
+    "pet_policy": null,
     "review_signals": null
   },
   "37": {
     "access_level": "open_to_all",
-    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
+    "access_notes": null,
     "requires_id": null,
     "has_fee": null,
     "verification": "web_only",
     "sources": [
-      "county_cool_zones_layer",
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
-      "https://public-district2.sandiegocounty.gov/news/email/show.aspx?ID=PLYWNG2N75WJW"
+      "https://www.chulavistaca.gov/departments/parks-and-recreation/community-centers/salt-creek-community-center"
     ],
     "conflicts": [],
-    "evidence": "Tues 12:00pm-7:00pm",
+    "evidence": "| Monday - Thursday | 9:00am- 12:00pm & 2:00pm- 8:00pm | ... | Friday | 9:00am- 12:00pm & 1:00pm- 6:00pm |",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
-    "ac_from": "official_program",
-    "official_name": "San Diego County Library: Jacumba Branch",
-    "pet_policy": "Service Animals Only",
+    "ac_from": null,
+    "official_name": null,
+    "pet_policy": null,
     "review_signals": null
   },
   "38": {
@@ -750,20 +752,18 @@
     "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
     "requires_id": null,
     "has_fee": null,
-    "verification": "single_hours_source",
+    "verification": "web_only",
     "sources": [
       "county_cool_zones_layer",
-      "google_maps",
-      "https://www.sdcl.org/locations/24/",
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
     ],
     "conflicts": [],
-    "evidence": "Open today until 5:00pm ... Cool Zone",
-    "maps_place_id": "ChIJzY619SJX2YARKg4KEKYqWlE",
+    "evidence": "Mon 11:00am-7:00pm",
+    "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
-    "official_name": "San Diego County Library: La Mesa Branch",
-    "pet_policy": "Service Animals Only",
+    "official_name": "Chula Vista Public Library: Otay Ranch",
+    "pet_policy": "Service Animals & Pets Allowed",
     "review_signals": null
   },
   "39": {
@@ -774,10 +774,87 @@
     "verification": "web_only",
     "sources": [
       "county_cool_zones_layer",
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
+      "https://public-district2.sandiegocounty.gov/news/email/show.aspx?ID=PLYWNG2N75WJW"
+    ],
+    "conflicts": [],
+    "evidence": "Mon Closed ... Tues 12:00pm-7:00pm",
+    "maps_place_id": null,
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": "official_program",
+    "official_name": "San Diego County Library: Descanso Branch",
+    "pet_policy": "Service Animals Only",
+    "review_signals": null
+  },
+  "40": {
+    "access_level": "open_to_all",
+    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "web_only",
+    "sources": [
+      "county_cool_zones_layer",
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
     ],
     "conflicts": [],
-    "evidence": "Wed 12:30pm-8:30pm ... Sun 11:00am-2:00pm",
+    "evidence": "Mon 10:00am-6:00pm ... Tues 12:00pm-7:00pm ... Sat Closed",
+    "maps_place_id": null,
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": "official_program",
+    "official_name": "San Diego County Library: Imperial Beach Branch",
+    "pet_policy": "Service Animals Only",
+    "review_signals": null
+  },
+  "41": {
+    "access_level": "age_restricted",
+    "access_notes": "Programs for adults 50 and up",
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "web_only",
+    "sources": [
+      "https://www.imperialbeachca.gov/563/Senior-Community-Center"
+    ],
+    "conflicts": [],
+    "evidence": "Monday – Friday 8:00 am – 2:00 pm ... A wide variety of programs, activities and events are available for adults 50 and up.",
+    "maps_place_id": null,
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": null,
+    "official_name": null,
+    "pet_policy": null,
+    "review_signals": null
+  },
+  "42": {
+    "access_level": "open_to_all",
+    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "web_only",
+    "sources": [
+      "county_cool_zones_layer",
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
+      "https://public-district2.sandiegocounty.gov/news/email/show.aspx?ID=PLYWNG2N75WJW"
+    ],
+    "conflicts": [],
+    "evidence": "Mon Closed ... Tues 12:00pm-7:00pm",
+    "maps_place_id": null,
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": "official_program",
+    "official_name": "San Diego County Library: Jacumba Branch",
+    "pet_policy": "Service Animals Only",
+    "review_signals": null
+  },
+  "43": {
+    "access_level": "open_to_all",
+    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "web_only",
+    "sources": [
+      "county_cool_zones_layer",
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
+    ],
+    "conflicts": [],
+    "evidence": "Wed 12:30pm-8:30pm",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
@@ -785,7 +862,7 @@
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
-  "40": {
+  "44": {
     "access_level": "open_to_all",
     "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
     "requires_id": null,
@@ -804,101 +881,25 @@
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
-  "41": {
-    "access_level": "open_to_all",
-    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "web_only",
-    "sources": [
-      "county_cool_zones_layer",
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
-    ],
-    "conflicts": [],
-    "evidence": "Mon Closed ... Tues 12:00pm-7:00pm ... Sun Closed",
-    "maps_place_id": null,
-    "coords_from": "county_cool_zones_layer",
-    "ac_from": "official_program",
-    "official_name": "San Diego County Library: Lincoln Acres Branch",
-    "pet_policy": "Service Animals Only",
-    "review_signals": null
-  },
-  "42": {
-    "access_level": "open_to_all",
-    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "web_only",
-    "sources": [
-      "county_cool_zones_layer",
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
-    ],
-    "conflicts": [],
-    "evidence": "Mon 10:00am-8:00pm ... Fri 10:00am-9:00pm ... Sun 11:00am-7:00pm",
-    "maps_place_id": null,
-    "coords_from": "county_cool_zones_layer",
-    "ac_from": "official_program",
-    "official_name": "Westfield Plaza Bonita",
-    "pet_policy": "Service Animals Only",
-    "review_signals": null
-  },
-  "43": {
-    "access_level": "open_to_all",
-    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "web_only",
-    "sources": [
-      "county_cool_zones_layer",
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
-      "https://public-district2.sandiegocounty.gov/news/email/show.aspx?ID=PLYWNG2N75WJW"
-    ],
-    "conflicts": [],
-    "evidence": "Mon Closed ... Tues 12:00pm-7:00pm ... Sun Closed",
-    "maps_place_id": null,
-    "coords_from": "county_cool_zones_layer",
-    "ac_from": "official_program",
-    "official_name": "San Diego County Library: Pine Valley Branch",
-    "pet_policy": "Service Animals Only",
-    "review_signals": null
-  },
-  "44": {
-    "access_level": "open_to_all",
-    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "web_only",
-    "sources": [
-      "county_cool_zones_layer",
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
-      "https://public-district2.sandiegocounty.gov/news/email/show.aspx?ID=PLYWNG2N75WJW"
-    ],
-    "conflicts": [],
-    "evidence": "Tues 12:00pm-7:00pm ... Wed 10:00am-6:00pm ... Sat 10:00am-5:00pm",
-    "maps_place_id": null,
-    "coords_from": "county_cool_zones_layer",
-    "ac_from": "official_program",
-    "official_name": "San Diego County Library: Potrero Branch",
-    "pet_policy": "Service Animals Only",
-    "review_signals": null
-  },
   "45": {
     "access_level": "open_to_all",
-    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
-    "requires_id": null,
-    "has_fee": null,
+    "access_notes": null,
+    "requires_id": false,
+    "has_fee": false,
     "verification": "web_only",
     "sources": [
-      "county_cool_zones_layer",
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
+      "https://www.nationalcityca.gov/government/library",
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
+      "https://www.nationalcityca.gov/government/library/",
+      "https://www.nationalcityca.gov/government/library/tool-library"
     ],
     "conflicts": [],
-    "evidence": "Mon 8:00am-5:00pm",
+    "evidence": "Monday-Thursday: 10:00 am - 8:00 pm ... Friday: 10:00 am - 6:00 pm ... Saturday: 10:00 am - 5:00 pm ... Sunday: Closed ... NCPL will be CLOSED Thursday, Nov. 26 - Sunday, Nov. 29. The library will be open Monday, Nov. 30, 2026.",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
-    "ac_from": "official_program",
-    "official_name": "County of San Diego: Spring Valley Community Center",
-    "pet_policy": "Service Animals Only",
+    "ac_from": null,
+    "official_name": null,
+    "pet_policy": null,
     "review_signals": null
   },
   "46": {
@@ -912,11 +913,11 @@
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
     ],
     "conflicts": [],
-    "evidence": "Mon 10:00am-6:00pm",
+    "evidence": "Mon Closed ... Tues 12:00pm-7:00pm",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
-    "official_name": "San Diego County Library: Casa de Oro Branch",
+    "official_name": "San Diego County Library: Lincoln Acres Branch",
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
@@ -931,11 +932,11 @@
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
     ],
     "conflicts": [],
-    "evidence": "Mon 12:00pm-8:00pm",
+    "evidence": "Mon 10:00am-8:00pm ... Tues 10:00am-8:00pm ... Wed 10:00am-8:00pm ... Thurs 10:00am-8:00pm ... Fri 10:00am-9:00pm ... Sat 10:00am-9:00pm ... Sun 11:00am-7:00pm",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
-    "official_name": "San Diego County Library: Spring Valley Branch",
+    "official_name": "Westfield Plaza Bonita",
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
@@ -947,14 +948,15 @@
     "verification": "web_only",
     "sources": [
       "county_cool_zones_layer",
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
+      "https://public-district2.sandiegocounty.gov/news/email/show.aspx?ID=PLYWNG2N75WJW"
     ],
     "conflicts": [],
-    "evidence": "Tues 12:00pm-7:00pm",
+    "evidence": "Mon Closed ... Tues 12:00pm-7:00pm",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
-    "official_name": "San Diego County Library: Borrego Springs Branch",
+    "official_name": "San Diego County Library: Pine Valley Branch",
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
@@ -967,10 +969,106 @@
     "sources": [
       "county_cool_zones_layer",
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
+      "https://public-district2.sandiegocounty.gov/news/email/show.aspx?ID=PLYWNG2N75WJW"
+    ],
+    "conflicts": [],
+    "evidence": "Mon 10:00am-6:00pm ... Sun 10:00am-5:00pm",
+    "maps_place_id": null,
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": "official_program",
+    "official_name": "San Diego County Library: Potrero Branch",
+    "pet_policy": "Service Animals Only",
+    "review_signals": null
+  },
+  "50": {
+    "access_level": "open_to_all",
+    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "web_only",
+    "sources": [
+      "county_cool_zones_layer",
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
+    ],
+    "conflicts": [],
+    "evidence": "Mon 8:00am-5:00pm ... Sun 8:00am-5:00pm",
+    "maps_place_id": null,
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": "official_program",
+    "official_name": "County of San Diego: Spring Valley Community Center",
+    "pet_policy": "Service Animals Only",
+    "review_signals": null
+  },
+  "51": {
+    "access_level": "open_to_all",
+    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "web_only",
+    "sources": [
+      "county_cool_zones_layer",
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
+    ],
+    "conflicts": [],
+    "evidence": "Mon 10:00am-6:00pm ... Fri 10:00am-5:00pm",
+    "maps_place_id": null,
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": "official_program",
+    "official_name": "San Diego County Library: Casa de Oro Branch",
+    "pet_policy": "Service Animals Only",
+    "review_signals": null
+  },
+  "52": {
+    "access_level": "open_to_all",
+    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "web_only",
+    "sources": [
+      "county_cool_zones_layer",
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
+    ],
+    "conflicts": [],
+    "evidence": "Mon 12:00pm-8:00pm ... Sat Closed",
+    "maps_place_id": null,
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": "official_program",
+    "official_name": "San Diego County Library: Spring Valley Branch",
+    "pet_policy": "Service Animals Only",
+    "review_signals": null
+  },
+  "53": {
+    "access_level": "open_to_all",
+    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "web_only",
+    "sources": [
+      "county_cool_zones_layer",
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
+    ],
+    "conflicts": [],
+    "evidence": "Tues 12:00pm-7:00pm ... Sat 10:00am-5:00pm",
+    "maps_place_id": null,
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": "official_program",
+    "official_name": "San Diego County Library: Borrego Springs Branch",
+    "pet_policy": "Service Animals Only",
+    "review_signals": null
+  },
+  "54": {
+    "access_level": "open_to_all",
+    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "web_only",
+    "sources": [
+      "county_cool_zones_layer",
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
       "https://www.encinitasca.gov/Home/Components/News/News/138/402"
     ],
     "conflicts": [],
-    "evidence": "Tues 12:00pm-7:00pm",
+    "evidence": "Tues 12:00pm-7:00pm ... Sat 10:00am-5:00pm",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
@@ -978,7 +1076,7 @@
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
-  "50": {
+  "55": {
     "access_level": "open_to_all",
     "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
     "requires_id": null,
@@ -997,7 +1095,7 @@
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
-  "51": {
+  "56": {
     "access_level": "open_to_all",
     "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
     "requires_id": null,
@@ -1008,108 +1106,12 @@
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
     ],
     "conflicts": [],
-    "evidence": "Mon 9:00am-7:00pm ... Sun 1:00pm-5:00pm",
+    "evidence": "Mon 9:00am-7:00pm",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "Carlsbad City Library",
     "pet_policy": "Service Animals Only",
-    "review_signals": null
-  },
-  "52": {
-    "access_level": "open_to_all",
-    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "web_only",
-    "sources": [
-      "county_cool_zones_layer",
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
-    ],
-    "conflicts": [],
-    "evidence": "Tues 12:00am-7:00pm",
-    "maps_place_id": null,
-    "coords_from": "county_cool_zones_layer",
-    "ac_from": "official_program",
-    "official_name": "San Diego County Library: Del Mar Branch",
-    "pet_policy": "Service Animals Only",
-    "review_signals": null
-  },
-  "53": {
-    "access_level": "open_to_all",
-    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "web_only",
-    "sources": [
-      "county_cool_zones_layer",
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
-      "https://public-district2.sandiegocounty.gov/news/email/show.aspx?ID=PLYWNG2N75WJW"
-    ],
-    "conflicts": [],
-    "evidence": "Tues 12:00pm-7:00pm",
-    "maps_place_id": null,
-    "coords_from": "county_cool_zones_layer",
-    "ac_from": "official_program",
-    "official_name": "San Diego County Library: Rancho San Diego Branch",
-    "pet_policy": "Service Animals Only",
-    "review_signals": null
-  },
-  "54": {
-    "access_level": "unknown",
-    "access_notes": null,
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "single_hours_source",
-    "sources": [
-      "google_maps",
-      "https://www.elcajon.gov/resident-services/recreation/recreation-centers",
-      "https://www.elcajon.gov/your-government/departments/recreation/recreation-centers/kennedy-recreation-center-skate-park"
-    ],
-    "conflicts": [],
-    "evidence": "**Kennedy Center & Skatepark**\\\\ \\\\ 1675 E. Madison Street (619) 441-1676",
-    "maps_place_id": "ChIJ29JE4CRZ2YAR2uGSyxZ0-MA",
-    "coords_from": "county_cool_zones_layer",
-    "ac_from": null,
-    "official_name": null,
-    "pet_policy": null,
-    "review_signals": null
-  },
-  "55": {
-    "access_level": "unknown",
-    "access_notes": "All ages are invited to visit our game room; skatepark is supervised for participants seven years of age and older; a signed waiver must be approved and on file prior to entering the skatepark; parents must sign for all youth under 18 years old.",
-    "requires_id": null,
-    "has_fee": true,
-    "verification": "web_only",
-    "sources": [
-      "https://www.elcajon.gov/your-government/departments/recreation/recreation-centers/kennedy-recreation-center-skate-park"
-    ],
-    "conflicts": [],
-    "evidence": "#### Center Hours: Monday-Friday 2:00 pm - 9:30 pm; Saturday 12:00 pm - 4:00 pm ... All ages are invited to visit our game room to play pool, foosball, ping pong, air hockey, or a variety of board and table games.",
-    "maps_place_id": null,
-    "coords_from": "county_cool_zones_layer",
-    "ac_from": null,
-    "official_name": null,
-    "pet_policy": null,
-    "review_signals": null
-  },
-  "56": {
-    "access_level": "unknown",
-    "access_notes": null,
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "single_hours_source",
-    "sources": [
-      "google_maps",
-      "https://www.elcajon.gov/resident-services/recreation/recreation-centers"
-    ],
-    "conflicts": [],
-    "evidence": "**Ronald Reagan Community Center**\\\\ \\\\ 195 E. Douglas Avenue (619) 441-1673",
-    "maps_place_id": "ChIJFQej67dZ2YARLCgMsf0ig1s",
-    "coords_from": "county_cool_zones_layer",
-    "ac_from": null,
-    "official_name": null,
-    "pet_policy": null,
     "review_signals": null
   },
   "57": {
@@ -1120,11 +1122,110 @@
     "verification": "web_only",
     "sources": [
       "county_cool_zones_layer",
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
+    ],
+    "conflicts": [],
+    "evidence": "Tues 12:00am-7:00pm ... Sat 10:00am-5:00pm",
+    "maps_place_id": null,
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": "official_program",
+    "official_name": "San Diego County Library: Del Mar Branch",
+    "pet_policy": "Service Animals Only",
+    "review_signals": null
+  },
+  "58": {
+    "access_level": "open_to_all",
+    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "web_only",
+    "sources": [
+      "county_cool_zones_layer",
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
       "https://public-district2.sandiegocounty.gov/news/email/show.aspx?ID=PLYWNG2N75WJW"
     ],
     "conflicts": [],
-    "evidence": "Mon Closed ... Tues 12:00pm-7:00pm ... Sun Closed",
+    "evidence": "Mon 10:00am-6:00pm ... Sun Closed",
+    "maps_place_id": null,
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": "official_program",
+    "official_name": "San Diego County Library: Rancho San Diego Branch",
+    "pet_policy": "Service Animals Only",
+    "review_signals": null
+  },
+  "59": {
+    "access_level": "unknown",
+    "access_notes": "Supervised skatepark for participants seven years of age and older; a signed waiver must be approved and on file prior to entering; parents must sign for all youth under 18",
+    "requires_id": null,
+    "has_fee": true,
+    "verification": "single_hours_source",
+    "sources": [
+      "google_maps",
+      "https://www.elcajon.gov/your-government/departments/recreation/recreation-centers/kennedy-recreation-center-skate-park",
+      "https://www.elcajon.gov/your-government/departments/recreation/recreation-centers",
+      "https://www.elcajon.gov/resident-services/recreation/recreation-centers"
+    ],
+    "conflicts": [],
+    "evidence": "The supervised skatepark is for participants seven years of age and older. ... A signed waiver must be approved and on file prior to entering. ... There is a $5 fee for new and replacement ID cards.",
+    "maps_place_id": "ChIJ29JE4CRZ2YAR2uGSyxZ0-MA",
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": null,
+    "official_name": null,
+    "pet_policy": null,
+    "review_signals": null
+  },
+  "60": {
+    "access_level": "unknown",
+    "access_notes": "All ages are invited to visit our game room; skatepark is supervised for participants seven years of age and older; a signed waiver must be approved and on file prior to entering; parents must sign for all youth under 18 years old.",
+    "requires_id": null,
+    "has_fee": true,
+    "verification": "web_only",
+    "sources": [
+      "https://www.elcajon.gov/your-government/departments/recreation/recreation-centers/kennedy-recreation-center-skate-park"
+    ],
+    "conflicts": [],
+    "evidence": "#### Center Hours: Monday-Friday 2:00 pm - 9:30 pm; Saturday 12:00 pm - 4:00 pm ... All ages are invited to visit our game room to play pool, foosball, ping pong, air hockey, or a variety of board and table games. ... The supervised skatepark is for participants seven years of age and older. There is a $5 fee for new and replacement ID cards.",
+    "maps_place_id": null,
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": null,
+    "official_name": null,
+    "pet_policy": null,
+    "review_signals": null
+  },
+  "61": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "single_hours_source",
+    "sources": [
+      "google_maps",
+      "https://www.elcajon.gov/your-government/departments/recreation/recreation-centers",
+      "https://www.elcajon.gov/your-government/departments/recreation/for-seniors",
+      "https://www.elcajon.gov/resident-services/recreation/recreation-centers"
+    ],
+    "conflicts": [],
+    "evidence": "- **Ronald Reagan Community Center** 195 E. Douglas Avenue (619) 441-1673",
+    "maps_place_id": "ChIJFQej67dZ2YARLCgMsf0ig1s",
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": null,
+    "official_name": null,
+    "pet_policy": null,
+    "review_signals": null
+  },
+  "62": {
+    "access_level": "open_to_all",
+    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "web_only",
+    "sources": [
+      "county_cool_zones_layer",
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
+      "https://public-district2.sandiegocounty.gov/news/email/show.aspx?ID=PLYWNG2N75WJW"
+    ],
+    "conflicts": [],
+    "evidence": "Mon Closed ... Tues 12:00pm-7:00pm",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
@@ -1132,7 +1233,64 @@
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
-  "58": {
+  "63": {
+    "access_level": "open_to_all",
+    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "web_only",
+    "sources": [
+      "county_cool_zones_layer",
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
+      "https://public-district2.sandiegocounty.gov/news/email/show.aspx?ID=PLYWNG2N75WJW"
+    ],
+    "conflicts": [],
+    "evidence": "Tues 12:00pm-7:00pm ... Wed 10:00am-6:00pm ... Sat 10:00am-5:00pm",
+    "maps_place_id": null,
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": "official_program",
+    "official_name": "San Diego County Library: Crest Branch",
+    "pet_policy": "Service Animals Only",
+    "review_signals": null
+  },
+  "64": {
+    "access_level": "open_to_all",
+    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "web_only",
+    "sources": [
+      "county_cool_zones_layer",
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
+    ],
+    "conflicts": [],
+    "evidence": "Fri 10:00am-5:00pm ... Sat Closed",
+    "maps_place_id": null,
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": "official_program",
+    "official_name": "San Diego County Library: Encinitas Branch",
+    "pet_policy": "Service Animals Only",
+    "review_signals": null
+  },
+  "65": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "web_only",
+    "sources": [
+      "https://www.encinitasca.gov/services/contact"
+    ],
+    "conflicts": [],
+    "evidence": "Admin Office Hours: ... 9:30 A.M. - 5:30 P.M. Tues, Wed, Thur ... 9:30 A.M. - 4:00 P.M. Sat ... 9:30 A.M. - 4:00 P.M. Sun ... Class/Workshop hrs. may differ.",
+    "maps_place_id": null,
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": null,
+    "official_name": null,
+    "pet_policy": null,
+    "review_signals": null
+  },
+  "66": {
     "access_level": "open_to_all",
     "access_notes": "City Hall, Public Works, and the Community/Senior Center are all open to the public.",
     "requires_id": null,
@@ -1151,153 +1309,6 @@
     "pet_policy": null,
     "review_signals": null
   },
-  "59": {
-    "access_level": "open_to_all",
-    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "web_only",
-    "sources": [
-      "county_cool_zones_layer",
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
-      "https://public-district2.sandiegocounty.gov/news/email/show.aspx?ID=PLYWNG2N75WJW"
-    ],
-    "conflicts": [],
-    "evidence": "Mon Closed ... Tues 12:00pm-7:00pm ... Sun Closed",
-    "maps_place_id": null,
-    "coords_from": "county_cool_zones_layer",
-    "ac_from": "official_program",
-    "official_name": "San Diego County Library: Encinitas Branch",
-    "pet_policy": "Service Animals Only",
-    "review_signals": null
-  },
-  "60": {
-    "access_level": "open_to_all",
-    "access_notes": "City Hall, Public Works, and the Community/Senior Center are all open to the public.",
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "web_only",
-    "sources": [
-      "https://www.encinitasca.gov/services/contact"
-    ],
-    "conflicts": [],
-    "evidence": "City Hall, Public Works, and the Community/Senior Center are all open to the public. ... 7:30 A.M. - 5:30 P.M. Mon-Thu ... 7:30 A.M. - 4:30 P.M. Fri (Alternating Fridays Closed)",
-    "maps_place_id": null,
-    "coords_from": "county_cool_zones_layer",
-    "ac_from": null,
-    "official_name": null,
-    "pet_policy": null,
-    "review_signals": null
-  },
-  "61": {
-    "access_level": "unknown",
-    "access_notes": null,
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "web_only",
-    "sources": [
-      "https://www.encinitasca.gov/services/contact"
-    ],
-    "conflicts": [],
-    "evidence": "Admin Office Hours: ... 9:30 A.M. - 5:30 P.M. Tues, Wed, Thur ... 9:30 A.M. - 4:00 P.M. Sat ... 9:30 A.M. - 4:00 P.M. Sun ... Class/Workshop hrs. may differ.",
-    "maps_place_id": null,
-    "coords_from": "county_cool_zones_layer",
-    "ac_from": null,
-    "official_name": null,
-    "pet_policy": null,
-    "review_signals": null
-  },
-  "62": {
-    "access_level": "unknown",
-    "access_notes": null,
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "web_only",
-    "sources": [
-      "https://www.encinitasca.gov/services/contact"
-    ],
-    "conflicts": [],
-    "evidence": "8:00 A.M. - 5:00 P.M. Mon-Thu ... 8:00 A.M. - 4:00 P.M. Fri (Alternating Fridays Closed)",
-    "maps_place_id": null,
-    "coords_from": "county_cool_zones_layer",
-    "ac_from": null,
-    "official_name": null,
-    "pet_policy": null,
-    "review_signals": null
-  },
-  "63": {
-    "access_level": "open_to_all",
-    "access_notes": null,
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "web_only",
-    "sources": [
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
-    ],
-    "conflicts": [],
-    "evidence": "Mon 9:00am-8:30pm ... Sun 9:00am-12:00pm",
-    "maps_place_id": null,
-    "coords_from": "county_cool_zones_layer",
-    "ac_from": null,
-    "official_name": null,
-    "pet_policy": null,
-    "review_signals": null
-  },
-  "64": {
-    "access_level": "open_to_all",
-    "access_notes": null,
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "web_only",
-    "sources": [
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
-    ],
-    "conflicts": [],
-    "evidence": "Mon 8:00am-3:00pm ... Fri 8:00am-3:00pm",
-    "maps_place_id": null,
-    "coords_from": "county_cool_zones_layer",
-    "ac_from": null,
-    "official_name": null,
-    "pet_policy": null,
-    "review_signals": null
-  },
-  "65": {
-    "access_level": "open_to_all",
-    "access_notes": null,
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "web_only",
-    "sources": [
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
-    ],
-    "conflicts": [],
-    "evidence": "Mon 9:00am-7:00pm ... Sun 1:00pm-5:00pm",
-    "maps_place_id": null,
-    "coords_from": "county_cool_zones_layer",
-    "ac_from": null,
-    "official_name": null,
-    "pet_policy": null,
-    "review_signals": null
-  },
-  "66": {
-    "access_level": "open_to_all",
-    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "web_only",
-    "sources": [
-      "county_cool_zones_layer",
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
-    ],
-    "conflicts": [],
-    "evidence": "Mon 9:00am-6:30pm ... Fri 9:00am-6:30pm",
-    "maps_place_id": null,
-    "coords_from": "county_cool_zones_layer",
-    "ac_from": "official_program",
-    "official_name": "County of San Diego: Fallbrook Community Center",
-    "pet_policy": "Service Animals Only",
-    "review_signals": null
-  },
   "67": {
     "access_level": "open_to_all",
     "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
@@ -1306,15 +1317,14 @@
     "verification": "web_only",
     "sources": [
       "county_cool_zones_layer",
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
-      "https://public-district2.sandiegocounty.gov/news/email/show.aspx?ID=PLYWNG2N75WJW"
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
     ],
     "conflicts": [],
-    "evidence": "Mon 10:00am-6:00pm ... Wed 12:00pm-7:00pm ... Sun 10:00am-5:00pm",
+    "evidence": "Mon 9:00am-8:30pm",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
-    "official_name": "San Diego County Library: Fallbrook Branch",
+    "official_name": "City of Escondido: East Valley Community Center",
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
@@ -1329,11 +1339,11 @@
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
     ],
     "conflicts": [],
-    "evidence": "Mon 10:00am-6:00pm ... Fri 10:00am-5:00pm ... Sat Closed",
+    "evidence": "Mon 8:00am-3:00pm",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
-    "official_name": "San Diego County Library: Julian Branch",
+    "official_name": "City of Escondido: Park Avenue Community Center",
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
@@ -1349,11 +1359,11 @@
       "https://public-district2.sandiegocounty.gov/news/email/show.aspx?ID=PLYWNG2N75WJW"
     ],
     "conflicts": [],
-    "evidence": "Mon 9:00am-8:00pm ... Fri 9:00am-8:00pm",
+    "evidence": "Mon 9:00am-8:00pm",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
-    "official_name": "San Diego County Library: Lakeside Branch",
+    "official_name": "County of San Diego: Fallbrook Community Center",
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
@@ -1365,14 +1375,15 @@
     "verification": "web_only",
     "sources": [
       "county_cool_zones_layer",
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
+      "https://www.sdcl.org/locations/24/"
     ],
     "conflicts": [],
-    "evidence": "Mon 8:30am-4:00pm ... Sat 9:00am-12:00pm",
+    "evidence": "Mon 10:00am-6:00pm ... Sun 10:00am-5:00pm",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
-    "official_name": "City of Oceanside: Country Club Senior Center",
+    "official_name": "San Diego County Library: Fallbrook Branch",
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
@@ -1384,14 +1395,15 @@
     "verification": "web_only",
     "sources": [
       "county_cool_zones_layer",
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
+      "https://public-district2.sandiegocounty.gov/news/email/show.aspx?ID=PLYWNG2N75WJW"
     ],
     "conflicts": [],
-    "evidence": "Mon 5:00am-0800pm",
+    "evidence": "Tues 12:00am-7:00pm ... Sun Closed",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
-    "official_name": "Joe & Mary Mottino YMCA",
+    "official_name": "San Diego County Library: Julian Branch",
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
@@ -1406,11 +1418,11 @@
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
     ],
     "conflicts": [],
-    "evidence": "Mon 8:30am-4:30pm ... Fri 8:30am-4:00pm",
+    "evidence": "Mon 9:00am-6:30pm",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
-    "official_name": "City of Oceanside: El Corazon Senior Center",
+    "official_name": "County of San Diego: Lakeside Community Center",
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
@@ -1426,32 +1438,31 @@
       "https://public-district2.sandiegocounty.gov/news/email/show.aspx?ID=PLYWNG2N75WJW"
     ],
     "conflicts": [],
-    "evidence": "Mon 8:00am-5:00pm ... Fri 8:00am-5:00pm",
+    "evidence": "Mon 10:00am-6:00pm ... Sat 10:00am-5:00pm",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
-    "official_name": "City of Poway Community Center",
+    "official_name": "San Diego County Library: Lakeside Branch",
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
   "74": {
-    "access_level": "open_to_all",
-    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
+    "access_level": "unknown",
+    "access_notes": null,
     "requires_id": null,
     "has_fee": null,
-    "verification": "web_only",
+    "verification": "single_hours_source",
     "sources": [
-      "county_cool_zones_layer",
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
-      "https://public-district2.sandiegocounty.gov/news/email/show.aspx?ID=PLYWNG2N75WJW"
+      "google_maps",
+      "https://www.ci.oceanside.ca.us/government/parks-recreation/recreation-centers"
     ],
     "conflicts": [],
-    "evidence": "Mon 10:00am-6:00pm ... Sat 10:00am-5:00pm ... Sun Closed",
-    "maps_place_id": null,
+    "evidence": "Junior Seau Beach Community Center",
+    "maps_place_id": "ChIJUTj59Ddu3IARS-DOeL0GOhE",
     "coords_from": "county_cool_zones_layer",
-    "ac_from": "official_program",
-    "official_name": "San Diego County Library: Poway Branch",
-    "pet_policy": "Service Animals Only",
+    "ac_from": null,
+    "official_name": null,
+    "pet_policy": null,
     "review_signals": null
   },
   "75": {
@@ -1463,34 +1474,34 @@
     "sources": [
       "county_cool_zones_layer",
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
-      "https://www.encinitasca.gov/Home/Components/News/News/138/402"
-    ],
-    "conflicts": [],
-    "evidence": "Mon 10:00am-6:00pm ... Thurs, 10:00am-6:00pm ... Sun 10:00am-5:00pm",
-    "maps_place_id": null,
-    "coords_from": "county_cool_zones_layer",
-    "ac_from": "official_program",
-    "official_name": "San Diego County Library: Ramona Branch",
-    "pet_policy": "Service Animals Only",
-    "review_signals": null
-  },
-  "76": {
-    "access_level": "open_to_all",
-    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "web_only",
-    "sources": [
-      "county_cool_zones_layer",
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
+      "https://www.ci.oceanside.ca.us/government/parks-recreation/senior-centers-services"
     ],
     "conflicts": [],
     "evidence": "Mon 8:30am-4:00pm",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
-    "official_name": "Ramona Senior Center",
+    "official_name": "City of Oceanside: Country Club Senior Center",
     "pet_policy": "Service Animals Only",
+    "review_signals": null
+  },
+  "76": {
+    "access_level": "open_to_all",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "web_only",
+    "sources": [
+      "https://www.ci.oceanside.ca.us/government/housing-neighborhood-services/community-services-programs/community-resource-centers/landes-community-center",
+      "https://www.ci.oceanside.ca.us/government/parks-recreation/recreation-centers"
+    ],
+    "conflicts": [],
+    "evidence": "Monday - Friday, 9:00 a.m. to 6:00 p.m.",
+    "maps_place_id": null,
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": null,
+    "official_name": null,
+    "pet_policy": null,
     "review_signals": null
   },
   "77": {
@@ -1504,33 +1515,57 @@
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
     ],
     "conflicts": [],
-    "evidence": "Mon 10:00am-6:00pm ... Sat 10:00am-5:00pm ... Sun Closed",
+    "evidence": "Mon 5:00am-0800pm ... Sun 8:00am-1:00pm",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
-    "official_name": "San Diego County Library: Rancho Santa Fe Branch",
+    "official_name": "Joe & Mary Mottino YMCA",
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
   "78": {
     "access_level": "open_to_all",
-    "access_notes": null,
+    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
     "requires_id": null,
     "has_fee": null,
     "verification": "web_only",
     "sources": [
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
+      "county_cool_zones_layer",
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
+      "https://www.ci.oceanside.ca.us/government/parks-recreation/senior-centers-services/el-corazon-senior-center",
+      "https://www.ci.oceanside.ca.us/government/public-works/property-management/el-corazon/senior-center",
+      "https://www.ci.oceanside.ca.us/government/parks-recreation/senior-centers-services"
     ],
     "conflicts": [],
-    "evidence": "Mon 9:00am-5:00pm ... Sat 9:00am-5:00pm ... Sun Closed",
+    "evidence": "Mon 8:30am-4:30pm",
     "maps_place_id": null,
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": "official_program",
+    "official_name": "City of Oceanside: El Corazon Senior Center",
+    "pet_policy": "Service Animals Only",
+    "review_signals": null
+  },
+  "79": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "single_hours_source",
+    "sources": [
+      "google_maps",
+      "https://www.ci.oceanside.ca.us/government/parks-recreation/recreation-centers",
+      "https://www.ci.oceanside.ca.us/Home/Components/FacilityDirectory/FacilityDirectory/10/710?npage=2"
+    ],
+    "conflicts": [],
+    "evidence": "Joe Balderrama Recreation Center",
+    "maps_place_id": "ChIJN-IUsC1u3IARFf6utE0TDLM",
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
     "official_name": null,
     "pet_policy": null,
     "review_signals": null
   },
-  "79": {
+  "80": {
     "access_level": "open_to_all",
     "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
     "requires_id": null,
@@ -1542,30 +1577,11 @@
       "https://public-district2.sandiegocounty.gov/news/email/show.aspx?ID=PLYWNG2N75WJW"
     ],
     "conflicts": [],
-    "evidence": "Mon Closed ... Tues 12:00pm-7:00pm ... Sat 10:00am-5:00pm",
+    "evidence": "Mon 8:00am-5:00pm",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
-    "official_name": "San Diego County Library: San Marcos Branch",
-    "pet_policy": "Service Animals Only",
-    "review_signals": null
-  },
-  "80": {
-    "access_level": "open_to_all",
-    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "web_only",
-    "sources": [
-      "county_cool_zones_layer",
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
-    ],
-    "conflicts": [],
-    "evidence": "Mon 8:00am-4:00pm ... Fri 8:00am-4:00pm",
-    "maps_place_id": null,
-    "coords_from": "county_cool_zones_layer",
-    "ac_from": "official_program",
-    "official_name": "City of San Marcos: San Marcos Senior Center",
+    "official_name": "City of Poway Community Center",
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
@@ -1577,34 +1593,36 @@
     "verification": "web_only",
     "sources": [
       "county_cool_zones_layer",
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
+      "https://public-district2.sandiegocounty.gov/news/email/show.aspx?ID=PLYWNG2N75WJW"
     ],
     "conflicts": [],
-    "evidence": "Mon 10:00am-5:00pm",
+    "evidence": "Tues 12:00pm-7:00pm ... Sat 10:00am-5:00pm",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
-    "official_name": "County of San Diego: Santa Ysabel Nature Center",
-    "pet_policy": "Service Animals & Pets Allowed",
+    "official_name": "San Diego County Library: Poway Branch",
+    "pet_policy": "Service Animals Only",
     "review_signals": null
   },
   "82": {
     "access_level": "open_to_all",
-    "access_notes": null,
+    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
     "requires_id": null,
     "has_fee": null,
     "verification": "web_only",
     "sources": [
-      "https://www.sdcl.org/locations/33/",
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
+      "county_cool_zones_layer",
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
+      "https://public-district2.sandiegocounty.gov/news/email/show.aspx?ID=PLYWNG2N75WJW"
     ],
     "conflicts": [],
-    "evidence": "10:00AM - 6:00PM ... Cool Zone",
+    "evidence": "Tues 12:00pm-7:00pm ... Sat 10:00am-5:00pm",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
-    "ac_from": "site_page",
-    "official_name": null,
-    "pet_policy": null,
+    "ac_from": "official_program",
+    "official_name": "San Diego County Library: Ramona Branch",
+    "pet_policy": "Service Animals Only",
     "review_signals": null
   },
   "83": {
@@ -1618,55 +1636,15 @@
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
     ],
     "conflicts": [],
-    "evidence": "Mon 10:00am-6:00pm ... Sat 10:00am-5:00pm ... Sun Closed",
+    "evidence": "Mon 8:30am-4:00pm ... Fri 8:30am-4:00pm",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
-    "official_name": "San Diego County Library: Solana Beach Branch",
+    "official_name": "Ramona Senior Center",
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
   "84": {
-    "access_level": "open_to_all",
-    "access_notes": "Public library",
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "web_only",
-    "sources": [
-      "county_cool_zones_layer",
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
-    ],
-    "conflicts": [],
-    "evidence": "Mon 10:00am-6:00pm\nTues 12:00pm-7:00pm\nWeds 10:00am-6:00pm\nThurs 10:00am-6:00pm\nFri 10:00am-5:00pm\nSat Closed\nSun Closed",
-    "maps_place_id": null,
-    "coords_from": "county_cool_zones_layer",
-    "ac_from": "official_program",
-    "official_name": "San Diego County Library: Valley Center Branch",
-    "pet_policy": "Service Animals Only",
-    "review_signals": null
-  },
-  "85": {
-    "access_level": "open_to_all",
-    "access_notes": "Public library listed as a Cool Zone site",
-    "requires_id": null,
-    "has_fee": false,
-    "verification": "web_only",
-    "sources": [
-      "county_cool_zones_layer",
-      "https://www.vista.gov/residents/cool-zones",
-      "https://www.vista.gov/Home/Components/News/News/6930/3255",
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
-    ],
-    "conflicts": [],
-    "evidence": "Monday, 10:00 am-6:00 pm ... Tuesday, 12:00 pm-7:00 pm ... Sunday, 10:00 am-5:00 pm",
-    "maps_place_id": null,
-    "coords_from": "county_cool_zones_layer",
-    "ac_from": "official_program",
-    "official_name": "San Diego County Library: Vista Branch",
-    "pet_policy": "Service Animals Only",
-    "review_signals": null
-  },
-  "86": {
     "access_level": "open_to_all",
     "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
     "requires_id": null,
@@ -1674,16 +1652,51 @@
     "verification": "web_only",
     "sources": [
       "county_cool_zones_layer",
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
-      "https://www.sandiego.gov/PlacesToCoolDown"
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
     ],
     "conflicts": [],
-    "evidence": "Mon 11:30am-8:00pm ... Tues 11:30am-8:00pm ... Wed 9:30am-6:00pm ... Sun Closed",
+    "evidence": "Mon 10:00am-6:00pm ... Sun Closed",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
-    "official_name": "San Diego Public Library: University Heights Branch",
+    "official_name": "San Diego County Library: Rancho Santa Fe Branch",
     "pet_policy": "Service Animals Only",
+    "review_signals": null
+  },
+  "85": {
+    "access_level": "open_to_all",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "web_only",
+    "sources": [
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
+    ],
+    "conflicts": [],
+    "evidence": "Mon 9:00am-5:00pm ... Sat 9:00am-5:00pm",
+    "maps_place_id": null,
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": null,
+    "official_name": null,
+    "pet_policy": null,
+    "review_signals": null
+  },
+  "86": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "web_only",
+    "sources": [
+      "https://www.sanmarcosca.gov/Parks-Recreation/Find-Parks-Pools-Facilities/San-Marcos-Community-Center"
+    ],
+    "conflicts": [],
+    "evidence": "Monday -Thursday \n8:30 a.m. - 5:30 p.m ... Fridays \n8:30 a.m. to 4:30 p.m.",
+    "maps_place_id": null,
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": null,
+    "official_name": null,
+    "pet_policy": null,
     "review_signals": null
   },
   "87": {
@@ -1695,58 +1708,38 @@
     "sources": [
       "county_cool_zones_layer",
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
-      "https://www.sandiego.gov/PlacesToCoolDown"
+      "https://www.encinitasca.gov/Home/Components/News/News/138/402"
     ],
     "conflicts": [],
-    "evidence": "Mon 11:30am-8:00pm ... Tues 11:30am-8:00pm ... Wed 9:30am-6:00pm ... Sun Closed",
+    "evidence": "Thurs, 10:00am-6:00pm ... Sun 10:00am-5:00pm",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
-    "official_name": "San Diego Public Library: Point Loma/Hervey branch",
+    "official_name": "San Diego County Library: San Marcos Branch",
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
   "88": {
     "access_level": "open_to_all",
-    "access_notes": "Public library",
+    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
     "requires_id": null,
     "has_fee": null,
     "verification": "web_only",
     "sources": [
       "county_cool_zones_layer",
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
-      "https://www.sandiego.gov/PlacesToCoolDown"
+      "https://www.sanmarcosca.gov/Parks-Recreation/Senior-Center"
     ],
     "conflicts": [],
-    "evidence": "Mon 11:30am-8:00pm\nTues 11:30am-8:00pm\nWed 9:30am-6:00pm\nThurs 9:30am-6:00pm\nFri 9:30am-6:00pm\nSat 9:30am-6:00pm",
+    "evidence": "Mon 8:00am-4:00pm",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
-    "official_name": "San Diego Public Library:  Mission Valley Branch",
+    "official_name": "City of San Marcos: San Marcos Senior Center",
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
   "89": {
-    "access_level": "open_to_all",
-    "access_notes": "Public library",
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "web_only",
-    "sources": [
-      "county_cool_zones_layer",
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
-      "https://www.sandiego.gov/PlacesToCoolDown"
-    ],
-    "conflicts": [],
-    "evidence": "Mon 11:30am-8:00pm\nTues 11:30am-8:00pm\nWed 9:30am-6:00pm\nThurs 9:30am-6:00pm\nFri 9:30am-6:00pm\nSat 9:30am-6:00pm",
-    "maps_place_id": null,
-    "coords_from": "county_cool_zones_layer",
-    "ac_from": "official_program",
-    "official_name": "San Diego Public Library: Linda Vista Branch",
-    "pet_policy": "Service Animals Only",
-    "review_signals": null
-  },
-  "90": {
     "access_level": "open_to_all",
     "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
     "requires_id": null,
@@ -1757,35 +1750,73 @@
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
     ],
     "conflicts": [],
-    "evidence": "Mon10:00am-6:00pm ... Sun 11:30am-3:30pm",
+    "evidence": "Mon 10:00am-5:00pm ... Sun 9:00am-5:00pm",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
-    "official_name": "St. David's Church",
-    "pet_policy": "Service Animals Only",
+    "official_name": "County of San Diego: Santa Ysabel Nature Center",
+    "pet_policy": "Service Animals & Pets Allowed",
+    "review_signals": null
+  },
+  "90": {
+    "access_level": "open_to_all",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "web_only",
+    "sources": [
+      "https://www.sdcl.org/locations/33/",
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
+    ],
+    "conflicts": [],
+    "evidence": "Monday 10:00AM - 6:00PM ... Sunday Closed ... Phone: [(619) 448-1863]",
+    "maps_place_id": null,
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": null,
+    "official_name": null,
+    "pet_policy": null,
     "review_signals": null
   },
   "91": {
     "access_level": "open_to_all",
-    "access_notes": "Public library; Tuesday and Friday hours on page contain typos",
+    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
     "requires_id": null,
     "has_fee": null,
     "verification": "web_only",
     "sources": [
       "county_cool_zones_layer",
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
-      "https://www.sandiego.gov/PlacesToCoolDown"
+      "https://www.imperialbeachca.gov/460/Imperial-Beach-Library"
     ],
     "conflicts": [],
-    "evidence": "Mon 11:30am-8:00pm\nTues 11:30-8:00pm\nWed 9:30am-6:00pm\nThurs 9:30am-6:00pm\nFri 9:30pm-6:00pm\nSat 9:30am-6:00pm",
+    "evidence": "Mon 10:00am-6:00pm ... Sun Closed",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
-    "official_name": "San Diego Public Library: Logan Heights Branch",
+    "official_name": "San Diego County Library: Solana Beach Branch",
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
   "92": {
+    "access_level": "open_to_all",
+    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "web_only",
+    "sources": [
+      "county_cool_zones_layer",
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
+    ],
+    "conflicts": [],
+    "evidence": "Mon 10:00am-6:00pm ... Weds 10:00am-6:00pm ... Sat Closed",
+    "maps_place_id": null,
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": "official_program",
+    "official_name": "San Diego County Library: Valley Center Branch",
+    "pet_policy": "Service Animals Only",
+    "review_signals": null
+  },
+  "93": {
     "access_level": "open_to_all",
     "access_notes": "Public library",
     "requires_id": null,
@@ -1793,50 +1824,31 @@
     "verification": "web_only",
     "sources": [
       "county_cool_zones_layer",
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
-      "https://www.sandiego.gov/PlacesToCoolDown"
+      "https://www.vista.gov/residents/cool-zones",
+      "https://www.vista.gov/Home/Components/News/News/6930/3255",
+      "https://www.vista.gov/residents/library",
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
     ],
     "conflicts": [],
-    "evidence": "Mon Closed\nTues 11:30am-8:00pm\nWed 9:30am-6:00pm\nThurs 9:30am-6:00pm\nFri 9:30am-6:00pm\nSat 9:30am-6:00pm",
+    "evidence": "Monday, 10:00 am-6:00 pm  ... Tuesday, 12:00 pm-7:00 pm  ... Sunday, 10:00 am-5:00 pm",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
-    "official_name": "San Diego Public Library: Mountain View/Beckwourth Branch",
+    "official_name": "San Diego County Library: Vista Branch",
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
-  "93": {
-    "access_level": "unknown",
-    "access_notes": null,
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "single_hours_source",
-    "sources": [
-      "google_maps",
-      "https://www.sandiego.gov/park-and-recreation/centers/recctr/nclairemont"
-    ],
-    "conflicts": [],
-    "evidence": "Monday through Thursday, 3:00 p.m. to 7:00 p.m.",
-    "maps_place_id": "ChIJ0dnESvUA3IARrLQOdqIaISM",
-    "coords_from": "county_cool_zones_layer",
-    "ac_from": null,
-    "official_name": null,
-    "pet_policy": null,
-    "review_signals": null
-  },
   "94": {
-    "access_level": "open_to_all",
+    "access_level": "unknown",
     "access_notes": null,
     "requires_id": null,
     "has_fee": null,
     "verification": "web_only",
     "sources": [
-      "https://www.sandiego.gov/public-library/locations/san-carlos-library",
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
-      "https://www.sandiego.gov/PlacesToCoolDown"
+      "https://www.sandiego.gov/park-and-recreation/centers/recctr/balboasenior"
     ],
     "conflicts": [],
-    "evidence": "Saturday: ... 9:30 a.m. - 6:00 p.m. ... Sunday: Closed ... Monday: Closed ... Tuesday: 11:30 a.m. - 8:00 p.m.",
+    "evidence": "| Tues | 9:00am - 1:00am | ... | Wed | 9:00am - 1:00am | ... | Thurs | 9:00am - 1:00am | ... | Fri | 9:00am - 1:00am | ... | Sat | 9:00am - 1:00am | ... The senior lounge is closed on City Holidays.",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
@@ -1846,22 +1858,21 @@
   },
   "95": {
     "access_level": "open_to_all",
-    "access_notes": "Public library",
+    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
     "requires_id": null,
     "has_fee": null,
     "verification": "web_only",
     "sources": [
       "county_cool_zones_layer",
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
-      "https://public-district2.sandiegocounty.gov/news/email/show.aspx?ID=PLYWNG2N75WJW",
       "https://www.sandiego.gov/PlacesToCoolDown"
     ],
     "conflicts": [],
-    "evidence": "Mon 11:30am-8:00pm\nTues 11:30am-8:00pm\nWed 9:30am-6:00pm\nThurs 9:30am-6:00pm\nFri 9:30am-6:00pm\nSat 9:30am-6:00pm",
+    "evidence": "Mon 11:30am-8:00pm ... Tues 11:30-8:00pm ... Fri 9:30pm-6:00pm",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
-    "official_name": "San Diego Public Library: Allied Gardens/Benjamin Branch",
+    "official_name": "San Diego Public Library: University Heights Branch",
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
@@ -1877,15 +1888,150 @@
       "https://www.sandiego.gov/PlacesToCoolDown"
     ],
     "conflicts": [],
-    "evidence": "Currently Closed for ... renovation ... RE-OPENING: Friday, ... June 5",
+    "evidence": "Mon 11:30am-8:00pm ... Tues 11:30am-8:00pm ... Wed 9:30am-6:00pm ... Thurs 9:30am-6:00pm ... Fri 9:30am-6:00pm ... Sat 9:30am-6:00pm ... Sun Closed",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
-    "official_name": "San Diego Public Library: University Community Branch",
+    "official_name": "San Diego Public Library: Point Loma/Hervey branch",
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
   "97": {
+    "access_level": "open_to_all",
+    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "web_only",
+    "sources": [
+      "county_cool_zones_layer",
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
+    ],
+    "conflicts": [],
+    "evidence": "Tues 11:30am-8:00pm ... Wed 9:30am-6:00pm",
+    "maps_place_id": null,
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": "official_program",
+    "official_name": "San Diego Public Library:  Mission Valley Branch",
+    "pet_policy": "Service Animals Only",
+    "review_signals": null
+  },
+  "98": {
+    "access_level": "open_to_all",
+    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "web_only",
+    "sources": [
+      "county_cool_zones_layer",
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
+      "https://www.sandiego.gov/PlacesToCoolDown"
+    ],
+    "conflicts": [],
+    "evidence": "Mon 11:30am-8:00pm ... Wed 9:30am-6:00pm",
+    "maps_place_id": null,
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": "official_program",
+    "official_name": "San Diego Public Library: Linda Vista Branch",
+    "pet_policy": "Service Animals Only",
+    "review_signals": null
+  },
+  "99": {
+    "access_level": "open_to_all",
+    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "web_only",
+    "sources": [
+      "county_cool_zones_layer",
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
+    ],
+    "conflicts": [],
+    "evidence": "Mon10:00am-6:00pm ... Tues10:00am-6:00pm ... Wed10:00am-6:00pm ... Thurs10:00am-6:00pm ... Fri 10:00am-6:00pm ... Sat 10:00am-6:00pm ... Sun 11:30am-3:30pm",
+    "maps_place_id": null,
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": "official_program",
+    "official_name": "St. David's Church",
+    "pet_policy": "Service Animals Only",
+    "review_signals": null
+  },
+  "100": {
+    "access_level": "open_to_all",
+    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "web_only",
+    "sources": [
+      "county_cool_zones_layer",
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
+      "https://www.sandiego.gov/PlacesToCoolDown"
+    ],
+    "conflicts": [],
+    "evidence": "Mon 11:30am-8:00pm ... Tues 11:30am-8:00pm ... Wed 9:30am-6:00pm ... Thurs 9:30am-6:00pm ... Fri 9:30am-6:00pm ... Sat 9:30am-6:00pm ... Sun Closed",
+    "maps_place_id": null,
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": "official_program",
+    "official_name": "San Diego Public Library: Logan Heights Branch",
+    "pet_policy": "Service Animals Only",
+    "review_signals": null
+  },
+  "101": {
+    "access_level": "open_to_all",
+    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "web_only",
+    "sources": [
+      "county_cool_zones_layer",
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
+      "https://www.sandiego.gov/PlacesToCoolDown"
+    ],
+    "conflicts": [],
+    "evidence": "Mon Closed ... Tues 11:30am-8:00pm ... Wed 9:30am-6:00pm",
+    "maps_place_id": null,
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": "official_program",
+    "official_name": "San Diego Public Library: Mountain View/Beckwourth Branch",
+    "pet_policy": "Service Animals Only",
+    "review_signals": null
+  },
+  "102": {
+    "access_level": "unknown",
+    "access_notes": "Page describes AgeWell Services newsletters for adults ages 60 and older, but does not state a formal entry restriction for the center.",
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "web_only",
+    "sources": [
+      "https://www.sandiego.gov/park-and-recreation/centers/recctr/memorialsenior"
+    ],
+    "conflicts": [],
+    "evidence": "| Mon | 9:00am - 3:00pm |\n| --- | --- |\n| Tues | 9:00am - 3:00pm |\n| Wed | 9:00am - 3:00pm |\n| Thurs | 9:00am - 3:00pm |\n| Fri | 9:00am - 3:00pm |\n| Sat | CLOSED |\n| Sun | CLOSED |\n\n\\*Hours are subject to change.\n\nThe center is closed on City Holidays.",
+    "maps_place_id": null,
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": null,
+    "official_name": null,
+    "pet_policy": null,
+    "review_signals": null
+  },
+  "103": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "single_hours_source",
+    "sources": [
+      "google_maps",
+      "https://www.coronado.ca.us/330/Coronado-Community-Center"
+    ],
+    "conflicts": [],
+    "evidence": "# Coronado Community Center",
+    "maps_place_id": "ChIJJ5fbkSxT2YARPSIQyLK8-TQ",
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": null,
+    "official_name": null,
+    "pet_policy": null,
+    "review_signals": null
+  },
+  "104": {
     "access_level": "open_to_all",
     "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
     "requires_id": null,
@@ -1898,7 +2044,49 @@
       "https://www.sandiego.gov/PlacesToCoolDown"
     ],
     "conflicts": [],
-    "evidence": "Mon Closed ... Tues 11:30am-8:00pm ... Wed 9:30am-6:00pm ... Sun Closed",
+    "evidence": "Mon 11:30am-8:00pm ... Wed 9:30am-6:00pm",
+    "maps_place_id": null,
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": "official_program",
+    "official_name": "San Diego Public Library: Allied Gardens/Benjamin Branch",
+    "pet_policy": "Service Animals Only",
+    "review_signals": null
+  },
+  "105": {
+    "access_level": "open_to_all",
+    "access_notes": "Public library; no restriction stated on page",
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "web_only",
+    "sources": [
+      "county_cool_zones_layer",
+      "https://www.sandiego.gov/public-library/locations/university-community-library",
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
+      "https://www.sandiego.gov/PlacesToCoolDown"
+    ],
+    "conflicts": [],
+    "evidence": "Saturday: ... 9:30 a.m. - 6:00 p.m. ... Sunday: Closed ... Monday: Closed ... Tuesday: ... 11:30 a.m. - 8:00 p.m.",
+    "maps_place_id": null,
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": "official_program",
+    "official_name": "San Diego Public Library: University Community Branch",
+    "pet_policy": "Service Animals Only",
+    "review_signals": null
+  },
+  "106": {
+    "access_level": "open_to_all",
+    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "web_only",
+    "sources": [
+      "county_cool_zones_layer",
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
+      "https://public-district2.sandiegocounty.gov/news/email/show.aspx?ID=PLYWNG2N75WJW",
+      "https://www.sandiego.gov/PlacesToCoolDown"
+    ],
+    "conflicts": [],
+    "evidence": "Mon Closed ... Tues 11:30am-8:00pm ... Wed 9:30am-6:00pm ... Thurs 9:30am-6:00pm ... Fri 9:30am-6:00pm ... Sat 9:30am-6:00pm ... Sun Closed",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
@@ -1906,9 +2094,30 @@
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
-  "98": {
+  "107": {
     "access_level": "open_to_all",
-    "access_notes": "Service Animals Only pet policy noted; public library",
+    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "web_only",
+    "sources": [
+      "county_cool_zones_layer",
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
+      "https://www.sandiego.gov/public-library/locations/san-carlos-library",
+      "https://www.sandiego.gov/PlacesToCoolDown"
+    ],
+    "conflicts": [],
+    "evidence": "Mon Closed ... Tues 11:30am-8:00pm ... Wed 9:30am-6:00pm ... Thurs 9:30am-6:00pm ... Fri 9:30am-6:00pm ... Sat 9:30am-6:00pm ... Sun Closed",
+    "maps_place_id": null,
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": "official_program",
+    "official_name": "San Diego Public Library: Tierrasanta Branch",
+    "pet_policy": "Service Animals Only",
+    "review_signals": null
+  },
+  "108": {
+    "access_level": "open_to_all",
+    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
     "requires_id": null,
     "has_fee": null,
     "verification": "web_only",
@@ -1918,7 +2127,7 @@
       "https://www.sanmarcosca.gov/City-Government/Communication-Engagement/City-News/Stay-cool-and-safe-during-hot-weather"
     ],
     "conflicts": [],
-    "evidence": "Mon 10:00am-6:00pm\nTues 12:00pm-7:00pm\nWed 12:00pm-7:00pm\nThurs10:00am-6:00pm\nFri 10:00am-5:00pm\nSat 10:00am-5:00pm\nSun 10:00am-5:00pm",
+    "evidence": "Thurs10:00am-6:00pm ... Sun 10:00am-5:00pm",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
@@ -1926,7 +2135,7 @@
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
-  "99": {
+  "109": {
     "access_level": "open_to_all",
     "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
     "requires_id": null,
@@ -1938,7 +2147,7 @@
       "https://www.sandiego.gov/PlacesToCoolDown"
     ],
     "conflicts": [],
-    "evidence": "Mon 9:00am-8:00pm ... Sat 9:00am-3:00pm",
+    "evidence": "Mon 9:00am-8:00pm",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
@@ -1946,46 +2155,7 @@
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
-  "100": {
-    "access_level": "open_to_all",
-    "access_notes": "Public library",
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "web_only",
-    "sources": [
-      "county_cool_zones_layer",
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
-    ],
-    "conflicts": [],
-    "evidence": "Tues 11:30am-8:00pm\nWed 9:30am-6:00pm\nThurs 9:30am-6:00pm\nFri 9:30am-6:00pm\nSat 9:30am-6:00pm",
-    "maps_place_id": null,
-    "coords_from": "county_cool_zones_layer",
-    "ac_from": "official_program",
-    "official_name": "San Diego Public Library: Carmel Valley Branch",
-    "pet_policy": "Service Animals Only",
-    "review_signals": null
-  },
-  "101": {
-    "access_level": "open_to_all",
-    "access_notes": "Public library",
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "web_only",
-    "sources": [
-      "county_cool_zones_layer",
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
-      "https://www.sandiego.gov/PlacesToCoolDown"
-    ],
-    "conflicts": [],
-    "evidence": "Mon Closed\nTues 11:30am-8:00pm\nWed 9:30am-6:00pm\nThurs 9:30am-6:00pm\nFri 9:30am-6:00pm\nSat 9:30am-6:00pm",
-    "maps_place_id": null,
-    "coords_from": "county_cool_zones_layer",
-    "ac_from": "official_program",
-    "official_name": "San Diego Public Library: Pacific Highlands Ranch Branch",
-    "pet_policy": "Service Animals Only",
-    "review_signals": null
-  },
-  "102": {
+  "110": {
     "access_level": "open_to_all",
     "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
     "requires_id": null,
@@ -1997,7 +2167,47 @@
       "https://www.sandiego.gov/PlacesToCoolDown"
     ],
     "conflicts": [],
-    "evidence": "Mon 11:30am-8:00pm ... Tues 11:30am-8:00pm ... Wed 9:30am-6:00pm ... Sun Closed",
+    "evidence": "Mon 11:30am-8:00pm ... Wed 9:30am-6:00pm",
+    "maps_place_id": null,
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": "official_program",
+    "official_name": "San Diego Public Library: Carmel Valley Branch",
+    "pet_policy": "Service Animals Only",
+    "review_signals": null
+  },
+  "111": {
+    "access_level": "open_to_all",
+    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "web_only",
+    "sources": [
+      "county_cool_zones_layer",
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
+      "https://www.sandiego.gov/PlacesToCoolDown"
+    ],
+    "conflicts": [],
+    "evidence": "Mon Closed ... Tues 11:30am-8:00pm ... Wed 9:30am-6:00pm",
+    "maps_place_id": null,
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": "official_program",
+    "official_name": "San Diego Public Library: Pacific Highlands Ranch Branch",
+    "pet_policy": "Service Animals Only",
+    "review_signals": null
+  },
+  "112": {
+    "access_level": "open_to_all",
+    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "web_only",
+    "sources": [
+      "county_cool_zones_layer",
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
+      "https://www.sandiego.gov/PlacesToCoolDown"
+    ],
+    "conflicts": [],
+    "evidence": "Mon 11:30am-8:00pm ... Tues 11:30am-8:00pm ... Wed 9:30am-6:00pm ... Thurs 9:30am-6:00pm ... Fri 9:30am-6:00pm ... Sat 9:30am-6:00pm ... Sun Closed",
     "maps_place_id": null,
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
@@ -2005,8 +2215,54 @@
     "pet_policy": "Service Animals Only",
     "review_signals": null
   },
-  "103": {
+  "113": {
     "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "web_only",
+    "sources": [
+      "https://www.sandiego.gov/park-and-recreation/centers/recctr/syseniorcenter"
+    ],
+    "conflicts": [],
+    "evidence": "| Mon | 11 a.m. - 7 p.m. | ... | Fri | 10 a.m. - 6 p.m. | ... The center is closed on City Holidays.",
+    "maps_place_id": null,
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": null,
+    "official_name": null,
+    "pet_policy": null,
+    "review_signals": null
+  },
+  "114": {
+    "access_level": "open_to_all",
+    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "conflict",
+    "sources": [
+      "county_cool_zones_layer",
+      "google_maps",
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
+      "https://www.escondido.gov/162/Library"
+    ],
+    "conflicts": [
+      "sat: maps 10:00-17:00 vs web 09:00-17:00",
+      "fri: maps 10:00-18:00 vs web 09:00-17:00",
+      "thu: maps 10:00-20:00 vs web 09:00-19:00",
+      "wed: maps 10:00-20:00 vs web 09:00-19:00",
+      "tue: maps 10:00-20:00 vs web 09:00-19:00",
+      "mon: maps 10:00-20:00 vs web 09:00-19:00"
+    ],
+    "evidence": "Mon 9:00am-7:00pm",
+    "maps_place_id": "ChIJZzqVtEBS2YARmfs0QPh__wo",
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": "official_program",
+    "official_name": "National City Public Library",
+    "pet_policy": "Service Animals Only",
+    "review_signals": null
+  },
+  "115": {
+    "access_level": "open_to_all",
     "access_notes": null,
     "requires_id": null,
     "has_fee": null,
@@ -2022,7 +2278,7 @@
       "wed: maps 09:00-19:00 vs web 10:00-20:00",
       "tue: maps 09:00-19:00 vs web 10:00-20:00"
     ],
-    "evidence": "| Tues | 10:00 a.m. - 8:00 p.m. | ... | Fri | 12:00 p.m. - 6:00 p.m. | Sat | 10:00 a.m. - 2:00 p.m. | ... The center is closed on City Holidays.",
+    "evidence": "| Tues | 10:00 a.m. - 8:00 p.m. | ... | Sat | 10:00 a.m. - 2:00 p.m. | ... The center is closed on City Holidays.",
     "maps_place_id": "ChIJqWt5SOUD3IARAvP8J7xjOqk",
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
@@ -2030,30 +2286,7 @@
     "pet_policy": null,
     "review_signals": null
   },
-  "104": {
-    "access_level": "open_to_all",
-    "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "conflict",
-    "sources": [
-      "county_cool_zones_layer",
-      "google_maps",
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
-      "https://public-district2.sandiegocounty.gov/news/email/show.aspx?ID=PLYWNG2N75WJW"
-    ],
-    "conflicts": [
-      "tue: maps 12:00-19:00 vs web 00:00-19:00"
-    ],
-    "evidence": "Tues 12:00am-7:00pm ... Sun Closed",
-    "maps_place_id": "ChIJMTV1hVr924ARoccT1ogmuXk",
-    "coords_from": "county_cool_zones_layer",
-    "ac_from": "official_program",
-    "official_name": "San Diego County Library: Santee Branch",
-    "pet_policy": "Service Animals Only",
-    "review_signals": null
-  },
-  "105": {
+  "116": {
     "access_level": "unknown",
     "access_notes": null,
     "requires_id": null,
@@ -2075,7 +2308,7 @@
     "pet_policy": null,
     "review_signals": null
   },
-  "106": {
+  "117": {
     "access_level": "open_to_all",
     "access_notes": null,
     "requires_id": null,
@@ -2094,7 +2327,7 @@
       "tue: maps 09:00-21:00 vs web 13:00-20:00",
       "mon: maps 09:00-20:00 vs web 13:00-20:00"
     ],
-    "evidence": "| Mon | 1:00 p.m. - 8:00 p.m. | ... | Sun | CLOSED | ... \\*Times are subject to change ... The center is closed on City Holidays.",
+    "evidence": "| Mon | 1:00 p.m. - 8:00 p.m. |\n| --- | --- |\n| Tues | 1:00 p.m. - 8:00 p.m. |\n| Wed | 1:00 p.m. - 8:00 p.m. |\n| Thurs | 1:00 p.m. - 8:00 p.m. |\n| Fri | 12:00 p.m. - 7:00 p.m. |\n| Sat | 10:00 a.m. - 3:00 p.m. |\n| Sun | CLOSED |",
     "maps_place_id": "ChIJyatccZUB3IAR1rzIwhoQXFc",
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
@@ -2102,8 +2335,8 @@
     "pet_policy": null,
     "review_signals": null
   },
-  "107": {
-    "access_level": "open_to_all",
+  "118": {
+    "access_level": "unknown",
     "access_notes": null,
     "requires_id": null,
     "has_fee": null,
@@ -2121,7 +2354,7 @@
       "tue: maps 09:00-20:00 vs web 13:30-20:00",
       "mon: maps 09:00-20:00 vs web 13:00-20:00"
     ],
-    "evidence": "| Mon | 1:00 p.m. - 8:00 p.m. | ... | Sat | 10:00 a.m. - 3:00 p.m. | Sun | CLOSED | ... The center is closed on City Holidays.",
+    "evidence": "| Mon | 1:00 p.m. - 8:00 p.m. | ... | Sat | 10:00 a.m. - 3:00 p.m. | ... The center is closed on City Holidays.",
     "maps_place_id": "ChIJX89qj_z_24AR4Nu2zaP5A_Y",
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
@@ -2129,9 +2362,9 @@
     "pet_policy": null,
     "review_signals": null
   },
-  "108": {
+  "119": {
     "access_level": "open_to_all",
-    "access_notes": "Teen Center: Ages 13 to 17 years welcome (age verification required)",
+    "access_notes": "Teen Center: Ages 13 to 17 years welcome (age verification required), Monday to Friday, 2 to 6 p.m.",
     "requires_id": null,
     "has_fee": null,
     "verification": "conflict",
@@ -2147,7 +2380,7 @@
       "tue: maps 12:00-20:00 vs web 11:00-20:00",
       "mon: maps 12:00-20:00 vs web 11:00-20:00"
     ],
-    "evidence": "| Mon | 11:00 a.m. - 8:00 p.m. | ... | Sun | 10:00 a.m. - 2:00 p.m. | ... The center is closed on City Holidays.",
+    "evidence": "| Mon | 11:00 a.m. - 8:00 p.m. | ... The center is closed on City Holidays.",
     "maps_place_id": "ChIJb2vgV7ZT2YARMMlBtpws0uQ",
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
@@ -2155,7 +2388,31 @@
     "pet_policy": null,
     "review_signals": null
   },
-  "109": {
+  "120": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "conflict",
+    "sources": [
+      "google_maps",
+      "https://www.sandiego.gov/park-and-recreation/centers/recctr/nclairemont"
+    ],
+    "conflicts": [
+      "thu: maps 09:00-21:00 vs web 15:00-19:00",
+      "wed: maps 13:00-21:00 vs web 15:00-19:00",
+      "tue: maps 09:00-21:00 vs web 15:00-19:00",
+      "mon: maps 12:00-21:00 vs web 15:00-19:00"
+    ],
+    "evidence": "Monday through Thursday, 3:00 p.m. to 7:00 p.m.",
+    "maps_place_id": "ChIJ0dnESvUA3IARrLQOdqIaISM",
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": null,
+    "official_name": null,
+    "pet_policy": null,
+    "review_signals": null
+  },
+  "121": {
     "access_level": "unknown",
     "access_notes": null,
     "requires_id": null,
@@ -2179,9 +2436,9 @@
     "pet_policy": null,
     "review_signals": null
   },
-  "110": {
+  "122": {
     "access_level": "open_to_all",
-    "access_notes": "No entry restriction stated on the page; city recreation center.",
+    "access_notes": null,
     "requires_id": null,
     "has_fee": null,
     "verification": "conflict",
@@ -2192,7 +2449,7 @@
     "conflicts": [
       "wed: maps 12:00-21:00 vs web 11:00-21:00"
     ],
-    "evidence": "### Recreation Center Hours | Mon | 12:00 p.m. - 9:00 p.m. | ... | Sun | 8:00 a.m. - 1:00 p.m. | ... *Times are subject to change ... The center is closed on City Holidays.",
+    "evidence": "| Mon | 12:00 p.m. - 9:00 p.m. | ... | Tues | 11:00 a.m. - 9:00 p.m. | ... | Sun | 8:00 a.m. - 1:00 p.m. | ... The center is closed on City Holidays.",
     "maps_place_id": "ChIJn_uKPd0A3IARiRMDojjxCs0",
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
@@ -2200,9 +2457,9 @@
     "pet_policy": null,
     "review_signals": null
   },
-  "111": {
+  "123": {
     "access_level": "members_only",
-    "access_notes": "Enrollment required: PACE is a health plan for adults age 55 and older who meet enrollment criteria; participants receive care at the center",
+    "access_notes": "Enrollment in PACE program required; services are for adults age 55 and older who meet enrollment criteria",
     "requires_id": null,
     "has_fee": null,
     "verification": "confirmed",
@@ -2211,7 +2468,7 @@
       "https://www.syhealth.org/services/sdpace"
     ],
     "conflicts": [],
-    "evidence": "### San Diego PACE Chula Vista\n\n880 Third Avenue,  \nChula Vista, CA 91911  \nHours: Mon - Fri from 8:00 AM to 5:00 PM ... Who Qualifies for PACE? ... Be 55 years of age or older",
+    "evidence": "### San Diego PACE Chula Vista\n\n880 Third Avenue,  \nChula Vista, CA 91911  \nHours: Mon - Fri from 8:00 AM to 5:00 PM ... San Diego PACE, a division of San Ysidro Health, Inc., is a specialized health plan that provides high quality, compassionate care to adults age 55 and older.",
     "maps_place_id": "ChIJKxQ5JH1P2YAR5DfV1yb0Dks",
     "coords_from": "google_maps",
     "ac_from": null,
@@ -2219,9 +2476,9 @@
     "pet_policy": null,
     "review_signals": null
   },
-  "112": {
+  "124": {
     "access_level": "members_only",
-    "access_notes": "Enrolled PACE participants; enrollment requires being 55 years of age or older and living within service area zip codes",
+    "access_notes": "Enrollment in San Diego PACE required; program serves adults age 55 and older who meet eligibility criteria",
     "requires_id": null,
     "has_fee": null,
     "verification": "confirmed",
@@ -2230,7 +2487,7 @@
       "http://www.sdpace.org/"
     ],
     "conflicts": [],
-    "evidence": "Hours: Mon - Fri from 8:00 AM to 5:00 PM; 3rd Saturday of the Month from 8:00 AM to 12:00 PM ... Be 55 years of age or older",
+    "evidence": "Hours: Mon - Fri from 8:00 AM to 5:00 PM; 3rd Saturday of the Month from 8:00 AM to 12:00 PM",
     "maps_place_id": "ChIJQ4ilmNtZ2YARI7ZzW-odxLI",
     "coords_from": "google_maps",
     "ac_from": null,
@@ -2238,7 +2495,7 @@
     "pet_policy": null,
     "review_signals": null
   },
-  "113": {
+  "125": {
     "access_level": "open_to_all",
     "access_notes": "All older adults 60+ are welcome!",
     "requires_id": null,
@@ -2249,7 +2506,7 @@
       "https://servingseniors.org/what-we-do/gary-mary-west-senior-wellness-center/overview.html"
     ],
     "conflicts": [],
-    "evidence": "**All older adults 60+ are welcome!** ... Open 365 days a year ... Monday - Friday, 7 a.m. - 4 p.m. ... Saturday - Sunday, 8 a.m. - 2 p.m.",
+    "evidence": "**All older adults 60+ are welcome!** ... Monday - Friday, 7 a.m. - 4 p.m. ... Saturday - Sunday, 8 a.m. - 2 p.m.",
     "maps_place_id": "ChIJqWrgZgtV2YAR3VU3E1qzj2I",
     "coords_from": "google_maps",
     "ac_from": null,
@@ -2257,7 +2514,7 @@
     "pet_policy": null,
     "review_signals": null
   },
-  "114": {
+  "126": {
     "access_level": "open_to_all",
     "access_notes": "Open to the Public",
     "requires_id": null,
@@ -2265,11 +2522,11 @@
     "verification": "confirmed",
     "sources": [
       "google_maps",
-      "https://fdsrc.org/",
-      "http://fdsrc.org/"
+      "http://fdsrc.org/",
+      "https://fdsrc.org/"
     ],
     "conflicts": [],
-    "evidence": "Open to the Public ... Wednesday through Friday ... 9:30 am – 5:30 pm",
+    "evidence": "Open to the Public ... Wednesday through Friday 9:30 am – 5:30 pm",
     "maps_place_id": "ChIJ6fXHCXVR2YARYfuAQoJ4YUk",
     "coords_from": "google_maps",
     "ac_from": null,
@@ -2277,7 +2534,7 @@
     "pet_policy": null,
     "review_signals": null
   },
-  "115": {
+  "127": {
     "access_level": "open_to_all",
     "access_notes": null,
     "requires_id": null,
@@ -2288,7 +2545,7 @@
       "https://www.coronadolibrary.org/"
     ],
     "conflicts": [],
-    "evidence": "**Hours:** Mon–Thurs: 9:30 a.m.–9 p.m. | Fri: 9:30 a.m.- 6 p.m. | Sat: 10 a.m.–6 p.m. | Sun: 1 p.m.-5 p.m. ... Phone: [619-522-7390](tel:619-522-7390)",
+    "evidence": "**Hours:** Mon–Thurs: 9:30 a.m.–9 p.m. | Fri: 9:30 a.m.- 6 p.m. | Sat: 10 a.m.–6 p.m. | Sun: 1 p.m.-5 p.m. ... 640 Orange Avenue ... Coronado, CA 92118",
     "maps_place_id": "ChIJEeh4mrWs3oARHZ_QpJdg4LU",
     "coords_from": "google_maps",
     "ac_from": null,
@@ -2296,7 +2553,7 @@
     "pet_policy": null,
     "review_signals": null
   },
-  "116": {
+  "128": {
     "access_level": "members_only",
     "access_notes": "\"All services offered by St. Paul's PACE are for St. Paul's PACE participants only.\"",
     "requires_id": null,
@@ -2315,7 +2572,25 @@
     "pet_policy": null,
     "review_signals": null
   },
-  "117": {
+  "129": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJRRhmygVP2YARGryuWYSJ2hY",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "pet_policy": null,
+    "review_signals": null
+  },
+  "130": {
     "access_level": "unknown",
     "access_notes": null,
     "requires_id": null,
@@ -2333,244 +2608,6 @@
     "pet_policy": null,
     "review_signals": null
   },
-  "118": {
-    "access_level": "unknown",
-    "access_notes": null,
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "single_hours_source",
-    "sources": [
-      "google_maps",
-      "https://www.sharp.com/locations/brier-patch-campus"
-    ],
-    "conflicts": [],
-    "evidence": "Sharp Community Resource Center ... Building F ... 619-740-4214",
-    "maps_place_id": "ChIJASYsB3JX2YAR9wECwHcm0lA",
-    "coords_from": "google_maps",
-    "ac_from": null,
-    "official_name": null,
-    "pet_policy": null,
-    "review_signals": null
-  },
-  "119": {
-    "access_level": "unknown",
-    "access_notes": null,
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "maps_only",
-    "sources": [
-      "google_maps"
-    ],
-    "conflicts": [],
-    "evidence": null,
-    "maps_place_id": "ChIJ__ffUxdy3IARpT_XWhqgPCk",
-    "coords_from": "google_maps",
-    "ac_from": null,
-    "official_name": null,
-    "pet_policy": null,
-    "review_signals": null
-  },
-  "120": {
-    "access_level": "unknown",
-    "access_notes": null,
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "maps_only",
-    "sources": [
-      "google_maps"
-    ],
-    "conflicts": [],
-    "evidence": null,
-    "maps_place_id": "ChIJKw0HksZz3IARt43ZwKTbdog",
-    "coords_from": "google_maps",
-    "ac_from": null,
-    "official_name": null,
-    "pet_policy": null,
-    "review_signals": null
-  },
-  "121": {
-    "access_level": "unknown",
-    "access_notes": null,
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "maps_only",
-    "sources": [
-      "google_maps"
-    ],
-    "conflicts": [],
-    "evidence": null,
-    "maps_place_id": "ChIJ438Imk4H3IARZYos9A6VV7U",
-    "coords_from": "google_maps",
-    "ac_from": null,
-    "official_name": null,
-    "pet_policy": null,
-    "review_signals": null
-  },
-  "122": {
-    "access_level": "unknown",
-    "access_notes": null,
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "single_hours_source",
-    "sources": [
-      "google_maps",
-      "http://ljcommunitycenter.org/?y_source=1_OTkyMjc4Ny03MTUtbG9jYXRpb24ud2Vic2l0ZQ=="
-    ],
-    "conflicts": [],
-    "evidence": "6811 La Jolla Blvd.",
-    "maps_place_id": "ChIJ-9AIVtwD3IARo9Z9qOnb-FE",
-    "coords_from": "google_maps",
-    "ac_from": null,
-    "official_name": null,
-    "pet_policy": null,
-    "review_signals": null
-  },
-  "123": {
-    "access_level": "unknown",
-    "access_notes": "Drop-in indoor court fee is $3 per person ages 18-64. Participants under 18 (with school ID) and those over 65 (with ID) are free.",
-    "requires_id": null,
-    "has_fee": true,
-    "verification": "single_hours_source",
-    "sources": [
-      "google_maps",
-      "https://www.ci.oceanside.ca.us/government/parks-recreation/sports-field-rentals"
-    ],
-    "conflicts": [],
-    "evidence": "The drop-in fee for our indoor courts is $3 per person ages 18-64. Participants under 18 (with school ID) and those over 65 (with ID) are free.",
-    "maps_place_id": "ChIJUTj59Ddu3IARS-DOeL0GOhE",
-    "coords_from": "google_maps",
-    "ac_from": null,
-    "official_name": null,
-    "pet_policy": null,
-    "review_signals": null
-  },
-  "124": {
-    "access_level": "unknown",
-    "access_notes": null,
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "maps_only",
-    "sources": [
-      "google_maps"
-    ],
-    "conflicts": [],
-    "evidence": null,
-    "maps_place_id": "ChIJ0bUk3DZu3IARJj8ksblC3Jk",
-    "coords_from": "google_maps",
-    "ac_from": null,
-    "official_name": null,
-    "pet_policy": null,
-    "review_signals": null
-  },
-  "125": {
-    "access_level": "unknown",
-    "access_notes": null,
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "maps_only",
-    "sources": [
-      "google_maps"
-    ],
-    "conflicts": [],
-    "evidence": null,
-    "maps_place_id": "ChIJd7PLIZpv3IARob80pWrDgm4",
-    "coords_from": "google_maps",
-    "ac_from": null,
-    "official_name": null,
-    "pet_policy": null,
-    "review_signals": null
-  },
-  "126": {
-    "access_level": "unknown",
-    "access_notes": null,
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "maps_only",
-    "sources": [
-      "google_maps"
-    ],
-    "conflicts": [],
-    "evidence": null,
-    "maps_place_id": "ChIJjxI6OPlT2YAR7DzLqatxrBk",
-    "coords_from": "google_maps",
-    "ac_from": null,
-    "official_name": null,
-    "pet_policy": null,
-    "review_signals": null
-  },
-  "127": {
-    "access_level": "unknown",
-    "access_notes": null,
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "maps_only",
-    "sources": [
-      "google_maps"
-    ],
-    "conflicts": [],
-    "evidence": null,
-    "maps_place_id": "ChIJi4Dk-xRU2YARbCi6I0kDxb0",
-    "coords_from": "google_maps",
-    "ac_from": null,
-    "official_name": null,
-    "pet_policy": null,
-    "review_signals": null
-  },
-  "128": {
-    "access_level": "unknown",
-    "access_notes": null,
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "maps_only",
-    "sources": [
-      "google_maps"
-    ],
-    "conflicts": [],
-    "evidence": null,
-    "maps_place_id": "ChIJfUW8KwBT2YARhRUgCNUM82c",
-    "coords_from": "google_maps",
-    "ac_from": null,
-    "official_name": null,
-    "pet_policy": null,
-    "review_signals": null
-  },
-  "129": {
-    "access_level": "unknown",
-    "access_notes": null,
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "single_hours_source",
-    "sources": [
-      "google_maps",
-      "https://www.paradiseprpd.com/paradise-community-center"
-    ],
-    "conflicts": [],
-    "evidence": "Paradise Community Center (formerly the Paradise Senior Center)",
-    "maps_place_id": "ChIJKbBY32tT2YARonXacbDdISQ",
-    "coords_from": "google_maps",
-    "ac_from": null,
-    "official_name": null,
-    "pet_policy": null,
-    "review_signals": null
-  },
-  "130": {
-    "access_level": "age_restricted",
-    "access_notes": "Individuals who are 60 years of age or older are eligible to participate in the program. Open to enrolled participants.",
-    "requires_id": null,
-    "has_fee": false,
-    "verification": "web_only",
-    "sources": [
-      "https://www.neighborhoodhouse.org/nha-programs/senior-services/senior-service-center/"
-    ],
-    "conflicts": [],
-    "evidence": "The Senior Service Center is open to enrolled participants on Wednesdays from 9:00am to 2:00pm ... Individuals who are 60 years of age or older are eligible to participate in the program.",
-    "maps_place_id": null,
-    "coords_from": "census_geocoder",
-    "ac_from": null,
-    "official_name": null,
-    "pet_policy": null,
-    "review_signals": null
-  },
   "131": {
     "access_level": "unknown",
     "access_notes": null,
@@ -2582,7 +2619,7 @@
     ],
     "conflicts": [],
     "evidence": null,
-    "maps_place_id": "ChIJSQjFBHVR2YARyPOwnKEsR90",
+    "maps_place_id": "ChIJASYsB3JX2YAR9wECwHcm0lA",
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
@@ -2600,7 +2637,7 @@
     ],
     "conflicts": [],
     "evidence": null,
-    "maps_place_id": "ChIJeWuwej4A3IARcF6-yPyr5-4",
+    "maps_place_id": "ChIJ__ffUxdy3IARpT_XWhqgPCk",
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
@@ -2618,7 +2655,7 @@
     ],
     "conflicts": [],
     "evidence": null,
-    "maps_place_id": "ChIJC_mfACoB3IARqroE9qj8aZU",
+    "maps_place_id": "ChIJKw0HksZz3IARt43ZwKTbdog",
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
@@ -2626,6 +2663,242 @@
     "review_signals": null
   },
   "134": {
+    "access_level": "open_to_all",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": false,
+    "verification": "web_only",
+    "sources": [
+      "https://www.loc8nearme.com/california/el-cajon/boardwalk/6958112/"
+    ],
+    "conflicts": [],
+    "evidence": "3 - 8PM ... 3 - 10PM ... 12 - 10PM ... 12 - 8PM ... There is no entrance fee.",
+    "maps_place_id": null,
+    "coords_from": "census_geocoder",
+    "ac_from": null,
+    "official_name": null,
+    "pet_policy": null,
+    "review_signals": null
+  },
+  "135": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ438Imk4H3IARZYos9A6VV7U",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "pet_policy": null,
+    "review_signals": null
+  },
+  "136": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "single_hours_source",
+    "sources": [
+      "google_maps",
+      "http://ljcommunitycenter.org/?y_source=1_OTkyMjc4Ny03MTUtbG9jYXRpb24ud2Vic2l0ZQ=="
+    ],
+    "conflicts": [],
+    "evidence": "Enjoy our diverse line-up of  programs, events and services while supporting your local Senior Center!",
+    "maps_place_id": "ChIJ-9AIVtwD3IARo9Z9qOnb-FE",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "pet_policy": null,
+    "review_signals": null
+  },
+  "137": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ0bUk3DZu3IARJj8ksblC3Jk",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "pet_policy": null,
+    "review_signals": null
+  },
+  "138": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJd7PLIZpv3IARob80pWrDgm4",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "pet_policy": null,
+    "review_signals": null
+  },
+  "139": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJjxI6OPlT2YAR7DzLqatxrBk",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "pet_policy": null,
+    "review_signals": null
+  },
+  "140": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJi4Dk-xRU2YARbCi6I0kDxb0",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "pet_policy": null,
+    "review_signals": null
+  },
+  "141": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJfUW8KwBT2YARhRUgCNUM82c",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "pet_policy": null,
+    "review_signals": null
+  },
+  "142": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "single_hours_source",
+    "sources": [
+      "google_maps",
+      "https://www.paradiseprpd.com/paradise-community-center"
+    ],
+    "conflicts": [],
+    "evidence": "**Paradise Community Center (formerly the Paradise Senior Center)** ... ## **_Room Rentals Available NOW!_**",
+    "maps_place_id": "ChIJKbBY32tT2YARonXacbDdISQ",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "pet_policy": null,
+    "review_signals": null
+  },
+  "143": {
+    "access_level": "age_restricted",
+    "access_notes": "Individuals who are 60 years of age or older are eligible to participate in the program. Open to enrolled participants.",
+    "requires_id": null,
+    "has_fee": false,
+    "verification": "web_only",
+    "sources": [
+      "https://www.neighborhoodhouse.org/nha-programs/senior-services/senior-service-center/"
+    ],
+    "conflicts": [],
+    "evidence": "The Senior Service Center is open to enrolled participants on Wednesdays from 9:00am to 2:00pm ... Individuals who are 60 years of age or older are eligible to participate in the program.",
+    "maps_place_id": null,
+    "coords_from": "census_geocoder",
+    "ac_from": null,
+    "official_name": null,
+    "pet_policy": null,
+    "review_signals": null
+  },
+  "144": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJSQjFBHVR2YARyPOwnKEsR90",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "pet_policy": null,
+    "review_signals": null
+  },
+  "145": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJeWuwej4A3IARcF6-yPyr5-4",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "pet_policy": null,
+    "review_signals": null
+  },
+  "146": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJC_mfACoB3IARqroE9qj8aZU",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "pet_policy": null,
+    "review_signals": null
+  },
+  "147": {
     "access_level": "unknown",
     "access_notes": null,
     "requires_id": null,
@@ -2643,25 +2916,7 @@
     "pet_policy": null,
     "review_signals": null
   },
-  "135": {
-    "access_level": "unknown",
-    "access_notes": null,
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "maps_only",
-    "sources": [
-      "google_maps"
-    ],
-    "conflicts": [],
-    "evidence": null,
-    "maps_place_id": "ChIJJ5fbkSxT2YARPSIQyLK8-TQ",
-    "coords_from": "google_maps",
-    "ac_from": null,
-    "official_name": null,
-    "pet_policy": null,
-    "review_signals": null
-  },
-  "136": {
+  "148": {
     "access_level": "unknown",
     "access_notes": null,
     "requires_id": null,
@@ -2679,11 +2934,11 @@
     "pet_policy": null,
     "review_signals": null
   },
-  "137": {
-    "access_level": "unknown",
+  "149": {
+    "access_level": "members_only",
     "access_notes": "Membership is included for SDSU Students enrolled in Fall, Spring or Summer classes.",
     "requires_id": null,
-    "has_fee": null,
+    "has_fee": true,
     "verification": "single_hours_source",
     "sources": [
       "google_maps",
@@ -2692,31 +2947,6 @@
     "conflicts": [],
     "evidence": "Membership is included for SDSU Students enrolled in Fall, Spring or Summer classes.",
     "maps_place_id": "ChIJj4hxBoFW2YARJGTs9gRHfAU",
-    "coords_from": "google_maps",
-    "ac_from": null,
-    "official_name": null,
-    "pet_policy": null,
-    "review_signals": null
-  },
-  "138": {
-    "access_level": "unknown",
-    "access_notes": null,
-    "requires_id": null,
-    "has_fee": null,
-    "verification": "conflict",
-    "sources": [
-      "google_maps",
-      "https://www.ci.oceanside.ca.us/Home/Components/FacilityDirectory/FacilityDirectory/10/710?npage=2"
-    ],
-    "conflicts": [
-      "fri: maps 07:00-17:00 vs web 14:00-18:00",
-      "thu: maps 07:00-17:00 vs web 14:00-18:00",
-      "wed: maps 07:00-17:00 vs web 14:00-18:00",
-      "tue: maps 07:00-17:00 vs web 14:00-18:00",
-      "mon: maps 07:00-17:00 vs web 14:00-18:00"
-    ],
-    "evidence": "2:00 pm – 6:00 pm ... 9:00 am - 5:00 pm ... 6:00 am - 9:00 pm",
-    "maps_place_id": "ChIJN-IUsC1u3IARFf6utE0TDLM",
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,

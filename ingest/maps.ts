@@ -4,11 +4,12 @@
 //   node --env-file=.env ingest/maps.ts            (all demo areas)
 //   node --env-file=.env ingest/maps.ts "El Cajon" (one area)
 import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { pathToFileURL } from "node:url";
 
 const TOKEN = process.env.BRIGHTDATA_API_TOKEN;
 if (!TOKEN) throw new Error("Set BRIGHTDATA_API_TOKEN in .env");
 const DATASET = "gd_m8ebnr0q2qlklc02fz"; // "Google Maps full information"
-const LIMIT = Number(process.env.MAPS_LIMIT_PER_INPUT ?? 5);
+const LIMIT = Number(process.env.MAPS_LIMIT_PER_INPUT ?? 10);
 const H = { Authorization: `Bearer ${TOKEN}`, "Content-Type": "application/json" };
 
 const AREAS: Record<string, [number, number]> = {
@@ -25,11 +26,15 @@ const AREAS: Record<string, [number, number]> = {
   Poway: [32.9628, -117.0359], Carlsbad: [33.1581, -117.3506], Encinitas: [33.037, -117.2919],
   Ramona: [33.0417, -116.8689], Alpine: [32.835, -116.7664], Fallbrook: [33.3764, -117.2511],
   "Rancho San Diego": [32.7478, -116.9356], "Paradise Hills": [32.6844, -117.0569],
+  // rural / hot inland
+  Julian: [33.0787, -116.6012], "Borrego Springs": [33.2559, -116.3750], Jamul: [32.7175, -116.8736],
+  Campo: [32.6067, -116.4694], "Valley Center": [33.2184, -117.0328], "Pauma Valley": [33.2928, -116.9611],
 };
 // Places someone can sit in out of the heat. Malls, pools and museums add long-hours AC and water.
 const KEYWORDS = [
   "public library", "recreation center", "senior center", "community center", "cooling center",
   "shopping mall", "aquatic center public pool", "museum",
+  "YMCA", "Boys & Girls Club", "transit center", "movie theater", "church hall community room",
 ];
 const JUNK_CATEGORY =
   /air conditioning|heating|hvac|repair|contractor|plumb|appliance|store|\bshop\b|dealer|restaurant|insurance|attorney|real estate/i;
@@ -135,7 +140,11 @@ function normalize(r: any) {
 }
 
 async function main() {
-  const only = process.argv.slice(2).filter((a) => !a.startsWith("--"));
+  // Any place on demand:  --at 33.0787,-116.6012 --name Julian   (adds it to the area list for this run)
+  const arg = (f: string) => { const i = process.argv.indexOf(f); return i >= 0 ? process.argv[i + 1] : undefined; };
+  const at = arg("--at"), name = arg("--name");
+  if (at && name) { const [la, lo] = at.split(",").map(Number); AREAS[name] = [la, lo]; }
+  const only = at && name ? [name] : process.argv.slice(2).filter((a) => !a.startsWith("--") && a !== at && a !== name);
   const areas = only.length ? only : Object.keys(AREAS);
   const bad = areas.filter((a) => !AREAS[a]);
   if (bad.length) throw new Error(`unknown area(s): ${bad.join(", ")}`);
@@ -159,4 +168,4 @@ async function main() {
   console.log(`\n${sites.length} sites (${sites.length - before} new, ${sites.filter((s) => s.hours.length).length} with parsed hours) → ingest/data/maps_sites.json`);
 }
 
-main();
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) main();
