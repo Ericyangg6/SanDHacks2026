@@ -1,4 +1,4 @@
-import { notImplemented } from '../todo';
+import { ZONE_ZIPS } from './zone-zips';
 
 // NWS public forecast zones covering San Diego County (forecast office SGX). NWS names them
 // "San Diego County <name>". Checked against GET https://api.weather.gov/zones?area=CA&type=forecast on 2026-11-14.
@@ -9,15 +9,13 @@ export const SD_COUNTY_ZONES = [
   { code: 'CAZ062', name: 'Deserts' },
 ] as const;
 
-// Zips covered by the given zones. 5-digit strings.
+// San Diego County's county code. Some offices issue Air Quality Alerts against county codes instead of forecast
+// zones (2 of the 4 recent ones nationwide on 2026-11-14), so it is queried too and means every zip in the county.
+export const SD_COUNTY_CODE = 'CAC073';
+
+// Zips covered by the given zones, as 5-digit strings. Codes outside San Diego County are ignored: alerts often
+// span neighbours, e.g. CAZ552 (Orange County Coastal) arrives alongside CAZ043.
 export function zipsForZones(zones: string[]): string[] {
-  // TODO: 1. Add a zone -> zips table. Nothing in the repo maps NWS zones to zips yet. One way to build it: take a
-  //          lat/lon per San Diego County zip (zip centroids, or M2's sites rows) and read properties.forecastZone
-  //          from GET https://api.weather.gov/points/{lat},{lon}. The demo zips in contracts.md (92020, 92037,
-  //          92105) are the minimum.
-  // TODO: 2. Ignore codes that are not in SD_COUNTY_ZONES. Alerts often span neighbours, e.g. CAZ552 (Orange
-  //          County Coastal) arrives alongside CAZ043.
-  // TODO: 3. Return the de-duplicated union as 5-digit strings, never numbers.
-  // TODO: 4. If nws.ts starts querying the county code CAC073, treat it as every zip in the table.
-  return notImplemented('zones.zipsForZones');
+  const codes = zones.includes(SD_COUNTY_CODE) ? Object.keys(ZONE_ZIPS) : zones;
+  return [...new Set(codes.flatMap((code) => ZONE_ZIPS[code] ?? []))].sort();
 }

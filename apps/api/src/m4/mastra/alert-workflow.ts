@@ -86,8 +86,10 @@ const dispatchAlerts = createStep({
 // Scheduling (docs-workflows-scheduled-workflows.md): add a `schedule` field to the config below and the built-in
 // scheduler picks the workflow up when Mastra boots, with no separate call. For a poll every five minutes:
 //   schedule: { cron: '*/5 * * * *', timezone: 'America/Los_Angeles', inputData: {} },
-// It is left off on purpose so nothing polls while the functions behind the steps are stubs. Fires run in-process
-// on a long-lived host and are best-effort: a missed tick is not replayed.
+// It is left off on purpose: a real heat alert would text every subscriber in the affected zips, so turn it on
+// only once Twilio can send and the team agrees. Fires run in-process on a long-lived host and are best-effort: a
+// missed tick is not replayed. To poll once by hand:
+//   ./node_modules/.bin/mastra api --url http://127.0.0.1:4111 workflow run start alertWorkflow '{"inputData":{}}'
 //
 // TODO: only alerts that are new in this run reach dispatch. If request-recrawl or dispatch-alerts fails, the next
 //       poll sees the alert as already recorded and never texts for it. Decide between step `retries` and

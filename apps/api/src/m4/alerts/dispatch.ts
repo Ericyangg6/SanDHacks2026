@@ -1,5 +1,6 @@
 import {
   addTextsSent,
+  DbError,
   getAlertByNwsId,
   hasAlertText,
   hasRecentAlertText,
@@ -11,24 +12,36 @@ import { findSites } from '../find-sites';
 import { maskPhone } from '../phone';
 import { sendText } from '../sms/send-sms';
 import { alertMessage } from '../sms/templates';
-import { notImplemented } from '../todo';
 import type { AlertRow, SiteResult, SubscriberContact } from '../types';
 import { toAlertKind, type NwsAlert } from './nws';
 import { zipsForZones } from './zones';
 
-// getAlertByNwsId, toAlertKind and zipsForZones are for recordAlert's TODO steps, unused until it is written.
-
-// Inserts the alert unless one with the same nws_id exists.
+// Inserts the alert unless one with the same nws_id exists. An alert that names no San Diego zip is still
+// recorded, so the dashboard shows it; dispatching it texts nobody.
 export async function recordAlert(alert: NwsAlert): Promise<{ alert: AlertRow; isNew: boolean }> {
-  // TODO: 1. existing = await getAlertByNwsId(alert.id). If found, return { alert: existing, isNew: false }.
-  // TODO: 2. kind = toAlertKind(alert.event). Throw if null: fetchActiveAlerts should have filtered it out.
-  // TODO: 3. zips = zipsForZones(alert.zones). Decide whether an alert that maps to no zips is still recorded.
-  // TODO: 4. row = await insertAlert({ kind, nwsId: alert.id, zips, headline: alert.headline,
-  //          onsetAt and expiresAt as Date or null from alert.onset and alert.expires }).
-  // TODO: 5. Two overlapping polls can both pass step 1. alerts.nws_id is unique, so treat a unique violation as
-  //          "already recorded": re-read and return isNew: false.
-  // TODO: 6. Return { alert: row, isNew: true }.
-  return notImplemented('dispatch.recordAlert');
+  const existing = await getAlertByNwsId(alert.id);
+  if (existing) return { alert: existing, isNew: false };
+
+  const kind = toAlertKind(alert.event);
+  if (!kind) throw new Error(`recordAlert: unhandled NWS event "${alert.event}"`);
+  try {
+    const row = await insertAlert({
+      kind,
+      nwsId: alert.id,
+      zips: zipsForZones(alert.zones),
+      headline: alert.headline,
+      onsetAt: alert.onset ? new Date(alert.onset) : null,
+      expiresAt: alert.expires ? new Date(alert.expires) : null,
+    });
+    return { alert: row, isNew: true };
+  } catch (error) {
+    // Two overlapping polls can both get past the check above. nws_id is unique, so the loser lands here.
+    if (error instanceof DbError && error.code === '23505') {
+      const winner = await getAlertByNwsId(alert.id);
+      if (winner) return { alert: winner, isNew: false };
+    }
+    throw error;
+  }
 }
 
 // NWS gives every update to an alert a new id, so a heat wave that is extended twice a day arrives as several

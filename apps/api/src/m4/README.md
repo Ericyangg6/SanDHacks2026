@@ -24,7 +24,8 @@ turn (`generateTextReply`) and the 911 pre-check (`looksLikeEmergency`),
 `toE164`, `hashPhone`, the webhook signature check, `toAlertKind`, the zone list, the fixed English and Spanish
 strings, both HTTP route handlers, the workflow wiring, both tools and the agent definition.
 
-Still stubs: `recordAlert`, `fetchActiveAlerts`, `zipsForZones` and `requestRecrawl` (the live NWS flow).
+The live NWS flow is built too: polling, the zone-to-zip table, `recordAlert` and the workflow. Its schedule is
+off. `requestRecrawl` only logs until M2 says how a re-crawl is asked for. Nothing is a stub any more.
 
 ## Receiving a text
 
@@ -89,6 +90,25 @@ A text that goes out gets one `calls` row (`outbound`, `sms`, `sms_sent`). A tex
 this alert, or, for real alert kinds, a text for any alert of the same kind in the last 12 hours. Each text gets a
 `calls` row with `alert_id`, is saved to `messages` so a reply has context, and adds to `alerts.texts_sent`.
 
+### Live NWS alerts
+
+`alertWorkflow` polls `api.weather.gov` for Extreme Heat Warnings, Heat Advisories and Air Quality Alerts in
+San Diego County's four forecast zones and the county code `CAC073` (some Air Quality Alerts use county codes). It
+records each alert once by `nws_id`, asks M2 for a re-crawl (a log line for now), and dispatches the new ones.
+`alerts/zone-zips.ts` turns zones into zips. It is generated, with its sources and date in its header:
+
+```shell
+node src/m4/dev/run.mjs build-zone-zips <path to 2025_Gaz_zcta_national.txt>
+```
+
+The schedule is off (see `mastra/alert-workflow.ts`). To poll once by hand against the dev server:
+
+```shell
+./node_modules/.bin/mastra api --url http://127.0.0.1:4111 workflow run start alertWorkflow '{"inputData":{}}'
+```
+
+### Mock alerts
+
 The dashboard's demo button:
 
 ```shell
@@ -148,6 +168,7 @@ Run from `apps/api`. Each one loads the repo-root `.env` itself.
 ```shell
 node src/m4/dev/run.mjs send-test ["message"]    # one text to TEST_PHONE_NUMBER, straight through Twilio
 node src/m4/dev/run.mjs text-in "JOIN 92105"     # pretend a phone texted the Twilio number; prints the reply
+node src/m4/dev/run.mjs build-zone-zips <file>   # rebuild alerts/zone-zips.ts (see "Live NWS alerts")
 ```
 
 `text-in` stands in for a phone until the Twilio number can receive. It signs the request the way Twilio does
@@ -203,6 +224,8 @@ For a Gemini text agent, set `TEXT_AGENT_MODEL=google/<model id>`. Mastra reads 
   column, set on opt-in and cleared on STOP, so an alert has a number to send to. The column is in the shared
   `data/schema/schema.sql`. A database already created from the old schema needs
   `alter table subscribers add column phone_e164 text;`.
+- **Zone to zip.** A generated table from Census ZIP-area points and the NWS zone polygons (`alerts/zone-zips.ts`).
+  A county-coded alert (`CAC073`) means every zip in it.
 - **NWS updates.** Every update to an alert gets a new id, so deduping on `nws_id` alone would text subscribers
   once per update. `dispatchAlert` adds a cooldown: at most one text per subscriber per alert kind every
   `ALERT_TEXT_COOLDOWN_HOURS` (12), read from the `calls` rows we already write. Mock alerts skip it.
@@ -211,9 +234,11 @@ For a Gemini text agent, set `TEXT_AGENT_MODEL=google/<model id>`. Mastra reads 
 
 1. **STOP from a non-subscriber.** `zip` and `consent_at` are `NOT NULL`, so an opt-out from someone who only got a
    one-off text from a voice call cannot be recorded.
-2. **Zone to zip.** NWS alerts name forecast zones; nothing maps those to zips yet.
-3. **Re-crawl.** How M4 asks M2 for one, and whether texts wait for it to finish.
-4. **Double counting.** A voice call that sends a text would log `site_id` twice (M3's row and ours), which the
+2. **Re-crawl.** How M4 asks M2 for one, and whether texts wait for it to finish.
+3. **Double counting.** A voice call that sends a text would log `site_id` twice (M3's row and ours), which the
    ranking's recent-referrals count would see as two.
+4. **Lost alerts.** Only alerts that are new in a poll reach dispatch, so if dispatch fails, the next poll sees the
+   alert as recorded and never texts for it. Dispatching every still-active alert on each poll would fix that
+   (dispatch already skips anyone texted), at the cost of more queries per poll.
 5. **Review before real users.** The emergency phrase list, the 911 wording, the 211 free-ride claim and all
    Spanish copy are unreviewed first drafts.
