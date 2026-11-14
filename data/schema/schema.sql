@@ -40,7 +40,8 @@ create index on sites (lat, lon);
 -- Written by: M4 (opt-in / STOP handling). Read by: M4, M1 (aggregates only).
 create table subscribers (
   id          serial primary key,
-  phone_hash  text unique not null,       -- sha256(salt + e164); never store raw numbers here
+  phone_hash  text unique not null,       -- sha256(salt + e164); what calls and messages match on
+  phone_e164  text,                       -- raw number so alerts can be sent; set on opt-in, null after STOP. M4 only
   language    text not null default 'en', -- en | es | tl | vi | zh
   zip         text not null,
   needs       jsonb not null default '{}',-- see types.ts: CallerNeeds
