@@ -1,0 +1,890 @@
+[
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92026",
+  "temp_f": 67,
+  "heat_index": 67,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92040",
+  "temp_f": 68,
+  "heat_index": 68,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92131",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T14:00:00-08:00",
+  "zip": "92021",
+  "temp_f": 69,
+  "heat_index": 69,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92128",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92019",
+  "temp_f": 73,
+  "heat_index": 73,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92129",
+  "temp_f": 70,
+  "heat_index": 70,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T14:00:00-08:00",
+  "zip": "92027",
+  "temp_f": 68,
+  "heat_index": 68,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T11:00:00-08:00",
+  "zip": "92127",
+  "temp_f": 70,
+  "heat_index": 70,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92028",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T14:00:00-08:00",
+  "zip": "91901",
+  "temp_f": 67,
+  "heat_index": 67,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T11:00:00-08:00",
+  "zip": "92057",
+  "temp_f": 73,
+  "heat_index": 73,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92154",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T14:00:00-08:00",
+  "zip": "92024",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92084",
+  "temp_f": 70,
+  "heat_index": 70,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92064",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92029",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "91935",
+  "temp_f": 61,
+  "heat_index": 60,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T14:00:00-08:00",
+  "zip": "92065",
+  "temp_f": 68,
+  "heat_index": 68,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92126",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92107",
+  "temp_f": 70,
+  "heat_index": 70,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92025",
+  "temp_f": 74,
+  "heat_index": 74,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92130",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92106",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92082",
+  "temp_f": 68,
+  "heat_index": 67,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T11:00:00-08:00",
+  "zip": "92009",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92058",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-16T12:00:00-08:00",
+  "zip": "92004",
+  "temp_f": 78,
+  "heat_index": 77,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-16T12:00:00-08:00",
+  "zip": "92036",
+  "temp_f": 66,
+  "heat_index": 65,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92003",
+  "temp_f": 74,
+  "heat_index": 74,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "91977",
+  "temp_f": 70,
+  "heat_index": 70,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92124",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "91913",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92071",
+  "temp_f": 73,
+  "heat_index": 73,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92078",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92114",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T14:00:00-08:00",
+  "zip": "92056",
+  "temp_f": 73,
+  "heat_index": 73,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92105",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-16T15:00:00-08:00",
+  "zip": "92109",
+  "temp_f": 70,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92011",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92069",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "91911",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T11:00:00-08:00",
+  "zip": "92014",
+  "temp_f": 70,
+  "heat_index": 70,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92115",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92075",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "91910",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T14:00:00-08:00",
+  "zip": "92061",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "91978",
+  "temp_f": 66,
+  "heat_index": 65,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92120",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "91914",
+  "temp_f": 69,
+  "heat_index": 69,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T14:00:00-08:00",
+  "zip": "92081",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92117",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "91932",
+  "temp_f": 70,
+  "heat_index": 70,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "91915",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T15:00:00-08:00",
+  "zip": "92037",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92067",
+  "temp_f": 73,
+  "heat_index": 73,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T14:00:00-08:00",
+  "zip": "92086",
+  "temp_f": 62,
+  "heat_index": 61,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "91950",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92083",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92101",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92111",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "91905",
+  "temp_f": 60,
+  "heat_index": 59,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "91916",
+  "temp_f": 64,
+  "heat_index": 63,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92020",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "91902",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92118",
+  "temp_f": 72,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92119",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T11:00:00-08:00",
+  "zip": "92122",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92110",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92123",
+  "temp_f": 71,
+  "heat_index": 70,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92008",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "91942",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92139",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92010",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T14:00:00-08:00",
+  "zip": "91962",
+  "temp_f": 63,
+  "heat_index": 62,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "91941",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92007",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92113",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "91906",
+  "temp_f": 66,
+  "heat_index": 65,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92103",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92173",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "91945",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92060",
+  "temp_f": 55,
+  "heat_index": 53,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92054",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92116",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92102",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92104",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92108",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92066",
+  "temp_f": 61,
+  "heat_index": 60,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T11:00:00-08:00",
+  "zip": "92091",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92070",
+  "temp_f": 58,
+  "heat_index": 57,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92059",
+  "temp_f": 75,
+  "heat_index": 75,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T14:00:00-08:00",
+  "zip": "91917",
+  "temp_f": 66,
+  "heat_index": 65,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92179",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-16T12:00:00-08:00",
+  "zip": "91934",
+  "temp_f": 63,
+  "heat_index": 62,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "91931",
+  "temp_f": 60,
+  "heat_index": 59,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T11:00:00-08:00",
+  "zip": "92121",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "91948",
+  "temp_f": 56,
+  "heat_index": 55,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T14:00:00-08:00",
+  "zip": "91963",
+  "temp_f": 64,
+  "heat_index": 63,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T14:00:00-08:00",
+  "zip": "91980",
+  "temp_f": 70,
+  "heat_index": 69,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T14:00:00-08:00",
+  "zip": "92055",
+  "temp_f": 68,
+  "heat_index": 67,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92092",
+  "temp_f": 70,
+  "heat_index": 70,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92093",
+  "temp_f": 70,
+  "heat_index": 70,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92134",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92135",
+  "temp_f": 72,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92136",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92140",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92145",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92147",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92155",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92161",
+  "temp_f": 70,
+  "heat_index": 70,
+  "aqi": null,
+  "source": "nws"
+ }
+]

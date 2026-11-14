@@ -24,7 +24,14 @@ async function main() {
 
   // One page per domain per area first (cheapest useful coverage).
   const seen = new Set<string>();
+  // Relevance prefilter: skip store locators and other regions BEFORE spending a fetch.
+  //   Chains/aggregators never describe a public cooling space; government sites outside San Diego County are noise.
+  const CHAIN = /(^|\.)(target|uniqlo|aeropostale|nordstrom|nordstromrack|fivebelow|vons|walmart|costco|apple|yahoo|parkopedia|corner|onthegrid|facilitron|activecommunities|active|calstatedir|courtlynoyse|librarytechnology|storymaps\.arcgis|the\.org)\./i;
+  const SD_GOV = /(sandiego(county)?\.gov|elcajon\.gov|escondido\.(org|gov)|chulavistaca\.gov|oceansideca\.org|nationalcityca\.gov|cityoflamesa\.(us|com)|cityofsanteeca\.gov|vista\.gov|carlsbadca\.gov|encinitasca\.gov|poway\.(org|gov)|lemongrove\.ca\.gov|imperialbeachca\.gov|sanmarcosca\.gov|coronado\.ca\.us|delmar\.ca\.us|solanabeach\.gov|sdparks\.org|sdcl\.org|211sandiego\.org)$/i;
+  const relevant = (c: Candidate) =>
+    !CHAIN.test(`${c.domain}.`) && (!/\.(gov|us)$/.test(c.domain) || SD_GOV.test(c.domain));
   const queue = candidates
+    .filter(relevant)
     .filter((c) => {
       const k = `${c.area}|${c.domain}`;
       if (seen.has(k)) return false;
@@ -35,7 +42,10 @@ async function main() {
 
   const pages: any[] = [];
   const changes: Change[] = [];
-  for (const c of queue) {
+  let qi = 0;
+  async function worker() {
+   while (qi < queue.length) {
+    const c = queue[qi++];
     try {
       const r = await fetchPage(c.url, { fresh: REFRESH });
       // Cached reads are not new observations; only record live fetches.
@@ -58,7 +68,9 @@ async function main() {
     } catch (e) {
       console.error(`✗ ${c.url}: ${(e as Error).message}`);
     }
+   }
   }
+  await Promise.all(Array.from({ length: Number(process.env.FETCH_CONCURRENCY ?? 5) }, worker));
 
   await writeFile(new URL("./data/pages.json", import.meta.url), JSON.stringify(pages, null, 2));
   await writeFile(new URL("./data/changes.json", import.meta.url), JSON.stringify(changes, null, 2));

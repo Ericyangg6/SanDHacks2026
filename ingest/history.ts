@@ -17,6 +17,7 @@ export type Version = {
   chars: number;
   error?: string;
   blocked_by_policy?: boolean;
+  via?: "fallback"; // set when the page was served by the fallback fetcher, not Bright Data
 };
 
 // Strip volatile bits (timestamps, tracking params, whitespace) so we only flag real edits.
@@ -54,7 +55,7 @@ export type Change = {
 
 export async function record(
   url: string,
-  r: { ok: boolean; status: number; markdown: string; error?: string; blocked_by_policy?: boolean },
+  r: { ok: boolean; status: number; markdown: string; error?: string; blocked_by_policy?: boolean; via?: "fallback" },
 ): Promise<Change> {
   const prev = await lastGood(url);
   const v: Version = {
@@ -66,6 +67,7 @@ export async function record(
     chars: r.markdown.length,
     error: r.error,
     blocked_by_policy: r.blocked_by_policy,
+    via: r.via,
   };
   await mkdir(new URL("./snapshots/", DIR), { recursive: true });
   await appendFile(LOG, JSON.stringify(v) + "\n");
