@@ -1,13 +1,18 @@
 {
-  "name": "sandhacks",
+  "name": "api",
   "version": "1.0.0",
   "description": "A general-purpose Mastra agent with a local workspace, shell tools, memory, task tracking, web access, and recurring schedules.",
   "main": "index.js",
   "private": true,
   "scripts": {
-    "dev": "mastra dev",
+    "dev": "mastra dev --env ../../.env",
     "build": "mastra build",
-    "start": "mastra start"
+    "start": "mastra start",
+    "el:sync": "tsx --env-file=../../.env ../../agent/scripts/sync-agent.ts",
+    "el:import-number": "tsx --env-file=../../.env ../../agent/scripts/import-number.ts",
+    "el:call": "tsx --env-file=../../.env ../../agent/scripts/outbound-call.ts",
+    "typecheck": "tsc",
+    "el:simulate": "tsx --env-file=../../.env ../../agent/scripts/simulate.ts"
   },
   "keywords": [],
   "author": "",
@@ -27,6 +32,7 @@
   "devDependencies": {
     "@types/node": "latest",
     "mastra": "1.39.0",
+    "tsx": "^4.20.6",
     "typescript": "^6.0.3"
   }
 }

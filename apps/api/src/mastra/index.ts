@@ -10,15 +10,18 @@ import {
 } from '@mastra/observability';
 import { agent } from './agents/agent';
 import { startScheduleTool, stopScheduleTool } from './tools/schedule-tools';
+import { elevenLabsRoutes } from '../elevenlabs/routes';
 import { alertWorkflow, m4ApiRoutes, textAgent } from '../m4';
 
 export const mastra = new Mastra({
+  server: {
+    apiRoutes: [...elevenLabsRoutes, ...m4ApiRoutes],
+  },
   bundler: {
     externals: ['@duckdb/node-bindings'],
   },
   agents: { agent, textAgent },
   workflows: { alertWorkflow },
-  server: { apiRoutes: [...m4ApiRoutes] },
   tools: { startScheduleTool, stopScheduleTool },
   storage: new MastraCompositeStore({
     id: 'composite-storage',

@@ -1,0 +1,6 @@
+{
+  "name": "shade-agent",
+  "private": true,
+  "type": "module",
+  "description": "ElevenLabs voice agent definition. Scripts run from apps/api: npm run el:sync | el:import-number | el:call"
+}
