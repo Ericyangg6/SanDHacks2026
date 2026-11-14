@@ -1,10 +1,12 @@
 import { getSubscriber, insertMessage, listRecentMessages } from '../db';
-import { hashPhone, maskPhone } from '../phone';
 import { textAgent } from '../mastra/text-agent';
 import { aiDisclosure, replyUnavailable } from '../sms/templates';
 import { LANGUAGES } from '../types';
 import type { CallOutcome, FindSitesOutput, Language, MessageRow, SubscriberRow } from '../types';
 import { emergencyReply, matchEmergency } from './safety';
+
+// Where the conversation happens. Facebook Messenger turns are keyed by the Messenger hash, never a phone hash.
+export type TextChannel = 'sms' | 'messenger';
 
 export interface TextReply {
   text: string;
@@ -26,8 +28,9 @@ function reason(error: unknown): string {
   return error instanceof Error ? error.message : 'unknown error';
 }
 
-// Per-turn context for the model. No phone number goes in here: agent runs are exported by observability.
-function systemNote(subscriber: SubscriberRow | null, disclosed: boolean): string {
+// Per-turn context for the model. No phone number or Messenger id goes in here: agent runs are exported by
+// observability.
+function systemNote(subscriber: SubscriberRow | null, disclosed: boolean, channel: TextChannel): string {
   const now = new Intl.DateTimeFormat('en-US', {
     timeZone: TIME_ZONE,
     weekday: 'short',
@@ -35,6 +38,12 @@ function systemNote(subscriber: SubscriberRow | null, disclosed: boolean): strin
     minute: '2-digit',
   }).format(new Date());
   const lines = [`System note. Local time in San Diego: ${now}.`];
+  if (channel === 'messenger') {
+    // Alerts need a phone number, and Messenger only allows replies for 24 hours after the person writes.
+    lines.push(
+      'This conversation is on Facebook Messenger, not SMS. Heat and smoke alerts are sent by text message only: to sign up, the person texts JOIN and their zip code to the Shade phone number. There is nothing to unsubscribe from here, so never tell them to reply STOP.',
+    );
+  }
   if (subscriber) {
     const needs = Object.entries(subscriber.needs)
       .map(([key, value]) => `${key}=${value}`)
@@ -87,12 +96,20 @@ function readToolUse(steps: { toolCalls: ToolChunk[]; toolResults: ToolChunk[] }
     : { outcome: 'no_site_found', siteId: null, language };
 }
 
-// One turn of the SMS conversation: load history by phone hash, run the agent, store both messages.
+// One turn of an SMS or Messenger conversation: load history by contact hash, run the agent, store both messages.
+// contactHash is hashPhone(e164) for SMS and hashMessengerId(psid) for Messenger. logLabel names the person in
+// log lines (maskPhone or messengerLogLabel) and must not be a raw number or id.
 // It writes only to messages. STOP/START/HELP handling, sending the reply and the calls row belong to the caller.
 // Never throws for a model failure: that comes back as a "try again, or call 211" text with outcome 'error'.
 // A database failure before the model runs does throw, and the caller answers with the same fallback.
-export async function generateTextReply(args: { phoneE164: string; body: string }): Promise<TextReply> {
-  const phoneHash = hashPhone(args.phoneE164);
+export async function generateTextReply(args: {
+  contactHash: string;
+  body: string;
+  channel: TextChannel;
+  logLabel: string;
+}): Promise<TextReply> {
+  const phoneHash = args.contactHash;
+  // Messenger hashes never match a subscriber row, so a Messenger turn always takes the non-subscriber path.
   const subscriber = await getSubscriber(phoneHash);
   const fallbackLanguage: Language = subscriber?.language ?? 'en';
 
@@ -119,10 +136,10 @@ export async function generateTextReply(args: { phoneE164: string; body: string 
         { role: 'user' as const, content: args.body },
       ],
       {
-        system: systemNote(subscriber, disclosed),
+        system: systemNote(subscriber, disclosed, args.channel),
         maxSteps: 4,
         modelSettings: { maxOutputTokens: MAX_OUTPUT_TOKENS, timeout: { totalMs: AGENT_TIMEOUT_MS } },
-        tracingOptions: { tags: ['m4-sms'] },
+        tracingOptions: { tags: [`m4-${args.channel}`] },
       },
     );
     const text = response.text.trim();
@@ -139,7 +156,7 @@ export async function generateTextReply(args: { phoneE164: string; body: string 
       language,
     };
   } catch (error) {
-    console.error(`[m4] text agent failed for ${maskPhone(args.phoneE164)} (${reason(error)})`);
+    console.error(`[m4] text agent failed for ${args.logLabel} (${reason(error)})`);
     reply = { text: replyUnavailable(fallbackLanguage), outcome: 'error', siteId: null, language: fallbackLanguage };
   }
 

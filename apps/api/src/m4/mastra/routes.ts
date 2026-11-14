@@ -5,11 +5,13 @@ import { triggerMockAlert } from '../alerts/dispatch';
 import { env } from '../env';
 import { validateTwilioSignature } from '../sms/twilio';
 import { handleInboundSms } from '../subscribers/inbound';
+import { handleInboundMessenger, parseMessengerWebhook } from '../messenger/inbound';
 
 // M4's HTTP surface. Custom routes mount at the server root, so the paths below are the full paths.
 // They cannot start with the server's apiPrefix (default /api), which Mastra reserves for its built-in routes.
 
 const TWILIO_SMS_PATH = '/m4/twilio/sms';
+const TWILIO_MESSENGER_PATH = '/m4/twilio/messenger';
 const MOCK_ALERT_PATH = '/m4/alerts/mock';
 
 // The fields read from Twilio's form post. The signature check still covers every field Twilio sent.
@@ -41,21 +43,36 @@ function twiml(reply: string | null): string {
     : `${header}<Response/>`;
 }
 
+// The string fields of a Twilio webhook's form post, or null when X-Twilio-Signature does not match them.
+// Twilio signs the public URL it called (PUBLIC_BASE_URL + path + query string), not the local one behind the
+// tunnel, and the signature covers every field it sent.
+function verifiedTwilioParams(args: {
+  form: Record<string, unknown>;
+  path: string;
+  requestUrl: string;
+  signature: string | undefined;
+}): Record<string, string> | null {
+  const params: Record<string, string> = {};
+  for (const [key, value] of Object.entries(args.form)) {
+    if (typeof value === 'string') params[key] = value;
+  }
+  const url = env.publicBaseUrl().replace(/\/+$/, '') + args.path + new URL(args.requestUrl).search;
+  if (!args.signature || !validateTwilioSignature({ signature: args.signature, url, params })) return null;
+  return params;
+}
+
 // Twilio inbound-message webhook. Twilio cannot log in, so Mastra auth is off and the signature is the gate.
 const twilioSmsRoute = registerApiRoute(TWILIO_SMS_PATH, {
   method: 'POST',
   requiresAuth: false,
   handler: async (c) => {
-    const form = await c.req.parseBody();
-    const params: Record<string, string> = {};
-    for (const [key, value] of Object.entries(form)) {
-      if (typeof value === 'string') params[key] = value;
-    }
-
-    // Twilio signs the public URL it called, not the local one behind the tunnel.
-    const url = env.publicBaseUrl().replace(/\/+$/, '') + TWILIO_SMS_PATH + new URL(c.req.url).search;
-    const signature = c.req.header('x-twilio-signature');
-    if (!signature || !validateTwilioSignature({ signature, url, params })) {
+    const params = verifiedTwilioParams({
+      form: await c.req.parseBody(),
+      path: TWILIO_SMS_PATH,
+      requestUrl: c.req.url,
+      signature: c.req.header('x-twilio-signature'),
+    });
+    if (!params) {
       c.get('mastra').getLogger()?.warn('Rejected Twilio SMS webhook: missing or invalid signature');
       return c.text('Forbidden', 403);
     }
@@ -75,6 +92,42 @@ const twilioSmsRoute = registerApiRoute(TWILIO_SMS_PATH, {
       messageSid: parsed.data.MessageSid,
     });
     return c.body(twiml(reply), 200, { 'Content-Type': 'text/xml; charset=utf-8' });
+  },
+});
+
+// Twilio's Facebook Messenger webhook, for the Page's Messenger sender. Separate from the SMS route because the
+// sender is a page-scoped Messenger id, not a phone number. Same gate: the signature, checked against
+// PUBLIC_BASE_URL + TWILIO_MESSENGER_PATH.
+// It answers Twilio with an empty <Response/> straight away and sends the reply through the Messages API
+// (messenger:<page id> -> messenger:<psid>), so the agent turn never races Twilio's 15-second limit.
+const twilioMessengerRoute = registerApiRoute(TWILIO_MESSENGER_PATH, {
+  method: 'POST',
+  requiresAuth: false,
+  handler: async (c) => {
+    const logger = c.get('mastra').getLogger();
+    const params = verifiedTwilioParams({
+      form: await c.req.parseBody(),
+      path: TWILIO_MESSENGER_PATH,
+      requestUrl: c.req.url,
+      signature: c.req.header('x-twilio-signature'),
+    });
+    if (!params) {
+      logger?.warn('Rejected Twilio Messenger webhook: missing or invalid signature');
+      return c.text('Forbidden', 403);
+    }
+
+    // Never logs the fields themselves: From holds the person's Messenger id.
+    const msg = parseMessengerWebhook(params);
+    if (!msg) {
+      logger?.warn('Rejected Twilio Messenger webhook: From or To is not a messenger: address, or MessageSid is missing');
+      return c.text('Bad Request', 400);
+    }
+
+    // Not awaited. handleInboundMessenger does not throw; the catch is only a backstop.
+    void handleInboundMessenger(msg).catch((error) =>
+      logger?.error(`Messenger message not handled: ${error instanceof Error ? error.message : 'unknown error'}`),
+    );
+    return c.body(twiml(null), 200, { 'Content-Type': 'text/xml; charset=utf-8' });
   },
 });
 
@@ -110,4 +163,4 @@ const mockAlertRoute = registerApiRoute(MOCK_ALERT_PATH, {
   },
 });
 
-export const m4ApiRoutes: ApiRoute[] = [twilioSmsRoute, mockAlertRoute];
+export const m4ApiRoutes: ApiRoute[] = [twilioSmsRoute, twilioMessengerRoute, mockAlertRoute];

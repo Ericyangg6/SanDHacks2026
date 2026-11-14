@@ -264,3 +264,47 @@ export function aiDisclosure(language: Language): string {
     language,
   );
 }
+
+// ---- Facebook Messenger ----
+// Alerts go out by SMS only, so the Messenger copy points people at the phone number instead of signing them up.
+// smsNumber is TWILIO_PHONE_NUMBER, or null when it is unset.
+
+function textUs(smsNumber: string | null, language: Language): string {
+  if (smsNumber) return smsNumber;
+  return language === 'es' ? 'el número de Shade' : 'the Shade number';
+}
+
+// Reply to JOIN, START and their Spanish forms on Messenger.
+export function messengerJoinInfo(language: Language, smsNumber: string | null): string {
+  const to = textUs(smsNumber, language);
+  return pick(
+    {
+      en: `Shade: heat and smoke alerts are sent by text message. To sign up, text JOIN and your zip code to ${to}. Example: JOIN 92105`,
+      es: `Shade: las alertas de calor y humo se envían por mensaje de texto. Para suscribirte, envía JOIN y tu código postal a ${to}. Ejemplo: JOIN 92105`,
+    },
+    language,
+  );
+}
+
+// Reply to STOP on Messenger. There is no subscription to cancel: Shade only ever answers a message.
+export function messengerStopConfirmation(language: Language): string {
+  return pick(
+    {
+      en: 'Shade: okay. We only reply when you message us, so you will not hear from us here unless you write again.',
+      es: 'Shade: de acuerdo. Solo respondemos cuando nos escribes, así que no recibirás mensajes nuestros aquí a menos que vuelvas a escribir.',
+    },
+    language,
+  );
+}
+
+// Reply to HELP on Messenger, and to a message with no words.
+export function messengerHelpMessage(language: Language, smsNumber: string | null): string {
+  const to = textUs(smsNumber, language);
+  return pick(
+    {
+      en: `Shade: ask us for the nearest open cooling center in San Diego. For heat and smoke alerts, text JOIN and your zip code to ${to}. Call 211 for free rides. In an emergency, call 911.`,
+      es: `Shade: pregúntanos por el centro de enfriamiento abierto más cercano en San Diego. Para alertas de calor y humo, envía JOIN y tu código postal a ${to}. Llama al 211 para transporte gratis. En una emergencia, llama al 911.`,
+    },
+    language,
+  );
+}

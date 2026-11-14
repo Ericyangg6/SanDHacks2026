@@ -108,7 +108,7 @@ async function answer(phoneE164: string, body: string, match: KeywordMatch | nul
       } else {
         // The agent slice writes the messages rows. Keyword exchanges are not stored there.
         try {
-          const turn = await generateTextReply({ phoneE164, body });
+          const turn = await generateTextReply({ contactHash: phoneHash, body, channel: 'sms', logLabel: maskPhone(phoneE164) });
           reply = turn.text;
           outcome = turn.outcome;
           siteId = turn.siteId;

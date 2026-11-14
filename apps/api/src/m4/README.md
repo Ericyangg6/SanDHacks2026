@@ -44,6 +44,54 @@ A Spanish keyword is answered in Spanish and makes Spanish the subscriber's lang
 Twilio sometimes delivers a message twice. A repeated `MessageSid` within 10 minutes gets the first reply again and
 is not handled twice. That memory lives in the server process, so a restart clears it.
 
+## Facebook Messenger
+
+People can also write to the Facebook Page (Shadoes) on Messenger. Twilio's Messenger sender posts to its own
+route, `POST ${PUBLIC_BASE_URL}/m4/twilio/messenger`, never to the SMS one: the sender is `messenger:<psid>`, a
+page-scoped id, not a phone number, so it never goes through `toE164` or `hashPhone`.
+
+- **Gate.** The same `X-Twilio-Signature` check as SMS, against `PUBLIC_BASE_URL` + `/m4/twilio/messenger`. A
+  signed post whose `From` or `To` is not a `messenger:` address gets 400.
+- **Reply.** The route answers Twilio with an empty `<Response/>` at once, then `handleInboundMessenger` runs the
+  turn and sends the reply through the Messages API, from `messenger:<page id>` (the inbound `To`) to
+  `messenger:<psid>`. A repeated `MessageSid` within 10 minutes is dropped.
+- **Identity.** `hashMessengerId(psid)` = `sha256(PHONE_SALT + 'messenger:' + psid)`, stored where a `phone_hash`
+  goes (`messages`, `calls`). It can never equal a phone hash. Logs show `messenger:<first 8 hash chars>`.
+- **Keywords.** No subscriber rows. Messenger allows a reply for 24 hours after the person writes, and Twilio tags a
+  later message `ACCOUNT_UPDATE`, which alerts may not use, so alerts stay on SMS. JOIN and START point people at
+  `TWILIO_PHONE_NUMBER`, HELP gets a Messenger help text, and STOP gets an acknowledgement: Shade never starts a
+  Messenger conversation, so there is nothing to switch off.
+- **Agent.** Any other message goes to `generateTextReply` with `channel: 'messenger'`, so the 911 pre-check, the
+  AI disclosure and `find_sites` work as for SMS.
+- **Logging.** Each inbound message gets a `calls` row (`inbound`, `messenger`). The reply gets no row, as SMS
+  replies get none.
+
+**Database.** `messenger` is a new value of the `channel` enum in `data/schema/schema.sql`. A database created
+before it needs `alter type channel add value 'messenger';`. Until then, Messenger `calls` inserts fail with a log
+line, and replies still go out.
+
+**Twilio Console.** Open the Page's sender under Numbers & senders > Facebook Messenger and set its incoming-message
+webhook to `${PUBLIC_BASE_URL}/m4/twilio/messenger`, HTTP POST. If the sender sits in a Messaging Service, the
+service's Integration settings decide which webhook is called instead. Do not put the Messenger sender and the phone
+number in one service that sends every message to a single URL. Leave the phone number's webhook on `/m4/twilio/sms`.
+
+**Trying it locally.** Start the server with `M4_SMS_DRY_RUN=1`, then post a signed Messenger webhook:
+
+```shell
+M4_SMS_DRY_RUN=1 MASTRA_HOST=127.0.0.1 npm run dev                  # terminal 1
+node src/m4/dev/run.mjs messenger-in "HELP"                          # terminal 2; the reply is in terminal 1
+node src/m4/dev/run.mjs messenger-in "cooling center near 92105?" --psid 1000000000000001
+```
+
+The route answers before the reply is sent, so the reply is in the server log, not in `messenger-in`'s output.
+The default ids are made up. Clean up with the `hashMessengerId` value of the `--psid` you used, as in "Dev scripts".
+
+The automated tests replace `fetch`, so they reach neither Neon nor Twilio:
+
+```shell
+npx tsx --test src/m4/messenger/messenger.test.ts
+```
+
 ## The text agent
 
 Any text that is not a keyword goes to `generateTextReply`, one turn of the conversation:
@@ -116,11 +164,12 @@ export const mastra = new Mastra({
 });
 ```
 
-Custom routes mount at the server root, so the Twilio messaging webhook is `POST ${PUBLIC_BASE_URL}/m4/twilio/sms`
-and the dashboard's demo button calls `POST /m4/alerts/mock` (see "Alerts").
+Custom routes mount at the server root, so the Twilio messaging webhook is `POST ${PUBLIC_BASE_URL}/m4/twilio/sms`,
+the Messenger webhook is `POST ${PUBLIC_BASE_URL}/m4/twilio/messenger` (see "Facebook Messenger"), and the
+dashboard's demo button calls `POST /m4/alerts/mock` (see "Alerts").
 
 No `server.auth` is configured, so every route on port 4111 is open to whoever can reach it, including the starter
-agent with its file and shell tools. M4's two routes check their own secrets (Twilio's signature, `M4_ALERT_SECRET`). Never point a tunnel at 4111. `npm run dev`
+agent with its file and shell tools. M4's three routes check their own secrets (Twilio's signature, `M4_ALERT_SECRET`). Never point a tunnel at 4111. `npm run dev`
 also listens on every network interface, so on shared Wi-Fi those routes are open to the room:
 `MASTRA_HOST=127.0.0.1 npm run dev` keeps the server to this machine.
 
@@ -129,8 +178,8 @@ To poll NWS on a timer, add the `schedule` field described in `mastra/alert-work
 ## Receiving texts on a laptop
 
 Sending needs no public URL. Receiving does: Twilio has to reach the webhook. `dev/webhook-proxy.mjs` listens on
-4114 and forwards only `POST /m4/twilio/sms` to the Mastra server, answering 404 to everything else, so the tunnel
-goes to the proxy:
+4114 and forwards only `POST /m4/twilio/sms` and `POST /m4/twilio/messenger` to the Mastra server, answering 404
+to everything else, so the tunnel goes to the proxy:
 
 ```shell
 node src/m4/dev/webhook-proxy.mjs                 # terminal 1, from apps/api
@@ -138,8 +187,9 @@ cloudflared tunnel --url http://127.0.0.1:4114    # terminal 2, prints https://<
 ```
 
 Set `PUBLIC_BASE_URL` to that address before starting the dev server, and set the Twilio number's messaging
-webhook to `<address>/m4/twilio/sms` (HTTP POST). The address changes every time the tunnel restarts, and both
-places have to change with it: the signature check fails with 403 if `PUBLIC_BASE_URL` is stale.
+webhook to `<address>/m4/twilio/sms` (HTTP POST), and the Messenger sender's to `<address>/m4/twilio/messenger`.
+The address changes every time the tunnel restarts, and every one of those places has to change with it: the
+signature check fails with 403 if `PUBLIC_BASE_URL` is stale.
 
 ## Dev scripts
 
@@ -178,12 +228,13 @@ M4_SMS_DRY_RUN=1 node src/m4/dev/run.mjs send-test
 | --- | --- |
 | `M4_SMS_DRY_RUN` | Optional. `1` logs texts instead of sending them |
 | `TEST_PHONE_NUMBER` | Dev scripts only: where `send-test` sends |
-| `M4_SERVER_URL` | Dev scripts only: where `text-in` posts. Defaults to `http://localhost:4111` |
+| `M4_SERVER_URL` | Dev scripts only: where `text-in` and `messenger-in` post. Defaults to `http://localhost:4111` |
+| `TWILIO_MESSENGER_PAGE_ID` | Dev scripts only, optional: the Page id `messenger-in` writes to. The server reads the Page from each inbound `To` and needs no setting |
 | `TWILIO_ACCOUNT_SID` | Account SID (`AC...`), part of the send URL |
 | `TWILIO_AUTH_TOKEN` | Validates the signature on inbound webhooks, and authenticates sends when there is no API key pair |
 | `TWILIO_SID`, `TWILIO_SECRET` | Optional. A Twilio API key pair (`SK...`). When both are set, sends use it instead of the auth token |
-| `TWILIO_PHONE_NUMBER` | The sending number, E.164 |
-| `PUBLIC_BASE_URL` | Public origin Twilio calls, needed for the signature check |
+| `TWILIO_PHONE_NUMBER` | The sending number, E.164. Messenger replies quote it when pointing people at SMS alerts |
+| `PUBLIC_BASE_URL` | Public origin Twilio calls, needed for the signature check on both webhooks (SMS and Messenger) |
 | `M4_ALERT_SECRET` | Shared secret for `POST /m4/alerts/mock`. The route refuses everything while it is unset |
 | `PHONE_SALT` | Salt for `phone_hash`. Must be the same value for M3 |
 | `NEON_DATABASE_URL` | Postgres connection string |

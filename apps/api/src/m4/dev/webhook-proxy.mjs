@@ -1,5 +1,5 @@
-// Dev-only front door for a public tunnel. It forwards Twilio's inbound-SMS webhook to the local Mastra server
-// and answers 404 to everything else, so the tunnel URL never reaches Studio, /api or the starter agent's file
+// Dev-only front door for a public tunnel. It forwards Twilio's inbound-SMS and Messenger webhooks to the local
+// Mastra server and answers 404 to everything else, so the tunnel URL never reaches Studio, /api or the starter agent's file
 // and shell tools. Point the tunnel at this port, not at 4111:
 //
 //   node src/m4/dev/webhook-proxy.mjs
@@ -8,12 +8,12 @@ import http from 'node:http';
 
 const PORT = Number(process.env.M4_PROXY_PORT || 4114);
 const TARGET = new URL(process.env.M4_PROXY_TARGET || 'http://localhost:4111');
-// "METHOD path" pairs that may pass. The route behind this one checks Twilio's signature.
-const ALLOWED = new Set(['POST /m4/twilio/sms']);
+// "METHOD path" pairs that may pass. The routes behind them check Twilio's signature.
+const ALLOWED = new Set(['POST /m4/twilio/sms', 'POST /m4/twilio/messenger']);
 // Twilio's form posts are a few hundred bytes.
 const MAX_BODY_BYTES = 64 * 1024;
 
-// One line per request. Never the headers or body: the body holds the sender's raw phone number.
+// One line per request. Never the headers or body: the body holds the sender's raw phone number or Messenger id.
 function log(req, path, status) {
   console.log(`${new Date().toISOString()} ${req.method} ${path} -> ${status}`);
 }
