@@ -81,7 +81,7 @@ const dispatchAlerts = createStep({
   },
 });
 
-// Register in src/mastra/index.ts as `workflows: { alertWorkflow }`.
+// Registered in src/mastra/index.ts as `workflows: { alertWorkflow }`.
 //
 // Scheduling (docs-workflows-scheduled-workflows.md): add a `schedule` field to the config below and the built-in
 // scheduler picks the workflow up when Mastra boots, with no separate call. For a poll every five minutes:

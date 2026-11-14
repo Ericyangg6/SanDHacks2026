@@ -1,4 +1,4 @@
-// M4 (text / outbound) entry point. Nothing here is registered in src/mastra/index.ts yet: see ./README.md.
+// M4 (text / outbound) entry point. src/mastra/index.ts registers textAgent, alertWorkflow and m4ApiRoutes: see ./README.md.
 
 // Pieces for the Mastra instance.
 export { textAgent } from './mastra/text-agent';

@@ -5,7 +5,7 @@ import { findSitesTool } from './find-sites-tool';
 
 // Answers SMS replies. It has no Mastra memory: history lives in our messages table and ../agent/reply.ts
 // passes it in on each run. It has no workspace, file or shell tools, because it answers texts from the public.
-// TODO: register it in src/mastra/index.ts (agents: { agent, textAgent }). See ../README.md.
+// Registered in src/mastra/index.ts as agents: { agent, textAgent }.
 export const textAgent = new Agent({
   id: 'text-agent',
   name: 'Shade Text Agent',

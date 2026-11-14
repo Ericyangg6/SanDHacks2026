@@ -75,8 +75,9 @@ export async function dispatchAlert(alert: AlertRow): Promise<{ textsSent: numbe
   const since = new Date(Date.now() - ALERT_TEXT_COOLDOWN_HOURS * 3600_000);
   let textsSent = 0;
 
-  // One at a time, so a big list is not fired at Twilio all at once.
-  // TODO: pace the sends to the sending number's rate limit once Twilio is set up (M4.md: rate limits).
+  // One at a time, so a big list is never fired at Twilio all at once. No delay is added: Twilio queues texts
+  // beyond the sending number's per-second rate itself. For a list in the thousands, check Twilio's queue limits
+  // (error 30001) first.
   for (const subscriber of subscribers) {
     const who = maskPhone(subscriber.phone_e164);
     try {

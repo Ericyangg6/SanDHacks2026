@@ -1,13 +1,13 @@
 # M4: text / outbound
 
-The SMS sender, subscribers, the NWS alert flow and the text agent. What is not built yet is a stub that throws
-`NotImplementedError`, with ordered `TODO` steps.
+The SMS sender, subscribers, the NWS alert flow and the text agent. Everything is built and runs end to end in dry
+run (`M4_SMS_DRY_RUN=1`). Real texts wait on a Twilio account that can send; see "Not done yet" at the end.
 
 ## Layout
 
 | Path | What it holds |
 | --- | --- |
-| `env.ts`, `todo.ts`, `types.ts`, `phone.ts` | Lazy env access, the stub helper, the shared types from `data/schema/types.ts` plus M4's row types, E.164 and hashing |
+| `env.ts`, `types.ts`, `phone.ts` | Lazy env access, the shared types from `data/schema/types.ts` plus M4's row types, E.164 and hashing |
 | `db.ts` | Every query M4 needs, sent to Neon's HTTPS endpoint with `fetch` (no Postgres package) |
 | `find-sites.ts` | The one place M4 calls `find_sites` from. It forwards to the team's `src/shared/find-sites.ts`, a stub until M2 ships |
 | `sms/` | Twilio REST client, message templates, `sendSms` (the contract function) and `sendText` (the guarded send path) |
@@ -16,16 +16,6 @@ The SMS sender, subscribers, the NWS alert flow and the text agent. What is not 
 | `agent/` | Text agent prompt, the 911 pre-check, one conversation turn |
 | `mastra/` | The Mastra objects: `textAgent`, `alertWorkflow`, `m4ApiRoutes`, `sendSmsTool`, `findSitesTool` |
 | `dev/` | `webhook-proxy.mjs`, the only thing a public tunnel should point at (see "Receiving texts on a laptop"), and the dev scripts (see "Dev scripts") |
-
-Built: the Twilio sender, every query in `db.ts`, `sendSms` and `sendText`, the site text (English and Spanish),
-inbound texts (STOP, START, HELP, JOIN and the hand-off to the agent), `subscribe`, `optOut`, `isOptedOut`, the
-alert text, `dispatchAlert` with its repeat and cooldown guards, the mock alert and its secret, the text agent
-turn (`generateTextReply`) and the 911 pre-check (`looksLikeEmergency`),
-`toE164`, `hashPhone`, the webhook signature check, `toAlertKind`, the zone list, the fixed English and Spanish
-strings, both HTTP route handlers, the workflow wiring, both tools and the agent definition.
-
-The live NWS flow is built too: polling, the zone-to-zip table, `recordAlert` and the workflow. Its schedule is
-off. `requestRecrawl` only logs until M2 says how a re-crawl is asked for. Nothing is a stub any more.
 
 ## Receiving a text
 
@@ -140,11 +130,10 @@ Custom routes mount at the server root, so the Twilio messaging webhook is `POST
 and the dashboard's demo button calls `POST /m4/alerts/mock` (see "Alerts").
 
 No `server.auth` is configured, so every route on port 4111 is open to whoever can reach it, including the starter
-agent with its file and shell tools. M4's two routes check their own secrets (Twilio's signature, `M4_ALERT_SECRET`). Never point a tunnel at 4111. `npm run dev`
-also listens on every network interface, so on shared Wi-Fi those routes are open to the room:
-`MASTRA_HOST=127.0.0.1 npm run dev` keeps the server to this machine.
-
-To poll NWS on a timer, add the `schedule` field described in `mastra/alert-workflow.ts`. It is off on purpose.
+agent with its file and shell tools. M4's two routes check their own secrets (Twilio's signature and
+`M4_ALERT_SECRET`). Never point a tunnel at 4111. `npm run dev` also listens on every network interface, so on
+shared Wi-Fi those routes are open to the room: `MASTRA_HOST=127.0.0.1 npm run dev` keeps the server to this
+machine.
 
 ## Receiving texts on a laptop
 
@@ -229,6 +218,16 @@ For a Gemini text agent, set `TEXT_AGENT_MODEL=google/<model id>`. Mastra reads 
 - **NWS updates.** Every update to an alert gets a new id, so deduping on `nws_id` alone would text subscribers
   once per update. `dispatchAlert` adds a cooldown: at most one text per subscriber per alert kind every
   `ALERT_TEXT_COOLDOWN_HOURS` (12), read from the `calls` rows we already write. Mock alerts skip it.
+
+## Not done yet
+
+- **Real texts.** Everything has run in dry run only. The Twilio trial account cannot send these texts; once it is
+  upgraded with its own number, set `TWILIO_PHONE_NUMBER`, point the number's messaging webhook at the tunnel, and
+  start with `node src/m4/dev/run.mjs send-test`.
+- **The voice line's texts.** M3's `src/shared/send-sms.ts` is still their logging stub, and its comment says M4
+  replaces the body. The change is to forward to `sendSms` from `../m4`.
+- **`find_sites`.** M4 calls the team's stub in `src/shared/find-sites.ts`, which returns the same two El Cajon
+  sites for every location until M2 ships.
 
 ## Decisions that block real work
 
