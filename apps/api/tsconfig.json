@@ -9,7 +9,8 @@
     "skipLibCheck": true,
     "types": ["node"],
     "noEmit": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "rootDir": "../.."
   },
   "include": ["src/**/*"]
 }
