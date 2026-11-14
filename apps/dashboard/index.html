@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shade - County operations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@200;300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+:root {
+  --ink: #f3f1e7;            /* text on glass */
+  --ink-2: #c9cdbf;          /* secondary text on glass, tinted toward the map green */
+  --line: rgba(243, 241, 231, .14);
+  --heat: #f4a765;           /* requests, heat, primary action */
+  --heat-ink: #2a1806;
+  --cool: #a8dbe8;           /* help incoming */
+  --zone: #e4ee9a;           /* cool zone token */
+  --paper: #efe9d4;
+  --forest: #1d2a20;
+  --aqi-good: #a5d68f; --aqi-mod: #ecd670; --aqi-usg: #f4a765; --aqi-bad: #ee7a66;
+  --r: 24px;
+  --ease: cubic-bezier(.16, 1, .3, 1);
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body {
+  font: 400 14px/1.45 Geist, system-ui, sans-serif;
+  color: var(--ink); background: var(--paper);
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: var(--heat); color: var(--heat-ink); }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; text-align: inherit; }
+:focus-visible { outline: 2px solid var(--heat); outline-offset: 2px; border-radius: 8px; }
+h1, h2, h3, p { margin: 0; }
+.mono { font-family: "Geist Mono", ui-monospace, monospace; font-size: 12px; letter-spacing: .01em; }
+
+/* ---------- map: paper cartography ---------- */
+#map { position: fixed; inset: 0; background: var(--paper); z-index: 0; }
+.leaflet-tile-pane { filter: sepia(.3) saturate(1.1) hue-rotate(12deg) brightness(1.02) contrast(.9); }
+#map::after {   /* fine survey grid over the paper */
+  content: ""; position: absolute; inset: 0; z-index: 450; pointer-events: none;
+  background-image: linear-gradient(rgba(52, 78, 46, .11) 1px, transparent 1px), linear-gradient(90deg, rgba(52, 78, 46, .11) 1px, transparent 1px);
+  background-size: 84px 84px;
+}
+.leaflet-container { font: inherit; }
+.leaflet-control-attribution { background: rgba(239, 233, 212, .8) !important; color: #4b5a45; font-size: 10px; border-radius: 8px 0 0 0; }
+.leaflet-control-attribution a { color: #33492f; }
+.leaflet-bottom.leaflet-right { right: 396px; bottom: 12px; }
+.leaflet-bar { border: 0 !important; box-shadow: 0 8px 18px -8px rgba(20, 40, 20, .5) !important; border-radius: 14px !important; overflow: hidden; }
+.leaflet-bar a { background: var(--paper) !important; color: var(--forest) !important; border-color: rgba(29, 42, 32, .15) !important; width: 36px !important; height: 36px !important; line-height: 36px !important; }
+.leaflet-bar a:hover { background: #fff !important; }
+
+/* tokens */
+.tk { display: grid; place-items: center; border-radius: 50%; transition: transform .25s var(--ease), box-shadow .25s var(--ease); }
+.tk svg { width: 58%; height: 58%; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; }
+.zone { width: 34px; height: 34px; background: var(--zone); color: var(--forest); box-shadow: 0 0 0 3px rgba(239, 233, 212, .85), 0 6px 12px -4px rgba(20, 40, 20, .55); }
+.zone.discovered { background: var(--paper); box-shadow: 0 0 0 1.5px var(--forest), 0 0 0 4px rgba(239, 233, 212, .85), 0 6px 12px -4px rgba(20, 40, 20, .55); }
+.zone.closed { background: #cfcdbd; color: #7d8274; box-shadow: 0 0 0 3px rgba(239, 233, 212, .7); }
+.zone.sel, .req.sel { transform: scale(1.3); }
+.req { width: 30px; height: 30px; position: relative; color: var(--heat-ink); background: var(--heat); box-shadow: 0 0 0 3px #fff7ea, 0 8px 14px -4px rgba(20, 40, 20, .6); font: 600 13px/1 Geist, sans-serif; }
+.req.incoming { background: var(--cool); color: #0c2a33; box-shadow: 0 0 0 3px #f2fbfd, 0 8px 14px -4px rgba(20, 40, 20, .6); }
+.req.requesting::after { content: ""; position: absolute; inset: -3px; border-radius: 50%; border: 2px solid var(--heat); animation: ping 1.8s var(--ease) infinite; }
+@keyframes ping { from { transform: scale(1); opacity: .9; } to { transform: scale(2.6); opacity: 0; } }
+.dot { width: 9px; height: 9px; border-radius: 50%; background: var(--forest); box-shadow: 0 0 0 2px rgba(239, 233, 212, .9); opacity: .7; }
+@media (prefers-reduced-motion: reduce) { .req.requesting::after { animation: none; } * { transition: none !important; } }
+
+/* ---------- glass ---------- */
+.glass {
+  background: linear-gradient(165deg, rgba(44, 54, 46, .74), rgba(15, 21, 17, .84));
+  -webkit-backdrop-filter: blur(26px) saturate(150%); backdrop-filter: blur(26px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, .15);
+  box-shadow: 0 22px 44px -18px rgba(12, 26, 14, .6), inset 0 1px 0 rgba(255, 255, 255, .13);
+  border-radius: var(--r);
+}
+.top { position: fixed; z-index: 500; top: 16px; left: 16px; right: 16px; display: flex; gap: 10px; align-items: center; pointer-events: none; }
+.top > * { pointer-events: auto; }
+.pill { height: 52px; padding: 0 18px; display: flex; align-items: center; gap: 12px; border-radius: 26px; white-space: nowrap; }
+.brand { padding-left: 9px; }
+.brand .tk { width: 34px; height: 34px; background: var(--zone); color: var(--forest); }
+.brand b { font-weight: 500; font-size: 17px; letter-spacing: -.01em; }
+.brand span { color: var(--ink-2); }
+.alert i { width: 8px; height: 8px; border-radius: 50%; background: var(--heat); }
+.alert b { font-weight: 500; }
+.alert span { color: var(--ink-2); }
+.spacer { flex: 1; }
+.tag { border: 1px dashed rgba(243, 241, 231, .45); border-radius: 999px; padding: 3px 10px; color: var(--ink-2); }
+.btn { height: 36px; padding: 0 16px; border-radius: 18px; background: var(--heat); color: var(--heat-ink); font-weight: 500; transition: background .2s, transform .2s var(--ease); }
+.btn:hover { background: #ffbd84; }
+.btn:active { transform: scale(.97); }
+.btn:disabled { background: rgba(243, 241, 231, .12); color: var(--ink-2); cursor: default; }
+.btn.quiet { background: rgba(243, 241, 231, .1); color: var(--ink); }
+.btn.quiet:hover { background: rgba(243, 241, 231, .18); }
+
+.panel { position: fixed; z-index: 500; top: 84px; bottom: 16px; display: flex; flex-direction: column; overflow: hidden; }
+#zones { left: 16px; width: 340px; }
+#side { right: 16px; width: 368px; }
+.head { padding: 20px 22px 14px; }
+.head h2 { font-size: 20px; font-weight: 300; letter-spacing: -.01em; }
+.head p { color: var(--ink-2); margin-top: 2px; }
+.seg { display: inline-flex; padding: 3px; gap: 2px; border-radius: 999px; background: rgba(0, 0, 0, .28); margin-top: 14px; }
+.seg button { padding: 5px 13px; border-radius: 999px; color: var(--ink-2); transition: background .2s, color .2s; }
+.seg button:hover { color: var(--ink); }
+.seg button[aria-pressed=true] { background: var(--ink); color: var(--forest); font-weight: 500; }
+.scroll { overflow-y: auto; flex: 1; scrollbar-width: thin; scrollbar-color: rgba(243, 241, 231, .25) transparent; }
+.rule { border-top: 1px solid var(--line); }
+
+/* zone rows */
+.zrow { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; width: 100%; padding: 13px 22px; border-top: 1px solid var(--line); transition: background .2s; }
+.zrow:hover, .zrow.sel { background: rgba(243, 241, 231, .07); }
+.zrow h3 { font-size: 14.5px; font-weight: 500; }
+.zrow .sub { color: var(--ink-2); font-size: 13px; }
+.zrow .closes { text-align: right; white-space: nowrap; }
+.zrow .closes small { display: block; color: var(--ink-2); font-size: 12px; }
+.load { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; color: var(--ink-2); font-size: 12.5px; margin-top: 4px; }
+.bar { flex: 1; height: 4px; border-radius: 2px; background: rgba(243, 241, 231, .14); overflow: hidden; }
+.bar i { display: block; height: 100%; border-radius: 2px; background: var(--zone); }
+.bar.high i { background: var(--heat); }
+.zrow.closed h3, .zrow.closed .closes { color: var(--ink-2); }
+.aqi { display: inline-block; min-width: 34px; text-align: center; padding: 1px 7px; border-radius: 999px; color: #1b2014; font-weight: 500; font-size: 12.5px; }
+.legend { padding: 12px 22px 16px; display: flex; flex-wrap: wrap; gap: 6px 16px; color: var(--ink-2); font-size: 12.5px; }
+.legend span { display: inline-flex; align-items: center; gap: 7px; }
+.legend .tk { width: 14px; height: 14px; box-shadow: none; }
+.legend .tk::after { display: none; }
+.legend .zone.discovered { box-shadow: 0 0 0 1.5px var(--ink); background: transparent; }
+
+/* readings */
+.now { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 0 22px 4px; }
+.now b { display: block; font-size: 46px; font-weight: 200; letter-spacing: -.03em; line-height: 1.05; }
+.now span { color: var(--ink-2); font-size: 13px; }
+.note { padding: 8px 22px 14px; color: var(--ink-2); font-size: 13px; }
+.note em { font-style: normal; color: var(--ink); }
+.rrow { display: grid; grid-template-columns: 1fr 44px 44px 48px; gap: 8px; align-items: center; width: 100%; padding: 7px 22px; transition: background .2s; }
+.rrow:hover, .rrow[aria-pressed=true] { background: rgba(243, 241, 231, .07); }
+.rrow[aria-pressed=true] .area { font-weight: 500; }
+.rrow .n, .rhead span + span { text-align: right; }
+.rhead { color: var(--ink-2); font-size: 12px; padding-bottom: 4px; }
+.rrow .area small { color: var(--ink-2); margin-left: 6px; }
+
+/* requests */
+.req-row { border-top: 1px solid var(--line); padding: 14px 22px; transition: background .2s; }
+.req-row.sel { background: rgba(243, 241, 231, .07); }
+.req-row.new { animation: arrive 1.2s var(--ease); }
+@keyframes arrive { from { background: rgba(244, 167, 101, .4); } }
+.req-row .open { display: block; width: 100%; }
+.req-row h3 { font-size: 14.5px; font-weight: 500; }
+.req-row .meta { color: var(--ink-2); font-size: 13px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 9px 0 11px; }
+.chip { padding: 2px 10px; border-radius: 999px; background: rgba(243, 241, 231, .12); font-size: 13px; }
+.chip.e911 { background: var(--aqi-bad); color: #2b0c06; font-weight: 500; }
+.said { margin: 0 0 12px; padding: 10px 12px; border-radius: 12px; background: rgba(0, 0, 0, .26); font-size: 13.5px; }
+.to { display: flex; justify-content: space-between; gap: 10px; color: var(--ink-2); font-size: 13px; margin-bottom: 12px; }
+.to b { color: var(--ink); font-weight: 500; }
+.more { display: none; }
+.req-row.sel .more { display: block; }
+.status { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.status .seg { margin: 0; }
+.status .seg button[aria-pressed=true].s-requesting { background: var(--heat); color: var(--heat-ink); }
+.status .seg button[aria-pressed=true].s-incoming { background: var(--cool); color: #0c2a33; }
+.status small { color: var(--ink-2); font-size: 12.5px; text-align: right; }
+.link { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(243, 241, 231, .4); font-size: 13px; }
+.link:hover { text-decoration-color: var(--heat); }
+
+/* small screens: map on top, panels stacked below */
+@media (max-width: 1000px) {
+  body { overflow-y: auto; }
+  #map { position: relative; inset: auto; height: 58vh; }
+  .top { position: absolute; flex-wrap: wrap; }
+  .top .alert span, .top .brand span, .top .tag, .spacer { display: none; }
+  .panel { position: static; width: auto !important; margin: 12px; max-height: none; }
+  .scroll { overflow: visible; }
+  .leaflet-bottom.leaflet-right { right: 0; }
+  body { background: var(--forest); }
+}
+</style>
+</head>
+<body>
+<div id="map" aria-label="Map of San Diego County cool zones and help requests"></div>
+
+<header class="top">
+  <div class="glass pill brand">
+    <div class="tk"><svg viewBox="0 0 24 24"><path d="M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9"/></svg></div>
+    <b>Shade</b><span>County operations</span>
+  </div>
+  <div class="glass pill alert" role="status">
+    <i></i><b>Extreme Heat Warning</b><span>Inland valleys, until 8:00 PM</span>
+  </div>
+  <div class="spacer"></div>
+  <div class="glass pill">
+    <span class="tag mono">Mock data</span>
+    <span class="mono" id="clock"></span>
+    <button class="btn" id="sim">Simulate call</button>
+  </div>
+</header>
+
+<section class="glass panel" id="zones" aria-labelledby="zh">
+  <div class="head">
+    <h2 id="zh">Cool zones</h2>
+    <p id="zsum"></p>
+    <div class="seg" id="zfilter" role="group" aria-label="Filter zones">
+      <button aria-pressed="true" data-f="all">All</button>
+      <button aria-pressed="false" data-f="official">Official</button>
+      <button aria-pressed="false" data-f="discovered">Discovered</button>
+    </div>
+  </div>
+  <div class="scroll" id="zlist"></div>
+  <div class="legend rule">
+    <span><i class="tk zone"></i>Official</span>
+    <span><i class="tk zone discovered"></i>Discovered</span>
+    <span><i class="tk req"></i>Requesting help</span>
+    <span><i class="tk req incoming"></i>Help incoming</span>
+    <span><i class="dot"></i>Call, directions sent</span>
+  </div>
+</section>
+
+<aside class="glass panel" id="side">
+  <section class="scroll" aria-labelledby="qh">
+    <div class="head">
+      <h2 id="qh">Help requests</h2>
+      <p id="qsum"></p>
+    </div>
+    <div id="qlist"></div>
+  </section>
+  <section class="rule" aria-labelledby="rh" style="padding-bottom:10px">
+    <div class="head">
+      <h2 id="rh">Readings</h2>
+      <p id="rwhere"></p>
+    </div>
+    <div class="now" id="rnow"></div>
+    <p class="note" id="rnote"></p>
+    <div class="rrow rhead"><span>Area</span><span>Temp</span><span>Feels</span><span>AQI</span></div>
+    <div id="rlist"></div>
+  </section>
+</aside>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="mock.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const AST = '<svg viewBox="0 0 24 24"><path d="M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9"/></svg>';
+const aqiBand = a => a <= 50 ? ['Good', 'var(--aqi-good)'] : a <= 100 ? ['Moderate', 'var(--aqi-mod)']
+  : a <= 150 ? ['Unhealthy for sensitive groups', 'var(--aqi-usg)'] : ['Unhealthy', 'var(--aqi-bad)'];
+const aqiChip = a => `<span class="aqi" style="background:${aqiBand(a)[1]}" title="${aqiBand(a)[0]}">${a}</span>`;
+const zoneById = id => ZONES.find(z => z.id === id);
+
+const state = { filter: 'all', zip: '92020', req: null, zone: null, live: REQUESTS.filter(r => !r.arrives) };
+
+/* ---------- map ---------- */
+const map = L.map('map', { zoomControl: false }).setView([32.79, -117.04], 11);
+L.tileLayer('https://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer/tile/{z}/{y}/{x}', {
+  maxZoom: 16, attribution: 'USGS The National Map',
+}).addTo(map);
+L.control.zoom({ position: 'bottomright' }).addTo(map);
+const wide = () => innerWidth > 1000;
+const pad = () => wide() ? { paddingTopLeft: [380, 100], paddingBottomRight: [410, 40] } : { padding: [30, 30] };
+
+const icon = (html, size) => L.divIcon({ className: '', html, iconSize: [size, size], iconAnchor: [size / 2, size / 2] });
+const zoneIcon = z => icon(`<div class="tk zone ${z.tier} ${z.open ? '' : 'closed'} ${state.zone === z.id ? 'sel' : ''}">${AST}</div>`, 34);
+const reqIcon = r => icon(`<div class="tk req ${r.status} ${state.req === r.id ? 'sel' : ''}">${r.told911 ? '!' : ''}</div>`, 30);
+
+CALLS.forEach(c => L.marker(c, { icon: icon('<div class="dot"></div>', 9), interactive: false, keyboard: false }).addTo(map));
+const zoneMarkers = {}, reqMarkers = {};
+ZONES.forEach(z => {
+  zoneMarkers[z.id] = L.marker([z.lat, z.lon], { icon: zoneIcon(z), title: z.name }).addTo(map).on('click', () => pickZone(z.id));
+});
+const addReqMarker = r => {
+  reqMarkers[r.id] = L.marker([r.lat, r.lon], { icon: reqIcon(r), title: r.place, zIndexOffset: 500 }).addTo(map).on('click', () => pickReq(r.id));
+};
+state.live.forEach(addReqMarker);
+const routeLayer = L.layerGroup().addTo(map);
+map.fitBounds(L.latLngBounds(ZONES.map(z => [z.lat, z.lon])), pad());
+
+function refreshIcons() {
+  ZONES.forEach(z => zoneMarkers[z.id].setIcon(zoneIcon(z)));
+  state.live.forEach(r => reqMarkers[r.id].setIcon(reqIcon(r)));
+}
+
+/* ---------- cool zones ---------- */
+function renderZones() {
+  const open = ZONES.filter(z => z.open);
+  $('zsum').textContent = `${open.length} open now, ${ZONES.length - open.length} closed`;
+  const rows = ZONES.filter(z => state.filter === 'all' || z.tier === state.filter)
+    .sort((a, b) => b.open - a.open || b.sent / b.cap - a.sent / a.cap);
+  $('zlist').innerHTML = rows.map(z => {
+    const pct = Math.round(100 * z.sent / z.cap);
+    const tier = z.tier === 'official' ? 'Official' : `Discovered, ${Math.round(z.confidence * 100)}% sure of hours`;
+    return `<button class="zrow ${z.open ? '' : 'closed'} ${state.zone === z.id ? 'sel' : ''}" data-z="${z.id}">
+      <span><h3>${z.name}</h3><span class="sub">${z.kind} · ${tier}</span></span>
+      <span class="closes">${z.open ? `${z.closes}<small>closes</small>` : 'Closed today'}</span>
+      ${z.open ? `<span class="load"><span class="bar ${pct >= 70 ? 'high' : ''}"><i style="width:${pct}%"></i></span>
+        ${z.sent} sent of ~${z.cap} ${aqiChip(z.aqi)}</span>` : ''}
+    </button>`;
+  }).join('') || '<p class="note">No zones match this filter.</p>';
+}
+$('zfilter').onclick = e => {
+  const b = e.target.closest('button'); if (!b) return;
+  state.filter = b.dataset.f;
+  [...$('zfilter').children].forEach(x => x.setAttribute('aria-pressed', x === b));
+  renderZones();
+};
+$('zlist').onclick = e => { const b = e.target.closest('[data-z]'); if (b) pickZone(+b.dataset.z); };
+
+function pickZone(id) {
+  state.zone = id; state.req = null; routeLayer.clearLayers();
+  const z = zoneById(id);
+  map.flyTo([z.lat, z.lon], 14, { duration: .8 });
+  renderZones(); renderReqs(); refreshIcons();
+}
+
+/* ---------- readings ---------- */
+function renderReadings() {
+  const r = READINGS.find(x => x.zip === state.zip);
+  $('rwhere').textContent = `${r.area} ${r.zip}`;
+  $('rnow').innerHTML = `<div><b>${r.temp}°</b><span>Temperature</span></div>
+    <div><b>${r.feels}°</b><span>Feels like</span></div><div><b>${r.aqi}</b><span>AQI</span></div>`;
+  $('rnote').innerHTML = `<em>${aqiBand(r.aqi)[0]}</em> air. ${r.trend}.`;
+  $('rlist').innerHTML = READINGS.map(x => `<button class="rrow" aria-pressed="${x.zip === state.zip}" data-zip="${x.zip}">
+    <span class="area">${x.area}<small class="mono">${x.zip}</small></span>
+    <span class="n">${x.temp}°</span><span class="n">${x.feels}°</span><span class="n">${aqiChip(x.aqi)}</span></button>`).join('');
+}
+$('rlist').onclick = e => { const b = e.target.closest('[data-zip]'); if (b) { state.zip = b.dataset.zip; renderReadings(); } };
+
+/* ---------- help requests ---------- */
+function renderReqs(fresh) {
+  const n = s => state.live.filter(r => r.status === s).length;
+  $('qsum').textContent = `${n('requesting')} requesting, ${n('incoming')} incoming`;
+  $('qlist').innerHTML = [...state.live].sort((a, b) => (a.status === 'incoming') - (b.status === 'incoming')).map(r => {
+    const z = zoneById(r.zone), rt = ROUTES[r.route];
+    return `<article class="req-row ${state.req === r.id ? 'sel' : ''} ${fresh === r.id ? 'new' : ''}" data-q="${r.id}">
+      <button class="open" aria-expanded="${state.req === r.id}">
+        <h3>${r.place}</h3>
+        <span class="meta">${r.area} · ${r.channel}, ${r.lang} · ${r.ago}</span>
+      </button>
+      <div class="chips">${r.told911 ? '<span class="chip e911">Told to call 911</span>' : ''}${r.needs.map(x => `<span class="chip">${x}</span>`).join('')}</div>
+      <div class="more">
+        <p class="said">“${r.said}”</p>
+        <p class="to"><span>Nearest open zone<br><b>${z.name}</b></span><span style="text-align:right">${rt.mi} mi<br>${rt.min} min drive</span></p>
+      </div>
+      <div class="status">
+        <div class="seg" role="group" aria-label="Request status">
+          <button class="s-requesting" aria-pressed="${r.status === 'requesting'}" data-s="requesting">Requesting</button>
+          <button class="s-incoming" aria-pressed="${r.status === 'incoming'}" data-s="incoming">Incoming</button>
+        </div>
+        <small>${r.status === 'incoming' ? (r.unit || 'Help dispatched just now') : 'Waiting for help'}</small>
+      </div>
+      <div class="more" style="margin-top:12px"><a class="link" href="directions.html">See the directions page this resident was sent</a></div>
+    </article>`;
+  }).join('');
+}
+$('qlist').onclick = e => {
+  const row = e.target.closest('[data-q]'); if (!row) return;
+  const r = state.live.find(x => x.id === row.dataset.q), s = e.target.closest('[data-s]');
+  if (s) { r.status = s.dataset.s; if (r.status === 'requesting') delete r.unit; renderReqs(); refreshIcons(); }
+  else if (e.target.closest('.open')) pickReq(r.id);
+};
+
+function pickReq(id, fresh) {
+  state.req = state.req === id && !fresh ? null : id; state.zone = null;
+  routeLayer.clearLayers();
+  const r = state.live.find(x => x.id === state.req);
+  if (r) {
+    const line = ROUTES[r.route].line;
+    L.polyline(line, { color: '#fffaf0', weight: 8, opacity: .95 }).addTo(routeLayer);
+    L.polyline(line, { color: '#1d2a20', weight: 3.5, dashArray: '1 7', lineCap: 'round' }).addTo(routeLayer);
+    state.zone = r.zone;
+    map.flyToBounds(L.latLngBounds(line).pad(.6), { ...pad(), duration: .8, maxZoom: 15 });
+  }
+  renderZones(); renderReqs(fresh && id); refreshIcons();
+}
+
+/* ---------- mock live call ---------- */
+$('sim').onclick = () => {
+  const r = REQUESTS.find(x => x.arrives && !state.live.includes(x));
+  state.live.unshift(r); addReqMarker(r); state.zip = '92040';
+  $('sim').disabled = true; $('sim').textContent = 'Call received';
+  renderReadings(); pickReq(r.id, true);
+  $('qlist').parentElement.scrollTop = 0;
+};
+
+const tick = () => $('clock').textContent = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: 'America/Los_Angeles' });
+tick(); setInterval(tick, 15000);
+renderZones(); renderReadings(); renderReqs();
+</script>
+</body>
+</html>
