@@ -6,7 +6,8 @@ create type site_kind as enum (
 );
 create type site_tier as enum ('official', 'discovered');
 create type call_direction as enum ('inbound', 'outbound');
-create type channel as enum ('voice', 'sms');
+-- messenger: Facebook Messenger through Twilio (M4). Existing databases: alter type channel add value 'messenger';
+create type channel as enum ('voice', 'sms', 'messenger');
 create type call_outcome as enum (
   'site_given', 'sms_sent', 'no_site_found', 'escalated_911', 'abandoned', 'error'
 );
@@ -55,7 +56,7 @@ create table calls (
   id          serial primary key,
   direction   call_direction not null,
   channel     channel not null,
-  phone_hash  text,
+  phone_hash  text,                        -- messenger rows: sha256(salt + 'messenger:' + page-scoped id), never the raw id
   zip         text,
   language    text,
   site_id     int references sites,
@@ -95,8 +96,8 @@ alter table calls add foreign key (alert_id) references alerts (id);
 -- Written by: M4 (text agent memory). Read by: M4.
 create table messages (
   id          serial primary key,
-  phone_hash  text not null,
-  role        text not null check (role in ('user', 'assistant')),
+  phone_hash  text not null,              -- or the Messenger hash, as in calls.phone_hash
+  role       text not null check (role in ('user', 'assistant')),
   body        text not null,
   created_at  timestamptz not null default now()
 );

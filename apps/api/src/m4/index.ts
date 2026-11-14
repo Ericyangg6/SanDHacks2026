@@ -13,5 +13,6 @@ export { hashPhone, toE164 } from './phone';
 
 // Entry points behind the routes, for callers that are not HTTP.
 export { handleInboundSms } from './subscribers/inbound';
+export { handleInboundMessenger } from './messenger/inbound';
 export { subscribe, optOut } from './subscribers/consent';
 export { triggerMockAlert } from './alerts/dispatch';

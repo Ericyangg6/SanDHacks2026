@@ -1,5 +1,6 @@
 import { createHmac, randomUUID, timingSafeEqual } from 'node:crypto';
 import { env } from '../env';
+import { hashMessengerId, messengerAddress, messengerLogLabel } from '../messenger/identity';
 import { maskPhone } from '../phone';
 
 // Thin Twilio REST client built on fetch (the `twilio` package is not installed).
@@ -20,9 +21,13 @@ export class TwilioError extends Error {
   }
 }
 
-// Twilio's error text often quotes the number it refused.
+// Twilio's error text often quotes the number or Messenger id it refused. Messenger ids run past 15 digits.
 function scrubNumbers(text: string): string {
-  return text.replace(/\+?\d{7,15}/g, '[number]');
+  return text.replace(/(?:messenger:)?\+?\d{7,}/g, '[number]');
+}
+
+function dryRunSid(): string {
+  return `DRYRUN${randomUUID().replace(/-/g, '')}`;
 }
 
 // Sends one SMS from TWILIO_PHONE_NUMBER and returns Twilio's message sid. Throws TwilioError on any failure.
@@ -30,16 +35,34 @@ function scrubNumbers(text: string): string {
 export async function sendTwilioSms(args: { to: string; body: string }): Promise<{ sid: string }> {
   if (env.smsDryRun()) {
     console.info(`[m4] dry run, not sent. To ${maskPhone(args.to)}:\n${args.body}`);
-    return { sid: `DRYRUN${randomUUID().replace(/-/g, '')}` };
+    return { sid: dryRunSid() };
   }
+  const { phoneNumber } = env.twilio();
+  return createMessage({ To: args.to, From: phoneNumber, Body: args.body });
+}
 
-  const { accountSid, username, password, phoneNumber } = env.twilio();
+// Sends one Facebook Messenger message from the Page `pageId` to the person `psid` (bare ids, no 'messenger:'
+// prefix) and returns Twilio's message sid. Throws TwilioError on any failure. M4_SMS_DRY_RUN=1 covers this too.
+// Messenger allows a reply for 24 hours after the person's last message. Twilio tags a later one ACCOUNT_UPDATE,
+// which alerts and other promotional messages may not use, so only call this to answer a message just received.
+// Nothing here checks consent or logs: call sendMessengerReply in ../messenger/send instead.
+export async function sendTwilioMessenger(args: { pageId: string; psid: string; body: string }): Promise<{ sid: string }> {
+  if (env.smsDryRun()) {
+    console.info(`[m4] dry run, not sent. To ${messengerLogLabel(hashMessengerId(args.psid))}:\n${args.body}`);
+    return { sid: dryRunSid() };
+  }
+  return createMessage({ To: messengerAddress(args.psid), From: messengerAddress(args.pageId), Body: args.body });
+}
+
+// POST to the Messages API, shared by SMS and Messenger: the channel is in the To and From addresses.
+async function createMessage(params: { To: string; From: string; Body: string }): Promise<{ sid: string }> {
+  const { accountSid, username, password } = env.twilioCredentials();
   let response: Response;
   try {
     response = await fetch(`https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`, {
       method: 'POST',
       headers: { Authorization: `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}` },
-      body: new URLSearchParams({ To: args.to, From: phoneNumber, Body: args.body }),
+      body: new URLSearchParams(params),
       signal: AbortSignal.timeout(TWILIO_TIMEOUT_MS),
     });
   } catch (error) {
