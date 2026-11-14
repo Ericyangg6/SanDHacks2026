@@ -17,7 +17,7 @@ app behaves exactly as before.
 | `alerts/` | NWS polling, zones, re-crawl request, dispatch, mock alerts |
 | `agent/` | Text agent prompt, the 911 pre-check, one conversation turn |
 | `mastra/` | The Mastra objects: `textAgent`, `alertWorkflow`, `m4ApiRoutes`, `sendSmsTool`, `findSitesTool` |
-| `dev/` | `webhook-proxy.mjs`, the only thing a public tunnel should point at (see "Receiving texts on a laptop") |
+| `dev/` | `webhook-proxy.mjs`, the only thing a public tunnel should point at (see "Receiving texts on a laptop"), and the dev scripts (see "Dev scripts") |
 
 Already implemented: `toE164`, `hashPhone`, `validateTwilioSignature`, `detectKeyword`, `toAlertKind`, the zone
 list, the fixed English and Spanish strings, both HTTP route handlers, the workflow wiring, both tools and the
@@ -63,10 +63,30 @@ Set `PUBLIC_BASE_URL` to that address before starting the dev server, and set th
 webhook to `<address>/m4/twilio/sms` (HTTP POST). The address changes every time the tunnel restarts, and both
 places have to change with it: the signature check fails with 403 if `PUBLIC_BASE_URL` is stale.
 
+## Dev scripts
+
+Run from `apps/sandhacks`. Each one loads the repo-root `.env` itself.
+
+```shell
+node src/m4/dev/run.mjs send-test ["message"]    # one text to TEST_PHONE_NUMBER, straight through Twilio
+```
+
+## Dry run
+
+`M4_SMS_DRY_RUN=1` stops every text at the last step: it is written to the server log with a masked number and
+never reaches Twilio. Everything before that step runs as normal, so the `calls` and `messages` rows are still
+written. Use it until the Twilio account can send.
+
+```shell
+M4_SMS_DRY_RUN=1 node src/m4/dev/run.mjs send-test
+```
+
 ## Environment
 
 | Variable | Used for |
 | --- | --- |
+| `M4_SMS_DRY_RUN` | Optional. `1` logs texts instead of sending them |
+| `TEST_PHONE_NUMBER` | Dev scripts only: where `send-test` sends |
 | `TWILIO_SID`, `TWILIO_SECRET` | Twilio API key pair, authenticates the send request |
 | `TWILIO_ACCOUNT_SID` | Account SID (`AC...`), part of the send URL |
 | `TWILIO_AUTH_TOKEN` | Validates the signature on inbound webhooks |

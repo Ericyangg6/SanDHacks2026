@@ -23,4 +23,11 @@ export const env = {
   // Public origin Twilio calls, e.g. the tunnel URL. Needed to validate webhook signatures.
   publicBaseUrl: () => requireEnv('PUBLIC_BASE_URL'),
   textAgentModel: () => process.env.TEXT_AGENT_MODEL || 'anthropic/claude-sonnet-5-5',
+  // M4_SMS_DRY_RUN=1: every text is written to the server log instead of going to Twilio. Everything else runs
+  // as normal, including the calls rows, so delete those after a dry run against the shared database.
+  smsDryRun: () => isOn(process.env.M4_SMS_DRY_RUN),
 };
+
+function isOn(value: string | undefined): boolean {
+  return value === '1' || value === 'true';
+}
