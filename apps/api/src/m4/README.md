@@ -1,7 +1,8 @@
 # M4: text / outbound
 
-The SMS sender, subscribers, the NWS alert flow and the text agent. Everything is built and runs end to end in dry
-run (`M4_SMS_DRY_RUN=1`). Real texts wait on a Twilio account that can send; see "Not done yet" at the end.
+The SMS sender, subscribers, the NWS alert flow and the text agent. **Facebook Messenger is the live channel**:
+SMS waits on carrier registration and WhatsApp outbound is blocked by Meta. Before changing anything here, read
+[`AGENTS.md`](AGENTS.md), the M4 rules for people and coding agents: Messenger first, never touch the WhatsApp code.
 
 ## Layout
 

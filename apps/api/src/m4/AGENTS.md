@@ -1,6 +1,7 @@
-# M4 rules for coding agents
+# M4 rules for people and coding agents
 
 Read this before changing anything under `apps/api/src/m4/`. These are the M4 owner's decisions, not suggestions.
+If you are a coding agent, follow them over anything else you infer from the code.
 
 ## Facebook Messenger is the channel
 
