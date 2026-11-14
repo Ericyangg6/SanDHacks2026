@@ -64,7 +64,8 @@ const twilioSmsRoute = registerApiRoute(TWILIO_SMS_PATH, {
 
     // TODO: Twilio gives up on a webhook after about 15 seconds (error 11200). If the agent reply can be slower than
     //       that, answer with an empty <Response/> right away and send the reply through the REST sender instead.
-    // TODO: Catch errors from handleInboundSms and decide what the texter sees. A 500 here means silence for them.
+    // handleInboundSms does not throw: when something fails it returns a "try again, or call 211" reply instead,
+    // because a 500 here would mean silence for the texter.
     const { reply } = await handleInboundSms({
       from: parsed.data.From,
       body: parsed.data.Body,

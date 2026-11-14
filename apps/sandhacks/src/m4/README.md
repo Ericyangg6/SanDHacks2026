@@ -1,8 +1,7 @@
 # M4: text / outbound
 
 The SMS sender, subscribers, the NWS alert flow and the text agent. What is not built yet is a stub that throws
-`NotImplementedError`, with ordered `TODO` steps. Nothing is registered with the Mastra instance yet, so the app
-behaves exactly as before.
+`NotImplementedError`, with ordered `TODO` steps.
 
 ## Layout
 
@@ -20,13 +19,31 @@ behaves exactly as before.
 | `dev/` | `webhook-proxy.mjs`, the only thing a public tunnel should point at (see "Receiving texts on a laptop"), and the dev scripts (see "Dev scripts") |
 
 Built: the Twilio sender, every query in `db.ts`, `sendSms` and `sendText`, the site text (English and Spanish),
-`isOptedOut`, `toE164`, `hashPhone`, `validateTwilioSignature`, `detectKeyword`, `toAlertKind`, the zone list, the
-fixed English and Spanish strings, both HTTP route handlers, the workflow wiring, both tools and the agent
-definition.
+inbound texts (STOP, START, HELP, JOIN and the hand-off to the agent), `subscribe`, `optOut`, `isOptedOut`,
+`toE164`, `hashPhone`, the webhook signature check, `toAlertKind`, the zone list, the fixed English and Spanish
+strings, both HTTP route handlers, the workflow wiring, both tools and the agent definition.
 
-Still stubs: `subscribe`, `optOut`, `handleInboundSms`, the alert text, `recordAlert`, `dispatchAlert`,
-`triggerMockAlert`, `fetchActiveAlerts`, `zipsForZones`, `requestRecrawl`, `generateTextReply`,
-`looksLikeEmergency` and `findSites`.
+Still stubs: the alert text, `recordAlert`, `dispatchAlert`, `triggerMockAlert`, `fetchActiveAlerts`,
+`zipsForZones`, `requestRecrawl`, `generateTextReply`, `looksLikeEmergency` and `findSites`. Until
+`generateTextReply` lands, any text that is not a keyword gets the "try again, or call 211" reply.
+
+## Receiving a text
+
+`handleInboundSms` never throws. When something fails, the texter gets a "try again, or call 211" reply instead of
+silence.
+
+| Text | What happens | Reply |
+| --- | --- | --- |
+| `STOP`, `ALTO`, ... (the whole text) | `opted_out_at` set, stored number cleared | Unsubscribed. Twilio answers its own English STOP words itself, so ours only arrives for the Spanish ones |
+| `START`, `INICIAR`, ... | Signs a past subscriber up again with their zip | Signed up, or "reply JOIN and your zip" for a number that never joined |
+| `JOIN 92105`, `UNIRME 92105` | `subscribe` with that zip | Signed up, or the JOIN usage line when there is no zip |
+| `HELP`, `AYUDA`, ... | Nothing | The help text |
+| Anything else | Text agent, unless the number opted out | The agent's answer. No reply at all to an opted-out number |
+
+A Spanish keyword is answered in Spanish and makes Spanish the subscriber's language. Every inbound text gets a
+`calls` row (`inbound`, `sms`). Keyword texts have a null outcome, because `call_outcome` has no value for them.
+Twilio sometimes delivers a message twice. A repeated `MessageSid` within 10 minutes gets the first reply again and
+is not handled twice. That memory lives in the server process, so a restart clears it.
 
 ## Sending a text
 
@@ -45,9 +62,9 @@ sends it. `sendText` is the path under it that every other M4 text uses. Neither
 
 A text that goes out gets one `calls` row (`outbound`, `sms`, `sms_sent`). A text that does not go out gets none.
 
-## Wiring it in
+## Wiring
 
-`src/mastra/index.ts` belongs to the app's owner. When the team is ready, the change is:
+`src/mastra/index.ts` belongs to the app's owner. M4 adds three lines to it and nothing else:
 
 ```ts
 import { alertWorkflow, m4ApiRoutes, textAgent } from '../m4';
@@ -91,6 +108,19 @@ Run from `apps/sandhacks`. Each one loads the repo-root `.env` itself.
 
 ```shell
 node src/m4/dev/run.mjs send-test ["message"]    # one text to TEST_PHONE_NUMBER, straight through Twilio
+node src/m4/dev/run.mjs text-in "JOIN 92105"     # pretend a phone texted the Twilio number; prints the reply
+```
+
+`text-in` stands in for a phone until the Twilio number can receive. It signs the request the way Twilio does
+and posts it to the running dev server (`M4_SERVER_URL`, default `http://localhost:4111`), so it needs
+`TWILIO_AUTH_TOKEN` and the same `PUBLIC_BASE_URL` the server was started with. It texts from the fictional
+`+16195550100` unless given `--from <number>`. The rows it writes are real, so delete them afterwards:
+
+```sql
+-- phone_hash of +16195550100 with your PHONE_SALT
+delete from calls where phone_hash = '<hash>';
+delete from messages where phone_hash = '<hash>';
+delete from subscribers where phone_hash = '<hash>';
 ```
 
 ## Dry run
@@ -109,6 +139,7 @@ M4_SMS_DRY_RUN=1 node src/m4/dev/run.mjs send-test
 | --- | --- |
 | `M4_SMS_DRY_RUN` | Optional. `1` logs texts instead of sending them |
 | `TEST_PHONE_NUMBER` | Dev scripts only: where `send-test` sends |
+| `M4_SERVER_URL` | Dev scripts only: where `text-in` posts. Defaults to `http://localhost:4111` |
 | `TWILIO_SID`, `TWILIO_SECRET` | Twilio API key pair, authenticates the send request |
 | `TWILIO_ACCOUNT_SID` | Account SID (`AC...`), part of the send URL |
 | `TWILIO_AUTH_TOKEN` | Validates the signature on inbound webhooks |

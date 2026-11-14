@@ -144,6 +144,28 @@ export function helpMessage(language: Language): string {
   );
 }
 
+// Reply to JOIN with no zip, and to START from a number that never signed up.
+export function joinUsage(language: Language): string {
+  return pick(
+    {
+      en: 'Shade: to get heat and smoke alerts for your area, reply JOIN and your zip code. Example: JOIN 92105',
+      es: 'Shade: para recibir alertas de calor y humo en tu zona, responde JOIN y tu código postal. Ejemplo: JOIN 92105',
+    },
+    language,
+  );
+}
+
+// Sent when a text could not be handled, so the person is never left with silence.
+export function replyUnavailable(language: Language): string {
+  return pick(
+    {
+      en: 'Shade: something went wrong on our side and we could not handle your text. Please try again in a few minutes. For a cooling center or a free ride, call 211. In an emergency, call 911.',
+      es: 'Shade: algo falló de nuestro lado y no pudimos procesar tu mensaje. Intenta de nuevo en unos minutos. Para un centro de enfriamiento o transporte gratis, llama al 211. En una emergencia, llama al 911.',
+    },
+    language,
+  );
+}
+
 // Opens the text agent's first reply in a conversation.
 export function aiDisclosure(language: Language): string {
   return pick(

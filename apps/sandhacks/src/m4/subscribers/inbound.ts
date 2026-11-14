@@ -1,4 +1,9 @@
-import { notImplemented } from '../todo';
+import { generateTextReply } from '../agent/reply';
+import { getSubscriber, insertCall } from '../db';
+import { hashPhone, maskPhone, toE164 } from '../phone';
+import { helpMessage, joinUsage, optInConfirmation, optOutConfirmation, replyUnavailable } from '../sms/templates';
+import type { CallOutcome, Language } from '../types';
+import { detectKeyword, optOut, subscribe, type KeywordMatch } from './consent';
 
 export interface InboundSms {
   from: string; // as Twilio sends it; normalize with toE164 before use
@@ -6,27 +11,119 @@ export interface InboundSms {
   messageSid: string;
 }
 
+export interface InboundResult {
+  reply: string | null; // null = send nothing
+}
+
+// Twilio can deliver one message twice. Nothing in the schema stores MessageSid, so recent ones are remembered
+// here, in this process only, and a repeat gets the answer the first delivery got instead of being handled again.
+const DEDUPE_TTL_MS = 10 * 60_000;
+const recent = new Map<string, { at: number; result: Promise<InboundResult> }>();
+
+function reason(error: unknown): string {
+  return error instanceof Error ? error.message : 'unknown error';
+}
+
 // Routes one inbound text: STOP / START / HELP / JOIN <zip> are handled here, anything else goes to the text agent.
-// Returns the reply to send back (null = send nothing) and logs the inbound sms row in calls.
-export async function handleInboundSms(msg: InboundSms): Promise<{ reply: string | null }> {
-  // TODO: 1. phoneE164 = toE164(msg.from). If null (short code, alphanumeric sender), return { reply: null }.
-  //          Log lines use maskPhone, never the raw number.
-  // TODO: 2. phoneHash = hashPhone(phoneE164); subscriber = await getSubscriber(phoneHash).
-  //          Reply language: the subscriber's, else 'es' when the keyword was a Spanish one, else 'en'.
-  //          detectKeyword does not say which language matched, so that needs a second check.
-  // TODO: 3. Branch on detectKeyword(msg.body):
-  //          - 'stop':  optOut(phoneE164). Twilio answers STOP itself by default and then blocks our sends to that
-  //                     number (error 21610), so decide between reply: null and optOutConfirmation(language).
-  //          - 'start': with a subscriber row, subscribe() again with its zip and language (clears opted_out_at) and
-  //                     reply optInConfirmation(language). Without one there is no zip, so ask for JOIN <zip>.
-  //          - 'help':  reply helpMessage(language). Twilio may also answer HELP itself; avoid a double reply.
-  //          - 'join':  zip = first /\b\d{5}\b/ in the body. No zip: reply with the JOIN <zip> usage line.
-  //                     Otherwise subscribe({ phoneE164, zip, language }) and reply optInConfirmation(language).
-  //          - null:    if the subscriber is opted out, return { reply: null }. Otherwise
-  //                     generateTextReply({ phoneE164, body: msg.body }) and use its text, outcome, siteId and language.
-  //                     The agent slice writes the messages rows; keyword exchanges are not stored there.
-  // TODO: 4. insertCall({ direction: 'inbound', channel: 'sms', phoneHash, zip: subscriber?.zip, language, siteId, outcome }).
-  //          call_outcome has no value for keyword messages, so outcome is null for those. Use 'error' when the agent throws.
-  // TODO: 5. Twilio can deliver the same MessageSid twice. Nothing in the schema stores it, so pick a dedupe strategy.
-  return notImplemented('inbound.handleInboundSms');
+// Returns the reply to send back and logs the inbound sms row in calls. Never throws: when something fails the
+// reply is replyUnavailable, so the person is not left with silence.
+export function handleInboundSms(msg: InboundSms): Promise<InboundResult> {
+  const now = Date.now();
+  for (const [sid, entry] of recent) {
+    if (now - entry.at > DEDUPE_TTL_MS) recent.delete(sid);
+  }
+  const seen = recent.get(msg.messageSid);
+  if (seen) return seen.result;
+
+  const result = route(msg);
+  recent.set(msg.messageSid, { at: now, result });
+  return result;
+}
+
+async function route(msg: InboundSms): Promise<InboundResult> {
+  const phoneE164 = toE164(msg.from);
+  // A short code or an alphanumeric sender: there is nobody to answer.
+  if (!phoneE164) return { reply: null };
+
+  const match = detectKeyword(msg.body);
+  try {
+    return await answer(phoneE164, msg.body, match);
+  } catch (error) {
+    console.error(`[m4] inbound text from ${maskPhone(phoneE164)} failed (${reason(error)})`);
+    // The subscriber's language is not known here unless the keyword gave it away, so the reply carries both.
+    // It goes out even though the opt-out state is unknown: it answers a text the person just sent.
+    return {
+      reply: match?.language === 'es' ? replyUnavailable('es') : `${replyUnavailable('en')}\n\n${replyUnavailable('es')}`,
+    };
+  }
+}
+
+async function answer(phoneE164: string, body: string, match: KeywordMatch | null): Promise<InboundResult> {
+  const phoneHash = hashPhone(phoneE164);
+  const subscriber = await getSubscriber(phoneHash);
+  // A Spanish keyword is answered in Spanish. Otherwise the subscriber's language, else English. The English
+  // keywords say nothing about language: our Spanish texts also tell people to reply STOP and HELP.
+  let language: Language = match?.language === 'es' ? 'es' : (subscriber?.language ?? 'en');
+  let zip = subscriber?.zip ?? null;
+  let reply: string | null;
+  // call_outcome has no value for a keyword exchange, so those rows keep a null outcome.
+  let outcome: CallOutcome | null = null;
+  let siteId: number | null = null;
+
+  switch (match?.keyword) {
+    case 'stop':
+      // Twilio answers its own STOP words itself and then blocks our texts to the number, so this reply only
+      // arrives for the Spanish words, which Twilio does not know.
+      await optOut(phoneE164);
+      reply = optOutConfirmation(language);
+      break;
+
+    case 'start':
+    case 'join': {
+      const typedZip = match.keyword === 'join' ? /\b\d{5}\b/.exec(body)?.[0] : undefined;
+      const newZip = typedZip ?? subscriber?.zip;
+      if (!newZip) {
+        reply = joinUsage(language);
+        break;
+      }
+      const row = await subscribe({ phoneE164, zip: newZip, language: match.language === 'es' ? 'es' : undefined });
+      language = row.language;
+      zip = row.zip;
+      reply = optInConfirmation(language);
+      break;
+    }
+
+    case 'help':
+      // TODO: Twilio may answer HELP itself as well. Check for a double reply on the first real test.
+      reply = helpMessage(language);
+      break;
+
+    default:
+      if (subscriber?.opted_out_at) {
+        // They sent STOP. Nothing goes back until they send START.
+        reply = null;
+      } else if (!body.trim()) {
+        // A picture with no words, for example.
+        reply = helpMessage(language);
+      } else {
+        // The agent slice writes the messages rows. Keyword exchanges are not stored there.
+        try {
+          const turn = await generateTextReply({ phoneE164, body });
+          reply = turn.text;
+          outcome = turn.outcome;
+          siteId = turn.siteId;
+          language = turn.language;
+        } catch (error) {
+          console.error(`[m4] text agent failed for ${maskPhone(phoneE164)} (${reason(error)})`);
+          reply = replyUnavailable(language);
+          outcome = 'error';
+        }
+      }
+  }
+
+  // The reply matters more than the log row.
+  await insertCall({ direction: 'inbound', channel: 'sms', phoneHash, zip, language, siteId, outcome }).catch(
+    (error) => console.error(`[m4] inbound text from ${maskPhone(phoneE164)}: calls row not written (${reason(error)})`),
+  );
+  return { reply };
 }

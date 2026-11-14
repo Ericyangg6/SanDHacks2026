@@ -65,7 +65,16 @@ export async function sendTwilioSms(args: { to: string; body: string }): Promise
   return { sid: payload.sid };
 }
 
-// Checks the X-Twilio-Signature header of an inbound webhook: base64(HMAC-SHA1(auth token, url + sorted params)).
+// The X-Twilio-Signature value for a webhook: base64(HMAC-SHA1(auth token, url + sorted params)).
+// Throws if the auth token is unset.
+export function twilioSignature(url: string, params: Record<string, string>): string {
+  const data = Object.keys(params)
+    .sort()
+    .reduce((acc, key) => acc + key + params[key], url);
+  return createHmac('sha1', env.twilioAuthToken()).update(data, 'utf8').digest('base64');
+}
+
+// Checks the X-Twilio-Signature header of an inbound webhook.
 // `url` must be the exact public URL Twilio requested (env.publicBaseUrl() + path + query string), not the
 // local one behind the tunnel. `params` are the form-encoded POST fields. Throws if the auth token is unset.
 export function validateTwilioSignature(args: {
@@ -73,11 +82,7 @@ export function validateTwilioSignature(args: {
   url: string;
   params: Record<string, string>;
 }): boolean {
-  const authToken = env.twilioAuthToken();
-  const data = Object.keys(args.params)
-    .sort()
-    .reduce((acc, key) => acc + key + args.params[key], args.url);
-  const expected = Buffer.from(createHmac('sha1', authToken).update(data, 'utf8').digest('base64'));
+  const expected = Buffer.from(twilioSignature(args.url, args.params));
   const given = Buffer.from(args.signature);
   return given.length === expected.length && timingSafeEqual(given, expected);
 }
