@@ -36,6 +36,15 @@ function confidenceOf(s: any): number {
   }
 }
 
+// Strip malls and open-air plazas are not cooling spaces. Google's category is "Shopping mall" for both, so judge by NAME.
+// Heuristic: a name that sounds like a strip center is downgraded unless it is a known enclosed mall. Official listings always pass.
+const ENCLOSED_MALL = /\bmall\b|westfield|fashion valley|plaza bonita|parkway plaza|chula vista center|grossmont center|north county fair|the valley|galleria|town center|las americas premium/;
+function openAirCenter(s: any): boolean {
+  if (s.tier === "official" || kindOf(s) !== "mall") return false;
+  const name = String(s.name ?? "").toLowerCase();
+  return /plaza|center|crossings|faire|shoppes|village|marketplace|commons|square|outlets?|shopping|terra|springs|north|south|east|west/.test(name) && !ENCLOSED_MALL.test(name);
+}
+
 // AC from reviews is inferred, never certain: only when several reviews say so and none contradict.
 function acFromReviews(sig: any): boolean | null {
   return sig && sig.ac_positive >= 2 && sig.ac_negative === 0 ? true : null;
@@ -45,7 +54,7 @@ async function main() {
   const merged: any[] = await load("merged.json", []);
   const signals: Record<string, any> = await load("review_signals.json", {});
   const built: { site: any; extra: any }[] = [];
-  const skipped = { no_coords: 0, no_hours: 0, no_address: 0 };
+  const skipped: Record<string, number> = { no_coords: 0, no_hours: 0, no_address: 0 };
   let geocoded = 0;
 
   for (const s of merged) {
@@ -62,18 +71,21 @@ async function main() {
       ({ lat, lon } = g);
       geocoded++;
     }
+    // Safety net: nothing outside San Diego County may enter the seed (bounding box around the county).
+    if (lat < 32.5 || lat > 33.52 || lon < -117.62 || lon > -116.07) { skipped.out_of_county = (skipped.out_of_county ?? 0) + 1; continue; }
     const sig = signals[s.place_id];
     const confirmed = s.verification === "confirmed";
     built.push({
       site: {
         name: s.name,
-        kind: kindOf(s),
+        kind: openAirCenter(s) ? "other" : kindOf(s),
         tier: s.tier === "official" ? "official" : "discovered",
-        confidence: confidenceOf(s),
+        // Malls and shopping centers found only on Google Maps are NOT known to be cool, indoor or open to sit in.
+        confidence: kindOf(s) === "mall" && s.tier !== "official" && s.verification !== "confirmed" ? Math.min(confidenceOf(s), 0.4) : confidenceOf(s),
         address: s.address,
         zip: s.address.match(/\b9\d{4}\b/)?.[0] ?? null,
         lat, lon,
-        hours: { weekly, ...(s.hours_raw ? { raw_text: JSON.stringify(s.hours_raw) } : {}) },
+        hours: { weekly, ...(s.hours_exceptions?.length ? { exceptions: s.hours_exceptions } : {}), ...(s.hours_raw ? { raw_text: JSON.stringify(s.hours_raw) } : {}) },
         hours_confirmed_on_source: confirmed,
         has_ac: typeof s.has_ac === "boolean" ? s.has_ac : acFromReviews(sig), // page statement wins; reviews infer
         has_filtration: null,

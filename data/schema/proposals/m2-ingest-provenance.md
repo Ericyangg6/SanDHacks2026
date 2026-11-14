@@ -39,7 +39,10 @@ alter table sites
   add column conflicts      jsonb             not null default '[]',   -- human-readable disagreements
   add column evidence       text,                       -- verbatim quote from the source supporting hours/access
   add column source_urls    text[]            not null default '{}',   -- every source consulted
-  add column maps_place_id  text unique;                -- Google Maps place id, for dedupe across runs
+  add column maps_place_id  text unique,                -- Google Maps place id, for dedupe across runs
+  add column pet_policy     text,                       -- county Cool Zone layer, e.g. 'Service Animals Only'
+  add column official_name  text,                       -- name as the official listing writes it (name stays the short public name)
+  add column ac_source      text;                       -- where has_ac comes from: official_program | site_page | reviews (null = unknown)
 
 -- Written by: M2 (ingest). One row per fetch of a source page; a new content_hash means the page changed.
 create table source_page_versions (
@@ -73,6 +76,9 @@ export type SiteVerification = 'confirmed' | 'conflict' | 'single_source' | 'web
 //   evidence: string | null;
 //   source_urls: string[];
 //   maps_place_id: string | null;
+//   pet_policy: string | null;
+//   official_name: string | null;
+//   ac_source: 'official_program' | 'site_page' | 'reviews' | null;
 ```
 
 ## Ranking and agent behavior these enable (suggested, not part of this PR)
