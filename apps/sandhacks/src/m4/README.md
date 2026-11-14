@@ -1,8 +1,8 @@
 # M4: text / outbound
 
-Skeleton for the SMS sender, subscribers, the NWS alert flow and the text agent. Most bodies are stubs that throw
-`NotImplementedError`, each with ordered `TODO` steps. Nothing is registered with the Mastra instance yet, so the
-app behaves exactly as before.
+The SMS sender, subscribers, the NWS alert flow and the text agent. What is not built yet is a stub that throws
+`NotImplementedError`, with ordered `TODO` steps. Nothing is registered with the Mastra instance yet, so the app
+behaves exactly as before.
 
 ## Layout
 
@@ -10,7 +10,7 @@ app behaves exactly as before.
 | --- | --- |
 | `env.ts`, `todo.ts`, `types.ts`, `phone.ts` | Lazy env access, the stub helper, row types, E.164 and hashing |
 | `shared-types.ts` | Mirror of `data/schema/types.ts` (see "Shared types" below) |
-| `db.ts` | Every query M4 needs, stubbed until there is a shared Neon client |
+| `db.ts` | Every query M4 needs, sent to Neon's HTTPS endpoint with `fetch` (no Postgres package) |
 | `find-sites.ts` | The one place M4 calls M2's `find_sites` from |
 | `sms/` | Twilio REST client, message templates, `sendSms` (the contract function) and `sendText` (the guarded send path) |
 | `subscribers/` | Opt-in, STOP, keyword detection, inbound text routing |
@@ -19,9 +19,31 @@ app behaves exactly as before.
 | `mastra/` | The Mastra objects: `textAgent`, `alertWorkflow`, `m4ApiRoutes`, `sendSmsTool`, `findSitesTool` |
 | `dev/` | `webhook-proxy.mjs`, the only thing a public tunnel should point at (see "Receiving texts on a laptop"), and the dev scripts (see "Dev scripts") |
 
-Already implemented: `toE164`, `hashPhone`, `validateTwilioSignature`, `detectKeyword`, `toAlertKind`, the zone
-list, the fixed English and Spanish strings, both HTTP route handlers, the workflow wiring, both tools and the
-agent definition.
+Built: the Twilio sender, every query in `db.ts`, `sendSms` and `sendText`, the site text (English and Spanish),
+`isOptedOut`, `toE164`, `hashPhone`, `validateTwilioSignature`, `detectKeyword`, `toAlertKind`, the zone list, the
+fixed English and Spanish strings, both HTTP route handlers, the workflow wiring, both tools and the agent
+definition.
+
+Still stubs: `subscribe`, `optOut`, `handleInboundSms`, the alert text, `recordAlert`, `dispatchAlert`,
+`triggerMockAlert`, `fetchActiveAlerts`, `zipsForZones`, `requestRecrawl`, `generateTextReply`,
+`looksLikeEmergency` and `findSites`.
+
+## Sending a text
+
+`sendSms({ to, site_id, language })` is the contract function M3 calls: it looks the site up, builds the text and
+sends it. `sendText` is the path under it that every other M4 text uses. Neither throws. A failure comes back as
+`{ ok: false, error }`:
+
+| `error` | Meaning |
+| --- | --- |
+| `invalid_number`, `invalid_body` | Not a phone number, or an empty or over-long text |
+| `opted_out` | The number replied STOP. Nothing was sent |
+| `opt_out_check_failed` | The database could not be asked, so nothing was sent |
+| `site_not_found`, `lookup_failed` | `sendSms` only: no such `site_id`, or the site lookup failed |
+| `twilio_<code>` | Twilio refused the text, e.g. `twilio_21610` for a number that sent STOP to Twilio |
+| `send_failed` | Twilio could not be reached |
+
+A text that goes out gets one `calls` row (`outbound`, `sms`, `sms_sent`). A text that does not go out gets none.
 
 ## Wiring it in
 

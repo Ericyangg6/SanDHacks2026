@@ -21,6 +21,7 @@ export type {
   SendSmsInput,
   SendSmsOutput,
   Site,
+  SiteHours,
   SiteResult,
 } from './shared-types';
 

@@ -1,3 +1,5 @@
+import { getSubscriber } from '../db';
+import { hashPhone } from '../phone';
 import { notImplemented } from '../todo';
 import type { CallerNeeds, Language, SubscriberRow } from '../types';
 
@@ -62,9 +64,8 @@ export async function optOut(phoneE164: string): Promise<void> {
 }
 
 // True when the number has a subscriber row with opted_out_at set. send_sms checks this before every send.
+// No row means not opted out: a caller asking for a text mid-call is consent for that one message.
 export async function isOptedOut(phoneE164: string): Promise<boolean> {
-  // TODO: 1. row = await getSubscriber(hashPhone(phoneE164)).
-  // TODO: 2. Return row?.opted_out_at != null. No row means not opted out: a caller asking for a text mid-call
-  //          is consent for that one message.
-  return notImplemented('consent.isOptedOut');
+  const row = await getSubscriber(hashPhone(phoneE164));
+  return row?.opted_out_at != null;
 }
