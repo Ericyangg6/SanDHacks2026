@@ -1,0 +1,908 @@
+{
+  "1": {
+    "access_level": "open_to_all",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "confirmed",
+    "sources": [
+      "google_maps",
+      "https://www.sdcl.org/locations/33/"
+    ],
+    "conflicts": [],
+    "evidence": "Monday 10:00AM - 6:00PM ... Tuesday 12:00PM - 7:00PM ... Wednesday 10:00AM - 6:00PM ... Thursday 10:00AM - 6:00PM ... Friday 10:00AM - 5:00PM ... Saturday 10:00AM - 5:00PM ... Sunday Closed",
+    "maps_place_id": "ChIJMTV1hVr924ARoccT1ogmuXk"
+  },
+  "2": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJKw0HksZz3IARt43ZwKTbdog"
+  },
+  "3": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJlaFOS-QD3IARV7RbEzc6ZgQ"
+  },
+  "4": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJbfAWEuwB3IAROggchOICpmA"
+  },
+  "5": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJfUW8KwBT2YARhRUgCNUM82c"
+  },
+  "6": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJN-foiMkA3IARh97TSN8EcnM"
+  },
+  "7": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ__ffUxdy3IARpT_XWhqgPCk"
+  },
+  "8": {
+    "access_level": "open_to_all",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "confirmed",
+    "sources": [
+      "google_maps",
+      "http://fdsrc.org/"
+    ],
+    "conflicts": [],
+    "evidence": "Open to the Public ... Wednesday through Friday ... 9:30 am – 5:30 pm",
+    "maps_place_id": "ChIJ6fXHCXVR2YARYfuAQoJ4YUk"
+  },
+  "9": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "single_hours_source",
+    "sources": [
+      "google_maps",
+      "http://www.servingseniors.org/"
+    ],
+    "conflicts": [],
+    "evidence": "[Judith L. Seltz Senior Wellness Center](https://servingseniors.org/what-we-do/judith-l-seltz-senior-center.html)",
+    "maps_place_id": "ChIJ5RJVmXEA3IAR4_xIH2YLPCk"
+  },
+  "10": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "single_hours_source",
+    "sources": [
+      "google_maps",
+      "https://www.paradiseprpd.com/paradise-community-center"
+    ],
+    "conflicts": [],
+    "evidence": "Paradise Community Center (formerly the Paradise Senior Center)",
+    "maps_place_id": "ChIJKbBY32tT2YARonXacbDdISQ"
+  },
+  "11": {
+    "access_level": "open_to_all",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "confirmed",
+    "sources": [
+      "google_maps",
+      "https://www.nationalcityca.gov/government/library/"
+    ],
+    "conflicts": [],
+    "evidence": "Monday-Thursday: 10:00 am - 8:00 pm ... Friday: 10:00 am - 6:00 pm ... Saturday: 10:00 am - 5:00 pm ... Sunday: Closed ... NCPL will be CLOSED Thursday, Nov. 26 - Sunday, Nov. 29. The library will be open Monday, Nov. 30, 2026.",
+    "maps_place_id": "ChIJZzqVtEBS2YARmfs0QPh__wo"
+  },
+  "12": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJfyR12aJR2YARDdqR8zohRuc"
+  },
+  "13": {
+    "access_level": "open_to_all",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "confirmed",
+    "sources": [
+      "google_maps",
+      "https://www.chulavistaca.gov/departments/parks-and-recreation/community-centers/veterans-community-center"
+    ],
+    "conflicts": [],
+    "evidence": "Monday- Thursday | 9:00am- 12:00pm & 2:00pm- 8:00pm ... Friday | 9:00am- 12:00pm & 1:00pm- 6:00pm ... Saturday | 9:00am- 1:00pm ... AC In all Room (excluding Gym)",
+    "maps_place_id": "ChIJRRhmygVP2YARGryuWYSJ2hY"
+  },
+  "14": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": true,
+    "verification": "single_hours_source",
+    "sources": [
+      "google_maps",
+      "https://www.ci.oceanside.ca.us/government/parks-recreation/sports-field-rentals"
+    ],
+    "conflicts": [],
+    "evidence": "**JSBCC** = Junior Seau Beach Community Center (300 The Strand, N. adjacent to Oceanside Pier) ... Changes to Open Gym prices and formats are coming December 1st.",
+    "maps_place_id": "ChIJUTj59Ddu3IARS-DOeL0GOhE"
+  },
+  "15": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ29JE4CRZ2YAR2uGSyxZ0-MA"
+  },
+  "16": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ50VElfBU2YARf2QT27i0Df4"
+  },
+  "17": {
+    "access_level": "open_to_all",
+    "access_notes": "Gymnasium available for all ages with scheduled drop-in play; game room; meeting spaces available for rent",
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "confirmed",
+    "sources": [
+      "google_maps",
+      "https://www.elcajon.gov/your-government/departments/recreation/recreation-centers/renette-recreation-center"
+    ],
+    "conflicts": [],
+    "evidence": "Center Hours: Monday-Friday 2:00 pm - 9:30 pm ... Saturday 12:00 pm - 4:00 pm ... Renette Community Center has a gymnasium available for all ages with scheduled drop-in play",
+    "maps_place_id": "ChIJhZEW55IB3IARWJdG6ux9BM0"
+  },
+  "18": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "single_hours_source",
+    "sources": [
+      "google_maps",
+      "https://www.sharp.com/locations/brier-patch-campus"
+    ],
+    "conflicts": [],
+    "evidence": "Sharp Community Resource Center",
+    "maps_place_id": "ChIJASYsB3JX2YAR9wECwHcm0lA"
+  },
+  "19": {
+    "access_level": "open_to_all",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "confirmed",
+    "sources": [
+      "google_maps",
+      "https://www.sdcl.org/locations/5/"
+    ],
+    "conflicts": [],
+    "evidence": "Monday 10:00AM - 6:00PM ... Tuesday 12:00PM - 7:00PM ... Wednesday 10:00AM - 6:00PM ... Thursday 10:00AM - 6:00PM ... Friday 10:00AM - 5:00PM ... Saturday 10:00AM - 5:00PM ... Sunday Closed",
+    "maps_place_id": "ChIJoQjUaNVR2YARZRbLdnX2Lgs"
+  },
+  "20": {
+    "access_level": "unknown",
+    "access_notes": "Page describes PACE as a health plan for adults age 55 and older who meet enrollment criteria; the page does not state whether the public may walk in.",
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "confirmed",
+    "sources": [
+      "google_maps",
+      "http://www.sdpace.org/"
+    ],
+    "conflicts": [],
+    "evidence": "### San Diego PACE El Cajon\n\n875 El Cajon Boulevard,  \nEl Cajon, CA 92020  \nHours: Mon - Fri from 8:00 AM to 5:00 PM; 3rd Saturday of the Month from 8:00 AM to 12:00 PM",
+    "maps_place_id": "ChIJQ4ilmNtZ2YARI7ZzW-odxLI"
+  },
+  "21": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJzQ4m_B4A3IARwjUkotF-TqY"
+  },
+  "22": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ0dnESvUA3IARrLQOdqIaISM"
+  },
+  "23": {
+    "access_level": "age_restricted",
+    "access_notes": "All older adults 60+ are welcome!",
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "confirmed",
+    "sources": [
+      "google_maps",
+      "https://servingseniors.org/what-we-do/gary-mary-west-senior-wellness-center/overview.html"
+    ],
+    "conflicts": [],
+    "evidence": "Monday - Friday, 7 a.m. - 4 p.m. ... Saturday - Sunday, 8 a.m. - 2 p.m. ... All older adults 60+ are welcome! ... Open 365 days a year",
+    "maps_place_id": "ChIJqWrgZgtV2YAR3VU3E1qzj2I"
+  },
+  "24": {
+    "access_level": "open_to_all",
+    "access_notes": "Gymnasium, game room and patio open to the public during facility hours. Fitness center for ages 10+; ages 10-14 must be accompanied by an adult, and ages 15-17 need a signed parent waiver but may come without an adult.",
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "confirmed",
+    "sources": [
+      "google_maps",
+      "https://www.chulavistaca.gov/departments/parks-and-recreation/community-centers/otay-community-center"
+    ],
+    "conflicts": [],
+    "evidence": "open to the public for use during facility hours ... Monday- Thursday | 9:00am- 12:00pm & 2:00pm- 8:00pm ... Friday | 9:00am- 12:00pm & 1:00pm- 6:00pm ... Saturday | 9:00am- 1:00pm",
+    "maps_place_id": "ChIJcc82L5VO2YARGKcqvE-yass"
+  },
+  "25": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJjxI6OPlT2YAR7DzLqatxrBk"
+  },
+  "26": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJSevqC1JQ2YARct0PeBaulM8"
+  },
+  "27": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "single_hours_source",
+    "sources": [
+      "google_maps",
+      "http://ljcommunitycenter.org/?y_source=1_OTkyMjc4Ny03MTUtbG9jYXRpb24ud2Vic2l0ZQ=="
+    ],
+    "conflicts": [],
+    "evidence": "6811 La Jolla Blvd. ... La Jolla, CA  92037 ... (858) 459-0831",
+    "maps_place_id": "ChIJ-9AIVtwD3IARo9Z9qOnb-FE"
+  },
+  "28": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJX89qj_z_24AR4Nu2zaP5A_Y"
+  },
+  "29": {
+    "access_level": "open_to_all",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "confirmed",
+    "sources": [
+      "google_maps",
+      "https://www.sdcl.org/locations/13/"
+    ],
+    "conflicts": [],
+    "evidence": "Monday 10:00AM - 6:00PM ... Tuesday 12:00PM - 7:00PM ... Wednesday 12:00PM - 7:00PM ... Thursday 10:00AM - 6:00PM ... Friday 10:00AM - 5:00PM ... Saturday 10:00AM - 5:00PM ... Sunday 10:00AM - 5:00PM",
+    "maps_place_id": "ChIJgwtD67dZ2YAR-C9a9P4epIQ"
+  },
+  "30": {
+    "access_level": "open_to_all",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "single_hours_source",
+    "sources": [
+      "google_maps",
+      "https://www.sandiego.gov/public-library/locations/san-carlos-library"
+    ],
+    "conflicts": [],
+    "evidence": "The San Diego Public Library is a popular destination that connects our diverse community to free educational and cultural resources that will enrich their lives.",
+    "maps_place_id": "ChIJ2SHX4UhW2YARB8yZWZCYjAU"
+  },
+  "31": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ765_bYVO2YARHLEIM2I0kzI"
+  },
+  "32": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "confirmed",
+    "sources": [
+      "google_maps",
+      "https://www.elcajon.gov/your-government/departments/recreation/recreation-centers/bostonia-community-center"
+    ],
+    "conflicts": [],
+    "evidence": "#### Center Hours: Monday-Friday 2:00 pm-9:30 pm",
+    "maps_place_id": "ChIJq6rp4wFZ2YARKeXFlAU02t8"
+  },
+  "33": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJqWt5SOUD3IARAvP8J7xjOqk"
+  },
+  "34": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJeWuwej4A3IARcF6-yPyr5-4"
+  },
+  "35": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJZwLX4_xN2YARNfslqi808Bs"
+  },
+  "36": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJb2vgV7ZT2YARMMlBtpws0uQ"
+  },
+  "37": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJCQGlg-tR2YARlKkErhGjVNU"
+  },
+  "38": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJi4Dk-xRU2YARbCi6I0kDxb0"
+  },
+  "39": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJC_mfACoB3IARqroE9qj8aZU"
+  },
+  "40": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJSQjFBHVR2YARyPOwnKEsR90"
+  },
+  "41": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJN2IN7q9X2YARj0avQWwu8Oo"
+  },
+  "42": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ4flusIJU2YARpsY09810oAo"
+  },
+  "43": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJpZiybCoB3IARiyWCwIU1G5Q"
+  },
+  "44": {
+    "access_level": "members_only",
+    "access_notes": "Services are for St. Paul's PACE participants only",
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "single_hours_source",
+    "sources": [
+      "google_maps",
+      "https://www.stpaulspace.org/locations/pace-chula-vista/"
+    ],
+    "conflicts": [],
+    "evidence": "\\*All services offered by St. Paul's PACE are for St. Paul's PACE participants only.",
+    "maps_place_id": "ChIJg7KfSddN2YARSWsdeS5uicg"
+  },
+  "45": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJXxxtgndP2YARNXsmkuvKxxU"
+  },
+  "46": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJc5TXs9NQ2YARxsXE0Jac174"
+  },
+  "47": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJn_uKPd0A3IARiRMDojjxCs0"
+  },
+  "48": {
+    "access_level": "unknown",
+    "access_notes": "Activities and services for active mature adults",
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "confirmed",
+    "sources": [
+      "google_maps",
+      "https://cityoflamesa.gov/416/Adult-Services"
+    ],
+    "conflicts": [],
+    "evidence": "Monday - Thursday \n8:00 am - 5:00 pm ... Friday \n8:00 am - 1:00 pm \n_Closed holidays_",
+    "maps_place_id": "ChIJU_F-xj1X2YARrIWeiw3_wvE"
+  },
+  "49": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "single_hours_source",
+    "sources": [
+      "google_maps",
+      "https://www.coronado.ca.us/recreation"
+    ],
+    "conflicts": [],
+    "evidence": "Community Center ... 1845 Strand Way ... Coronado, CA 92118 ... Phone: 619-522-7342",
+    "maps_place_id": "ChIJJ5fbkSxT2YARPSIQyLK8-TQ"
+  },
+  "50": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJyatccZUB3IAR1rzIwhoQXFc"
+  },
+  "51": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJFQej67dZ2YARLCgMsf0ig1s"
+  },
+  "52": {
+    "access_level": "unknown",
+    "access_notes": "Membership is included for SDSU Students enrolled in Fall, Spring or Summer classes.",
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "single_hours_source",
+    "sources": [
+      "google_maps",
+      "http://arc.sdsu.edu/"
+    ],
+    "conflicts": [],
+    "evidence": "Membership is included for SDSU Students enrolled in Fall, Spring or Summer classes.",
+    "maps_place_id": "ChIJj4hxBoFW2YARJGTs9gRHfAU"
+  },
+  "53": {
+    "access_level": "members_only",
+    "access_notes": "PACE program for adults age 55 and older who meet enrollment criteria; enrollment required",
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "confirmed",
+    "sources": [
+      "google_maps",
+      "https://www.syhealth.org/services/sdpace"
+    ],
+    "conflicts": [],
+    "evidence": "### San Diego PACE Chula Vista\n\n880 Third Avenue,  \nChula Vista, CA 91911  \nHours: Mon - Fri from 8:00 AM to 5:00 PM",
+    "maps_place_id": "ChIJKxQ5JH1P2YAR5DfV1yb0Dks"
+  },
+  "54": {
+    "access_level": "open_to_all",
+    "access_notes": "Seniors are invited to join us at this site for a fantastic meal",
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "confirmed",
+    "sources": [
+      "google_maps",
+      "https://www.nationalcityca.gov/government/community-services/senior-services"
+    ],
+    "conflicts": [],
+    "evidence": "Lunchtime: \nMonday to Friday \n10:30am to 12:30pm ... Mon - Fri: 11:00am to 12:30pm",
+    "maps_place_id": "ChIJHfDOa9xT2YAR7EG5zWaQJb4"
+  },
+  "55": {
+    "access_level": "open_to_all",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "single_hours_source",
+    "sources": [
+      "google_maps",
+      "https://www.oceansidelibrary.org/"
+    ],
+    "conflicts": [],
+    "evidence": "Oceanside Public Library ... 330 North Coast Highway, Oceanside, CA 92054",
+    "maps_place_id": "ChIJwy0MOzFu3IARxpL16X9RQfI"
+  },
+  "56": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJdxXCbU9w3IARtBqlF6Jd6Yk"
+  },
+  "57": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ438Imk4H3IARZYos9A6VV7U"
+  },
+  "58": {
+    "access_level": "open_to_all",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "single_hours_source",
+    "sources": [
+      "google_maps",
+      "https://library.carlsbadca.gov/"
+    ],
+    "conflicts": [],
+    "evidence": "The first floor of the Library Learning Center is temporarily closed due to maintenance issues. Access to the second floor, including Adult Literacy Services and limited programs are currently available.",
+    "maps_place_id": "ChIJlxjbIxZy3IAR56SdrX4Lh38"
+  },
+  "59": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJaeokZ1gA3IARoKcY9Pal1U0"
+  },
+  "60": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJd7PLIZpv3IARob80pWrDgm4"
+  },
+  "61": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ0bUk3DZu3IARJj8ksblC3Jk"
+  },
+  "62": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJLwhgJdFU2YARQUgbIxcQ-6g"
+  },
+  "63": {
+    "access_level": "open_to_all",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "confirmed",
+    "sources": [
+      "google_maps",
+      "https://www.coronadolibrary.org/"
+    ],
+    "conflicts": [],
+    "evidence": "**Hours:** Mon–Thurs: 9:30 a.m.–9 p.m. | Fri: 9:30 a.m.- 6 p.m. | Sat: 10 a.m.–6 p.m. | Sun: 1 p.m.-5 p.m. ",
+    "maps_place_id": "ChIJEeh4mrWs3oARHZ_QpJdg4LU"
+  },
+  "64": {
+    "access_level": "open_to_all",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "confirmed",
+    "sources": [
+      "google_maps",
+      "https://library.carlsbadca.gov/"
+    ],
+    "conflicts": [],
+    "evidence": "Mondays – Thursdays, 9 a.m. – 7 p.m. ... Fridays and Saturdays, 9 a.m. – 5 p.m. ... Sundays, 1 p.m. - 5 p.m. (_Carlsbad City Library on Dove Lane and Georgina Cole Library_)",
+    "maps_place_id": "ChIJkQdTRRhy3IARQz9WahjIscs"
+  },
+  "65": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJd0JujPVU2YAROWldDazm9FI"
+  },
+  "66": {
+    "access_level": "open_to_all",
+    "access_notes": "Public library; no entry restriction is stated on the page.",
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "single_hours_source",
+    "sources": [
+      "google_maps",
+      "https://www.sandiego.gov/public-library/central-library"
+    ],
+    "conflicts": [],
+    "evidence": "The San Diego Public Library is a popular destination that connects our diverse community to free educational and cultural resources that will enrich their lives.",
+    "maps_place_id": "ChIJq_1kX1xT2YARJsfApHRz6xo"
+  },
+  "67": {
+    "access_level": "open_to_all",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "conflict",
+    "sources": [
+      "google_maps",
+      "https://www.ci.oceanside.ca.us/Home/Components/FacilityDirectory/FacilityDirectory/10/710?npage=2"
+    ],
+    "conflicts": [
+      "fri: maps 07:00-17:00 vs web 14:00-18:00",
+      "thu: maps 07:00-17:00 vs web 14:00-18:00",
+      "wed: maps 07:00-17:00 vs web 14:00-18:00",
+      "tue: maps 07:00-17:00 vs web 14:00-18:00",
+      "mon: maps 07:00-17:00 vs web 14:00-18:00"
+    ],
+    "evidence": "2:00 pm – 6:00 pm ... 9:00 am - 5:00 pm",
+    "maps_place_id": "ChIJN-IUsC1u3IARFf6utE0TDLM"
+  }
+}
