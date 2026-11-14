@@ -19,13 +19,12 @@ The SMS sender, subscribers, the NWS alert flow and the text agent. What is not 
 
 Built: the Twilio sender, every query in `db.ts`, `sendSms` and `sendText`, the site text (English and Spanish),
 inbound texts (STOP, START, HELP, JOIN and the hand-off to the agent), `subscribe`, `optOut`, `isOptedOut`, the
-alert text, `dispatchAlert` with its repeat and cooldown guards, the mock alert and its secret,
+alert text, `dispatchAlert` with its repeat and cooldown guards, the mock alert and its secret, the text agent
+turn (`generateTextReply`) and the 911 pre-check (`looksLikeEmergency`),
 `toE164`, `hashPhone`, the webhook signature check, `toAlertKind`, the zone list, the fixed English and Spanish
 strings, both HTTP route handlers, the workflow wiring, both tools and the agent definition.
 
-Still stubs: `recordAlert`, `fetchActiveAlerts`, `zipsForZones`, `requestRecrawl`, `generateTextReply` and
-`looksLikeEmergency`. Until
-`generateTextReply` lands, any text that is not a keyword gets the "try again, or call 211" reply.
+Still stubs: `recordAlert`, `fetchActiveAlerts`, `zipsForZones` and `requestRecrawl` (the live NWS flow).
 
 ## Receiving a text
 
@@ -44,6 +43,27 @@ A Spanish keyword is answered in Spanish and makes Spanish the subscriber's lang
 `calls` row (`inbound`, `sms`). Keyword texts have a null outcome, because `call_outcome` has no value for them.
 Twilio sometimes delivers a message twice. A repeated `MessageSid` within 10 minutes gets the first reply again and
 is not handled twice. That memory lives in the server process, so a restart clears it.
+
+## The text agent
+
+Any text that is not a keyword goes to `generateTextReply`, one turn of the conversation:
+
+1. **911 first.** `looksLikeEmergency` matches fixed English and Spanish phrases (`EMERGENCY_PHRASES` in
+   `agent/safety.ts`) before any model call. A match gets the fixed 911 text and outcome `escalated_911`.
+2. **History.** The last 20 `messages` rows for the number, oldest first, including the alert text that started
+   the conversation, plus a system note with the subscriber's zip, language, needs and the local time. No phone
+   number reaches the model or the traces.
+3. **The agent** (`textAgent`, `TEXT_AGENT_MODEL`, default Claude Sonnet) runs with `find_sites` and at most 4
+   steps, and is cut off after 11 seconds so the webhook still answers inside Twilio's 15.
+4. **AI disclosure** is added in code to the first reply in a conversation, not left to the prompt.
+5. **Outcome** comes from the last `find_sites` result: `site_given` (with `site_id`), `no_site_found` or `error`.
+   A failed or empty run replies "try again, or call 211" with outcome `error`.
+
+Both sides of the turn are saved to `messages`. Measured with the stand-in `find_sites`: model turns take 3 to 7
+seconds, the 911 path about 0.2.
+
+`MAX_OUTPUT_TOKENS` is 1,500 although replies are about 300 characters: Claude's thinking counts against the cap,
+and a lower one cut replies off.
 
 ## Sending a text
 

@@ -63,8 +63,10 @@ const twilioSmsRoute = registerApiRoute(TWILIO_SMS_PATH, {
     const parsed = twilioSmsParams.safeParse(params);
     if (!parsed.success) return c.text('Bad Request', 400);
 
-    // TODO: Twilio gives up on a webhook after about 15 seconds (error 11200). If the agent reply can be slower than
-    //       that, answer with an empty <Response/> right away and send the reply through the REST sender instead.
+    // Twilio gives up on a webhook after about 15 seconds (error 11200). The reply goes back in the TwiML response:
+    // agent turns measured 3 to 7 seconds, and the agent run is cut off at 11 (AGENT_TIMEOUT_MS in agent/reply.ts),
+    // which still leaves time for the fallback text. If that stops holding, answer with an empty <Response/> right
+    // away and send the reply through sendText instead.
     // handleInboundSms does not throw: when something fails it returns a "try again, or call 211" reply instead,
     // because a 500 here would mean silence for the texter.
     const { reply } = await handleInboundSms({

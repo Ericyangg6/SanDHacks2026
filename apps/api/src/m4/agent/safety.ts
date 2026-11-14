@@ -1,34 +1,57 @@
-import { notImplemented } from '../todo';
 import type { Language } from '../types';
 
 // Deterministic pre-check that runs before the model, so a 911 escalation never depends on the LLM alone.
 
+// NEEDS REVIEW by someone qualified (a clinician or public-health staff) before real users see it.
+// These lists are an engineer's first guess, not medical guidance. They are biased toward a match: a 911 prompt
+// sent by mistake costs less than a missed one. Known false positives to weigh in the review: "confused" ("I'm
+// confused about the hours"), "dying" ("dying in this heat") and "emergency" ("is this an emergency alert?").
+// Not in the lists yet, pending that review, and left to the model's milder-symptom guidance in ./instructions.ts:
+// dizzy, lightheaded, nausea, headache, cramps, weak (mareado, mareada, nauseas, dolor de cabeza, calambres, debil).
+// Phrases are written lowercase, without accents or apostrophes, as they are after normalize() below.
+export const EMERGENCY_PHRASES: Record<'en' | 'es', readonly string[]> = {
+  en: [
+    'fainted', 'fainting', 'passed out', 'blacked out', 'collapsed', 'unconscious', 'unresponsive', 'not responding',
+    'wont wake up', 'confused', 'disoriented', 'not making sense', 'slurred speech', 'seizure', 'convulsing',
+    'stopped sweating', 'not sweating', 'hot dry skin', 'burning up', 'heat stroke', 'heatstroke',
+    'cant breathe', 'cannot breathe', 'trouble breathing', 'short of breath', 'chest pain',
+    'throwing up', 'vomiting', 'dying', 'emergency',
+  ],
+  es: [
+    'me desmaye', 'se desmayo', 'desmayo', 'perdio el conocimiento', 'inconsciente', 'no responde', 'no despierta',
+    'confundido', 'confundida', 'desorientado', 'desorientada', 'no sabe donde esta', 'convulsion', 'convulsiones',
+    'dejo de sudar', 'no suda', 'piel caliente y seca', 'esta ardiendo', 'golpe de calor', 'insolacion',
+    'no puedo respirar', 'no puede respirar', 'le cuesta respirar', 'falta de aire', 'dolor de pecho',
+    'dolor en el pecho', 'vomitando', 'vomito', 'se esta muriendo', 'me muero', 'emergencia',
+  ],
+};
+
+// Lowercase, no accents, no apostrophes (straight or curly), every other non-letter a single space, padded with
+// spaces so a phrase can be matched on word boundaries with a plain substring test.
+function normalize(text: string): string {
+  const words = text
+    .normalize('NFD')
+    .replace(/\p{M}/gu, '')
+    .toLowerCase()
+    .replace(/['‘’ʼ`]/g, '')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+  return ` ${words} `;
+}
+
+// The language of the first phrase that matched, or null when none did. Third person ("my mom passed out")
+// matches too. Negation ("not dizzy") is not parsed.
+export function matchEmergency(body: string): { language: 'en' | 'es' } | null {
+  const text = normalize(body);
+  for (const language of ['en', 'es'] as const) {
+    if (EMERGENCY_PHRASES[language].some((phrase) => text.includes(` ${phrase} `))) return { language };
+  }
+  return null;
+}
+
 // True when a text describes possible heat-illness or other emergency symptoms, in English or Spanish.
 export function looksLikeEmergency(body: string): boolean {
-  // TODO: NEEDS REVIEW by someone qualified (a clinician or public-health staff) before real users see it.
-  //       The phrase lists below are an engineer's first guess, not medical guidance.
-  // TODO: 1. Normalize the body: lowercase, strip accents (normalize('NFD') and drop combining marks),
-  //          straighten curly apostrophes, collapse whitespace.
-  // TODO: 2. Match these English phrases on word boundaries:
-  //          fainted, fainting, passed out, blacked out, collapsed, unconscious, unresponsive, not responding,
-  //          won't wake up, confused, disoriented, not making sense, slurred speech, seizure, convulsing,
-  //          stopped sweating, not sweating, hot dry skin, burning up, heat stroke, heatstroke,
-  //          can't breathe, cannot breathe, trouble breathing, short of breath, chest pain,
-  //          throwing up, vomiting, dying, emergency.
-  // TODO: 3. Match these Spanish phrases (written here without accents, as they are after step 1):
-  //          me desmaye, se desmayo, desmayo, perdio el conocimiento, inconsciente, no responde, no despierta,
-  //          confundido, confundida, desorientado, desorientada, no sabe donde esta, convulsion, convulsiones,
-  //          dejo de sudar, no suda, piel caliente y seca, esta ardiendo, golpe de calor, insolacion,
-  //          no puedo respirar, no puede respirar, le cuesta respirar, falta de aire, dolor de pecho,
-  //          dolor en el pecho, vomitando, vomito, se esta muriendo, me muero, emergencia.
-  // TODO: 4. Decide the borderline terms with the reviewer: dizzy, lightheaded, nausea, headache, cramps, weak
-  //          (mareado, mareada, nauseas, dolor de cabeza, calambres, debil). Either they trigger 911 here or
-  //          they are left to the model's milder-symptom guidance in ./instructions.ts.
-  // TODO: 5. Bias toward true: a 911 prompt sent by mistake costs less than a missed one. Third person
-  //          ("my mom passed out") must match. Do not try to parse negation ("not dizzy") in the first version.
-  // TODO: 6. Keep the phrases in one exported list so the reviewer can read them, and table-test it with
-  //          sample texts in both languages, typos and missing accents included.
-  return notImplemented('safety.looksLikeEmergency');
+  return matchEmergency(body) !== null;
 }
 
 // Fixed wording, so the escalation reads the same every time. Review it together with the phrase lists above.
