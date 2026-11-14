@@ -18,12 +18,13 @@ The SMS sender, subscribers, the NWS alert flow and the text agent. What is not 
 | `dev/` | `webhook-proxy.mjs`, the only thing a public tunnel should point at (see "Receiving texts on a laptop"), and the dev scripts (see "Dev scripts") |
 
 Built: the Twilio sender, every query in `db.ts`, `sendSms` and `sendText`, the site text (English and Spanish),
-inbound texts (STOP, START, HELP, JOIN and the hand-off to the agent), `subscribe`, `optOut`, `isOptedOut`,
+inbound texts (STOP, START, HELP, JOIN and the hand-off to the agent), `subscribe`, `optOut`, `isOptedOut`, the
+alert text, `dispatchAlert` with its repeat and cooldown guards, the mock alert and its secret,
 `toE164`, `hashPhone`, the webhook signature check, `toAlertKind`, the zone list, the fixed English and Spanish
 strings, both HTTP route handlers, the workflow wiring, both tools and the agent definition.
 
-Still stubs: the alert text, `recordAlert`, `dispatchAlert`, `triggerMockAlert`, `fetchActiveAlerts`,
-`zipsForZones`, `requestRecrawl`, `generateTextReply` and `looksLikeEmergency`. Until
+Still stubs: `recordAlert`, `fetchActiveAlerts`, `zipsForZones`, `requestRecrawl`, `generateTextReply` and
+`looksLikeEmergency`. Until
 `generateTextReply` lands, any text that is not a keyword gets the "try again, or call 211" reply.
 
 ## Receiving a text
@@ -61,6 +62,25 @@ sends it. `sendText` is the path under it that every other M4 text uses. Neither
 
 A text that goes out gets one `calls` row (`outbound`, `sms`, `sms_sent`). A text that does not go out gets none.
 
+## Alerts
+
+`dispatchAlert` texts every active subscriber in the alert's zips, one at a time, with the nearest open site from
+`find_sites` (or a "call 211" line when there is none). A subscriber is skipped when they already got a text for
+this alert, or, for real alert kinds, a text for any alert of the same kind in the last 12 hours. Each text gets a
+`calls` row with `alert_id`, is saved to `messages` so a reply has context, and adds to `alerts.texts_sent`.
+
+The dashboard's demo button:
+
+```shell
+curl -X POST http://localhost:4111/m4/alerts/mock \
+  -H "Authorization: Bearer $M4_ALERT_SECRET" -H 'Content-Type: application/json' \
+  -d '{"zips": ["92105"], "headline": "Demo"}'
+```
+
+It answers `201 { alert }` with `texts_sent` filled in, `401` without the secret (always, while `M4_ALERT_SECRET`
+is unset), and `400` for a bad body. A mock alert says it is a test, skips the 12-hour cooldown and the re-crawl,
+and texts the zips again on every press.
+
 ## Wiring
 
 `src/mastra/index.ts` belongs to the app's owner. M4's part of it is three additions and nothing else:
@@ -77,10 +97,10 @@ export const mastra = new Mastra({
 ```
 
 Custom routes mount at the server root, so the Twilio messaging webhook is `POST ${PUBLIC_BASE_URL}/m4/twilio/sms`
-and the dashboard's demo button calls `POST /m4/alerts/mock` with `{ "zips": ["92105"], "headline": "..." }`.
+and the dashboard's demo button calls `POST /m4/alerts/mock` (see "Alerts").
 
-No `server.auth` is configured, so every route on port 4111 is open to whoever can reach it, including the mock
-alert trigger and the starter agent with its file and shell tools. Never point a tunnel at 4111. `npm run dev`
+No `server.auth` is configured, so every route on port 4111 is open to whoever can reach it, including the starter
+agent with its file and shell tools. M4's two routes check their own secrets (Twilio's signature, `M4_ALERT_SECRET`). Never point a tunnel at 4111. `npm run dev`
 also listens on every network interface, so on shared Wi-Fi those routes are open to the room:
 `MASTRA_HOST=127.0.0.1 npm run dev` keeps the server to this machine.
 
@@ -144,6 +164,7 @@ M4_SMS_DRY_RUN=1 node src/m4/dev/run.mjs send-test
 | `TWILIO_SID`, `TWILIO_SECRET` | Optional. A Twilio API key pair (`SK...`). When both are set, sends use it instead of the auth token |
 | `TWILIO_PHONE_NUMBER` | The sending number, E.164 |
 | `PUBLIC_BASE_URL` | Public origin Twilio calls, needed for the signature check |
+| `M4_ALERT_SECRET` | Shared secret for `POST /m4/alerts/mock`. The route refuses everything while it is unset |
 | `PHONE_SALT` | Salt for `phone_hash`. Must be the same value for M3 |
 | `NEON_DATABASE_URL` | Postgres connection string |
 | `NWS_USER_AGENT` | Contact string NWS asks for, e.g. `shade-sandhacks (you@example.com)` |
@@ -174,7 +195,5 @@ For a Gemini text agent, set `TEXT_AGENT_MODEL=google/<model id>`. Mastra reads 
 3. **Re-crawl.** How M4 asks M2 for one, and whether texts wait for it to finish.
 4. **Double counting.** A voice call that sends a text would log `site_id` twice (M3's row and ours), which the
    ranking's recent-referrals count would see as two.
-5. **Alert texts and memory.** The alert text has to be stored in `messages`, or a reply like "something closer?"
-   reaches the agent with no context.
-6. **Review before real users.** The emergency phrase list, the 911 wording, the 211 free-ride claim and all
+5. **Review before real users.** The emergency phrase list, the 911 wording, the 211 free-ride claim and all
    Spanish copy are unreviewed first drafts.

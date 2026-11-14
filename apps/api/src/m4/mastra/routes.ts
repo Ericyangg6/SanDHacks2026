@@ -1,3 +1,4 @@
+import { timingSafeEqual } from 'node:crypto';
 import { registerApiRoute, type ApiRoute } from '@mastra/core/server';
 import { z } from 'zod';
 import { triggerMockAlert } from '../alerts/dispatch';
@@ -75,18 +76,35 @@ const twilioSmsRoute = registerApiRoute(TWILIO_SMS_PATH, {
   },
 });
 
+// True when the request carries `Authorization: Bearer <M4_ALERT_SECRET>`. False whenever the secret is unset.
+function hasAlertSecret(header: string | undefined): boolean {
+  const secret = process.env.M4_ALERT_SECRET;
+  const given = header?.match(/^Bearer (.+)$/)?.[1];
+  if (!secret || !given) return false;
+  const a = Buffer.from(given);
+  const b = Buffer.from(secret);
+  return a.length === b.length && timingSafeEqual(a, b);
+}
+
 // Demo trigger for M1's dashboard button: creates a kind = 'mock' alert and texts subscribers in the given zips.
-// TODO: Protect this before the server gets a public URL: it can text every subscriber. requiresAuth is left at its
-//       default (true), but that only takes effect once server.auth is configured on the Mastra instance. Until
-//       then every route is public, so add a shared-secret header check here or configure auth.
+// It can text every subscriber, so it checks its own shared secret instead of Mastra auth, and refuses everything
+// while M4_ALERT_SECRET is unset. Authorization is in Mastra's default CORS allowHeaders, so a browser can send it.
 const mockAlertRoute = registerApiRoute(MOCK_ALERT_PATH, {
   method: 'POST',
+  requiresAuth: false,
   handler: async (c) => {
+    if (!hasAlertSecret(c.req.header('authorization'))) return c.json({ error: 'unauthorized' }, 401);
+
     const parsed = mockAlertBody.safeParse(await c.req.json().catch(() => null));
     if (!parsed.success) return c.json({ error: 'Invalid body', issues: parsed.error.issues }, 400);
 
-    const alert = await triggerMockAlert(parsed.data);
-    return c.json({ alert }, 201);
+    try {
+      const alert = await triggerMockAlert(parsed.data);
+      return c.json({ alert }, 201);
+    } catch (error) {
+      c.get('mastra').getLogger()?.error(`Mock alert failed: ${error instanceof Error ? error.message : error}`);
+      return c.json({ error: 'Mock alert failed' }, 500);
+    }
   },
 });
 
