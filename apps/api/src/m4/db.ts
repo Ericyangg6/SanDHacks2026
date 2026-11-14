@@ -1,5 +1,6 @@
 import { env } from './env';
 import type {
+  AlertChannel,
   AlertKind,
   AlertRow,
   CallDirection,
@@ -70,13 +71,34 @@ function textArray(placeholder: string): string {
   return `array(select jsonb_array_elements_text(${placeholder}::jsonb))`;
 }
 
-const SUBSCRIBER_COLUMNS = `id, phone_hash, phone_e164, language, zip, needs, ${iso('consent_at')}, ${iso('opted_out_at')}`;
+const SUBSCRIBER_COLUMNS_BEFORE_ALERT_CHANNEL = `id, phone_hash, phone_e164, language, zip, needs, ${iso('consent_at')}, ${iso('opted_out_at')}`;
+const SUBSCRIBER_COLUMNS = `${SUBSCRIBER_COLUMNS_BEFORE_ALERT_CHANNEL}, alert_channel`;
 const ALERT_COLUMNS = `id, kind, nws_id, zips, headline, ${iso('onset_at')}, ${iso('expires_at')}, ${iso('detected_at')}, texts_sent`;
 const MESSAGE_COLUMNS = `id, phone_hash, role, body, ${iso('created_at')}`;
 const SITE_COLUMNS = `id, name, kind, tier, confidence, address, zip, lat, lon, hours, hours_confirmed_on_source,
   has_ac, has_filtration, capacity_est, phone, source_url, ${iso('last_verified_at')}`;
 
 // ---- subscribers ----
+
+// Postgres's code for a column that does not exist.
+const UNDEFINED_COLUMN = '42703';
+
+function isMissingColumn(error: unknown): boolean {
+  return error instanceof DbError && error.code === UNDEFINED_COLUMN;
+}
+
+// subscribers.alert_channel is newer than some databases. Until
+// `alter table subscribers add column alert_channel text check (alert_channel in ('sms', 'whatsapp'))` has run,
+// a read is retried without the column and every row comes back as SMS, so SMS keeps working.
+async function withAlertChannel<Row extends SubscriberRow>(run: (columns: string) => Promise<Row[]>): Promise<Row[]> {
+  try {
+    return await run(SUBSCRIBER_COLUMNS);
+  } catch (error) {
+    if (!isMissingColumn(error)) throw error;
+    const rows = await run(SUBSCRIBER_COLUMNS_BEFORE_ALERT_CHANNEL);
+    return rows.map((row) => ({ ...row, alert_channel: null }));
+  }
+}
 
 export interface UpsertSubscriberInput {
   phoneHash: string;
@@ -85,34 +107,55 @@ export interface UpsertSubscriberInput {
   language: Language;
   needs?: CallerNeeds;
   consentAt: Date;
+  alertChannel?: AlertChannel; // the channel they opted in on. Default 'sms'
 }
 
 export async function getSubscriber(phoneHash: string): Promise<SubscriberRow | null> {
-  const rows = await query<SubscriberRow>(`select ${SUBSCRIBER_COLUMNS} from subscribers where phone_hash = $1`, [
-    phoneHash,
-  ]);
+  const rows = await withAlertChannel((columns) =>
+    query<SubscriberRow>(`select ${columns} from subscribers where phone_hash = $1`, [phoneHash]),
+  );
   return rows[0] ?? null;
 }
 
-// Keyed on phone_hash. Re-subscribing clears opted_out_at, refreshes consent_at and stores phone_e164 again.
+// Keyed on phone_hash. Re-subscribing clears opted_out_at, refreshes consent_at, stores phone_e164 again and
+// moves alerts to the channel of this opt-in ('sms' is stored as null).
+// On a database without subscribers.alert_channel, an SMS opt-in is written without the column. A WhatsApp
+// opt-in throws instead: written without it, it would become an SMS subscription nobody agreed to.
 export async function upsertSubscriber(input: UpsertSubscriberInput): Promise<SubscriberRow> {
+  const alertChannel = input.alertChannel === 'whatsapp' ? 'whatsapp' : null;
+  const params = [
+    input.phoneHash,
+    input.phoneE164,
+    input.zip,
+    input.language,
+    JSON.stringify(input.needs ?? {}),
+    input.consentAt.toISOString(),
+  ];
+  try {
+    const rows = await query<SubscriberRow>(
+      `insert into subscribers (phone_hash, phone_e164, zip, language, needs, consent_at, opted_out_at, alert_channel)
+       values ($1, $2, $3, $4, $5::jsonb, $6::timestamptz, null, $7)
+       on conflict (phone_hash) do update set
+         phone_e164 = excluded.phone_e164, zip = excluded.zip, language = excluded.language,
+         needs = excluded.needs, consent_at = excluded.consent_at, opted_out_at = null,
+         alert_channel = excluded.alert_channel
+       returning ${SUBSCRIBER_COLUMNS}`,
+      [...params, alertChannel],
+    );
+    return rows[0];
+  } catch (error) {
+    if (!isMissingColumn(error) || alertChannel) throw error;
+  }
   const rows = await query<SubscriberRow>(
     `insert into subscribers (phone_hash, phone_e164, zip, language, needs, consent_at, opted_out_at)
      values ($1, $2, $3, $4, $5::jsonb, $6::timestamptz, null)
      on conflict (phone_hash) do update set
        phone_e164 = excluded.phone_e164, zip = excluded.zip, language = excluded.language,
        needs = excluded.needs, consent_at = excluded.consent_at, opted_out_at = null
-     returning ${SUBSCRIBER_COLUMNS}`,
-    [
-      input.phoneHash,
-      input.phoneE164,
-      input.zip,
-      input.language,
-      JSON.stringify(input.needs ?? {}),
-      input.consentAt.toISOString(),
-    ],
+     returning ${SUBSCRIBER_COLUMNS_BEFORE_ALERT_CHANNEL}`,
+    params,
   );
-  return rows[0];
+  return { ...rows[0], alert_channel: null };
 }
 
 // Stamps opted_out_at and sets phone_e164 to null: the raw number is kept only while the opt-in stands.
@@ -128,11 +171,13 @@ export async function setOptedOut(phoneHash: string, at: Date): Promise<void> {
 // Only rows with opted_out_at null and phone_e164 not null.
 export async function listActiveSubscribersByZips(zips: string[]): Promise<SubscriberContact[]> {
   if (zips.length === 0) return [];
-  return query<SubscriberContact>(
-    `select ${SUBSCRIBER_COLUMNS} from subscribers
-     where opted_out_at is null and phone_e164 is not null and zip = any(${textArray('$1')})
-     order by id`,
-    [JSON.stringify(zips)],
+  return withAlertChannel((columns) =>
+    query<SubscriberContact>(
+      `select ${columns} from subscribers
+       where opted_out_at is null and phone_e164 is not null and zip = any(${textArray('$1')})
+       order by id`,
+      [JSON.stringify(zips)],
+    ),
   );
 }
 
@@ -243,6 +288,17 @@ export async function hasAlertText(phoneHash: string, alertId: number): Promise<
     [phoneHash, alertId],
   );
   return rows.length > 0;
+}
+
+// When this number last wrote to us on `channel`, from the inbound calls rows, or null when it never has.
+// WhatsApp allows free-form messages for 24 hours after that; later ones need an approved template.
+export async function lastInboundAt(phoneHash: string, channel: Channel): Promise<Date | null> {
+  const rows = await query<{ at: string | null }>(
+    `select to_char(max(started_at) at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.MS"Z"') as at from calls
+     where phone_hash = $1 and direction = 'inbound' and channel = $2::channel`,
+    [phoneHash, channel],
+  );
+  return rows[0]?.at ? new Date(rows[0].at) : null;
 }
 
 // Cooldown guard: true when the subscriber was sent a text for any alert of this kind at or after `since`.

@@ -6,12 +6,14 @@ import { env } from '../env';
 import { validateTwilioSignature } from '../sms/twilio';
 import { handleInboundSms } from '../subscribers/inbound';
 import { handleInboundMessenger, parseMessengerWebhook } from '../messenger/inbound';
+import { fromWhatsAppAddress } from '../phone';
 
 // M4's HTTP surface. Custom routes mount at the server root, so the paths below are the full paths.
 // They cannot start with the server's apiPrefix (default /api), which Mastra reserves for its built-in routes.
 
 const TWILIO_SMS_PATH = '/m4/twilio/sms';
 const TWILIO_MESSENGER_PATH = '/m4/twilio/messenger';
+const TWILIO_WHATSAPP_PATH = '/m4/twilio/whatsapp';
 const MOCK_ALERT_PATH = '/m4/alerts/mock';
 
 // The fields read from Twilio's form post. The signature check still covers every field Twilio sent.
@@ -95,6 +97,45 @@ const twilioSmsRoute = registerApiRoute(TWILIO_SMS_PATH, {
   },
 });
 
+// Twilio's WhatsApp webhook, for the WhatsApp sender. Same gate and same reply path as SMS (a TwiML <Message>,
+// which Twilio delivers back over WhatsApp). From is `whatsapp:+<E.164>`: the number goes through the SMS flow
+// with channel 'whatsapp', so JOIN signs the person up for WhatsApp alerts. Never point WhatsApp at the SMS route:
+// there the prefix would be dropped and a WhatsApp JOIN would become an SMS subscription.
+const twilioWhatsAppRoute = registerApiRoute(TWILIO_WHATSAPP_PATH, {
+  method: 'POST',
+  requiresAuth: false,
+  handler: async (c) => {
+    const logger = c.get('mastra').getLogger();
+    const params = verifiedTwilioParams({
+      form: await c.req.parseBody(),
+      path: TWILIO_WHATSAPP_PATH,
+      requestUrl: c.req.url,
+      signature: c.req.header('x-twilio-signature'),
+    });
+    if (!params) {
+      logger?.warn('Rejected Twilio WhatsApp webhook: missing or invalid signature');
+      return c.text('Forbidden', 403);
+    }
+
+    const parsed = twilioSmsParams.safeParse(params);
+    // Never logs the fields themselves: From holds the person's phone number.
+    const from = parsed.success ? fromWhatsAppAddress(parsed.data.From) : null;
+    if (!parsed.success || !from) {
+      logger?.warn('Rejected Twilio WhatsApp webhook: From is not a whatsapp: address, or a field is missing');
+      return c.text('Bad Request', 400);
+    }
+
+    // Twilio's 15-second limit applies as for SMS; see the SMS route above.
+    const { reply } = await handleInboundSms({
+      from,
+      body: parsed.data.Body,
+      messageSid: parsed.data.MessageSid,
+      channel: 'whatsapp',
+    });
+    return c.body(twiml(reply), 200, { 'Content-Type': 'text/xml; charset=utf-8' });
+  },
+});
+
 // Twilio's Facebook Messenger webhook, for the Page's Messenger sender. Separate from the SMS route because the
 // sender is a page-scoped Messenger id, not a phone number. Same gate: the signature, checked against
 // PUBLIC_BASE_URL + TWILIO_MESSENGER_PATH.
@@ -163,4 +204,4 @@ const mockAlertRoute = registerApiRoute(MOCK_ALERT_PATH, {
   },
 });
 
-export const m4ApiRoutes: ApiRoute[] = [twilioSmsRoute, twilioMessengerRoute, mockAlertRoute];
+export const m4ApiRoutes: ApiRoute[] = [twilioSmsRoute, twilioWhatsAppRoute, twilioMessengerRoute, mockAlertRoute];

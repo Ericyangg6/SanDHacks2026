@@ -1,6 +1,6 @@
 import { getSubscriber, setOptedOut, upsertSubscriber } from '../db';
 import { hashPhone, toE164 } from '../phone';
-import type { CallerNeeds, Language, SubscriberRow } from '../types';
+import type { AlertChannel, CallerNeeds, Language, SubscriberRow } from '../types';
 
 // Outbound is opt-in only: consent_at records the opt-in, opted_out_at records STOP.
 
@@ -60,6 +60,7 @@ export async function subscribe(args: {
   zip: string;
   language?: Language;
   needs?: CallerNeeds;
+  alertChannel?: AlertChannel; // the channel the opt-in came in on, where alerts will go. Default 'sms'
 }): Promise<SubscriberRow> {
   // Zip stays text, never a number.
   if (!/^\d{5}$/.test(args.zip)) throw new Error('subscribe: the zip must be five digits');
@@ -76,6 +77,7 @@ export async function subscribe(args: {
     language: args.language ?? existing?.language ?? 'en',
     needs: args.needs ?? existing?.needs ?? {},
     consentAt: new Date(),
+    alertChannel: args.alertChannel,
   });
 }
 

@@ -1,5 +1,6 @@
 // Shared contract types from data/schema/types.ts. M4 imports them from here so the path lives in one place.
 import type {
+  AlertChannel,
   AlertKind,
   CallDirection,
   CallOutcome,
@@ -9,6 +10,7 @@ import type {
 } from '../../../../data/schema/types';
 
 export type {
+  AlertChannel,
   AlertKind,
   CallDirection,
   CallOutcome,
@@ -40,6 +42,9 @@ export interface SubscriberRow {
   needs: CallerNeeds;
   consent_at: string;
   opted_out_at: string | null;
+  // Where alerts go: the channel they opted in on. null = SMS, and every row reads null on a database that does
+  // not have the column yet.
+  alert_channel: AlertChannel | null;
 }
 
 // An opted-in subscriber, whose number is still on file.

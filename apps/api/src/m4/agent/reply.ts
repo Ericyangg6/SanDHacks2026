@@ -6,7 +6,7 @@ import type { CallOutcome, FindSitesOutput, Language, MessageRow, SubscriberRow 
 import { emergencyReply, matchEmergency } from './safety';
 
 // Where the conversation happens. Facebook Messenger turns are keyed by the Messenger hash, never a phone hash.
-export type TextChannel = 'sms' | 'messenger';
+export type TextChannel = 'sms' | 'messenger' | 'whatsapp';
 
 export interface TextReply {
   text: string;

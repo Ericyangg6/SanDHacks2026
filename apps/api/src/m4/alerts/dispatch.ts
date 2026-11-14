@@ -6,12 +6,15 @@ import {
   hasRecentAlertText,
   insertAlert,
   insertMessage,
+  lastInboundAt,
   listActiveSubscribersByZips,
 } from '../db';
+import { env } from '../env';
 import { findSites } from '../find-sites';
 import { maskPhone } from '../phone';
 import { sendText } from '../sms/send-sms';
-import { alertMessage } from '../sms/templates';
+import { alertMessage, whatsAppAlertVariables } from '../sms/templates';
+import type { WhatsAppTemplate } from '../sms/twilio';
 import type { AlertRow, SiteResult, SubscriberContact } from '../types';
 import { toAlertKind, type NwsAlert } from './nws';
 import { zipsForZones } from './zones';
@@ -68,7 +71,30 @@ async function nearestSite(subscriber: SubscriberContact, alert: AlertRow): Prom
   return sites[0] ?? null;
 }
 
-// Texts every active subscriber in alert.zips their nearest open site: once per alert, and at most once per
+// WhatsApp allows a free-form message for this long after the person's last message.
+const WHATSAPP_WINDOW_HOURS = 24;
+
+// How a WhatsApp alert can go out: null = free-form (the person wrote in the last 24 hours), a template when
+// they did not and one is configured, 'skip' when neither, so nothing is sent that WhatsApp would refuse.
+// An unknown window counts as closed.
+async function whatsAppDelivery(
+  subscriber: SubscriberContact,
+  alert: AlertRow,
+  site: SiteResult | null,
+): Promise<WhatsAppTemplate | null | 'skip'> {
+  const last = await lastInboundAt(subscriber.phone_hash, 'whatsapp').catch(() => null);
+  if (last && Date.now() - last.getTime() < WHATSAPP_WINDOW_HOURS * 3600_000) return null;
+  const contentSid = env.whatsAppAlertContentSid(subscriber.language);
+  if (!contentSid) {
+    console.warn(
+      `[m4] alert ${alert.id}: skipped ${maskPhone(subscriber.phone_e164)} on WhatsApp: no message in the last ${WHATSAPP_WINDOW_HOURS} hours and TWILIO_WHATSAPP_ALERT_CONTENT_SID is unset`,
+    );
+    return 'skip';
+  }
+  return { contentSid, variables: whatsAppAlertVariables({ alert, site, language: subscriber.language }) };
+}
+
+// Texts every active subscriber in alert.zips their nearest open site, by SMS or WhatsApp (alert_channel): once per alert, and at most once per
 // alert kind every ALERT_TEXT_COOLDOWN_HOURS. One subscriber's failure never stops the others.
 export async function dispatchAlert(alert: AlertRow): Promise<{ textsSent: number }> {
   const subscribers = await listActiveSubscribersByZips(alert.zips);
@@ -95,11 +121,20 @@ export async function dispatchAlert(alert: AlertRow): Promise<{ textsSent: numbe
     });
 
     const body = alertMessage({ alert, site, language: subscriber.language });
+    const channel = subscriber.alert_channel === 'whatsapp' ? 'whatsapp' : 'sms';
+    let template: WhatsAppTemplate | undefined;
+    if (channel === 'whatsapp') {
+      const delivery = await whatsAppDelivery(subscriber, alert, site);
+      if (delivery === 'skip') continue;
+      template = delivery ?? undefined;
+    }
     // sendText writes the calls row with alert_id, which is the row both guards read.
     const result = await sendText({
       to: subscriber.phone_e164,
       body,
       purpose: 'alert',
+      channel,
+      template,
       alertId: alert.id,
       siteId: site?.site_id,
       zip: subscriber.zip,

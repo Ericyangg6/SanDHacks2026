@@ -199,6 +199,33 @@ export function alertMessage(args: { alert: AlertRow; site: SiteResult | null; l
   return lines.join('\n');
 }
 
+// Values for the approved WhatsApp alert template, sent when a WhatsApp subscriber last wrote more than 24
+// hours ago. The template itself lives in Twilio's Content Template Builder, approved by Meta. Its text should be:
+//   en: Shade alert: {{1}} Nearest open cooling site: {{2}}. Hours today: {{3}}. Map: {{4}}
+//       Reply with questions, or STOP to opt out. In an emergency, call 911.
+//   es: Alerta de Shade: {{1}} Lugar fresco abierto más cercano: {{2}}. Horario de hoy: {{3}}. Mapa: {{4}}
+//       Responde con tus preguntas, o STOP para cancelar. En una emergencia, llama al 911.
+// WhatsApp refuses template values with line breaks, so each value is one line.
+export function whatsAppAlertVariables(args: {
+  alert: AlertRow;
+  site: SiteResult | null;
+  language: Language;
+}): Record<string, string> {
+  const { alert, site, language } = args;
+  const oneLine = (text: string) => text.replace(/\s+/g, ' ').trim();
+  return {
+    // The opening without its "Shade:" lead, which the template already says.
+    '1': oneLine(alertOpening(alert, language).replace(/^Shade:?\s*/, '')),
+    '2': oneLine(
+      site
+        ? `${site.name}, ${site.address}`
+        : pick({ en: 'none open near you right now, call 211', es: 'ninguno abierto cerca ahora, llama al 211' }, language),
+    ),
+    '3': oneLine(site?.hours_today ?? '-'),
+    '4': oneLine(site?.map_url ?? '211'),
+  };
+}
+
 // Sent once, right after consent_at is recorded.
 export function optInConfirmation(language: Language): string {
   return pick(

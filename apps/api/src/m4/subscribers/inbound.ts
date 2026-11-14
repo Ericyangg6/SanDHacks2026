@@ -2,13 +2,16 @@ import { generateTextReply } from '../agent/reply';
 import { getSubscriber, insertCall } from '../db';
 import { hashPhone, maskPhone, toE164 } from '../phone';
 import { helpMessage, joinUsage, optInConfirmation, optOutConfirmation, replyUnavailable } from '../sms/templates';
-import type { CallOutcome, Language } from '../types';
+import type { AlertChannel, CallOutcome, Language } from '../types';
 import { detectKeyword, optOut, subscribe, type KeywordMatch } from './consent';
 
 export interface InboundSms {
-  from: string; // as Twilio sends it; normalize with toE164 before use
+  from: string; // as Twilio sends it for SMS; for WhatsApp, the E.164 number without 'whatsapp:'
   body: string;
   messageSid: string;
+  // 'whatsapp' for the WhatsApp webhook. The same flow handles both: a WhatsApp number is a phone number, hashed
+  // the same way, and a JOIN on WhatsApp sends that subscriber's alerts to WhatsApp. Default 'sms'.
+  channel?: AlertChannel;
 }
 
 export interface InboundResult {
@@ -47,7 +50,7 @@ async function route(msg: InboundSms): Promise<InboundResult> {
 
   const match = detectKeyword(msg.body);
   try {
-    return await answer(phoneE164, msg.body, match);
+    return await answer(phoneE164, msg.body, match, msg.channel === 'whatsapp' ? 'whatsapp' : 'sms');
   } catch (error) {
     console.error(`[m4] inbound text from ${maskPhone(phoneE164)} failed (${reason(error)})`);
     // The subscriber's language is not known here unless the keyword gave it away, so the reply carries both.
@@ -58,7 +61,12 @@ async function route(msg: InboundSms): Promise<InboundResult> {
   }
 }
 
-async function answer(phoneE164: string, body: string, match: KeywordMatch | null): Promise<InboundResult> {
+async function answer(
+  phoneE164: string,
+  body: string,
+  match: KeywordMatch | null,
+  channel: AlertChannel,
+): Promise<InboundResult> {
   const phoneHash = hashPhone(phoneE164);
   const subscriber = await getSubscriber(phoneHash);
   // A Spanish keyword is answered in Spanish. Otherwise the subscriber's language, else English. The English
@@ -72,8 +80,9 @@ async function answer(phoneE164: string, body: string, match: KeywordMatch | nul
 
   switch (match?.keyword) {
     case 'stop':
-      // Twilio answers its own STOP words itself and then blocks our texts to the number, so this reply only
-      // arrives for the Spanish words, which Twilio does not know.
+      // On SMS, Twilio answers its own STOP words itself and then blocks our texts to the number, so this reply
+      // only arrives for the Spanish words, which Twilio does not know. On WhatsApp it arrives for all of them.
+      // Either way the opt-out covers both channels: alerts stop wherever they were going.
       await optOut(phoneE164);
       reply = optOutConfirmation(language);
       break;
@@ -86,7 +95,13 @@ async function answer(phoneE164: string, body: string, match: KeywordMatch | nul
         reply = joinUsage(language);
         break;
       }
-      const row = await subscribe({ phoneE164, zip: newZip, language: match.language === 'es' ? 'es' : undefined });
+      // Alerts go to the channel this opt-in came in on.
+      const row = await subscribe({
+        phoneE164,
+        zip: newZip,
+        language: match.language === 'es' ? 'es' : undefined,
+        alertChannel: channel,
+      });
       language = row.language;
       zip = row.zip;
       reply = optInConfirmation(language);
@@ -108,7 +123,7 @@ async function answer(phoneE164: string, body: string, match: KeywordMatch | nul
       } else {
         // The agent slice writes the messages rows. Keyword exchanges are not stored there.
         try {
-          const turn = await generateTextReply({ contactHash: phoneHash, body, channel: 'sms', logLabel: maskPhone(phoneE164) });
+          const turn = await generateTextReply({ contactHash: phoneHash, body, channel, logLabel: maskPhone(phoneE164) });
           reply = turn.text;
           outcome = turn.outcome;
           siteId = turn.siteId;
@@ -121,8 +136,9 @@ async function answer(phoneE164: string, body: string, match: KeywordMatch | nul
       }
   }
 
-  // The reply matters more than the log row.
-  await insertCall({ direction: 'inbound', channel: 'sms', phoneHash, zip, language, siteId, outcome }).catch(
+  // The reply matters more than the log row. A WhatsApp row also opens the 24-hour window for free-form alerts
+  // (db.lastInboundAt), so until the database has the 'whatsapp' channel value, WhatsApp alerts need the template.
+  await insertCall({ direction: 'inbound', channel, phoneHash, zip, language, siteId, outcome }).catch(
     (error) => console.error(`[m4] inbound text from ${maskPhone(phoneE164)}: calls row not written (${reason(error)})`),
   );
   return { reply };

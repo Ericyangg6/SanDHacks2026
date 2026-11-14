@@ -83,6 +83,44 @@ The automated tests replace `fetch`, so they reach neither Neon nor Twilio:
 npx tsx --test src/m4/messenger/messenger.test.ts
 ```
 
+## WhatsApp
+
+WhatsApp is the alert channel that works without US carrier (A2P) registration. Twilio's WhatsApp sender posts
+to `POST ${PUBLIC_BASE_URL}/m4/twilio/whatsapp`, never to the SMS route.
+
+- **Same flow as SMS.** A WhatsApp address is `whatsapp:+<E.164>`, a phone number, so the route removes the prefix
+  and hands the number to `handleInboundSms` with `channel: 'whatsapp'`. It is hashed like an SMS number: one
+  `subscribers` row and one conversation per phone, whichever channel it writes from. STOP, START, HELP, JOIN, the
+  911 pre-check and the agent all work, and the reply goes back in TwiML, which Twilio delivers on WhatsApp.
+- **Alerts follow the opt-in.** `subscribers.alert_channel` records where alerts go: `whatsapp` after a JOIN or
+  START on WhatsApp, null (SMS) after one by text. STOP on either channel opts the number out of both.
+- **The 24-hour rule.** WhatsApp delivers a free-form message only within 24 hours of the person's last message
+  (`db.lastInboundAt`, from the inbound `calls` rows). `dispatchAlert` sends the normal alert text inside that
+  window. Outside it, it sends the approved template (`TWILIO_WHATSAPP_ALERT_CONTENT_SID`, see
+  `whatsAppAlertVariables` in `sms/templates.ts` for its text and placeholders) or, with no template set, skips
+  that subscriber and logs it.
+- **Logging.** `calls` rows carry channel `whatsapp`. A WhatsApp alert that went out still has outcome `sms_sent`
+  (`call_outcome` has no channel-neutral value), so the repeat and cooldown guards cover it.
+
+**Database.** Two additive changes in `data/schema/schema.sql`, needed before WhatsApp fully works:
+
+```sql
+alter type channel add value 'whatsapp';
+alter table subscribers add column alert_channel text check (alert_channel in ('sms', 'whatsapp'));
+```
+
+Before they run, SMS behaves as before (subscriber reads retry without `alert_channel`), WhatsApp replies still
+work, a WhatsApp JOIN is refused with the "try again" text rather than recorded as an SMS opt-in, and WhatsApp
+`calls` rows fail with a log line, so the 24-hour window reads as closed.
+
+**Twilio Console.** Set the WhatsApp sender's incoming-message webhook (Messaging > Senders > WhatsApp senders) to
+`${PUBLIC_BASE_URL}/m4/twilio/whatsapp`, HTTP POST. For alerts outside the 24-hour window, create the alert
+template in the Content Template Builder, submit it for WhatsApp approval as Utility, and put its `HX...` SID in
+`TWILIO_WHATSAPP_ALERT_CONTENT_SID` (and a Spanish one in `TWILIO_WHATSAPP_ALERT_CONTENT_SID_ES`).
+
+**Trying it locally.** `node src/m4/dev/run.mjs text-in "JOIN 92105" --whatsapp` posts a signed WhatsApp webhook
+and prints the reply. Tests: `npx tsx --test src/m4/whatsapp.test.ts`.
+
 ## The text agent
 
 Any text that is not a keyword goes to `generateTextReply`, one turn of the conversation:
@@ -175,11 +213,12 @@ export const mastra = new Mastra({
 ```
 
 Custom routes mount at the server root, so the Twilio messaging webhook is `POST ${PUBLIC_BASE_URL}/m4/twilio/sms`,
-the Messenger webhook is `POST ${PUBLIC_BASE_URL}/m4/twilio/messenger` (see "Facebook Messenger"), and the
-dashboard's demo button calls `POST /m4/alerts/mock` (see "Alerts").
+the WhatsApp webhook is `POST ${PUBLIC_BASE_URL}/m4/twilio/whatsapp` (see "WhatsApp"), the Messenger webhook is
+`POST ${PUBLIC_BASE_URL}/m4/twilio/messenger` (see "Facebook Messenger"), and the dashboard's demo button calls
+`POST /m4/alerts/mock` (see "Alerts").
 
 No `server.auth` is configured, so every route on port 4111 is open to whoever can reach it, including the starter
-agent with its file and shell tools. M4's three routes check their own secrets (Twilio's signature and
+agent with its file and shell tools. M4's four routes check their own secrets (Twilio's signature and
 `M4_ALERT_SECRET`). Never point a tunnel at 4111. `npm run dev` also listens on every network interface, so on
 shared Wi-Fi those routes are open to the room: `MASTRA_HOST=127.0.0.1 npm run dev` keeps the server to this
 machine.
@@ -187,8 +226,8 @@ machine.
 ## Receiving texts on a laptop
 
 Sending needs no public URL. Receiving does: Twilio has to reach the webhook. `dev/webhook-proxy.mjs` listens on
-4114 and forwards only `POST /m4/twilio/sms` and `POST /m4/twilio/messenger` to the Mastra server, answering 404
-to everything else, so the tunnel goes to the proxy:
+4114 and forwards only `POST /m4/twilio/sms`, `POST /m4/twilio/whatsapp` and `POST /m4/twilio/messenger` to the
+Mastra server, answering 404 to everything else, so the tunnel goes to the proxy:
 
 ```shell
 node src/m4/dev/webhook-proxy.mjs                 # terminal 1, from apps/api
@@ -196,7 +235,8 @@ cloudflared tunnel --url http://127.0.0.1:4114    # terminal 2, prints https://<
 ```
 
 Set `PUBLIC_BASE_URL` to that address before starting the dev server, and set the Twilio number's messaging
-webhook to `<address>/m4/twilio/sms` (HTTP POST), and the Messenger sender's to `<address>/m4/twilio/messenger`.
+webhook to `<address>/m4/twilio/sms` (HTTP POST), the WhatsApp sender's to `<address>/m4/twilio/whatsapp`, and the
+Messenger sender's to `<address>/m4/twilio/messenger`.
 The address changes every time the tunnel restarts, and every one of those places has to change with it: the
 signature check fails with 403 if `PUBLIC_BASE_URL` is stale.
 
@@ -244,7 +284,10 @@ M4_SMS_DRY_RUN=1 node src/m4/dev/run.mjs send-test
 | `TWILIO_AUTH_TOKEN` | Validates the signature on inbound webhooks, and authenticates sends when there is no API key pair |
 | `TWILIO_SID`, `TWILIO_SECRET` | Optional. A Twilio API key pair (`SK...`). When both are set, sends use it instead of the auth token |
 | `TWILIO_PHONE_NUMBER` | The sending number, E.164. Messenger replies quote it when pointing people at SMS alerts |
-| `PUBLIC_BASE_URL` | Public origin Twilio calls, needed for the signature check on both webhooks (SMS and Messenger) |
+| `TWILIO_WHATSAPP_FROM` | Optional. The WhatsApp sender's number, E.164. Defaults to `TWILIO_PHONE_NUMBER` |
+| `TWILIO_WHATSAPP_ALERT_CONTENT_SID` | Optional. Content SID (`HX...`) of the approved WhatsApp alert template. Without it, WhatsApp alerts only reach people who wrote in the last 24 hours |
+| `TWILIO_WHATSAPP_ALERT_CONTENT_SID_ES` | Optional. The Spanish alert template. Spanish subscribers get the default one without it |
+| `PUBLIC_BASE_URL` | Public origin Twilio calls, needed for the signature check on every webhook (SMS, WhatsApp, Messenger) |
 | `M4_ALERT_SECRET` | Shared secret for `POST /m4/alerts/mock`. The route refuses everything while it is unset |
 | `PHONE_SALT` | Salt for `phone_hash`. Must be the same value for M3 |
 | `NEON_DATABASE_URL` | Postgres connection string |

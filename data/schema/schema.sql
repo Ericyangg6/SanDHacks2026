@@ -7,7 +7,8 @@ create type site_kind as enum (
 create type site_tier as enum ('official', 'discovered');
 create type call_direction as enum ('inbound', 'outbound');
 -- messenger: Facebook Messenger through Twilio (M4). Existing databases: alter type channel add value 'messenger';
-create type channel as enum ('voice', 'sms', 'messenger');
+-- whatsapp: WhatsApp through Twilio (M4). Existing databases: alter type channel add value 'whatsapp';
+create type channel as enum ('voice', 'sms', 'messenger', 'whatsapp');
 create type call_outcome as enum (
   'site_given', 'sms_sent', 'no_site_found', 'escalated_911', 'abandoned', 'error'
 );
@@ -47,7 +48,10 @@ create table subscribers (
   zip         text not null,
   needs       jsonb not null default '{}',-- see types.ts: CallerNeeds
   consent_at  timestamptz not null,
-  opted_out_at timestamptz
+  opted_out_at timestamptz,
+  -- Where alerts go: the channel the person opted in on. null = 'sms'. Existing databases:
+  -- alter table subscribers add column alert_channel text check (alert_channel in ('sms', 'whatsapp'));
+  alert_channel text check (alert_channel in ('sms', 'whatsapp'))
 );
 create index on subscribers (zip) where opted_out_at is null;
 

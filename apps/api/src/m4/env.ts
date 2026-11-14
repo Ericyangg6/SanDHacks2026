@@ -23,6 +23,15 @@ export const env = {
   twilioCredentials,
   // SMS sends also need the sending number. Messenger sends do not: they go from the Page that was written to.
   twilio: () => ({ ...twilioCredentials(), phoneNumber: requireEnv('TWILIO_PHONE_NUMBER') }),
+  // The WhatsApp sender's number, E.164. Defaults to TWILIO_PHONE_NUMBER, the number the sender is registered on.
+  whatsAppFrom: () => process.env.TWILIO_WHATSAPP_FROM || requireEnv('TWILIO_PHONE_NUMBER'),
+  // Content SID (HX...) of the approved WhatsApp alert template, or null while there is none. Without it,
+  // WhatsApp subscribers only get alerts within 24 hours of their last message. Spanish subscribers get the
+  // _ES template when it is set, else the default one.
+  whatsAppAlertContentSid: (language: string) =>
+    (language === 'es' && process.env.TWILIO_WHATSAPP_ALERT_CONTENT_SID_ES) ||
+    process.env.TWILIO_WHATSAPP_ALERT_CONTENT_SID ||
+    null,
   // Twilio signs webhooks with the account's auth token, not with the API key secret.
   twilioAuthToken: () => requireEnv('TWILIO_AUTH_TOKEN'),
   phoneSalt: () => requireEnv('PHONE_SALT'),

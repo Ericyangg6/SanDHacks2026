@@ -1,9 +1,9 @@
 import { getLatestReading, getSite, insertCall, setOptedOut } from '../db';
 import { hashPhone, maskPhone, toE164 } from '../phone';
 import { isOptedOut } from '../subscribers/consent';
-import type { Language, Reading, SendSmsInput, SendSmsOutput } from '../types';
+import type { AlertChannel, Language, Reading, SendSmsInput, SendSmsOutput } from '../types';
 import { siteMessage } from './templates';
-import { sendTwilioSms, TwilioError } from './twilio';
+import { sendTwilioSms, sendTwilioWhatsApp, TwilioError, type WhatsAppTemplate } from './twilio';
 
 // 'site': one site's details (send_sms). 'alert': alert fan-out. 'reply': text agent answer.
 // 'system': opt-in, opt-out and help confirmations. calls has no column for it, so it only shapes log lines.
@@ -13,6 +13,10 @@ export interface SendTextInput {
   to: string; // E.164
   body: string;
   purpose: TextPurpose;
+  channel?: AlertChannel; // default 'sms'
+  // WhatsApp only: an approved template, for a message more than 24 hours after the person last wrote. body is
+  // then only used for logs; the template's text is what is delivered.
+  template?: WhatsAppTemplate;
   alertId?: number;
   siteId?: number;
   zip?: string;
@@ -39,7 +43,8 @@ export async function sendText(input: SendTextInput): Promise<SendSmsOutput> {
   const to = toE164(input.to);
   if (!to) return { ok: false, error: 'invalid_number' };
   if (!input.body.trim() || input.body.length > MAX_BODY_LENGTH) return { ok: false, error: 'invalid_body' };
-  const label = `${input.purpose} text to ${maskPhone(to)}`;
+  const channel: AlertChannel = input.channel === 'whatsapp' ? 'whatsapp' : 'sms';
+  const label = `${input.purpose} ${channel === 'whatsapp' ? 'WhatsApp message' : 'text'} to ${maskPhone(to)}`;
 
   // Fail closed: with no answer on opt-out, nothing is sent.
   try {
@@ -50,7 +55,8 @@ export async function sendText(input: SendTextInput): Promise<SendSmsOutput> {
   }
 
   try {
-    await sendTwilioSms({ to, body: input.body });
+    if (channel === 'whatsapp') await sendTwilioWhatsApp({ to, body: input.body, template: input.template });
+    else await sendTwilioSms({ to, body: input.body });
   } catch (error) {
     console.warn(`[m4] ${label} not sent: ${reason(error)}`);
     const code = error instanceof TwilioError ? error.code : null;
@@ -65,7 +71,7 @@ export async function sendText(input: SendTextInput): Promise<SendSmsOutput> {
   try {
     await insertCall({
       direction: 'outbound',
-      channel: 'sms',
+      channel,
       phoneHash: hashPhone(to),
       zip: input.zip ?? null,
       language: input.language ?? null,

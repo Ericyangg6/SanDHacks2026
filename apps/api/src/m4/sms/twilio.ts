@@ -1,7 +1,7 @@
 import { createHmac, randomUUID, timingSafeEqual } from 'node:crypto';
 import { env } from '../env';
 import { hashMessengerId, messengerAddress, messengerLogLabel } from '../messenger/identity';
-import { maskPhone } from '../phone';
+import { maskPhone, whatsAppAddress } from '../phone';
 
 // Thin Twilio REST client built on fetch (the `twilio` package is not installed).
 // Nothing here checks consent or logs: call sendText in ./send-sms instead of sendTwilioSms directly.
@@ -23,7 +23,7 @@ export class TwilioError extends Error {
 
 // Twilio's error text often quotes the number or Messenger id it refused. Messenger ids run past 15 digits.
 function scrubNumbers(text: string): string {
-  return text.replace(/(?:messenger:)?\+?\d{7,}/g, '[number]');
+  return text.replace(/(?:messenger:|whatsapp:)?\+?\d{7,}/g, '[number]');
 }
 
 function dryRunSid(): string {
@@ -54,8 +54,37 @@ export async function sendTwilioMessenger(args: { pageId: string; psid: string; 
   return createMessage({ To: messengerAddress(args.psid), From: messengerAddress(args.pageId), Body: args.body });
 }
 
-// POST to the Messages API, shared by SMS and Messenger: the channel is in the To and From addresses.
-async function createMessage(params: { To: string; From: string; Body: string }): Promise<{ sid: string }> {
+// An approved WhatsApp template: its Content SID (HX...) and the values for its {{1}}, {{2}}, ... placeholders.
+export interface WhatsAppTemplate {
+  contentSid: string;
+  variables: Record<string, string>;
+}
+
+// Sends one WhatsApp message from the WhatsApp sender (env.whatsAppFrom) to `to` (E.164, no 'whatsapp:' prefix)
+// and returns Twilio's message sid. Throws TwilioError on any failure. M4_SMS_DRY_RUN=1 covers this too.
+// Free-form `body` is only delivered within 24 hours of the person's last WhatsApp message. Outside that window
+// pass `template` instead; Twilio sends the template's approved text and ignores `body`.
+// Nothing here checks consent or logs: call sendText in ./send-sms with channel 'whatsapp' instead.
+export async function sendTwilioWhatsApp(args: {
+  to: string;
+  body: string;
+  template?: WhatsAppTemplate;
+}): Promise<{ sid: string }> {
+  if (env.smsDryRun()) {
+    const what = args.template ? `template ${args.template.contentSid} ${JSON.stringify(args.template.variables)}` : args.body;
+    console.info(`[m4] dry run, not sent. WhatsApp to ${maskPhone(args.to)}:\n${what}`);
+    return { sid: dryRunSid() };
+  }
+  const address = { To: whatsAppAddress(args.to), From: whatsAppAddress(env.whatsAppFrom()) };
+  return createMessage(
+    args.template
+      ? { ...address, ContentSid: args.template.contentSid, ContentVariables: JSON.stringify(args.template.variables) }
+      : { ...address, Body: args.body },
+  );
+}
+
+// POST to the Messages API, shared by SMS, Messenger and WhatsApp: the channel is in the To and From addresses.
+async function createMessage(params: Record<string, string>): Promise<{ sid: string }> {
   const { accountSid, username, password } = env.twilioCredentials();
   let response: Response;
   try {

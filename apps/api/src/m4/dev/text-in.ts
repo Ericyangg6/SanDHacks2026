@@ -1,18 +1,23 @@
 // Stands in for a phone texting the Twilio number: posts a correctly signed inbound-SMS webhook to the local dev
 // server and prints the reply Twilio would have texted back.
-//   node src/m4/dev/run.mjs text-in "JOIN 92105" [--from +16195550100]
+//   node src/m4/dev/run.mjs text-in "JOIN 92105" [--from +16195550100] [--whatsapp]
+// --whatsapp posts to the WhatsApp webhook instead, with whatsapp:-prefixed From and To.
 // The default sender is a fictional 555 number, so the subscriber row it creates holds no real number. Delete the
 // rows afterwards (see the README). Needs TWILIO_AUTH_TOKEN, and the same PUBLIC_BASE_URL the dev server has.
 // M4_SERVER_URL overrides where the request goes (default http://localhost:4111).
 
 import { randomUUID } from 'node:crypto';
 import { env } from '../env';
-import { maskPhone, toE164 } from '../phone';
+import { maskPhone, toE164, whatsAppAddress } from '../phone';
 import { twilioSignature } from '../sms/twilio';
 
-const PATH = '/m4/twilio/sms';
-
 const args = process.argv.slice(3);
+const whatsAppIndex = args.indexOf('--whatsapp');
+const whatsApp = whatsAppIndex >= 0;
+if (whatsApp) args.splice(whatsAppIndex, 1);
+const PATH = whatsApp ? '/m4/twilio/whatsapp' : '/m4/twilio/sms';
+const address = (e164: string) => (whatsApp ? whatsAppAddress(e164) : e164);
+
 const fromIndex = args.indexOf('--from');
 const fromArg = fromIndex >= 0 ? args.splice(fromIndex, 2)[1] : '+16195550100';
 const from = toE164(fromArg ?? '');
@@ -23,8 +28,8 @@ const body = args.join(' ');
 const params: Record<string, string> = {
   MessageSid: `SM${randomUUID().replace(/-/g, '')}`,
   AccountSid: process.env.TWILIO_ACCOUNT_SID ?? 'AC00000000000000000000000000000000',
-  From: from,
-  To: process.env.TWILIO_PHONE_NUMBER ?? '+15005550006',
+  From: address(from),
+  To: address(process.env.TWILIO_PHONE_NUMBER ?? '+15005550006'),
   Body: body,
   NumMedia: '0',
 };
@@ -50,7 +55,7 @@ const reply = message
   .replace(/&apos;/g, "'")
   .replace(/&amp;/g, '&');
 
-console.log(`${maskPhone(from)} texted: ${JSON.stringify(body)}`);
+console.log(`${maskPhone(from)} ${whatsApp ? 'wrote on WhatsApp' : 'texted'}: ${JSON.stringify(body)}`);
 if (!response.ok) {
   console.log(`HTTP ${response.status} after ${ms} ms: ${text.slice(0, 200)}`);
   process.exitCode = 1;
