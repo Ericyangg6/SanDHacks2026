@@ -18,7 +18,7 @@ export const findSitesTool = (apiUrl: string, toolSecret: string) => ({
         properties: {
           location: {
             type: 'string',
-            description: 'Where the caller is, as they said it: zip code, neighborhood, city, address, or cross streets.',
+            description: 'Where the caller is, in their own words: a building or campus spot (Geisel Library at UCSD), a store, mall, hospital, park, trolley station, address, cross streets, neighborhood, city, or zip code. Pass the whole phrase.',
           },
           has_car: { type: 'boolean', description: 'True if the caller has a car. Omit if unknown.' },
           mobility_issues: { type: 'boolean', description: 'True if the caller has trouble walking. Omit if unknown.' },

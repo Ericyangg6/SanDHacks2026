@@ -126,7 +126,59 @@ async function geocode(text: string): Promise<Pt | null> {
   return out;
 }
 
-async function resolveLocation(input: FindSitesInput): Promise<{ pt: Pt; zip: string | null; byZip?: boolean } | null> {
+// ---- landmarks: "I'm in Geisel Library", "outside the Price Center", "at Westfield UTC" ----------------------------
+// data/seed/landmarks.json holds ~5,000 named places (OpenStreetMap + every site we hold). A caller's words are matched
+// by token RARITY, so "Geisel" counts for far more than "library", and nobody has to give a ZIP or a city.
+interface Landmark { name: string; lat: number; lon: number; kind: string; weight: number; tokens: string[] }
+let lmIndex: { items: Landmark[]; df: Map<string, number> } | null | undefined;
+const STOP = new Set(['the', 'a', 'an', 'at', 'in', 'on', 'of', 'near', 'by', 'to', 'my', 'im', 'i', 'am', 'is', 'its', 'it', 'so', 'very', 'really', 'hot', 'here', 'where', 'can', 'go', 'right', 'now', 'please', 'help', 'need', 'looking', 'for', 'around', 'next', 'outside', 'inside', 'front', 'nearby', 'close', 'and', 'or', 'with', 'no', 'car', 'currently', 'standing', 'sitting', 'walking', 'stuck', 'somewhere', 'cool', 'place', 'ucsd', 'uc', 'campus', 'university', 'california', 'ca']);
+const GENERIC = new Set(['san', 'diego', 'county', 'la', 'jolla', 'city']);                  // geography words that never identify a place on their own
+const toTokens = (t: string): string[] => t.toLowerCase().replace(/&/g, ' and ').replace(/[^a-z0-9 ]/g, ' ').split(/\s+/).filter((w) => w.length > 1 && !STOP.has(w)); // drops "i'm" -> "m" and "it's" -> "s" fragments
+
+async function landmarks() {
+  if (lmIndex !== undefined) return lmIndex;
+  const raw = (await readSeed('landmarks.json')) as [string, number, number, string, number][] | null;
+  if (!raw) return (lmIndex = null);
+  const df = new Map<string, number>();
+  const items: Landmark[] = raw.map(([name, lat, lon, kind, weight]) => {
+    const tokens = [...new Set(toTokens(name))];
+    for (const t of tokens) df.set(t, (df.get(t) ?? 0) + 1);
+    return { name, lat, lon, kind, weight, tokens };
+  }).filter((l) => l.tokens.length);
+  return (lmIndex = { items, df });
+}
+
+async function matchLandmark(text: string): Promise<{ pt: Pt; name: string } | null> {
+  const idx = await landmarks();
+  if (!idx) return null;
+  const words = new Set(toTokens(text));
+  if (!words.size) return null;
+  const lower = text.toLowerCase();
+  const onCampus = /\b(ucsd|uc san diego|campus|geisel|price center)\b/.test(lower);
+  const inLaJolla = /\bla jolla\b/.test(lower);
+  const idf = (t: string) => Math.log(1 + idx.items.length / (idx.df.get(t) ?? 1));
+  let best: { l: Landmark; score: number } | null = null;
+  for (const l of idx.items) {
+    let have = 0, total = 0, distinctive = false, rare = false, matched = 0;
+    for (const t of l.tokens) {
+      const w = idf(t), d = idx.df.get(t) ?? 99;
+      total += w;
+      if (words.has(t)) { have += w; matched++; if (!GENERIC.has(t)) distinctive = true; if (d <= 8) rare = true; }
+    }
+    if (!have || !distinctive) continue;                           // "san diego" alone never identifies a place
+    const cov = have / total;
+    if (!(cov >= 0.999 || (rare && cov >= 0.3 && matched / words.size > 0.5))) continue; // all of its words, or its distinctive word covering most of what was said
+    let score = cov * 10 + have * 0.4 + (matched / words.size) * 4 + l.weight * 0.6; // fuller match, more of what they said, our own sites win
+    if (onCampus && l.lat > 32.835 && l.lat < 32.905 && l.lon > -117.3 && l.lon < -117.195) score += 3;
+    if (inLaJolla && l.lat > 32.82 && l.lat < 32.91 && l.lon > -117.30 && l.lon < -117.17) score += 2;
+    if (!best || score > best.score) best = { l, score };
+  }
+  return best ? { pt: { lat: best.l.lat, lon: best.l.lon }, name: best.l.name } : null;
+}
+
+const STREET_ADDRESS = /\b\d{2,5}\s+(?:[NSEW]\.?\s+)?[A-Za-z0-9.' ]{2,28}\b(?:st|street|ave|avenue|blvd|boulevard|dr|drive|rd|road|ln|lane|way|ct|court|pl|place|hwy|highway|pkwy|parkway|cir|circle|ter|terrace)\b/i;
+
+async function resolveLocation(input: FindSitesInput): Promise<{ pt: Pt; zip: string | null; byZip?: boolean; place?: string } | null> {
   const p = await places();
   const nearestZip = (pt: Pt): string | null => {
     let best: string | null = null, d = 15; // km
@@ -136,14 +188,21 @@ async function resolveLocation(input: FindSitesInput): Promise<{ pt: Pt; zip: st
   if (typeof input.lat === 'number' && typeof input.lon === 'number') { const pt = { lat: input.lat, lon: input.lon }; return { pt, zip: nearestZip(pt) }; }
 
   const text = input.location ?? '';
+  // 1. a street address is the most precise thing a caller can say
+  if (STREET_ADDRESS.test(text)) { const g = await geocode(text); if (g) return { pt: g, zip: nearestZip(g) }; }
+  // 2. a named place ("Geisel Library", "Price Center", "Westfield UTC"): instant, offline, no ZIP or city needed
+  const lm = await matchLandmark(text);
+  if (lm) return { pt: lm.pt, zip: nearestZip(lm.pt), place: lm.name };
+  // 3. a ZIP code
   const zip = text.match(/\b(9[12]\d{3})\b/)?.[1];
   if (zip && p.zips[zip]) return { pt: p.zips[zip], zip, byZip: true };
-
+  // 4. a town or neighborhood
   const lower = ` ${text.toLowerCase().replace(/[^a-z0-9' ]/g, ' ')} `;
   const hit = Object.keys(p.places).filter((n) => lower.includes(` ${n} `)).sort((a, b) => b.length - a.length)[0];
   if (hit) return { pt: p.places[hit], zip: nearestZip(p.places[hit]) };
-
-  const g = text.trim() ? await geocode(text) : null;
+  // 5. anything else: ask an online geocoder (slow, so last)
+  const withCampus = /\b(ucsd|uc san diego)\b/i.test(text) ? `${text} La Jolla` : text;
+  const g = text.trim() ? (await geocode(withCampus)) ?? (await geocode(toTokens(withCampus).join(' '))) : null; // raw words first, then without the filler
   return g ? { pt: g, zip: nearestZip(g) } : null;
 }
 
@@ -259,9 +318,12 @@ export async function findSites(input: FindSitesInput): Promise<FindSitesOutput>
     const callAhead = r.tier === 'discovered' || r.verification === 'conflict';
     const until = `open until ${speakTime(closes, lt.min)}`;
     const nm = r.name === r.name.toUpperCase() ? r.name.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase()) : r.name; // read ALL-CAPS names naturally
-    const lead = i === 0 ? 'The closest option is' : 'Another option is';
+    const here = c.miles < 0.06;                                                         // the caller is standing at this very place
+    const lead = i === 0 ? (loc.place && !here ? `From ${loc.place}, the closest option is` : 'The closest option is') : 'Another option is';
     let said: string;
-    if (r.tier === 'official') {
+    if (here && i === 0) {
+      said = `You're right at ${nm}, and it's ${until}.${r.has_ac ? ' It should be air conditioned.' : ''}`;
+    } else if (r.tier === 'official') {
       said = `${lead} ${nm} at ${speakAddress(r.address)}. ${coolZone ? 'It is an official county Cool Zone' : 'It is an official city or county facility'}, ${until}.`;
     } else {
       said = `${lead} ${nm} at ${speakAddress(r.address)}. It's not an official cooling center, but it should be ${r.has_ac ? 'air conditioned and ' : ''}${until}. You may want to call ahead.`;
@@ -281,5 +343,5 @@ export async function findSites(input: FindSitesInput): Promise<FindSitesOutput>
       spoken_summary: said,
     };
   });
-  return { sites, resolved_zip: loc.zip };
+  return { sites, resolved_zip: loc.zip, ...(loc.place ? { resolved_place: loc.place } : {}) };
 }

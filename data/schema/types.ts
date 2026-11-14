@@ -122,6 +122,7 @@ export interface SiteResult {
 export interface FindSitesOutput {
   sites: SiteResult[];            // top 2, best first; may be empty
   resolved_zip: string | null;
+  resolved_place?: string;        // the landmark we understood, e.g. "Geisel Library"; lets the agent confirm instead of asking for a ZIP
   fallback_message?: string;      // set when sites is empty (e.g. "call 211")
 }
 
