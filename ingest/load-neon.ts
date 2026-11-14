@@ -36,6 +36,13 @@ async function main() {
     console.log("applied schema proposal to branch");
   } else console.log("schema proposal already applied");
 
+  // 1a. Keep this branch in step with the team schema (data/schema/schema.sql), idempotently. Changes by M4:
+  //     two new channels and subscribers.alert_channel. ALTER TYPE ... ADD VALUE cannot run inside a transaction block.
+  await db.query("alter type channel add value if not exists 'messenger'");
+  await db.query("alter type channel add value if not exists 'whatsapp'");
+  await db.query(`alter table subscribers add column if not exists alert_channel text
+    check (alert_channel in ('sms', 'whatsapp'))`);
+
   // 1b. Extra columns added after the first proposal draft (idempotent).
   await db.query(`alter table sites
     add column if not exists pet_policy   text,

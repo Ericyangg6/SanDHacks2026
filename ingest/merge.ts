@@ -70,6 +70,7 @@ async function main() {
   const maps: any[] = await load("maps_sites.json");
   const web: any[] = dedupeWeb(await load("sites.json"));
   const zones: any[] = await load("official_cool_zones.json");
+  const holidays: Record<string, { exceptions: any[] }> = await load("holidays.json");
   const usedM = new Set<number>(), usedW = new Set<number>();
   const merged: any[] = [];
   // Among all unused web records that match, prefer one WITH hours, then official, then the extractor's confidence.
@@ -113,6 +114,8 @@ async function main() {
       requires_id: W?.requires_id ?? null, has_fee: W?.has_fee ?? null,
       verification, conflicts, evidence: W?.evidence ?? null,
       place_id: M?.place_id ?? null,
+      official_objectid: z.objectid,
+      hours_exceptions: holidays[z.objectid]?.exceptions ?? [], // observed holidays + early closes, from the county PDF
       source_url: W?.source_url ?? M?.source_url ?? null,
       sources: ["county_cool_zones_layer", ...(M ? ["google_maps"] : []), ...(W ? [W.source_url] : [])],
       also_listed_at: W?.also_listed_at ?? [],

@@ -4,80 +4,74 @@
 // Signals are deterministic regex matches on the review text, and every signal keeps a verbatim
 // excerpt, so claims can be checked against the review itself. NO model is involved.
 //
-// COST: the scraper returns every review in the window, so cost scales with review volume.
-// Start small (default 6 sites) and look at "records per site" before raising maxSites.
+// COST: about 1 credit per site (up to REVIEWS_PER_SITE newest reviews, default 100).
 import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { fallbackCredits, mapsReviews } from "./brightdata.ts";
 
-const TOKEN = process.env.BRIGHTDATA_API_TOKEN;
-if (!TOKEN) throw new Error("Set BRIGHTDATA_API_TOKEN in .env");
-const DATASET = "gd_luzfs1dn2oa0teb81"; // "Google maps reviews"
-const H = { Authorization: `Bearer ${TOKEN}`, "Content-Type": "application/json" };
-const MAX_SITES = Number(process.argv[2] ?? 6);
+const MAX_SITES = Number(process.argv[2] ?? 400);
 const DAYS = Number(process.argv[3] ?? 365);
+const LIMIT = Number(process.env.REVIEWS_PER_SITE ?? 100);
 
-const AC_POS = /\b(nice and (cool|cold)|cool inside|cold inside|air[- ]?condition(ed|ing)? (is |was )?(great|nice|good|working|works|cold|on)|well air[- ]?conditioned|a\/c (is |was )?(great|nice|good|working|works|cold|on)|cool(ed)? (and|&) comfortable|great a\/c|good a\/c|nice a\/c|great ac|good ac|nice ac|blasting (the )?a(c|\/c)|freezing (cold )?in(side)?)\b/i;
-const AC_NEG = /\b(no (air[- ]?conditioning|a\/c|\bac\b)|(air[- ]?conditioning|a\/c|\bac\b) (is |was |has been )?(broken|not working|off|out|down|doesn'?t work|wasn'?t working|isn'?t working)|too hot|hot inside|sweltering|stuffy|no cooling|boiling)\b/i;
-const CROWDED = /\b(packed|crowded|overcrowded|no (seats|seating|room|space)|standing room|so busy|very busy|always full)\b/i;
-const SPACIOUS = /\b(quiet|plenty of (seats|seating|space|room|tables)|spacious|empty|never crowded|lots of seating)\b/i;
+// Precision over recall: a false claim about a place is worse than a missed one. Every pattern needs an indoor or AC
+// context ("inside", "in here", "A/C"...). Bare words like "stuffy" or "too hot" are NOT enough ("stuffy mall" can be
+// praise, "too hot outside" is about the weather).
+const AC = String.raw`(?:a\/c|a\.c\.|\bac\b|air[- ]?condition(?:ed|ing|er)?|air con\b|climate control|cooling)`;
+const INSIDE = String.raw`(?:inside|in here|in there|in the (?:building|library|center|centre|mall|museum|store|gym|room))`;
+const AC_POS = new RegExp(
+  String.raw`\b(?:(?:nice(?:ly)?|so|very|really|pleasantly|super|perfectly)\s+(?:and\s+)?(?:cool|cold|chilly|air[- ]?conditioned)\s+${INSIDE}|(?:cool|cold|chilly|air[- ]?conditioned|comfortable)\s+${INSIDE}|well[- ]air[- ]?conditioned|${AC}\s+(?:is|was|works|worked|working)?\s*(?:great|good|nice|excellent|wonderful|cold|on|working|works)|(?:great|good|nice|excellent|strong|cold)\s+${AC}|cool(?:ed)? off inside|escape the heat)\b`, "i");
+const AC_NEG = new RegExp(
+  String.raw`\b(?:no\s+${AC}|without\s+${AC}|${AC}\s+(?:is|was|has been|wasn't|isn't|doesn't|didn't|does not|did not)?\s*(?:broken|out|off|down|not working|not work|don't work|doesn't work|wasn't working|isn't working|non-?existent|not on)|(?:broken|no|without|non-?existent)\s+(?:${AC}|climate control)|(?:hot|warm|sweltering|boiling|stuffy|muggy|uncomfortable)\s+${INSIDE}|${INSIDE}\s+(?:was|is|felt|feels)\s+(?:so\s+|very\s+|really\s+)?(?:hot|warm|sweltering|boiling|stuffy|muggy)|too (?:hot|warm)\s+${INSIDE})\b`, "i");
+const CROWDED = /\b(?:packed|crowded|overcrowded|no (?:seats|seating|room|space|available seats)|standing room|so busy|very busy|always full|full house)\b/i;
+const SPACIOUS = /\b(?:plenty of (?:seats|seating|space|room|tables|parking)|spacious|never crowded|lots of seating|quiet and (?:calm|peaceful)|not crowded|empty)\b/i;
 
 const excerpt = (text: string, m: RegExpMatchArray) => {
   const i = m.index ?? 0;
   return text.slice(Math.max(0, i - 70), Math.min(text.length, i + m[0].length + 90)).replace(/\s+/g, " ").trim();
 };
 
-async function snapshot(input: any[]): Promise<any[]> {
-  const res = await fetch(`https://api.brightdata.com/datasets/v3/trigger?dataset_id=${DATASET}&include_errors=true`, {
-    method: "POST", headers: H, body: JSON.stringify(input),
-  });
-  const trig = await res.json();
-  if (!res.ok || !trig.snapshot_id) throw new Error(`trigger failed: ${JSON.stringify(trig).slice(0, 300)}`);
-  for (let i = 0; i < 120; i++) {
-    await new Promise((r) => setTimeout(r, 10_000));
-    const p = await (await fetch(`https://api.brightdata.com/datasets/v3/progress/${trig.snapshot_id}`, { headers: H })).json();
-    if (p.status === "ready") break;
-    if (p.status === "failed") throw new Error("snapshot failed");
-  }
-  return (await fetch(`https://api.brightdata.com/datasets/v3/snapshot/${trig.snapshot_id}?format=json`, { headers: H })).json();
-}
-
 async function main() {
   const maps: any[] = JSON.parse(await readFile(new URL("./data/maps_sites.json", import.meta.url), "utf8"));
-  // Sites worth the spend: have hours, are cooling-relevant, and have enough reviews to say something.
   const sigFile = new URL("./data/review_signals.json", import.meta.url);
   const done: Record<string, any> = JSON.parse(await readFile(sigFile, "utf8").catch(() => "{}"));
-  const targets = maps
-    .filter((s) => s.hours?.length && (s.reviews_count ?? 0) >= 15 && !done[s.place_id])
-    .sort((a, b) => (a.reviews_count ?? 0) - (b.reviews_count ?? 0)) // cheapest first: fewer reviews = fewer billed records
-    .slice(0, MAX_SITES);
-  console.log(`${targets.length} sites (reviews per site: ${targets.map((t) => t.reviews_count).join(", ")}), last ${DAYS} days`);
-  if (!targets.length) return;
+  // Every Maps site we hold hours for, most-reviewed first (those have the most to say).
+  const targets = maps.filter((s) => s.hours?.length && s.source_url && !done[s.place_id])
+    .sort((a, b) => (b.reviews_count ?? 0) - (a.reviews_count ?? 0)).slice(0, MAX_SITES);
+  console.log(`${targets.length} sites, up to ${LIMIT} newest reviews each, last ${DAYS} days`);
 
-  const rows = await snapshot(targets.map((t) => ({ url: t.source_url, days_limit: DAYS, sort_by: "Most relevant" })));
-  console.log(`${rows.length} review records for ${targets.length} sites (${(rows.length / targets.length).toFixed(0)} per site)`);
-
-  const byPlace = new Map<string, any[]>();
-  for (const r of rows) if (r.place_id && r.review) (byPlace.get(r.place_id) ?? byPlace.set(r.place_id, []).get(r.place_id)!).push(r);
-
-  for (const t of targets) {
-    const rs = byPlace.get(t.place_id) ?? [];
-    const sig = { place_id: t.place_id, name: t.name, reviews_scanned: rs.length, window_days: DAYS,
-      ac_positive: 0, ac_negative: 0, crowded: 0, spacious: 0, quotes: [] as any[], scanned_at: new Date().toISOString() };
-    for (const r of rs) {
-      const text: string = r.review;
-      for (const [kind, re, key] of [["ac_positive", AC_POS, "ac_positive"], ["ac_negative", AC_NEG, "ac_negative"],
-        ["crowded", CROWDED, "crowded"], ["spacious", SPACIOUS, "spacious"]] as const) {
-        const m = text.match(re);
-        if (!m) continue;
-        (sig as any)[key]++;
-        if (sig.quotes.length < 8) sig.quotes.push({ signal: kind, quote: excerpt(text, m), review_date: r.review_date ?? null, rating: r.review_rating ?? null });
+  const since = Date.now() - DAYS * 86400_000;
+  let next = 0, withReviews = 0, failed = 0;
+  async function worker() {
+    while (next < targets.length) {
+      const t = targets[next++];
+      try {
+        const rs = (await mapsReviews(t.source_url, LIMIT)).filter((r) => !r.isoDate || Date.parse(r.isoDate) >= since);
+        const sig = { place_id: t.place_id, name: t.name, reviews_scanned: rs.length, window_days: DAYS,
+          ac_positive: 0, ac_negative: 0, crowded: 0, spacious: 0, quotes: [] as any[], scanned_at: new Date().toISOString() };
+        for (const r of rs) {
+          for (const [kind, re] of [["ac_positive", AC_POS], ["ac_negative", AC_NEG], ["crowded", CROWDED], ["spacious", SPACIOUS]] as const) {
+            const m = r.text.match(re);
+            if (!m) continue;
+            (sig as any)[kind]++;
+            if (sig.quotes.length < 8) sig.quotes.push({ signal: kind, quote: excerpt(r.text, m), review_date: r.isoDate, rating: r.rating });
+          }
+        }
+        done[t.place_id] = sig;
+        if (rs.length) withReviews++;
+        const hit = sig.ac_positive + sig.ac_negative + sig.crowded + sig.spacious;
+        if (hit) console.log(`  ${t.name}: ${rs.length} reviews → AC+ ${sig.ac_positive}, AC− ${sig.ac_negative}, crowded ${sig.crowded}, spacious ${sig.spacious}`);
+      } catch (e) {
+        failed++;
+        console.log(`  ✗ ${t.name}: ${(e as Error).message.slice(0, 80)}`);
       }
+      if ((next % 25) === 0) await writeFile(sigFile, JSON.stringify(done, null, 2)); // save as we go
     }
-    done[t.place_id] = sig;
-    console.log(`  ${t.name}: ${rs.length} reviews → AC+ ${sig.ac_positive}, AC− ${sig.ac_negative}, crowded ${sig.crowded}, spacious ${sig.spacious}`);
   }
+  await Promise.all(Array.from({ length: 4 }, worker));
   await mkdir(new URL("./data/", import.meta.url), { recursive: true });
   await writeFile(sigFile, JSON.stringify(done, null, 2));
-  console.log(`→ ingest/data/review_signals.json (${Object.keys(done).length} sites total)`);
+  const sigs = Object.values(done) as any[];
+  console.log(`\n${withReviews} sites had reviews, ${failed} failed → ingest/data/review_signals.json`);
+  console.log(`signals: AC+ at ${sigs.filter((s) => s.ac_positive).length} sites, AC− at ${sigs.filter((s) => s.ac_negative).length}, crowded at ${sigs.filter((s) => s.crowded).length}, spacious at ${sigs.filter((s) => s.spacious).length} | credits left: ${fallbackCredits()}`);
 }
 
 main();

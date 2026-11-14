@@ -155,7 +155,7 @@ async function main() {
   const max = Number(process.argv[2] ?? 200);
   const load = async (f: string) => JSON.parse(await readFile(new URL(`./data/${f}`, import.meta.url), "utf8").catch(() => "[]"));
   const pages = [
-    ...(await load("pages_official.json")), ...(await load("pages_gov.json")), ...(await load("pages.json")), ...(await load("pages_maps.json")),
+    ...(await load("pages_official.json")), ...(await load("pages_gov.json")), ...(await load("pages_news.json")), ...(await load("pages.json")), ...(await load("pages_maps.json")),
   ].slice(0, max);
   const out: any[] = [];
   const rejected: any[] = [];
@@ -201,7 +201,7 @@ async function main() {
   }
 
   // Small worker pool: Claude handles parallel requests; Gemini's free tier does not (use 1).
-  const workers = PROVIDER === "claude" ? 4 : 1;
+  const workers = PROVIDER === "claude" ? Number(process.env.EXTRACT_CONCURRENCY ?? 4) : 1;
   let next = 0;
   await Promise.all(Array.from({ length: workers }, async () => { while (next < pages.length) await one(pages[next++]); }));
 
