@@ -4,7 +4,9 @@
 import assert from 'node:assert/strict';
 import { afterEach, beforeEach, describe, it } from 'node:test';
 import { Hono } from 'hono';
+import { dispatchAlert } from '../alerts/dispatch';
 import { m4ApiRoutes } from '../mastra/routes';
+import type { AlertRow, SubscriberRow } from '../types';
 import { hashPhone } from '../phone';
 import { sendTwilioMessenger, twilioSignature, validateTwilioSignature } from '../sms/twilio';
 import { hashMessengerId, messengerLogLabel, parseMessengerAddress } from './identity';
@@ -35,9 +37,41 @@ let twilioResponse: () => Response;
 const realFetch = globalThis.fetch;
 const realConsole = { log: console.log, info: console.info, warn: console.warn, error: console.error };
 
+// The fake database's answers, set per test.
+let db: { subscriber: SubscriberRow | null; active: SubscriberRow[]; lastInbound: string | null };
+
+function messengerRow(overrides: Partial<SubscriberRow> = {}): SubscriberRow {
+  return {
+    id: 1,
+    phone_hash: hashMessengerId(PSID),
+    phone_e164: null,
+    language: 'en',
+    zip: '92105',
+    needs: {},
+    consent_at: '2026-11-14T00:00:00.000Z',
+    opted_out_at: null,
+    alert_channel: 'messenger',
+    messenger_psid: PSID,
+    messenger_page_id: PAGE_ID,
+    ...overrides,
+  };
+}
+
+function answer(query: string, params: unknown[]): unknown[] {
+  if (/insert into subscribers/.test(query)) {
+    return [messengerRow({ zip: String(params[1]), language: params[2] as SubscriberRow['language'] })];
+  }
+  if (/from subscribers where phone_hash/.test(query)) return db.subscriber ? [db.subscriber] : [];
+  if (/from subscribers\s+where opted_out_at is null/.test(query)) return db.active;
+  if (/max\(started_at\)/.test(query)) return [{ at: db.lastInbound }];
+  if (/select 1 from calls/.test(query)) return [];
+  return [{ id: 1 }];
+}
+
 beforeEach(() => {
   requests = [];
   logged = [];
+  db = { subscriber: null, active: [], lastInbound: null };
   twilioResponse = () => Response.json({ sid: 'SM00000000000000000000000000000001' }, { status: 201 });
   globalThis.fetch = (async (input: string | URL | Request, init?: RequestInit) => {
     const url = String(input);
@@ -46,8 +80,9 @@ beforeEach(() => {
       return twilioResponse();
     }
     if (url === 'https://db.example.test/sql') {
-      requests.push({ url, sql: JSON.parse(String(init?.body)) });
-      return Response.json({ rows: [{ id: 1 }] });
+      const sql = JSON.parse(String(init?.body)) as { query: string; params: unknown[] };
+      requests.push({ url, sql });
+      return Response.json({ rows: answer(sql.query, sql.params) });
     }
     throw new Error(`unexpected fetch to ${url}`);
   }) as typeof fetch;
@@ -149,11 +184,10 @@ describe('handleInboundMessenger', () => {
     assert.equal(send.form!.get('To'), `messenger:${PSID}`);
     assert.equal(send.form!.get('Body'), result.reply);
 
-    const [call] = sqlCalls();
-    assert.match(call.query, /insert into calls/);
+    const call = sqlCalls().find((sql) => /insert into calls/.test(sql.query))!;
     assert.deepEqual(call.params.slice(0, 3), ['inbound', 'messenger', hashMessengerId(PSID)]);
 
-    // The raw id goes to Twilio and nowhere else: not to the database, not to the log.
+    // Without an opt-in, the raw id goes to Twilio and nowhere else: not to the database, not to the log.
     assert.ok(!JSON.stringify(sqlCalls()).includes(PSID));
     assert.ok(!logged.join('\n').includes(PSID));
 
@@ -162,16 +196,43 @@ describe('handleInboundMessenger', () => {
     assert.equal(twilioSends().length, 1);
   });
 
-  it('points JOIN at SMS alerts without creating a subscriber', async () => {
+  it('signs JOIN up for Messenger alerts, storing the ids only on the subscriber row', async () => {
     const result = await handleInboundMessenger(parseMessengerWebhook(webhook('JOIN 92105', 'SMtest-join'))!);
-    assert.match(result.reply!, /\+16195550123/);
-    assert.ok(sqlCalls().every((sql) => !/subscribers/.test(sql.query)));
+    assert.match(result.reply!, /signed up for heat and smoke alerts for 92105 here on Messenger/);
+    assert.deepEqual(result.sent, { ok: true });
+
+    const upsert = sqlCalls().find((sql) => /insert into subscribers/.test(sql.query))!;
+    assert.match(upsert.query, /'messenger'/);
+    assert.deepEqual(
+      [upsert.params[0], upsert.params[1], upsert.params[5], upsert.params[6]],
+      [hashMessengerId(PSID), '92105', PSID, PAGE_ID],
+    );
+    // The ids are stored for alerts on the subscriber row, and nowhere else.
+    assert.ok(sqlCalls().filter((sql) => sql !== upsert).every((sql) => !JSON.stringify(sql).includes(PSID)));
+    assert.ok(!logged.join('\n').includes(PSID));
+    const call = sqlCalls().find((sql) => /insert into calls/.test(sql.query))!;
+    assert.equal(call.params[3], '92105');
   });
 
-  it('answers a Spanish STOP in Spanish and records no opt-out', async () => {
+  it('asks for a zip when JOIN has none', async () => {
+    const result = await handleInboundMessenger(parseMessengerWebhook(webhook('JOIN', 'SMtest-join-nozip'))!);
+    assert.match(result.reply!, /send JOIN and your zip code/);
+    assert.ok(sqlCalls().every((sql) => !/insert into subscribers/.test(sql.query)));
+  });
+
+  it('opts a Spanish STOP out, answering in Spanish', async () => {
+    db.subscriber = messengerRow();
     const result = await handleInboundMessenger(parseMessengerWebhook(webhook('ALTO', 'SMtest-stop'))!);
-    assert.match(result.reply!, /de acuerdo/);
-    assert.ok(sqlCalls().every((sql) => !/subscribers/.test(sql.query)));
+    assert.match(result.reply!, /cancelaste tu suscripción/);
+    const update = sqlCalls().find((sql) => /update subscribers set opted_out_at/.test(sql.query))!;
+    assert.equal(update.params[0], hashMessengerId(PSID));
+    assert.match(update.query, /messenger_psid = null/);
+  });
+
+  it('signs a past subscriber up again with START and their zip on file', async () => {
+    db.subscriber = messengerRow({ zip: '92113', opted_out_at: '2026-11-14T00:00:00.000Z' });
+    const result = await handleInboundMessenger(parseMessengerWebhook(webhook('START', 'SMtest-start'))!);
+    assert.match(result.reply!, /92113/);
   });
 
   it('reports a failed send without throwing or logging the id', async () => {
@@ -250,5 +311,44 @@ describe('POST /m4/twilio/sms (unchanged)', () => {
     assert.equal(twilioSends().length, 0);
     const insert = sqlCalls().find((sql) => /insert into calls/.test(sql.query))!;
     assert.deepEqual(insert.params.slice(0, 3), ['inbound', 'sms', hashPhone('+16195550100')]);
+  });
+});
+
+describe('dispatchAlert to Messenger subscribers', () => {
+  const alert: AlertRow = {
+    id: 9,
+    kind: 'mock',
+    nws_id: null,
+    zips: ['92105'],
+    headline: null,
+    onset_at: null,
+    expires_at: null,
+    detected_at: '2026-11-14T00:00:00.000Z',
+    texts_sent: 0,
+  };
+
+  it('sends the alert from their Page when they wrote in the last 24 hours, and logs it for the guards', async () => {
+    db.active = [messengerRow()];
+    db.lastInbound = new Date(Date.now() - 3600_000).toISOString();
+    assert.deepEqual(await dispatchAlert(alert), { textsSent: 1 });
+
+    const [send] = twilioSends();
+    assert.equal(send.form!.get('From'), `messenger:${PAGE_ID}`);
+    assert.equal(send.form!.get('To'), `messenger:${PSID}`);
+    assert.match(send.form!.get('Body')!, /Shade TEST/);
+
+    const call = sqlCalls().find((sql) => /insert into calls/.test(sql.query))!;
+    assert.deepEqual(call.params.slice(0, 3), ['outbound', 'messenger', hashMessengerId(PSID)]);
+    assert.equal(call.params[6], 'sms_sent');
+    assert.equal(call.params[7], 9);
+    assert.ok(!logged.join('\n').includes(PSID));
+  });
+
+  it('skips them when their last message is older than 24 hours', async () => {
+    db.active = [messengerRow()];
+    db.lastInbound = new Date(Date.now() - 30 * 3600_000).toISOString();
+    assert.deepEqual(await dispatchAlert(alert), { textsSent: 0 });
+    assert.equal(twilioSends().length, 0);
+    assert.ok(logged.some((line) => /messenger_window_closed/.test(line)));
   });
 });

@@ -293,44 +293,48 @@ export function aiDisclosure(language: Language): string {
 }
 
 // ---- Facebook Messenger ----
-// Alerts go out by SMS only, so the Messenger copy points people at the phone number instead of signing them up.
-// smsNumber is TWILIO_PHONE_NUMBER, or null when it is unset.
+// Messenger is Shade's main channel: people sign up for alerts here with JOIN <zip>. Facebook only lets a Page
+// message someone within 24 hours of their last message, so the opt-in says so plainly.
 
-function textUs(smsNumber: string | null, language: Language): string {
-  if (smsNumber) return smsNumber;
-  return language === 'es' ? 'el número de Shade' : 'the Shade number';
-}
-
-// Reply to JOIN, START and their Spanish forms on Messenger.
-export function messengerJoinInfo(language: Language, smsNumber: string | null): string {
-  const to = textUs(smsNumber, language);
+// Reply to JOIN with no zip, and to START from someone who never signed up.
+export function messengerJoinUsage(language: Language): string {
   return pick(
     {
-      en: `Shade: heat and smoke alerts are sent by text message. To sign up, text JOIN and your zip code to ${to}. Example: JOIN 92105`,
-      es: `Shade: las alertas de calor y humo se envían por mensaje de texto. Para suscribirte, envía JOIN y tu código postal a ${to}. Ejemplo: JOIN 92105`,
+      en: 'Shade: to get heat and smoke alerts here, send JOIN and your zip code. Example: JOIN 92105',
+      es: 'Shade: para recibir alertas de calor y humo aquí, envía JOIN y tu código postal. Ejemplo: JOIN 92105',
     },
     language,
   );
 }
 
-// Reply to STOP on Messenger. There is no subscription to cancel: Shade only ever answers a message.
+// Sent once, right after a Messenger opt-in is recorded.
+export function messengerOptInConfirmation(language: Language, zip: string): string {
+  return pick(
+    {
+      en: `Shade: you are signed up for heat and smoke alerts for ${zip} here on Messenger. Facebook only lets us message you within 24 hours of your last message, so write to us now and then to keep alerts coming. Send STOP to cancel.`,
+      es: `Shade: te suscribiste a las alertas de calor y humo para ${zip} aquí en Messenger. Facebook solo nos deja escribirte dentro de las 24 horas de tu último mensaje, así que escríbenos de vez en cuando para seguir recibiendo alertas. Envía STOP para cancelar.`,
+    },
+    language,
+  );
+}
+
+// Reply to STOP on Messenger.
 export function messengerStopConfirmation(language: Language): string {
   return pick(
     {
-      en: 'Shade: okay. We only reply when you message us, so you will not hear from us here unless you write again.',
-      es: 'Shade: de acuerdo. Solo respondemos cuando nos escribes, así que no recibirás mensajes nuestros aquí a menos que vuelvas a escribir.',
+      en: 'Shade: you are unsubscribed from alerts and will not get any more here. You can still ask us questions any time. Send START to sign up again.',
+      es: 'Shade: cancelaste tu suscripción y no recibirás más alertas aquí. Puedes seguir haciéndonos preguntas cuando quieras. Envía START para volver a suscribirte.',
     },
     language,
   );
 }
 
 // Reply to HELP on Messenger, and to a message with no words.
-export function messengerHelpMessage(language: Language, smsNumber: string | null): string {
-  const to = textUs(smsNumber, language);
+export function messengerHelpMessage(language: Language): string {
   return pick(
     {
-      en: `Shade: ask us for the nearest open cooling center in San Diego. For heat and smoke alerts, text JOIN and your zip code to ${to}. Call 211 for free rides. In an emergency, call 911.`,
-      es: `Shade: pregúntanos por el centro de enfriamiento abierto más cercano en San Diego. Para alertas de calor y humo, envía JOIN y tu código postal a ${to}. Llama al 211 para transporte gratis. En una emergencia, llama al 911.`,
+      en: 'Shade: ask us for the nearest open cooling center in San Diego. Send JOIN and your zip code for heat and smoke alerts here, or STOP to cancel them. Call 211 for free rides. In an emergency, call 911.',
+      es: 'Shade: pregúntanos por el centro de enfriamiento abierto más cercano en San Diego. Envía JOIN y tu código postal para recibir alertas de calor y humo aquí, o STOP para cancelarlas. Llama al 211 para transporte gratis. En una emergencia, llama al 911.',
     },
     language,
   );

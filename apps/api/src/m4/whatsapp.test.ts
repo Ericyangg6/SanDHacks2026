@@ -52,6 +52,8 @@ function subscriberRow(overrides: Partial<SubscriberRow> = {}): SubscriberRow {
     consent_at: '2026-11-14T00:00:00.000Z',
     opted_out_at: null,
     alert_channel: null,
+    messenger_psid: null,
+    messenger_page_id: null,
     ...overrides,
   };
 }

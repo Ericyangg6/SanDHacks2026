@@ -11,6 +11,7 @@ import type {
   MessageRow,
   Reading,
   Site,
+  MessengerContact,
   SubscriberContact,
   SubscriberRow,
 } from './types';
@@ -72,7 +73,7 @@ function textArray(placeholder: string): string {
 }
 
 const SUBSCRIBER_COLUMNS_BEFORE_ALERT_CHANNEL = `id, phone_hash, phone_e164, language, zip, needs, ${iso('consent_at')}, ${iso('opted_out_at')}`;
-const SUBSCRIBER_COLUMNS = `${SUBSCRIBER_COLUMNS_BEFORE_ALERT_CHANNEL}, alert_channel`;
+const SUBSCRIBER_COLUMNS = `${SUBSCRIBER_COLUMNS_BEFORE_ALERT_CHANNEL}, alert_channel, messenger_psid, messenger_page_id`;
 const ALERT_COLUMNS = `id, kind, nws_id, zips, headline, ${iso('onset_at')}, ${iso('expires_at')}, ${iso('detected_at')}, texts_sent`;
 const MESSAGE_COLUMNS = `id, phone_hash, role, body, ${iso('created_at')}`;
 const SITE_COLUMNS = `id, name, kind, tier, confidence, address, zip, lat, lon, hours, hours_confirmed_on_source,
@@ -87,16 +88,18 @@ function isMissingColumn(error: unknown): boolean {
   return error instanceof DbError && error.code === UNDEFINED_COLUMN;
 }
 
-// subscribers.alert_channel is newer than some databases. Until
-// `alter table subscribers add column alert_channel text check (alert_channel in ('sms', 'whatsapp'))` has run,
-// a read is retried without the column and every row comes back as SMS, so SMS keeps working.
-async function withAlertChannel<Row extends SubscriberRow>(run: (columns: string) => Promise<Row[]>): Promise<Row[]> {
+// subscribers.alert_channel, messenger_psid and messenger_page_id are newer than some databases (see the migration
+// in data/schema/schema.sql). Until they exist, a read is retried without them (`current` false) and every row
+// comes back as SMS, so SMS keeps working.
+async function withAlertChannel<Row extends SubscriberRow>(
+  run: (columns: string, current: boolean) => Promise<Row[]>,
+): Promise<Row[]> {
   try {
-    return await run(SUBSCRIBER_COLUMNS);
+    return await run(SUBSCRIBER_COLUMNS, true);
   } catch (error) {
     if (!isMissingColumn(error)) throw error;
-    const rows = await run(SUBSCRIBER_COLUMNS_BEFORE_ALERT_CHANNEL);
-    return rows.map((row) => ({ ...row, alert_channel: null }));
+    const rows = await run(SUBSCRIBER_COLUMNS_BEFORE_ALERT_CHANNEL, false);
+    return rows.map((row) => ({ ...row, alert_channel: null, messenger_psid: null, messenger_page_id: null }));
   }
 }
 
@@ -155,26 +158,74 @@ export async function upsertSubscriber(input: UpsertSubscriberInput): Promise<Su
      returning ${SUBSCRIBER_COLUMNS_BEFORE_ALERT_CHANNEL}`,
     params,
   );
-  return { ...rows[0], alert_channel: null };
+  return { ...rows[0], alert_channel: null, messenger_psid: null, messenger_page_id: null };
 }
 
-// Stamps opted_out_at and sets phone_e164 to null: the raw number is kept only while the opt-in stands.
-// The row and its phone_hash stay, so send_sms can still refuse the number. A repeated STOP keeps the first date.
-export async function setOptedOut(phoneHash: string, at: Date): Promise<void> {
-  await query(
-    `update subscribers set opted_out_at = coalesce(opted_out_at, $2::timestamptz), phone_e164 = null
-     where phone_hash = $1`,
-    [phoneHash, at.toISOString()],
+export interface UpsertMessengerSubscriberInput {
+  phoneHash: string; // hashMessengerId(psid)
+  psid: string; // stored in subscribers.messenger_psid so alerts have someone to send to
+  pageId: string; // the Page they wrote to, which alerts are sent from
+  zip: string;
+  language: Language;
+  needs?: CallerNeeds;
+  consentAt: Date;
+}
+
+// A Messenger opt-in, keyed on the Messenger hash: stores the ids alerts need and sets alert_channel 'messenger'.
+// Re-subscribing clears opted_out_at and refreshes consent_at. Throws on a database without the Messenger columns.
+export async function upsertMessengerSubscriber(input: UpsertMessengerSubscriberInput): Promise<SubscriberRow> {
+  const rows = await query<SubscriberRow>(
+    `insert into subscribers (phone_hash, phone_e164, zip, language, needs, consent_at, opted_out_at, alert_channel,
+                              messenger_psid, messenger_page_id)
+     values ($1, null, $2, $3, $4::jsonb, $5::timestamptz, null, 'messenger', $6, $7)
+     on conflict (phone_hash) do update set
+       zip = excluded.zip, language = excluded.language, needs = excluded.needs, consent_at = excluded.consent_at,
+       opted_out_at = null, alert_channel = 'messenger',
+       messenger_psid = excluded.messenger_psid, messenger_page_id = excluded.messenger_page_id
+     returning ${SUBSCRIBER_COLUMNS}`,
+    [
+      input.phoneHash,
+      input.zip,
+      input.language,
+      JSON.stringify(input.needs ?? {}),
+      input.consentAt.toISOString(),
+      input.psid,
+      input.pageId,
+    ],
   );
+  return rows[0];
 }
 
-// Only rows with opted_out_at null and phone_e164 not null.
-export async function listActiveSubscribersByZips(zips: string[]): Promise<SubscriberContact[]> {
+// Stamps opted_out_at and clears the raw contact details (phone_e164, and the Messenger ids): they are kept only
+// while the opt-in stands. The row and its phone_hash stay, so send_sms can still refuse the number. A repeated
+// STOP keeps the first date.
+export async function setOptedOut(phoneHash: string, at: Date): Promise<void> {
+  const params = [phoneHash, at.toISOString()];
+  try {
+    await query(
+      `update subscribers set opted_out_at = coalesce(opted_out_at, $2::timestamptz), phone_e164 = null,
+         messenger_psid = null, messenger_page_id = null
+       where phone_hash = $1`,
+      params,
+    );
+  } catch (error) {
+    if (!isMissingColumn(error)) throw error;
+    await query(
+      `update subscribers set opted_out_at = coalesce(opted_out_at, $2::timestamptz), phone_e164 = null
+       where phone_hash = $1`,
+      params,
+    );
+  }
+}
+
+// Opted-in rows that can be reached: an SMS or WhatsApp number on file, or Messenger ids on file.
+export async function listActiveSubscribersByZips(zips: string[]): Promise<(SubscriberContact | MessengerContact)[]> {
   if (zips.length === 0) return [];
-  return withAlertChannel((columns) =>
-    query<SubscriberContact>(
+  return withAlertChannel((columns, current) =>
+    query<SubscriberContact | MessengerContact>(
       `select ${columns} from subscribers
-       where opted_out_at is null and phone_e164 is not null and zip = any(${textArray('$1')})
+       where opted_out_at is null and zip = any(${textArray('$1')})
+         and ${current ? '(phone_e164 is not null or (messenger_psid is not null and messenger_page_id is not null))' : 'phone_e164 is not null'}
        order by id`,
       [JSON.stringify(zips)],
     ),

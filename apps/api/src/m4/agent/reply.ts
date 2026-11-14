@@ -39,9 +39,8 @@ function systemNote(subscriber: SubscriberRow | null, disclosed: boolean, channe
   }).format(new Date());
   const lines = [`System note. Local time in San Diego: ${now}.`];
   if (channel === 'messenger') {
-    // Alerts need a phone number, and Messenger only allows replies for 24 hours after the person writes.
     lines.push(
-      'This conversation is on Facebook Messenger, not SMS. Heat and smoke alerts are sent by text message only: to sign up, the person texts JOIN and their zip code to the Shade phone number. There is nothing to unsubscribe from here, so never tell them to reply STOP.',
+      'This conversation is on Facebook Messenger, not SMS. To get heat and smoke alerts here, the person sends JOIN and their zip code (for example JOIN 92105); STOP cancels them.',
     );
   }
   if (subscriber) {

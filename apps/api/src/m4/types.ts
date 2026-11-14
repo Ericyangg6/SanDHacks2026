@@ -45,11 +45,26 @@ export interface SubscriberRow {
   // Where alerts go: the channel they opted in on. null = SMS, and every row reads null on a database that does
   // not have the column yet.
   alert_channel: AlertChannel | null;
+  // Messenger subscribers only: the page-scoped id and the Page it wrote to, kept so an alert can be sent.
+  // Like phone_e164, null once they opt out, and never logged. phone_hash holds hashMessengerId(psid).
+  messenger_psid: string | null;
+  messenger_page_id: string | null;
 }
 
-// An opted-in subscriber, whose number is still on file.
+// An opted-in SMS or WhatsApp subscriber, whose number is still on file.
 export interface SubscriberContact extends SubscriberRow {
   phone_e164: string;
+}
+
+// An opted-in Messenger subscriber, whose Messenger ids are still on file.
+export interface MessengerContact extends SubscriberRow {
+  alert_channel: 'messenger';
+  messenger_psid: string;
+  messenger_page_id: string;
+}
+
+export function isMessengerContact(row: SubscriberRow): row is MessengerContact {
+  return row.alert_channel === 'messenger' && !!row.messenger_psid && !!row.messenger_page_id;
 }
 
 export interface AlertRow {
