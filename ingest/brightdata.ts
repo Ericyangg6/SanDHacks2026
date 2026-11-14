@@ -170,3 +170,47 @@ export async function fetchRaw(url: string): Promise<{ ok: boolean; status: numb
   }
   return last;
 }
+
+// ---- Second fetcher: site discovery + main-content fetch (used for government sites Bright Data refuses) ----
+let creditsRemaining: number | null = null;
+export const fallbackCredits = () => creditsRemaining;
+
+async function fallbackCall(path: string, init: RequestInit): Promise<any> {
+  if (!FALLBACK_KEY) throw new Error("fallback fetcher key not set");
+  for (let attempt = 0; attempt < 4; attempt++) {
+    const res = await fetch(`https://api.context.dev/v1${path}`, {
+      ...init,
+      headers: { Authorization: `Bearer ${FALLBACK_KEY}`, "Content-Type": "application/json" },
+      signal: AbortSignal.timeout(120_000),
+    });
+    if (res.status === 429) { // concurrency/rate limit: wait as told, then retry
+      await new Promise((r) => setTimeout(r, 1000 * Number(res.headers.get("retry-after") ?? 2)));
+      continue;
+    }
+    const d: any = await res.json().catch(() => ({}));
+    if (d.key_metadata?.credits_remaining != null) creditsRemaining = d.key_metadata.credits_remaining;
+    if (res.status === 402) throw new Error("fallback fetcher out of credits");
+    if (!res.ok) { if (res.status >= 500) { await new Promise((r) => setTimeout(r, 2000 * (attempt + 1))); continue; } throw new Error(`${res.status} ${JSON.stringify(d).slice(0, 120)}`); }
+    return d;
+  }
+  throw new Error("fallback fetcher: too many retries");
+}
+
+/** URLs on a domain, optionally ranked by a search phrase and filtered by regex. */
+export async function mapSite(domain: string, opts: { search?: string; urlRegex?: string; maxLinks?: number } = {}): Promise<string[]> {
+  const q = new URLSearchParams({ domain, maxLinks: String(opts.maxLinks ?? 500) });
+  if (opts.search) q.set("search", opts.search);
+  if (opts.urlRegex) q.set("urlRegex", opts.urlRegex);
+  const d = await fallbackCall(`/web/urls?${q}`, { method: "GET" });
+  return (d.urls ?? []).map((u: any) => u.url);
+}
+
+/** A page's MAIN content as markdown (navigation and footers removed), any domain. */
+export async function scrapeMain(url: string): Promise<string | null> {
+  const d = await fallbackCall("/web/scrape", {
+    method: "POST",
+    body: JSON.stringify({ url, formats: { markdown: true }, sharedParams: { mainContentOnly: true }, markdownParams: { includeLinks: false } }),
+  });
+  const md = d.markdown?.success ? d.markdown.data : null;
+  return typeof md === "string" && md.trim().length > 150 ? md : null;
+}

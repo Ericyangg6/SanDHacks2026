@@ -139,7 +139,7 @@ async function main() {
   const max = Number(process.argv[2] ?? 200);
   const load = async (f: string) => JSON.parse(await readFile(new URL(`./data/${f}`, import.meta.url), "utf8").catch(() => "[]"));
   const pages = [
-    ...(await load("pages_official.json")), ...(await load("pages.json")), ...(await load("pages_maps.json")),
+    ...(await load("pages_official.json")), ...(await load("pages_gov.json")), ...(await load("pages.json")), ...(await load("pages_maps.json")),
   ].slice(0, max);
   const out: any[] = [];
   const rejected: any[] = [];
