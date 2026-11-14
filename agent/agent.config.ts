@@ -17,8 +17,9 @@ export const TTS_MODEL = 'eleven_flash_v2';
 export const TTS_MODEL_MULTILINGUAL = 'eleven_flash_v2_5';
 export const VOICE_ID = process.env.ELEVENLABS_VOICE_ID || 'cjVigY5qzO86Huf0OWal'; // "Eric", warm & clear
 
-// Extra languages beyond the base `en`. Add 'tl' | 'vi' | 'zh' later (P2).
-const EXTRA_LANGUAGES = ['es'] as const;
+// Extra languages beyond the base `en`. Each needs prompts/first-message.<code>.txt.
+// zh = Mandarin Chinese. Still to add (P2): Tagalog (ElevenLabs may use 'fil'), Vietnamese 'vi'.
+const EXTRA_LANGUAGES = ['es', 'zh'] as const;
 
 // Fields ElevenLabs extracts from the transcript after each call; read by post-call.ts.
 const dataCollection = {
