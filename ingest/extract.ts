@@ -27,6 +27,7 @@ function toJsonSchema(n: any): any {
   return out;
 }
 
+const OFFICIAL_SOURCE = /(^|\.)gov$|(^|\.)211sandiego\.org$|(^|\.)sdcl\.org$/i;
 const ACCESS = ["open_to_all", "students_only", "members_only", "residents_only", "age_restricted", "unknown"];
 const DAYS = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
 
@@ -105,7 +106,7 @@ async function extractClaude(url: string, md: string) {
   const client = new Anthropic({ maxRetries: 4 }); // SDK retries 429/5xx with backoff
   const response = await client.messages.create({
     model: CLAUDE_MODEL,
-    max_tokens: 8000,
+    max_tokens: 16000,
     output_config: { effort: "low", format: { type: "json_schema", schema: toJsonSchema(schema) } },
     messages: [{ role: "user", content: prompt(url, md) }],
   } as any);
@@ -137,7 +138,9 @@ async function extractOnce(url: string, md: string) {
 async function main() {
   const max = Number(process.argv[2] ?? 200);
   const load = async (f: string) => JSON.parse(await readFile(new URL(`./data/${f}`, import.meta.url), "utf8").catch(() => "[]"));
-  const pages = [...(await load("pages.json")), ...(await load("pages_maps.json"))].slice(0, max);
+  const pages = [
+    ...(await load("pages_official.json")), ...(await load("pages.json")), ...(await load("pages_maps.json")),
+  ].slice(0, max);
   const out: any[] = [];
   const rejected: any[] = [];
 
@@ -150,7 +153,12 @@ async function main() {
     // For Maps-sourced pages we know which place the site belongs to; say so (not part of the quote source).
     const hint = p.maps_name ? `[This page is the website of "${p.maps_name}", ${p.maps_address}. Extract that place only.]\n` : "";
     try {
-      const sites = await extract(p.url, hint + p.markdown);
+      // Long pages (county directories list dozens of sites) are read in chunks so nothing is cut off.
+      const CH = 12000, OVERLAP = 700;
+      const chunks: string[] = [];
+      for (let i = 0; i < p.markdown.length && chunks.length < 8; i += CH - OVERLAP) chunks.push(p.markdown.slice(i, i + CH));
+      const sites: any[] = [];
+      for (const c of chunks) sites.push(...(await extract(p.url, hint + c)));
       let kept = 0;
       for (const s of sites) {
         // Anti-hallucination gate: the evidence quote must appear verbatim in the source.
@@ -165,7 +173,8 @@ async function main() {
           source_url: p.url,
           maps_place_id: p.maps_place_id ?? null,
           last_verified_at: p.fetched_at,
-          tier: "discovered",
+          // "official" = the source is a government (or county 211 / county library) page. Anything else is discovered.
+          tier: p.official || OFFICIAL_SOURCE.test(p.domain ?? "") ? "official" : "discovered",
         };
         if (verified) { out.push(rec); kept++; } else rejected.push(rec);
       }

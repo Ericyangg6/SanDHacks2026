@@ -16,7 +16,8 @@ if (prod && host(url) === host(prod)) throw new Error("NEON_INGEST_DEV_URL point
 
 const read = async (rel: string) => readFile(new URL(rel, import.meta.url), "utf8");
 const VERIFICATION: Record<string, string> = {
-  confirmed: "confirmed", conflict: "conflict", maps_only: "single_source", single_hours_source: "single_source", web_only: "web_only",
+  confirmed: "confirmed", conflict: "conflict", maps_only: "single_source", single_hours_source: "single_source",
+  web_only: "web_only", listed_only: "single_source",
 };
 
 async function main() {
@@ -35,31 +36,34 @@ async function main() {
     console.log("applied schema proposal to branch");
   } else console.log("schema proposal already applied");
 
-  // 2. Upsert sites (keyed by Google place id so re-runs never duplicate).
+  // 1b. Extra columns added after the first proposal draft (idempotent).
+  await db.query(`alter table sites
+    add column if not exists pet_policy   text,
+    add column if not exists official_name text,
+    add column if not exists ac_source    text`); // official_program | site_page | reviews (null = unknown)
+
+  // 2. Load sites in seed order (official first, then best-verified, then by zip). The seed is the source of truth,
+  //    so this branch is rebuilt from it on every run; ids match data/seed/sites.json.
   const sites = JSON.parse(await read("../data/seed/sites.json"));
   const extras = JSON.parse(await read("../data/seed/sites.extras.json"));
   await db.query("begin");
+  await db.query("truncate sites restart identity cascade");
   for (const s of sites) {
     const x = extras[s.id] ?? {};
     await db.query(
-      `insert into sites (name, kind, tier, confidence, address, zip, lat, lon, hours, hours_confirmed_on_source,
+      `insert into sites (id, name, kind, tier, confidence, address, zip, lat, lon, hours, hours_confirmed_on_source,
          has_ac, has_filtration, capacity_est, phone, source_url, last_verified_at,
-         access_level, access_notes, requires_id, has_fee, verification, conflicts, evidence, source_urls, maps_place_id)
-       values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25)
-       on conflict (maps_place_id) do update set
-         name=excluded.name, kind=excluded.kind, confidence=excluded.confidence, address=excluded.address, zip=excluded.zip,
-         lat=excluded.lat, lon=excluded.lon, hours=excluded.hours, hours_confirmed_on_source=excluded.hours_confirmed_on_source,
-         has_ac=excluded.has_ac, phone=excluded.phone, source_url=excluded.source_url, last_verified_at=excluded.last_verified_at,
-         access_level=excluded.access_level, access_notes=excluded.access_notes, requires_id=excluded.requires_id,
-         has_fee=excluded.has_fee, verification=excluded.verification, conflicts=excluded.conflicts,
-         evidence=excluded.evidence, source_urls=excluded.source_urls`,
-      [s.name, s.kind, s.tier, s.confidence, s.address, s.zip, s.lat, s.lon, JSON.stringify(s.hours), s.hours_confirmed_on_source,
+         access_level, access_notes, requires_id, has_fee, verification, conflicts, evidence, source_urls, maps_place_id,
+         pet_policy, official_name, ac_source)
+       values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29)`,
+      [s.id, s.name, s.kind, s.tier, s.confidence, s.address, s.zip, s.lat, s.lon, JSON.stringify(s.hours), s.hours_confirmed_on_source,
        s.has_ac, s.has_filtration, s.capacity_est, s.phone, s.source_url, s.last_verified_at,
        x.access_level ?? "unknown", x.access_notes ?? null, x.requires_id ?? null, x.has_fee ?? null,
        VERIFICATION[x.verification] ?? "single_source", JSON.stringify(x.conflicts ?? []), x.evidence ?? null,
-       x.sources ?? [], x.maps_place_id ?? null],
+       x.sources ?? [], x.maps_place_id ?? null, x.pet_policy ?? null, x.official_name ?? null, x.ac_from ?? null],
     );
   }
+  await db.query(`select setval(pg_get_serial_sequence('sites','id'), (select coalesce(max(id),1) from sites))`);
   await db.query("commit");
 
   // 3. Page version history (replace: the log file is the source of truth).
@@ -79,6 +83,9 @@ async function main() {
   const q = async (sql: string) => (await db.query(sql)).rows;
   console.log("sites loaded:", (await q("select count(*)::int n from sites"))[0].n);
   console.log("by verification:", await q("select verification, count(*)::int n from sites group by 1 order by 2 desc"));
+  console.log("by tier:", await q("select tier, count(*)::int n from sites group by 1 order by 2 desc"));
+  console.log("by kind:", await q("select kind, count(*)::int n from sites group by 1 order by 2 desc"));
+  console.log("zips:", (await q("select count(distinct zip)::int n from sites"))[0].n, "| capacity known:", (await q("select count(capacity_est)::int n from sites"))[0].n, "| ac known:", (await q("select count(has_ac)::int n from sites"))[0].n);
   console.log("by access:", await q("select access_level, count(*)::int n from sites group by 1 order by 2 desc"));
   console.log("page versions:", (await q("select count(*)::int n from source_page_versions"))[0].n);
   await db.end();

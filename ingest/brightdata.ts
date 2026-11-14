@@ -50,12 +50,18 @@ export type SerpResult = { title: string; link: string; description: string };
 export async function serp(query: string): Promise<SerpResult[]> {
   const key = `serp:${query}`;
   let raw = await readCache(key);
-  if (!raw) {
+  let data: any = raw ? JSON.parse(raw) : null;
+  for (let attempt = 0; !data && attempt < 3; attempt++) {
     const url = `https://www.google.com/search?q=${encodeURIComponent(query)}&brd_json=1&gl=us&hl=en`;
-    raw = await brd({ zone: SERP_ZONE, url, format: "raw" });
-    await writeCache(key, raw);
+    const text = await brd({ zone: SERP_ZONE, url, format: "raw" });
+    try {
+      data = JSON.parse(text); // transient empty bodies happen; retry instead of failing the query
+      await writeCache(key, text);
+    } catch {
+      await new Promise((r) => setTimeout(r, 1500 * (attempt + 1)));
+    }
   }
-  const data = JSON.parse(raw);
+  if (!data) throw new Error("SERP returned no parseable response after 3 tries");
   return (data.organic ?? [])
     .map((r: any) => ({ title: r.title ?? "", link: directLink(r), description: r.description ?? "" }))
     .filter((r: SerpResult) => r.link);
@@ -146,4 +152,21 @@ async function fallbackFetch(url: string): Promise<string | null> {
     await new Promise((r) => setTimeout(r, 2000 * (attempt + 1)));
   }
   return null;
+}
+
+/**
+ * Fetch a URL through Web Unlocker WITHOUT converting to markdown (JSON/API endpoints, feature services).
+ * Same real-status handling as fetchPage. Not cached: callers decide (these are small and change often).
+ */
+export async function fetchRaw(url: string): Promise<{ ok: boolean; status: number; body: string; error?: string }> {
+  let last = { ok: false, status: 0, body: "", error: undefined as string | undefined };
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    const d = JSON.parse(await brd({ zone: UNLOCKER_ZONE, url, format: "json" }));
+    const error: string | undefined = d.headers?.["x-brd-error"];
+    if (d.status_code === 200 && (d.body ?? "").length > 0) return { ok: true, status: 200, body: d.body };
+    last = { ok: false, status: d.status_code ?? 0, body: "", error };
+    if (error && /blocked by Bright Data|Access denied/i.test(error)) break;
+    await new Promise((r) => setTimeout(r, 1500 * 2 ** (attempt - 1)));
+  }
+  return last;
 }
