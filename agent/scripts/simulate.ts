@@ -2,7 +2,7 @@
 // Uses the ElevenLabs agent-testing API (simulation tests). Real tools fire, so `npm run dev`
 // and the tunnel must be up. Tests are upserted by name, so re-running doesn't create duplicates.
 //   cd apps/api && npm run el:simulate                 # all scenarios
-//   npm run el:simulate -- en                          # one scenario: en | es | emergency
+//   npm run el:simulate -- en                          # one scenario: en | es | zh | emergency
 import { el, env } from './el.ts';
 
 const scenarios = {
@@ -22,6 +22,15 @@ const scenarios = {
       'hace mucho calor y no tienes carro. Responde brevemente. Si te ofrecen un mensaje de texto, di que sí. Luego despídete.',
     success: [
       'The agent replies in Spanish after the caller speaks Spanish.',
+      'The agent recommends a specific site that came from the find_sites tool.',
+    ],
+  },
+  zh: {
+    scenario:
+      '你正在拨打一条防暑求助热线。你只说普通话。你在 El Cajon，邮政编码 92020，天气非常热，你没有车。' +
+      '回答要简短。如果对方提出发短信给你，就说好。然后道谢并说再见。',
+    success: [
+      'The agent replies in Mandarin Chinese after the caller speaks Chinese.',
       'The agent recommends a specific site that came from the find_sites tool.',
     ],
   },
