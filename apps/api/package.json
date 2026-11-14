@@ -1,0 +1,38 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "A general-purpose Mastra agent with a local workspace, shell tools, memory, task tracking, web access, and recurring schedules.",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "dev": "mastra dev --env ../../.env",
+    "build": "mastra build",
+    "start": "mastra start",
+    "el:sync": "tsx --env-file=../../.env ../../agent/scripts/sync-agent.ts",
+    "el:import-number": "tsx --env-file=../../.env ../../agent/scripts/import-number.ts",
+    "el:call": "tsx --env-file=../../.env ../../agent/scripts/outbound-call.ts",
+    "typecheck": "tsc",
+    "el:simulate": "tsx --env-file=../../.env ../../agent/scripts/simulate.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "Apache-2.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "dependencies": {
+    "@mastra/core": "1.83.0",
+    "@mastra/duckdb": "1.19.0",
+    "@mastra/libsql": "1.30.0",
+    "@mastra/memory": "1.41.1",
+    "@mastra/observability": "1.24.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "latest",
+    "mastra": "1.39.0",
+    "tsx": "^4.20.6",
+    "typescript": "^6.0.3"
+  }
+}

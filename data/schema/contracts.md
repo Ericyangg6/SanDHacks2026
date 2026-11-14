@@ -31,7 +31,7 @@ Only the writer changes rows in a table. Everyone else treats it as read-only.
 
 ## Conventions
 
-- **Phone numbers:** E.164 in transit, `sha256(PHONE_SALT + e164)` at rest. Add `PHONE_SALT` to env. Never log raw numbers.
+- **Phone numbers:** E.164 in transit, `sha256(PHONE_SALT + e164)` at rest. Add `PHONE_SALT` to env. Never log raw numbers. The one exception at rest is `subscribers.phone_e164`: an alert needs a number to send to, so M4 stores it on opt-in and clears it on STOP. Only M4 reads it; everything else keys on `phone_hash`.
 - **Time:** timestamps are UTC `timestamptz`. Hours are local `America/Los_Angeles`.
 - **Zip:** 5-digit text, never int.
 - **Language codes:** `en | es | tl | vi | zh`.
