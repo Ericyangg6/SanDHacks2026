@@ -33,12 +33,12 @@ export async function sendTwilioSms(args: { to: string; body: string }): Promise
     return { sid: `DRYRUN${randomUUID().replace(/-/g, '')}` };
   }
 
-  const { accountSid, apiKeySid, apiKeySecret, phoneNumber } = env.twilio();
+  const { accountSid, username, password, phoneNumber } = env.twilio();
   let response: Response;
   try {
     response = await fetch(`https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`, {
       method: 'POST',
-      headers: { Authorization: `Basic ${Buffer.from(`${apiKeySid}:${apiKeySecret}`).toString('base64')}` },
+      headers: { Authorization: `Basic ${Buffer.from(`${username}:${password}`).toString('base64')}` },
       body: new URLSearchParams({ To: args.to, From: phoneNumber, Body: args.body }),
       signal: AbortSignal.timeout(TWILIO_TIMEOUT_MS),
     });

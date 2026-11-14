@@ -1,7 +1,7 @@
 // Runs one of the TypeScript dev scripts in this folder:
 //   node src/m4/dev/run.mjs <script> [args...]      e.g. node src/m4/dev/run.mjs send-test
 // The M4 sources use bundler-style imports, so the script is bundled first with the esbuild that mastra
-// installs. Variables come from apps/sandhacks/.env and the repo-root .env; ones already set in the shell win.
+// installs. Variables come from apps/api/.env and the repo-root .env; ones already set in the shell win.
 
 import { existsSync } from 'node:fs';
 import path from 'node:path';

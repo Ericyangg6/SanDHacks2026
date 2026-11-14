@@ -7,14 +7,19 @@ export function requireEnv(name: string): string {
 }
 
 export const env = {
-  // TWILIO_SID and TWILIO_SECRET are an API key pair (the SID starts with SK). They authenticate REST calls,
-  // but the request URL still takes the account SID (starts with AC).
-  twilio: () => ({
-    accountSid: requireEnv('TWILIO_ACCOUNT_SID'),
-    apiKeySid: requireEnv('TWILIO_SID'),
-    apiKeySecret: requireEnv('TWILIO_SECRET'),
-    phoneNumber: requireEnv('TWILIO_PHONE_NUMBER'),
-  }),
+  // REST calls authenticate with an API key pair when TWILIO_SID and TWILIO_SECRET are set (the SID starts with
+  // SK), and otherwise with the account SID and auth token, the two the team's .env.template has.
+  // The request URL takes the account SID (starts with AC) either way.
+  twilio: () => {
+    const accountSid = requireEnv('TWILIO_ACCOUNT_SID');
+    const useApiKey = Boolean(process.env.TWILIO_SID && process.env.TWILIO_SECRET);
+    return {
+      accountSid,
+      username: useApiKey ? requireEnv('TWILIO_SID') : accountSid,
+      password: useApiKey ? requireEnv('TWILIO_SECRET') : requireEnv('TWILIO_AUTH_TOKEN'),
+      phoneNumber: requireEnv('TWILIO_PHONE_NUMBER'),
+    };
+  },
   // Twilio signs webhooks with the account's auth token, not with the API key secret.
   twilioAuthToken: () => requireEnv('TWILIO_AUTH_TOKEN'),
   phoneSalt: () => requireEnv('PHONE_SALT'),

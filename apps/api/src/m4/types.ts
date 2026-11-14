@@ -1,4 +1,4 @@
-// Shared contract types. Import them from here so the source path lives in one place (see ./shared-types.ts).
+// Shared contract types from data/schema/types.ts. M4 imports them from here so the path lives in one place.
 import type {
   AlertKind,
   CallDirection,
@@ -6,7 +6,7 @@ import type {
   CallerNeeds,
   Channel,
   Language,
-} from './shared-types';
+} from '../../../../data/schema/types';
 
 export type {
   AlertKind,
@@ -23,7 +23,7 @@ export type {
   Site,
   SiteHours,
   SiteResult,
-} from './shared-types';
+} from '../../../../data/schema/types';
 
 export const LANGUAGES = ['en', 'es', 'tl', 'vi', 'zh'] as const satisfies readonly Language[];
 

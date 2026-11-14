@@ -7,10 +7,9 @@ The SMS sender, subscribers, the NWS alert flow and the text agent. What is not 
 
 | Path | What it holds |
 | --- | --- |
-| `env.ts`, `todo.ts`, `types.ts`, `phone.ts` | Lazy env access, the stub helper, row types, E.164 and hashing |
-| `shared-types.ts` | Mirror of `data/schema/types.ts` (see "Shared types" below) |
+| `env.ts`, `todo.ts`, `types.ts`, `phone.ts` | Lazy env access, the stub helper, the shared types from `data/schema/types.ts` plus M4's row types, E.164 and hashing |
 | `db.ts` | Every query M4 needs, sent to Neon's HTTPS endpoint with `fetch` (no Postgres package) |
-| `find-sites.ts` | The one place M4 calls M2's `find_sites` from |
+| `find-sites.ts` | The one place M4 calls `find_sites` from. It forwards to the team's `src/shared/find-sites.ts`, a stub until M2 ships |
 | `sms/` | Twilio REST client, message templates, `sendSms` (the contract function) and `sendText` (the guarded send path) |
 | `subscribers/` | Opt-in, STOP, keyword detection, inbound text routing |
 | `alerts/` | NWS polling, zones, re-crawl request, dispatch, mock alerts |
@@ -24,7 +23,7 @@ inbound texts (STOP, START, HELP, JOIN and the hand-off to the agent), `subscrib
 strings, both HTTP route handlers, the workflow wiring, both tools and the agent definition.
 
 Still stubs: the alert text, `recordAlert`, `dispatchAlert`, `triggerMockAlert`, `fetchActiveAlerts`,
-`zipsForZones`, `requestRecrawl`, `generateTextReply`, `looksLikeEmergency` and `findSites`. Until
+`zipsForZones`, `requestRecrawl`, `generateTextReply` and `looksLikeEmergency`. Until
 `generateTextReply` lands, any text that is not a keyword gets the "try again, or call 211" reply.
 
 ## Receiving a text
@@ -64,15 +63,15 @@ A text that goes out gets one `calls` row (`outbound`, `sms`, `sms_sent`). A tex
 
 ## Wiring
 
-`src/mastra/index.ts` belongs to the app's owner. M4 adds three lines to it and nothing else:
+`src/mastra/index.ts` belongs to the app's owner. M4's part of it is three additions and nothing else:
 
 ```ts
 import { alertWorkflow, m4ApiRoutes, textAgent } from '../m4';
 
 export const mastra = new Mastra({
+  server: { apiRoutes: [...elevenLabsRoutes, ...m4ApiRoutes] },
   agents: { agent, textAgent },
   workflows: { alertWorkflow },
-  server: { apiRoutes: [...m4ApiRoutes] },
   // ...existing config
 });
 ```
@@ -94,7 +93,7 @@ Sending needs no public URL. Receiving does: Twilio has to reach the webhook. `d
 goes to the proxy:
 
 ```shell
-node src/m4/dev/webhook-proxy.mjs                 # terminal 1, from apps/sandhacks
+node src/m4/dev/webhook-proxy.mjs                 # terminal 1, from apps/api
 cloudflared tunnel --url http://127.0.0.1:4114    # terminal 2, prints https://<words>.trycloudflare.com
 ```
 
@@ -104,7 +103,7 @@ places have to change with it: the signature check fails with 403 if `PUBLIC_BAS
 
 ## Dev scripts
 
-Run from `apps/sandhacks`. Each one loads the repo-root `.env` itself.
+Run from `apps/api`. Each one loads the repo-root `.env` itself.
 
 ```shell
 node src/m4/dev/run.mjs send-test ["message"]    # one text to TEST_PHONE_NUMBER, straight through Twilio
@@ -140,9 +139,9 @@ M4_SMS_DRY_RUN=1 node src/m4/dev/run.mjs send-test
 | `M4_SMS_DRY_RUN` | Optional. `1` logs texts instead of sending them |
 | `TEST_PHONE_NUMBER` | Dev scripts only: where `send-test` sends |
 | `M4_SERVER_URL` | Dev scripts only: where `text-in` posts. Defaults to `http://localhost:4111` |
-| `TWILIO_SID`, `TWILIO_SECRET` | Twilio API key pair, authenticates the send request |
 | `TWILIO_ACCOUNT_SID` | Account SID (`AC...`), part of the send URL |
-| `TWILIO_AUTH_TOKEN` | Validates the signature on inbound webhooks |
+| `TWILIO_AUTH_TOKEN` | Validates the signature on inbound webhooks, and authenticates sends when there is no API key pair |
+| `TWILIO_SID`, `TWILIO_SECRET` | Optional. A Twilio API key pair (`SK...`). When both are set, sends use it instead of the auth token |
 | `TWILIO_PHONE_NUMBER` | The sending number, E.164 |
 | `PUBLIC_BASE_URL` | Public origin Twilio calls, needed for the signature check |
 | `PHONE_SALT` | Salt for `phone_hash`. Must be the same value for M3 |
@@ -150,20 +149,12 @@ M4_SMS_DRY_RUN=1 node src/m4/dev/run.mjs send-test
 | `NWS_USER_AGENT` | Contact string NWS asks for, e.g. `shade-sandhacks (you@example.com)` |
 | `TEXT_AGENT_MODEL` | Optional. Defaults to `anthropic/claude-sonnet-5-5` |
 
-All are read on first use, so a missing one does not stop the app from booting. The app does not read the
-repo-root `.env`, so put them in `apps/sandhacks/.env` or start with `set -a; . ../../.env; set +a; npm run dev`.
+All are read on first use, so a missing one does not stop the app from booting. `npm run dev` loads the
+repo-root `.env` (`mastra dev --env ../../.env`). Variables only one run needs, such as `M4_SMS_DRY_RUN=1`, can go
+in front of it: `M4_SMS_DRY_RUN=1 MASTRA_HOST=127.0.0.1 npm run dev`.
 
 For a Gemini text agent, set `TEXT_AGENT_MODEL=google/<model id>`. Mastra reads the key from `GOOGLE_API_KEY` or
 `GOOGLE_GENERATIVE_AI_API_KEY`, not `GEMINI_API_KEY`.
-
-## Shared types
-
-`data/schema/types.ts` cannot be imported from this app: TypeScript rejects files outside `apps/sandhacks`
-(TS6059). `shared-types.ts` is a verbatim copy until the team fixes that. Check it with:
-
-```shell
-diff <(tail -n +5 apps/sandhacks/src/m4/shared-types.ts) data/schema/types.ts
-```
 
 ## Decided
 
