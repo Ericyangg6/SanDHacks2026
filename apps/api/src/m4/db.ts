@@ -341,6 +341,15 @@ export async function insertFollowup(followup: {
   return rows[0];
 }
 
+// True when this site was held for this profile at or after `since`, delivered or not.
+export async function hasRecentFollowup(phoneHash: string, siteId: number, since: Date): Promise<boolean> {
+  const rows = await query(
+    `select 1 from messenger_followups where phone_hash = $1 and site_id = $2::int and created_at >= $3::timestamptz limit 1`,
+    [phoneHash, siteId, since.toISOString()],
+  );
+  return rows.length > 0;
+}
+
 // Not yet delivered and not expired, oldest first.
 export async function listPendingFollowups(phoneHash: string): Promise<FollowupRow[]> {
   return query<FollowupRow>(

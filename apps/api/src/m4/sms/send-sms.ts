@@ -3,6 +3,7 @@ import { env } from '../env';
 import { queueFollowup } from '../messenger/followups';
 import { hashPhone, maskPhone, toE164 } from '../phone';
 import { isOptedOut } from '../subscribers/consent';
+import { LANGUAGES } from '../types';
 import type { AlertChannel, Language, MessengerContact, Reading, SendSmsInput, SendSmsOutput } from '../types';
 import { siteMessage } from './templates';
 import { sendTwilioSms, sendTwilioWhatsApp, TwilioError, type WhatsAppTemplate } from './twilio';
@@ -113,12 +114,9 @@ export async function sendSms(input: SendSmsInput): Promise<SendSmsOutput> {
   let body: string;
   let siteId: number;
   try {
-    const site = await getSite(input.site_id);
-    if (!site) return { ok: false, error: 'site_not_found' };
-    // A missing air quality reading must not hold the text back.
-    const reading: Reading | null = site.zip ? await getLatestReading(site.zip).catch(() => null) : null;
-    body = siteMessage({ site, reading, language });
-    siteId = site.id;
+    const text = await siteText(input.site_id, language);
+    if (!text) return { ok: false, error: 'site_not_found' };
+    ({ body, siteId } = text);
   } catch (error) {
     console.warn(`[m4] send_sms for site ${input.site_id} failed before sending (${reason(error)})`);
     return { ok: false, error: 'lookup_failed' };
@@ -154,4 +152,44 @@ export async function sendSms(input: SendSmsInput): Promise<SendSmsOutput> {
   // TODO: Settle with M3 and M2 whether this row should carry site_id at all. M3 already logs the inbound
   //       voice call with the same site_id, so recent_referrals() in the ranking would count it twice.
   return sendText({ to, body, purpose: 'site', siteId, language });
+}
+
+// The site text for one site (address, hours today, AQI, map link), or null when there is no such site. Throws on
+// a database failure.
+async function siteText(siteId: number, language: Language): Promise<{ body: string; siteId: number } | null> {
+  const site = await getSite(siteId);
+  if (!site) return null;
+  // A missing air quality reading must not hold the text back.
+  const reading: Reading | null = site.zip ? await getLatestReading(site.zip).catch(() => null) : null;
+  return { body: siteMessage({ site, reading, language }), siteId: site.id };
+}
+
+export type CallFollowupResult = 'queued' | 'already_queued' | 'no_site' | 'no_profile' | 'opted_out' | 'failed';
+
+// Mode 1, automatic: called when a voice call ends (elevenlabs/post-call.ts). When the caller was given a site and
+// their number is linked to a Messenger profile (JOIN <zip> <phone>), the site details are held for that profile
+// without anyone having to ask for a text: linking Messenger is their opt-in to hearing from Shade there, and the
+// message only goes out after they next write to the Page. Callers without a linked profile get nothing. A site
+// already held for them in the last 2 hours (send_sms during the same call) is not held twice. Never throws.
+export async function followUpAfterCall(args: {
+  phoneE164: string;
+  siteId: number | null;
+  language?: string | null;
+}): Promise<CallFollowupResult> {
+  const to = toE164(args.phoneE164);
+  if (!to || !args.siteId) return 'no_site';
+  const language: Language = (LANGUAGES as readonly string[]).includes(args.language ?? '')
+    ? (args.language as Language)
+    : 'en';
+  try {
+    if (await isOptedOut(to)) return 'opted_out';
+    const profile = await getMessengerProfileByPhone(hashPhone(to));
+    if (!profile) return 'no_profile';
+    const text = await siteText(args.siteId, language);
+    if (!text) return 'no_site';
+    return (await queueFollowup({ profile, body: text.body, siteId: text.siteId, language })) ? 'queued' : 'already_queued';
+  } catch (error) {
+    console.warn(`[m4] follow-up after a call from ${maskPhone(to)} not held (${reason(error)})`);
+    return 'failed';
+  }
 }

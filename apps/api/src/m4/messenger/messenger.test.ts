@@ -7,7 +7,7 @@ import { Hono } from 'hono';
 import { dispatchAlert } from '../alerts/dispatch';
 import { checkReadingAlerts } from '../alerts/readings';
 import { m4ApiRoutes } from '../mastra/routes';
-import { sendSms } from '../sms/send-sms';
+import { followUpAfterCall, sendSms } from '../sms/send-sms';
 import type { AlertRow, Site, SubscriberRow } from '../types';
 import { hashPhone } from '../phone';
 import { sendTwilioMessenger, twilioSignature, validateTwilioSignature } from '../sms/twilio';
@@ -80,6 +80,7 @@ let db: {
   zips: string[];
   readings: { zip: string; heat_index: number | null; aqi: number | null }[];
   recentAlert: boolean;
+  recentFollowup: boolean; // the same site was held for this profile in the last 2 hours
 };
 
 // A made-up site, open every day, for send_sms to describe.
@@ -150,6 +151,7 @@ function answer(query: string, params: unknown[]): unknown[] {
   if (/from subscribers where phone_hash/.test(query)) return db.subscriber ? [db.subscriber] : [];
   if (/from subscribers\s+where opted_out_at is null/.test(query)) return db.active;
   if (/max\(started_at\)/.test(query)) return [{ at: db.lastInbound }];
+  if (/from messenger_followups where phone_hash = \$1 and site_id/.test(query)) return db.recentFollowup ? [{ '?column?': 1 }] : [];
   if (/from messenger_followups/.test(query)) return db.followups;
   if (/from sites where id/.test(query)) return db.site ? [db.site] : [];
   if (/linked_phone_hash = \$1 and opted_out_at is null/.test(query)) return db.profile ? [db.profile] : [];
@@ -175,6 +177,7 @@ beforeEach(() => {
     zips: [],
     readings: [],
     recentAlert: false,
+    recentFollowup: false,
   };
   twilioResponse = () => Response.json({ sid: 'SM00000000000000000000000000000001' }, { status: 201 });
   graphResponse = () => Response.json({ first_name: 'Ana', last_name: 'Ruiz', id: PSID });
@@ -522,6 +525,50 @@ describe('dispatchAlert to Messenger subscribers', () => {
     assert.deepEqual(await dispatchAlert(alert), { textsSent: 0 });
     assert.equal(twilioSends().length, 0);
     assert.ok(logged.some((line) => /messenger_window_closed/.test(line)));
+  });
+});
+
+describe('mode 1: automatic follow-up when a call ends', () => {
+  const CALLER = '+16195550189'; // made up
+  const held = () => sqlCalls().filter((sql) => /insert into messenger_followups/.test(sql.query));
+
+  it("holds the site for a linked caller without anyone asking for a text", async () => {
+    db.site = SITE;
+    db.profile = messengerRow({ linked_phone_hash: hashPhone(CALLER) });
+    assert.equal(await followUpAfterCall({ phoneE164: CALLER, siteId: SITE.id, language: 'es' }), 'queued');
+    assert.equal(held().length, 1);
+    assert.match(String(held()[0].params[1]), /^De tu llamada con Shade:/);
+    assert.equal(twilioSends().length, 0);
+    assert.ok(!JSON.stringify(sqlCalls()).includes('6195550189'));
+  });
+
+  it('does not hold the same site twice (send_sms during the call already did)', async () => {
+    db.site = SITE;
+    db.profile = messengerRow();
+    db.recentFollowup = true;
+    assert.equal(await followUpAfterCall({ phoneE164: CALLER, siteId: SITE.id }), 'already_queued');
+    assert.equal(held().length, 0);
+    // send_sms is deduped the same way.
+    const result = await sendSms({ to: CALLER, site_id: SITE.id });
+    assert.equal(result.ok, true);
+    assert.equal(held().length, 0);
+  });
+
+  it('does nothing without a linked profile, a site, or when the number opted out', async () => {
+    db.site = SITE;
+    assert.equal(await followUpAfterCall({ phoneE164: CALLER, siteId: SITE.id }), 'no_profile');
+    assert.equal(await followUpAfterCall({ phoneE164: CALLER, siteId: null }), 'no_site');
+    db.profile = messengerRow();
+    db.subscriber = messengerRow({ opted_out_at: '2026-11-14T00:00:00.000Z' });
+    assert.equal(await followUpAfterCall({ phoneE164: CALLER, siteId: SITE.id }), 'opted_out');
+    assert.equal(held().length, 0);
+  });
+
+  it('falls back to English for a language it does not know', async () => {
+    db.site = SITE;
+    db.profile = messengerRow();
+    assert.equal(await followUpAfterCall({ phoneE164: CALLER, siteId: SITE.id, language: 'Spanish' }), 'queued');
+    assert.match(String(held()[0].params[1]), /^From your call with Shade:/);
   });
 });
 

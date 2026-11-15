@@ -42,7 +42,7 @@ The Messenger side of Shade does three things:
 
 | Mode | What happens | Where |
 | --- | --- | --- |
-| 1. After a phone call | The voice agent's `send_sms` holds the site details (address, hours, map link) for the caller's linked Messenger profile; they go out the next time that person messages the Page | `sms/send-sms.ts` (`sendSms`), `messenger/followups.ts` |
+| 1. After a phone call | When a call ends, the site the caller was given is held for their linked Messenger profile automatically (no text offer needed), and `send_sms` holds it on request too; it goes out the next time they message the Page | `sms/send-sms.ts` (`followUpAfterCall`, `sendSms`), `messenger/followups.ts`, hook in `elevenlabs/post-call.ts` |
 | 2. Full agent | Any message that is not a keyword goes to the text agent: where are you, nearest open site, no car, Spanish, 911 and 211 | `messenger/inbound.ts`, `agent/reply.ts` |
 | 3. Heat and AQI alerts | NWS alerts, plus alerts from our own readings (heat index or AQI over a line), go to Messenger subscribers in the zip | `alerts/dispatch.ts`, `alerts/readings.ts` |
 
@@ -53,8 +53,24 @@ voice agent asks. `sendSms` looks the caller up by `hashPhone(e164)` in `subscri
 then the normal reply. STOP drops what is held. Without a profile it returns `no_messenger_profile` and a `note`
 telling the voice agent to read the address out and explain how to link Messenger. Nothing goes out by SMS unless
 `M4_SMS_ENABLED=1` (carriers block the number's texts until A2P registration, while Twilio still reports them
-sent). `apps/api/src/shared/send-sms.ts`, which the ElevenLabs tool calls, forwards to this `sendSms`. The voice
-prompt (`agent/prompts/system.md`, M3's) should read out `note` instead of promising a text.
+sent). `apps/api/src/shared/send-sms.ts`, which the ElevenLabs tool calls, forwards to this `sendSms`.
+
+**Automatic.** Nobody has to say yes to a text: linking Messenger with `JOIN <zip> <phone>` is the opt-in. When a
+voice call ends, `elevenlabs/post-call.ts` calls `followUpAfterCall` with the caller's number, the first site the
+tools gave them and the call language; for a linked, not opted-out caller the site is held the same way. The same
+site is never held twice within 2 hours, so a `send_sms` during the call and the automatic follow-up send one
+message. Callers without a linked profile get nothing: Facebook offers no way to find someone on Messenger from a
+phone number, so the person must write to the Page first.
+
+**Suggested voice prompt lines (M3, `agent/prompts/system.md`).** Draft only; the prompt is M3's:
+
+```text
+- After giving a site, say: "If you've linked Shade on Facebook Messenger, the address and map are waiting
+  there; just send our Page any message to get them."
+- If send_sms returns a `note`, follow the note instead of saying the text is on its way.
+- Before ending the call, offer once: "Want heat alerts and addresses on Facebook Messenger? Message the Shadoes
+  Page JOIN, your zip code and this phone number."
+```
 
 **Mode 3 in detail.** `checkReadingAlerts` reads, for every zip with a subscriber, the newest reading from the last
 3 hours (forecast rows more than an hour ahead are left out) and raises a `high_heat_index` alert at heat index

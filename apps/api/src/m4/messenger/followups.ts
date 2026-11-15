@@ -1,4 +1,12 @@
-import { cancelFollowups, insertCall, insertFollowup, insertMessage, listPendingFollowups, markFollowupDelivered } from '../db';
+import {
+  cancelFollowups,
+  hasRecentFollowup,
+  insertCall,
+  insertFollowup,
+  insertMessage,
+  listPendingFollowups,
+  markFollowupDelivered,
+} from '../db';
 import { followupIntro } from '../sms/templates';
 import type { Language, MessengerContact } from '../types';
 import { messengerLogLabel } from './identity';
@@ -16,19 +24,27 @@ function reason(error: unknown): string {
   return error instanceof Error ? error.message : 'unknown error';
 }
 
-// Holds `body` for the profile. Throws on a database failure; send_sms turns that into an error.
+// The same site is not held twice for one person within this many hours, so send_sms during a call and the
+// automatic follow-up when the call ends (followUpAfterCall) do not both go out.
+const DEDUPE_HOURS = 2;
+
+// Holds `body` for the profile. Returns false when the same site was already held for them in the last
+// DEDUPE_HOURS. Throws on a database failure; send_sms turns that into an error.
 export async function queueFollowup(args: {
   profile: MessengerContact;
   body: string;
   siteId: number | null;
   language: Language;
-}): Promise<void> {
+}): Promise<boolean> {
+  const since = new Date(Date.now() - DEDUPE_HOURS * 3600_000);
+  if (args.siteId != null && (await hasRecentFollowup(args.profile.phone_hash, args.siteId, since))) return false;
   await insertFollowup({
     phoneHash: args.profile.phone_hash,
     body: `${followupIntro(args.language)}\n${args.body}`,
     siteId: args.siteId,
     expiresAt: new Date(Date.now() + FOLLOWUP_TTL_DAYS * 24 * 3600_000),
   });
+  return true;
 }
 
 // Sends everything held for this person, oldest first, as separate messages, right after they wrote (so inside
