@@ -4,7 +4,7 @@ import type { HoursInterval, SiteHours } from '../../../../data/schema/types';
 
 export interface HoursToday {
   open_now: boolean;
-  closes_at: string | null; // "HH:MM" close of the interval open now
+  closes_at: string | null; // "HH:MM" close of the interval open now; null when closed or open 24 hours
   hours_today: string;      // "9:00 AM - 8:00 PM", or "Closed today"
 }
 
@@ -26,6 +26,12 @@ export const to12h = (hm: string) => {
 
 const overnight = (i: { open: string; close: string }) => i.close <= i.open;
 
+/** Google's "Open 24 hours" is stored as 00:00-23:59 (ingest/maps.ts); 00:00-00:00 means the same. */
+export const isAllDay = (i: { open: string; close: string }) => i.open === '00:00' && (i.close === '23:59' || i.close === '00:00');
+
+/** One interval as people read it: "9:00 AM - 8:00 PM", or "Open 24 hours". */
+export const hoursSpan = (i: { open: string; close: string }) => (isAllDay(i) ? 'Open 24 hours' : `${to12h(i.open)} - ${to12h(i.close)}`);
+
 export function hoursToday(hours: SiteHours, now = new Date()): HoursToday {
   const { date, day, hm } = local(now);
   const ex = hours.exceptions?.find((e) => e.date === date);
@@ -36,10 +42,10 @@ export function hoursToday(hours: SiteHours, now = new Date()): HoursToday {
       : hours.weekly.filter((i) => i.day === day).sort((a, b) => a.open.localeCompare(b.open));
   // Yesterday's overnight interval still running this morning.
   const spill = ex?.closed ? undefined : hours.weekly.find((i) => i.day === (day + 6) % 7 && overnight(i) && hm < i.close);
-  const current = spill ?? today.find((i) => hm >= i.open && (overnight(i) || hm < i.close));
+  const current = spill ?? today.find((i) => isAllDay(i) || (hm >= i.open && (overnight(i) || hm < i.close)));
   return {
     open_now: !!current,
-    closes_at: current?.close ?? null,
-    hours_today: today.length ? today.map((i) => `${to12h(i.open)} - ${to12h(i.close)}`).join(', ') : 'Closed today',
+    closes_at: current && !isAllDay(current) ? current.close : null,
+    hours_today: today.length ? today.map(hoursSpan).join(', ') : 'Closed today',
   };
 }

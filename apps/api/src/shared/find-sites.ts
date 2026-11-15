@@ -297,6 +297,9 @@ function localNow(now: Date): { dow: number; date: string; min: number } {
 const toMin = (t: string): number => Number(t.slice(0, 2)) * 60 + Number(t.slice(3, 5));
 const hhmm = (m: number): string => { const x = m % 1440; return `${String(Math.floor(x / 60)).padStart(2, '0')}:${String(x % 60).padStart(2, '0')}`; };
 
+// "Open 24 hours" in minutes: 00:00-23:59 as stored, or 00:00-00:00 read as [0, 1440].
+const allDay = ([o, c]: [number, number]): boolean => o === 0 && c >= 1439;
+
 interface Status { open: boolean; closesMin: number | null; nextOpenMin: number | null; intervals: [number, number][]; note: string | null }
 function status(h: SiteHours, now: { dow: number; date: string; min: number }, ignoreAllDay = false): Status {
   // Minutes since midnight. An interval whose close is at or before its open runs PAST midnight ("7 AM - 2 AM"); a close of
@@ -306,7 +309,7 @@ function status(h: SiteHours, now: { dow: number; date: string; min: number }, i
   for (const [o, c] of day(now.dow)) intervals.push(c > o ? [o, c] : c === 0 ? [o, 1440] : [o, 1440 + c]);
   for (const [o, c] of day((now.dow + 6) % 7)) if (c <= o && c > 0) intervals.push([0, c]); // still open after midnight from last night
   // Google's "open 24 hours" (00:00-23:59) on a place we only know from Maps is almost always wrong for a building: ignore it there.
-  if (ignoreAllDay) intervals = intervals.filter(([o, c]) => !(o === 0 && c >= 1439));
+  if (ignoreAllDay) intervals = intervals.filter((i) => !allDay(i));
   const ex = h.exceptions?.find((e) => e.date === now.date);
   let note: string | null = null;
   if (ex?.closed) { intervals = []; note = ex.note ? `closed today for ${ex.note}` : 'closed today'; }
@@ -442,7 +445,7 @@ async function findSitesCore(input: FindSitesInput): Promise<FindSitesOutput> {
     const closes = st.closesMin!;
     const coolZone = r.ac_source === 'official_program';
     const callAhead = r.tier === 'discovered' || r.verification === 'conflict';
-    const until = `open until ${speakTime(closes, lt.min)}`;
+    const until = st.intervals.some(allDay) && closes >= 1439 ? 'open 24 hours' : `open until ${speakTime(closes, lt.min)}`;
     const nm = r.name === r.name.toUpperCase() ? r.name.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase()) : r.name; // read ALL-CAPS names naturally
     const here = c.miles < 0.06;                                                         // the caller is standing at this very place
     const lead = i === 0 ? (loc.place && !here ? `From ${loc.place}, the closest option is` : 'The closest option is') : 'Another option is';
@@ -468,7 +471,7 @@ async function findSitesCore(input: FindSitesInput): Promise<FindSitesOutput> {
     return {
       site_id: r.id, name: r.name, kind: r.kind, tier: r.tier, address: r.address,
       open_now: true, closes_at: hhmm(closes),
-      hours_today: st.intervals.map(([o, e]) => `${clock(o)} - ${clock(e)}`).join(', '),
+      hours_today: st.intervals.map((i) => (allDay(i) ? 'Open 24 hours' : `${clock(i[0])} - ${clock(i[1])}`)).join(', '),
       travel_minutes: c.travel, distance_miles: Math.round(c.miles * 10) / 10,
       aqi: null, // AirNow is not wired yet; the contract allows null
       has_filtration: r.has_filtration, confidence: r.confidence, call_ahead: callAhead,

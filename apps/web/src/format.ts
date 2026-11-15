@@ -1,4 +1,4 @@
-export { to12h } from '../../api/src/shared/hours';
+export { hoursSpan, to12h } from '../../api/src/shared/hours';
 
 export const KIND: Record<string, string> = { cool_zone: 'Cool zone', library: 'Library', rec_center: 'Rec center', community_center: 'Community center', senior_center: 'Senior center', mall: 'Mall', other: 'Public space' };
 export const ALERT: Record<string, string> = { extreme_heat_warning: 'Extreme Heat Warning', heat_advisory: 'Heat Advisory', air_quality_alert: 'Air Quality Alert', mock: 'Mock heat alert' };
