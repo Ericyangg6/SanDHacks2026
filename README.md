@@ -65,7 +65,7 @@ With terminal 1 running, start the dashboard (React + TypeScript, Vite):
 cd apps/web && npm install && npm run dev
 ```
 
-Open http://localhost:5173. The page polls `GET /dashboard/state` and `GET /dispatch/requests` every 10 s. It imports its response types from `apps/api`, so `npm run typecheck` fails when the API contract changes. The API reads Neon when `NEON_DATABASE_URL` is set. Otherwise it serves `data/seed/`, and the dashboard shows "Seed data".
+Open http://localhost:5173 for the resident home page: open cool zones on the county chart, Call now, and Messenger sign-up for heat alerts and volunteering (`join.html?for=alerts|volunteer` builds the `JOIN <zip> <phone> [VOLUNTEER]` message and opens the Shadoes Page with it typed in). The ops dashboard is at http://localhost:5173/dashboard.html. The dashboard polls `GET /dashboard/state` and `GET /dispatch/requests` every 10 s. It imports its response types from `apps/api`, so `npm run typecheck` fails when the API contract changes. The API reads Neon when `NEON_DATABASE_URL` is set. Otherwise it serves `data/seed/`, and the dashboard shows "Seed data".
 
 - `?api=https://xxxx.ngrok-free.app` points the page at another API.
 - `?now=2026-11-16T11:00:00-08:00` replays a moment (open hours, recent calls) for demos.
@@ -88,7 +88,7 @@ curl -s -o /dev/null -w '%{http_code}\n' -X POST "$(grep ^PUBLIC_API_URL= .env |
 
 ```
 apps/api/      Mastra server: ElevenLabs tool endpoints (src/elevenlabs), dashboard state (src/dashboard), shared find_sites/send_sms/hours/db (src/shared)
-apps/web/      Ops dashboard (index.html, reads apps/api) and resident directions page (directions.html, mock data): React + TypeScript (Vite)
+apps/web/      Resident home and Messenger join pages (index.html, join.html), ops dashboard (dashboard.html, reads apps/api) and resident directions page (directions.html, mock data): React + TypeScript (Vite)
 agent/         ElevenLabs agent definition: prompts, tools, sync/test scripts (see agent/README.md)
 data/schema/   Neon schema, shared types, contracts between workstreams
 docs/          Project plan and per-workstream plans (M1 to M4)

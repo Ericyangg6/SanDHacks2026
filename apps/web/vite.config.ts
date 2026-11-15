@@ -5,6 +5,6 @@ export default defineConfig({
   plugins: [react()],
   // src imports types and to12h from apps/api and data/, outside this package.
   server: { port: 5173, fs: { allow: ['../..'] } },
-  // Two pages, no router: the ops dashboard and the resident directions page.
-  build: { rollupOptions: { input: { index: 'index.html', directions: 'directions.html' } } },
+  // Four pages, no router: the resident home and join pages, the ops dashboard and the resident directions page.
+  build: { rollupOptions: { input: { index: 'index.html', join: 'join.html', dashboard: 'dashboard.html', directions: 'directions.html' } } },
 });
