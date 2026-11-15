@@ -1,7 +1,8 @@
 // npx tsx --env-file=<repo>/.env checks/handoff-live-test.ts <request id>  (outside src/ so the Mastra deploy skips it)
 // Live end-to-end check of the volunteer hand-off on one open TEST request. A temporary volunteer (no Messenger ids,
-// fake 555 phone) says YES and then DONE. The only real message is the caller's follow-up ("a volunteer is coming,
-// their number ..."), sent to the caller's linked Messenger. The temporary volunteer row is deleted afterwards.
+// fake 555 phone) says YES and then DONE. The only real messages are the caller's follow-ups ("a volunteer is
+// coming, their number ...", then "marked as done"), sent to the caller's linked Messenger. The temporary
+// volunteer row is deleted afterwards.
 import { db } from '../src/shared/db';
 import { answerNeighbor } from '../src/requests/neighbors';
 import { handleCheckStatus } from '../src/requests/requests';
@@ -23,6 +24,7 @@ try {
   console.log(await answerNeighbor({ ...vol, phone_hash: 'not-a-volunteer' }, `YES ${id}`));
   console.log('--- volunteer sends DONE', id);
   console.log(await answerNeighbor(vol, `DONE ${id}`));
+  await new Promise((r) => setTimeout(r, 4000));   // and so does the caller's "marked as done"
   const { rows: [after] } = await db!.query(`select status, phone_e164 is null as number_dropped from requests where id = $1`, [id]);
   console.log('request after DONE:', JSON.stringify(after));
 } finally {

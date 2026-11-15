@@ -2,8 +2,9 @@
 // their phone in subscribers.phone_e164). A help request goes to every volunteer, wherever they live, and the first
 // to reply YES <id> takes it. The blast carries the area and needs only. The volunteer who says yes gets the exact
 // location, a map link and the caller's number; the caller gets the volunteer's number. The volunteer then sends
-// DONE <id> when the person is safe, or CANCEL <id> to hand the request back to the other volunteers. Until then,
-// when the caller has a linked Messenger, the Page relays messages between the two (relay.ts).
+// DONE <id> when the person is safe (the caller is told), or CANCEL <id> to hand the request back to the other
+// volunteers. Until then, when the caller has a linked Messenger, the Page relays messages between the two
+// (relay.ts).
 import { getMessengerProfileByPhone, listActiveVolunteers } from '../m4/db';
 import { deliverNowIfWindowOpen, queueFollowup } from '../m4/messenger/followups';
 import { sendMessengerInWindow } from '../m4/messenger/send';
@@ -167,16 +168,23 @@ function handoffMessage(id: number, r: Assignment, spanish: boolean, relay: bool
   ].filter(Boolean).join('\n');
 }
 
-/** DONE <id>: the volunteer says the person is safe. Closes the request and drops the callback number. */
+/**
+ * DONE <id>: the volunteer says the person is safe. Closes the request, drops the callback number, and tells the
+ * caller on Messenger.
+ */
 async function finishRequest(active: NonNullable<Sender>, id: number): Promise<string> {
   const spanish = es(active.language);
+  // `old` is the row before the update, so the number being dropped can still reach the caller.
   const { rows: [r] } = await db!.query(
-    `update requests set status = 'closed', phone_e164 = null, updated_at = now()
-     where id = $1 and volunteer_hash = $2 and status = 'incoming' returning conversation_id`,
+    `update requests q set status = 'closed', phone_e164 = null, updated_at = now()
+     from requests old
+     where old.id = q.id and q.id = $1 and q.volunteer_hash = $2 and q.status = 'incoming'
+     returning q.conversation_id, q.language, old.phone_e164`,
     [id, active.phone_hash],
   );
   if (!r) return spanish ? `La solicitud ${id} no es una que usted esté ayudando.` : `Request ${id} isn't one you're helping with.`;
   await logEvent(r.conversation_id, 'closed', 'The volunteer marked the request done');
+  void messageCaller(id, 'done', r);
   return spanish ? `🙏 ¡Gracias por ayudar! La solicitud ${id} está cerrada.` : `🙏 Thank you for helping! Request ${id} is closed.`;
 }
 
@@ -231,24 +239,31 @@ export function helperNote(a: Assignment & { id: number }): string {
   ].filter(Boolean).join(' ');
 }
 
+type CallerUpdate = 'coming' | 'handed_back' | 'done';
+interface CallerFacts { phone_e164: string | null; language: string | null; conversation_id: string | null }
+
+const updateEvent = (kind: CallerUpdate) => (kind === 'coming' ? 'help_incoming' : kind === 'done' ? 'closed' : 'help_requested');
+
 /**
  * Tells the caller on Messenger, whether or not they are still on the call: 'coming' when a volunteer said yes
- * (with the volunteer's number), 'handed_back' when that volunteer had to cancel. It goes to the profile linked to
- * their phone (JOIN <zip> <phone>): now if they wrote in the last 24 hours, else when they next write. Callers with
- * no linked profile can't be reached: SMS is carrier-blocked. Never throws.
+ * (with the volunteer's number), 'handed_back' when that volunteer had to cancel, 'done' when they closed the
+ * request. It goes to the profile linked to their phone (JOIN <zip> <phone>): now if they wrote in the last 24
+ * hours, else when they next write. Callers with no linked profile can't be reached: SMS is carrier-blocked.
+ * `known` is the request's caller details when the row no longer has them (DONE drops the number). Never throws.
  */
-async function messageCaller(id: number, kind: 'coming' | 'handed_back'): Promise<void> {
+async function messageCaller(id: number, kind: CallerUpdate, known?: CallerFacts): Promise<void> {
   if (!db) return;
-  let conversationId: string | null = null;
+  let conversationId: string | null = known?.conversation_id ?? null;
   try {
-    const { rows: [r] } = await db.query(`select phone_e164, language, conversation_id from requests where id = $1`, [id]);
+    const r: CallerFacts | undefined = known
+      ?? (await db.query(`select phone_e164, language, conversation_id from requests where id = $1`, [id])).rows[0];
     conversationId = r?.conversation_id ?? null;
     const profile = await callerProfile(r?.phone_e164 ?? null);
     if (!profile) {
-      await logEvent(conversationId, 'help_incoming', 'Caller has no linked Messenger, so no follow-up was sent');
+      await logEvent(conversationId, updateEvent(kind), 'Caller has no linked Messenger, so no follow-up was sent');
       return;
     }
-    const language: Language = es(r.language) ? 'es' : 'en';
+    const language: Language = es(r?.language) ? 'es' : 'en';
     const phone = kind === 'coming' ? await volunteerPhoneFor(id) : null;
     const body = kind === 'coming'
       ? language === 'es'
@@ -258,16 +273,20 @@ async function messageCaller(id: number, kind: 'coming' | 'handed_back'): Promis
         : ['🙋 A volunteer said they can come help you.', phone ? `📞 Their number: ${shownPhone(phone)}` : '',
             "💬 Reply here and we'll pass your message to them.",
             'Stay where you are if you can. If anyone feels worse, call 911.'].filter(Boolean).join('\n')
+      : kind === 'done'
+        ? language === 'es'
+          ? '✅ Su voluntario marcó su solicitud como terminada. Nos alegra que esté a salvo.\nSi todavía necesita ayuda, llame al 211. Si alguien se siente peor, llame al 911.'
+          : "✅ Your volunteer marked your request as done. We're glad you're safe.\nIf you still need help, call 211. If anyone feels worse, call 911."
       : language === 'es'
         ? 'El voluntario que dijo que sí ya no puede ir. Se lo pedimos a los otros voluntarios. Si necesita ayuda ahora, llame al 211. Si alguien se siente peor, llame al 911.'
         : "The volunteer who said yes can't make it after all. We've asked the other volunteers again. If you need help now, call 211. If anyone feels worse, call 911.";
     await queueFollowup({ profile, body, siteId: null, language, dedupe: false });
     const now = await deliverNowIfWindowOpen(profile);
-    await logEvent(conversationId, kind === 'coming' ? 'help_incoming' : 'help_requested',
-      now ? `Messaged the caller on Messenger${kind === 'coming' ? ' with the volunteer\'s number' : ' that the volunteer cancelled'}`
-          : 'Follow-up for the caller held until they next write to the Page');
+    const what = { coming: " with the volunteer's number", handed_back: ' that the volunteer cancelled', done: ' that the request is done' }[kind];
+    await logEvent(conversationId, updateEvent(kind),
+      now ? `Messaged the caller on Messenger${what}` : 'Follow-up for the caller held until they next write to the Page');
   } catch (err) {
     console.error(`[neighbors] request ${id}: caller follow-up failed`, (err as Error).message);
-    await logEvent(conversationId, kind === 'coming' ? 'help_incoming' : 'help_requested', 'Follow-up to the caller failed');
+    await logEvent(conversationId, updateEvent(kind), 'Follow-up to the caller failed');
   }
 }
