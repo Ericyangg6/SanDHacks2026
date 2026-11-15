@@ -8,7 +8,7 @@ web
 
 ## Stack
 
-Static HTML/CSS/JS, no build step (user asked for "something really light and quick"). Leaflet from CDN, mock data inline. Mockup only - no backend wiring yet.
+Static HTML/CSS/JS, no build step (user asked for "something really light and quick"). Leaflet from CDN. The ops dashboard reads sites, readings, calls, alerts and subscriber counts from `GET /dashboard/state` on `apps/api` (Neon, or `data/seed/` without it). Help requests and the directions page are still mock data.
 
 ## Users
 
@@ -42,11 +42,12 @@ Works on any phone with no app, reaches out before people are in trouble, and pa
 ## Brand Commitments
 
 - Working name: Shade.
-- Binding visual references from the user: the map follows a muted paper-cartography look (cream and soft green, fine grid, round tokens); dashboard panels follow dark frosted glass with thin light type and a warm orange accent.
+- Binding visual direction from the user: a blue, white, watery theme. Dashboard panels use a liquid glass material modeled on Apple's Liquid Glass. The map is a pale blue chart with a fine grid and round tokens. This replaces the first direction (cream paper map, dark frosted glass, orange accent). Details: `DESIGN.md`.
 
 ## Evidence on Hand
 
-- No live data yet. Site names are real San Diego County places with approximate coordinates; hours, loads, readings, calls, and bus steps in the mockup are invented and must be replaced by M2-M4 data.
+- The dashboard shows the M2 seed: 271 real sites with scraped hours, and NWS forecasts for 111 zips. Calls, alerts and subscribers appear once M3/M4 write them to Neon.
+- Help requests, volunteer status, routes, and the directions page's bus steps are still invented.
 
 ## Product Principles
 

@@ -1,50 +1,21 @@
-// Mock data for the Shade UI mockup. Everything here is invented except place names.
-// Replace with M2-M4 data; field names follow data/schema/types.ts where they overlap.
+// Mock data with no backing table yet: help requests (volunteer dispatch) and their street routes.
+// Sites, readings, calls and alerts come from the API (GET /dashboard/state).
 
-const ZONES = [
-  { id: 1, name: 'El Cajon Library', kind: 'Library', tier: 'official', zip: '92020', lat: 32.7953, lon: -116.9603, open: true, closes: '8:00 PM', sent: 46, cap: 60, aqi: 108 },
-  { id: 2, name: 'City Heights/Weingart Library', kind: 'Library', tier: 'official', zip: '92105', lat: 32.7476, lon: -117.1006, open: true, closes: '8:00 PM', sent: 22, cap: 80, aqi: 86 },
-  { id: 3, name: 'La Jolla/Riford Library', kind: 'Library', tier: 'official', zip: '92037', lat: 32.8405, lon: -117.2755, open: true, closes: '6:00 PM', sent: 9, cap: 70, aqi: 49 },
-  { id: 4, name: 'Lakeside Community Center', kind: 'Community center', tier: 'official', zip: '92040', lat: 32.8573, lon: -116.9222, open: true, closes: '7:00 PM', sent: 14, cap: 90, aqi: 124 },
-  { id: 5, name: 'Spring Valley Community Center', kind: 'Community center', tier: 'official', zip: '91977', lat: 32.7190, lon: -116.9790, open: true, closes: '9:00 PM', sent: 31, cap: 120, aqi: 95 },
-  { id: 6, name: 'Santee Library', kind: 'Library', tier: 'official', zip: '92071', lat: 32.8388, lon: -116.9740, open: true, closes: '6:00 PM', sent: 18, cap: 50, aqi: 118 },
-  { id: 7, name: 'Lemon Grove Library', kind: 'Library', tier: 'official', zip: '91945', lat: 32.7335, lon: -117.0320, open: true, closes: '7:00 PM', sent: 12, cap: 45, aqi: 92 },
-  { id: 8, name: 'Mission Valley Library', kind: 'Library', tier: 'official', zip: '92108', lat: 32.7740, lon: -117.1415, open: true, closes: '8:00 PM', sent: 27, cap: 110, aqi: 71 },
-  { id: 9, name: 'Grossmont Center', kind: 'Mall', tier: 'discovered', confidence: 0.86, zip: '91942', lat: 32.7790, lon: -117.0100, open: true, closes: '9:00 PM', sent: 64, cap: 400, aqi: 99 },
-  { id: 10, name: 'Colina del Sol Rec Center', kind: 'Rec center', tier: 'discovered', confidence: 0.71, zip: '92115', lat: 32.7560, lon: -117.0700, open: true, closes: '5:00 PM', sent: 8, cap: 60, aqi: 90 },
-  { id: 11, name: 'La Mesa Community Center', kind: 'Community center', tier: 'discovered', confidence: 0.78, zip: '91942', lat: 32.7676, lon: -117.0290, open: false, closes: null, sent: 0, cap: 80, aqi: 97 },
-  { id: 12, name: 'Chula Vista Civic Center Library', kind: 'Library', tier: 'official', zip: '91910', lat: 32.6405, lon: -117.0820, open: true, closes: '8:00 PM', sent: 20, cap: 100, aqi: 68 },
-];
-
-const READINGS = [
-  { zip: '92040', area: 'Lakeside', temp: 104, feels: 109, aqi: 131, trend: 'Up 2° in the last hour' },
-  { zip: '92020', area: 'El Cajon', temp: 101, feels: 106, aqi: 112, trend: 'Up 3° in the last hour' },
-  { zip: '91977', area: 'Spring Valley', temp: 98, feels: 102, aqi: 97, trend: 'Holding steady' },
-  { zip: '92105', area: 'City Heights', temp: 96, feels: 99, aqi: 86, trend: 'Up 1° in the last hour' },
-  { zip: '92037', area: 'La Jolla', temp: 84, feels: 85, aqi: 49, trend: 'Down 1° in the last hour' },
-];
-
-// status: 'requesting' | 'incoming'. `arrives: true` rows appear when "Simulate call" is pressed.
+// status: 'requesting' | 'incoming', set by the agent. `ask`: volunteer the agent is calling now (n = how many it has tried).
+// `vol`: volunteer who accepted. `arrives: true` rows appear when "Simulate call" is pressed.
 const REQUESTS = [
   { id: 'q1', place: 'Fletcher Pkwy & N Magnolia Ave', area: 'El Cajon', lat: 32.8085, lon: -116.9655, ago: '3 min ago', channel: 'Call', lang: 'English',
     needs: ['No car', 'Dehydrated'], said: 'I’m at the bus stop on Fletcher. No car, and I’ve been out here an hour. Really thirsty.',
-    status: 'requesting', zone: 1, route: 'r1' },
+    status: 'requesting', ask: { n: 2, mi: 0.4 }, zone: 'El Cajon Library', route: 'r1' },
   { id: 'q4', place: 'Jamacha Blvd near Sweetwater Rd', area: 'Spring Valley', lat: 32.7350, lon: -116.9950, ago: '14 min ago', channel: 'Call', lang: 'English',
     needs: ['Wheelchair user', 'Lives alone', 'AC is out'], said: 'My AC is out and I use a wheelchair. I can’t get to the bus.',
-    status: 'requesting', zone: 5, route: 'r4' },
+    status: 'requesting', ask: { n: 1, mi: 0.7 }, zone: 'Spring Valley Community Center', route: 'r4' },
   { id: 'q2', place: 'University Ave & 54th St', area: 'City Heights', lat: 32.7555, lon: -117.0890, ago: '9 min ago', channel: 'Text', lang: 'Spanish',
     needs: ['No car', 'Uses a walker'], said: 'No tengo carro y uso andador. No puedo caminar hasta la biblioteca.',
-    status: 'incoming', unit: 'Van 12, about 6 min out', zone: 2, route: 'r2' },
+    status: 'incoming', vol: { mi: 0.6, eta: 6 }, zone: 'City Heights/Weingart Library', route: 'r2' },
   { id: 'q3', place: 'Wildcat Canyon Rd, north of Lakeside', area: 'Lakeside', lat: 32.9050, lon: -116.8870, ago: 'Just now', channel: 'Call', lang: 'English',
     needs: ['No car', 'Dehydrated', 'Nausea'], said: 'I’m in the middle of nowhere without a car. I’m dehydrated and I feel sick.',
-    status: 'requesting', told911: true, zone: 4, route: 'r3', arrives: true },
-];
-
-// Calls already handled by the agent (directions sent, no help needed).
-const CALLS = [
-  [32.8010, -116.9480], [32.7890, -116.9720], [32.8150, -116.9900], [32.7610, -117.1100], [32.7420, -117.0920],
-  [32.7700, -117.0500], [32.8330, -117.2600], [32.7250, -117.0100], [32.8460, -116.9600], [32.6500, -117.0700],
-  [32.7800, -117.1300], [32.7150, -116.9900], [32.8700, -116.9300],
+    status: 'requesting', told911: true, ask: { n: 1, mi: 2.1 }, zone: 'Lakeside Community Center', route: 'r3', arrives: true },
 ];
 
 // Street-following geometry from OSRM, fetched once and frozen. [lat, lon] pairs.
