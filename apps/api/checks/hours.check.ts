@@ -10,6 +10,8 @@ for (const t of ['2026-11-16T03:00', '2026-11-16T15:00', '2026-11-16T23:59']) {
   assert.deepEqual(hoursToday(allWeek as never, at(t)), { open_now: true, closes_at: null, hours_today: 'Open 24 hours' }, t);
 }
 assert.equal(hoursSpan({ open: '00:00', close: '00:00' }), 'Open 24 hours');
+// An unconfirmed discovered site's "Open 24 hours" is ignored, as in find_sites.
+assert.deepEqual(hoursToday(allWeek as never, at('2026-11-16T15:00'), true), { open_now: false, closes_at: null, hours_today: 'Closed today' });
 
 // Ordinary and past-midnight hours are unchanged.
 const day = { weekly: [{ day: 1, open: '09:00', close: '20:00' }] };
