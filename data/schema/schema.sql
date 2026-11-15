@@ -146,3 +146,46 @@ create table zip_gap (
   forecast_zone text, peak_temp_f real, peak_heat_index real, peak_time timestamptz, hours_90f_plus_72h int,
   heat_factor real, gap_score int, scenario_heat_index real, generated_at timestamptz
 );
+
+-- Written by: M2 (ingest). Read by: find_sites. Named places with coordinates so a caller can say "I'm at Geisel Library"
+-- instead of giving a ZIP. Existing databases: migrations/20261114b_m2_landmarks_places_signals.sql
+create table landmarks (
+  id     serial primary key,
+  name   text             not null,
+  lat    double precision not null,
+  lon    double precision not null,
+  kind   text             not null,
+  weight int              not null
+);
+create index on landmarks (lat, lon);
+
+create table places (
+  kind text             not null check (kind in ('zip', 'town')),
+  key  text             not null,
+  lat  double precision not null,
+  lon  double precision not null,
+  primary key (kind, key)
+);
+
+-- Written by: M2. AC and crowding signals from reviews, each count backed by verbatim excerpts.
+create table site_review_signals (
+  maps_place_id   text primary key,
+  site_id         int references sites (id) on delete set null,
+  reviews_scanned int  not null,
+  window_days     int  not null,
+  ac_positive     int  not null default 0,
+  ac_negative     int  not null default 0,
+  crowded         int  not null default 0,
+  spacious        int  not null default 0,
+  quotes          jsonb not null default '[]',
+  scanned_at      timestamptz not null
+);
+create index on site_review_signals (site_id);
+
+create table news_items (
+  link       text primary key,
+  title      text not null,
+  source     text,
+  date_text  text,
+  fetched_at timestamptz not null default now()
+);

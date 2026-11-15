@@ -128,6 +128,46 @@ async function main() {
   }
   await db.query("commit");
 
+  // 3b. location data for find_sites, review signals, news (all M2-owned; replaced wholesale)
+  const landmarks: [string, number, number, string, number][] = JSON.parse(await read("../data/seed/landmarks.json").catch(() => "[]"));
+  if (landmarks.length) {
+    await db.query("begin");
+    await db.query("truncate landmarks restart identity");
+    for (let i = 0; i < landmarks.length; i += 2000) {
+      const part = landmarks.slice(i, i + 2000);
+      await db.query("insert into landmarks (name, lat, lon, kind, weight) select * from unnest($1::text[], $2::float8[], $3::float8[], $4::text[], $5::int[])",
+        [part.map((r) => r[0]), part.map((r) => r[1]), part.map((r) => r[2]), part.map((r) => r[3]), part.map((r) => r[4])]);
+    }
+    await db.query("commit");
+  }
+  const pl = JSON.parse(await read("../data/seed/places.json").catch(() => "null"));
+  if (pl) {
+    const rows: [string, string, number, number][] = [
+      ...Object.entries<any>(pl.zips).map(([k, v]) => ["zip", k, v.lat, v.lon] as [string, string, number, number]),
+      ...Object.entries<any>(pl.places).map(([k, v]) => ["town", k, v.lat, v.lon] as [string, string, number, number]),
+    ];
+    await db.query("begin");
+    await db.query("truncate places");
+    await db.query("insert into places (kind, key, lat, lon) select * from unnest($1::text[], $2::text[], $3::float8[], $4::float8[])",
+      [rows.map((r) => r[0]), rows.map((r) => r[1]), rows.map((r) => r[2]), rows.map((r) => r[3])]);
+    await db.query("commit");
+  }
+  const signals: Record<string, any> = JSON.parse(await read("./data/review_signals.json").catch(() => "{}"));
+  await db.query("begin");
+  await db.query("truncate site_review_signals");
+  for (const g of Object.values(signals)) {
+    await db.query(
+      `insert into site_review_signals (maps_place_id, site_id, reviews_scanned, window_days, ac_positive, ac_negative, crowded, spacious, quotes, scanned_at)
+       values ($1, (select id from sites where maps_place_id = $1), $2,$3,$4,$5,$6,$7,$8,$9)`,
+      [g.place_id, g.reviews_scanned, g.window_days, g.ac_positive, g.ac_negative, g.crowded, g.spacious, JSON.stringify(g.quotes ?? []), g.scanned_at]);
+  }
+  await db.query("commit");
+  const news: any[] = JSON.parse(await read("../data/seed/news.json").catch(() => "[]"));
+  await db.query("begin");
+  await db.query("truncate news_items");
+  for (const n of news) await db.query("insert into news_items (link, title, source, date_text) values ($1,$2,$3,$4) on conflict (link) do nothing", [n.link, n.title, n.source, n.date]);
+  await db.query("commit");
+
   // 4. verify
   const after = await guard();
   const same = JSON.stringify(before) === JSON.stringify(after);
@@ -135,6 +175,9 @@ async function main() {
   console.log("sites:", (await q("select count(*)::int n from sites"))[0].n, "| max id", (await q("select max(id)::int m from sites"))[0].m, "| with external_key", (await q("select count(external_key)::int n from sites"))[0].n);
   console.log("by tier:", JSON.stringify(await q("select tier, count(*)::int n from sites group by 1 order by 2 desc")));
   console.log("zip_gap rows:", (await q("select count(*)::int n from zip_gap"))[0].n, "| nws readings:", (await q("select count(*)::int n from readings where source='nws'"))[0].n, "| page versions:", (await q("select count(*)::int n from source_page_versions"))[0].n);
+  console.log("landmarks:", (await q("select count(*)::int n from landmarks"))[0].n, "| places:", (await q("select count(*)::int n from places"))[0].n,
+    "| review signals:", (await q("select count(*)::int n from site_review_signals"))[0].n, `(linked to a site: ${(await q("select count(site_id)::int n from site_review_signals"))[0].n})`,
+    "| news:", (await q("select count(*)::int n from news_items"))[0].n);
   await db.end();
   if (!same) process.exit(3);
 }

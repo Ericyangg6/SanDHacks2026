@@ -36,20 +36,26 @@ async function readSeed(file: string): Promise<unknown | null> {
   return null;
 }
 
-async function neonRows(): Promise<Row[] | null> {
+// One SQL read over Neon's HTTP endpoint (no driver dependency). Returns null on any failure so callers fall back to the seed files.
+async function sqlRows(query: string, timeoutMs: number): Promise<Record<string, unknown>[] | null> {
   if (!DB_URL) return null;
   try {
     const host = new URL(DB_URL).hostname;
     const res = await fetch(`https://${host}/sql`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Neon-Connection-String': DB_URL },
-      body: JSON.stringify({ query: 'select * from sites', params: [] }),
-      signal: AbortSignal.timeout(2000),
+      body: JSON.stringify({ query, params: [] }),
+      signal: AbortSignal.timeout(timeoutMs),
     });
     if (!res.ok) return null;
     const j = (await res.json()) as { rows?: Record<string, unknown>[] };
-    return j.rows && j.rows.length ? j.rows.map(normalize) : null; // empty table -> use the seed
+    return j.rows && j.rows.length ? j.rows : null; // empty table -> treated as missing
   } catch { return null; }
+}
+
+async function neonRows(): Promise<Row[] | null> {
+  const rows = await sqlRows('select * from sites', 2000);
+  return rows ? rows.map(normalize) : null;
 }
 
 function normalize(r: Record<string, unknown>): Row {
@@ -91,8 +97,14 @@ async function catalog(): Promise<{ rows: Row[]; source: 'neon' | 'seed' }> {
 interface Places { zips: Record<string, Pt>; places: Record<string, Pt> }
 let placesCache: Places | null = null;
 async function places(): Promise<Places> {
-  placesCache ??= ((await readSeed('places.json')) as Places | null) ?? { zips: {}, places: {} };
-  return placesCache;
+  if (placesCache) return placesCache;
+  const rows = await sqlRows('select kind, key, lat, lon from places', 3000);
+  if (rows) {
+    const out: Places = { zips: {}, places: {} };
+    for (const r of rows) (r.kind === 'zip' ? out.zips : out.places)[String(r.key)] = { lat: Number(r.lat), lon: Number(r.lon) };
+    return (placesCache = out);
+  }
+  return (placesCache = ((await readSeed('places.json')) as Places | null) ?? { zips: {}, places: {} });
 }
 
 const km = (a: Pt, b: Pt): number => {
@@ -137,7 +149,10 @@ const toTokens = (t: string): string[] => t.toLowerCase().replace(/&/g, ' and ')
 
 async function landmarks() {
   if (lmIndex !== undefined) return lmIndex;
-  const raw = (await readSeed('landmarks.json')) as [string, number, number, string, number][] | null;
+  const rows = await sqlRows('select name, lat, lon, kind, weight from landmarks', 6000);
+  const raw: [string, number, number, string, number][] | null = rows
+    ? rows.map((r) => [String(r.name), Number(r.lat), Number(r.lon), String(r.kind), Number(r.weight)])
+    : ((await readSeed('landmarks.json')) as [string, number, number, string, number][] | null);
   if (!raw) return (lmIndex = null);
   const df = new Map<string, number>();
   const items: Landmark[] = raw.map(([name, lat, lon, kind, weight]) => {
@@ -345,3 +360,11 @@ export async function findSites(input: FindSitesInput): Promise<FindSitesOutput>
   });
   return { sites, resolved_zip: loc.zip, ...(loc.place ? { resolved_place: loc.place } : {}) };
 }
+
+// Load the catalog, places and landmark index in the background when the server starts, so the first call is already fast.
+export function warmFindSites(): void {
+  void catalog().catch(() => undefined);
+  void places().catch(() => undefined);
+  void landmarks().catch(() => undefined);
+}
+warmFindSites();
