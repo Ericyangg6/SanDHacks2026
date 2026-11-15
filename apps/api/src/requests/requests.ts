@@ -61,6 +61,8 @@ export async function handleRequestHelp(body: z.infer<typeof requestHelpBody>): 
   try {
     // A request with no map position is still a request: a failed lookup must not block it.
     const loc = await resolveLocation({ location: body.location }).catch(() => null);
+    // A landmark far from any known zip comes back without one; the zip the caller said still finds their neighbors.
+    const zip = loc?.zip ?? body.location.match(/\b9[12]\d{3}\b/)?.[0] ?? null;
     const raw = body.caller_id?.trim();
     const phone = raw && /^\+\d{10,15}$/.test(raw) ? raw : null;
     const inserted = await db.query(
@@ -69,7 +71,7 @@ export async function handleRequestHelp(body: z.infer<typeof requestHelpBody>): 
        on conflict (conversation_id) do nothing
        returning id, status`,
       [
-        body.conversation_id || null, body.said, body.location, loc?.zip ?? null, loc?.pt.lat ?? null, loc?.pt.lon ?? null,
+        body.conversation_id || null, body.said, body.location, zip, loc?.pt.lat ?? null, loc?.pt.lon ?? null,
         body.needs ?? [], body.language ?? null, phone,
       ],
     );
@@ -82,7 +84,7 @@ export async function handleRequestHelp(body: z.infer<typeof requestHelpBody>): 
       await logEvent(body.conversation_id, 'help_requested', `Caller asked for help${needs}`);
       // Runs after the tool returns; the agent learns the outcome through check_request_status.
       void blastNeighbors({
-        id: row.id, conversationId: body.conversation_id, zip: loc?.zip ?? null, area: blastArea(loc, loc?.zip ?? null),
+        id: row.id, conversationId: body.conversation_id, zip, area: blastArea(loc, zip),
         // Without PHONE_SALT the caller can't be matched to a subscriber; they may then get their own blast.
         needs: body.needs ?? [], callerHash: phone && process.env.PHONE_SALT ? hashPhone(phone) : null,
       });
