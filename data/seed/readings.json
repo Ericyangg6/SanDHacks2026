@@ -1,14 +1,6 @@
 [
  {
   "time": "2026-11-15T13:00:00-08:00",
-  "zip": "92026",
-  "temp_f": 67,
-  "heat_index": 67,
-  "aqi": null,
-  "source": "nws"
- },
- {
-  "time": "2026-11-15T13:00:00-08:00",
   "zip": "92040",
   "temp_f": 68,
   "heat_index": 68,
@@ -16,10 +8,34 @@
   "source": "nws"
  },
  {
+  "time": "2026-11-15T14:00:00-08:00",
+  "zip": "92027",
+  "temp_f": 68,
+  "heat_index": 68,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
   "time": "2026-11-15T13:00:00-08:00",
-  "zip": "92131",
-  "temp_f": 72,
-  "heat_index": 72,
+  "zip": "92028",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T11:00:00-08:00",
+  "zip": "92057",
+  "temp_f": 73,
+  "heat_index": 73,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92026",
+  "temp_f": 67,
+  "heat_index": 67,
   "aqi": null,
   "source": "nws"
  },
@@ -33,14 +49,6 @@
  },
  {
   "time": "2026-11-15T13:00:00-08:00",
-  "zip": "92128",
-  "temp_f": 71,
-  "heat_index": 71,
-  "aqi": null,
-  "source": "nws"
- },
- {
-  "time": "2026-11-15T13:00:00-08:00",
   "zip": "92019",
   "temp_f": 73,
   "heat_index": 73,
@@ -48,50 +56,10 @@
   "source": "nws"
  },
  {
-  "time": "2026-11-15T13:00:00-08:00",
-  "zip": "92129",
-  "temp_f": 70,
-  "heat_index": 70,
-  "aqi": null,
-  "source": "nws"
- },
- {
-  "time": "2026-11-15T14:00:00-08:00",
-  "zip": "92027",
-  "temp_f": 68,
-  "heat_index": 68,
-  "aqi": null,
-  "source": "nws"
- },
- {
-  "time": "2026-11-15T11:00:00-08:00",
-  "zip": "92127",
-  "temp_f": 70,
-  "heat_index": 70,
-  "aqi": null,
-  "source": "nws"
- },
- {
-  "time": "2026-11-15T13:00:00-08:00",
-  "zip": "92028",
-  "temp_f": 71,
-  "heat_index": 71,
-  "aqi": null,
-  "source": "nws"
- },
- {
-  "time": "2026-11-15T14:00:00-08:00",
-  "zip": "91901",
-  "temp_f": 67,
-  "heat_index": 67,
-  "aqi": null,
-  "source": "nws"
- },
- {
-  "time": "2026-11-15T11:00:00-08:00",
-  "zip": "92057",
-  "temp_f": 73,
-  "heat_index": 73,
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "91935",
+  "temp_f": 61,
+  "heat_index": 60,
   "aqi": null,
   "source": "nws"
  },
@@ -112,26 +80,10 @@
   "source": "nws"
  },
  {
-  "time": "2026-11-15T13:00:00-08:00",
-  "zip": "92064",
-  "temp_f": 71,
-  "heat_index": 71,
-  "aqi": null,
-  "source": "nws"
- },
- {
-  "time": "2026-11-15T12:00:00-08:00",
-  "zip": "92029",
-  "temp_f": 72,
-  "heat_index": 72,
-  "aqi": null,
-  "source": "nws"
- },
- {
-  "time": "2026-11-15T12:00:00-08:00",
-  "zip": "91935",
-  "temp_f": 61,
-  "heat_index": 60,
+  "time": "2026-11-15T14:00:00-08:00",
+  "zip": "92065",
+  "temp_f": 68,
+  "heat_index": 68,
   "aqi": null,
   "source": "nws"
  },
@@ -140,14 +92,6 @@
   "zip": "92024",
   "temp_f": 71,
   "heat_index": 71,
-  "aqi": null,
-  "source": "nws"
- },
- {
-  "time": "2026-11-15T14:00:00-08:00",
-  "zip": "92065",
-  "temp_f": 68,
-  "heat_index": 68,
   "aqi": null,
   "source": "nws"
  },
@@ -161,33 +105,9 @@
  },
  {
   "time": "2026-11-15T12:00:00-08:00",
-  "zip": "92126",
-  "temp_f": 72,
-  "heat_index": 72,
-  "aqi": null,
-  "source": "nws"
- },
- {
-  "time": "2026-11-15T12:00:00-08:00",
   "zip": "92106",
   "temp_f": 71,
   "heat_index": 71,
-  "aqi": null,
-  "source": "nws"
- },
- {
-  "time": "2026-11-15T13:00:00-08:00",
-  "zip": "92082",
-  "temp_f": 68,
-  "heat_index": 67,
-  "aqi": null,
-  "source": "nws"
- },
- {
-  "time": "2026-11-15T11:00:00-08:00",
-  "zip": "92009",
-  "temp_f": 72,
-  "heat_index": 72,
   "aqi": null,
   "source": "nws"
  },
@@ -216,6 +136,14 @@
   "source": "nws"
  },
  {
+  "time": "2026-11-15T11:00:00-08:00",
+  "zip": "92127",
+  "temp_f": 70,
+  "heat_index": 70,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
   "time": "2026-11-15T12:00:00-08:00",
   "zip": "92003",
   "temp_f": 74,
@@ -224,10 +152,74 @@
   "source": "nws"
  },
  {
+  "time": "2026-11-15T11:00:00-08:00",
+  "zip": "92009",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92107",
+  "temp_f": 70,
+  "heat_index": 70,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92131",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
   "time": "2026-11-15T12:00:00-08:00",
   "zip": "91977",
   "temp_f": 70,
   "heat_index": 70,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92130",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92114",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92128",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T14:00:00-08:00",
+  "zip": "92056",
+  "temp_f": 73,
+  "heat_index": 73,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92064",
+  "temp_f": 71,
+  "heat_index": 71,
   "aqi": null,
   "source": "nws"
  },
@@ -241,30 +233,6 @@
  },
  {
   "time": "2026-11-15T12:00:00-08:00",
-  "zip": "91913",
-  "temp_f": 71,
-  "heat_index": 71,
-  "aqi": null,
-  "source": "nws"
- },
- {
-  "time": "2026-11-15T13:00:00-08:00",
-  "zip": "92071",
-  "temp_f": 73,
-  "heat_index": 73,
-  "aqi": null,
-  "source": "nws"
- },
- {
-  "time": "2026-11-15T12:00:00-08:00",
-  "zip": "92107",
-  "temp_f": 70,
-  "heat_index": 70,
-  "aqi": null,
-  "source": "nws"
- },
- {
-  "time": "2026-11-15T12:00:00-08:00",
   "zip": "92078",
   "temp_f": 71,
   "heat_index": 71,
@@ -273,81 +241,9 @@
  },
  {
   "time": "2026-11-15T12:00:00-08:00",
-  "zip": "92114",
-  "temp_f": 71,
-  "heat_index": 71,
-  "aqi": null,
-  "source": "nws"
- },
- {
-  "time": "2026-11-15T12:00:00-08:00",
-  "zip": "92130",
+  "zip": "92029",
   "temp_f": 72,
   "heat_index": 72,
-  "aqi": null,
-  "source": "nws"
- },
- {
-  "time": "2026-11-15T14:00:00-08:00",
-  "zip": "92056",
-  "temp_f": 73,
-  "heat_index": 73,
-  "aqi": null,
-  "source": "nws"
- },
- {
-  "time": "2026-11-15T12:00:00-08:00",
-  "zip": "92105",
-  "temp_f": 71,
-  "heat_index": 71,
-  "aqi": null,
-  "source": "nws"
- },
- {
-  "time": "2026-11-15T13:00:00-08:00",
-  "zip": "92011",
-  "temp_f": 71,
-  "heat_index": 71,
-  "aqi": null,
-  "source": "nws"
- },
- {
-  "time": "2026-11-15T13:00:00-08:00",
-  "zip": "92069",
-  "temp_f": 71,
-  "heat_index": 71,
-  "aqi": null,
-  "source": "nws"
- },
- {
-  "time": "2026-11-15T12:00:00-08:00",
-  "zip": "91911",
-  "temp_f": 71,
-  "heat_index": 71,
-  "aqi": null,
-  "source": "nws"
- },
- {
-  "time": "2026-11-15T12:00:00-08:00",
-  "zip": "92115",
-  "temp_f": 71,
-  "heat_index": 71,
-  "aqi": null,
-  "source": "nws"
- },
- {
-  "time": "2026-11-15T13:00:00-08:00",
-  "zip": "92075",
-  "temp_f": 72,
-  "heat_index": 72,
-  "aqi": null,
-  "source": "nws"
- },
- {
-  "time": "2026-11-15T12:00:00-08:00",
-  "zip": "91910",
-  "temp_f": 71,
-  "heat_index": 71,
   "aqi": null,
   "source": "nws"
  },
@@ -361,47 +257,15 @@
  },
  {
   "time": "2026-11-15T12:00:00-08:00",
-  "zip": "91978",
-  "temp_f": 66,
-  "heat_index": 65,
+  "zip": "91911",
+  "temp_f": 71,
+  "heat_index": 71,
   "aqi": null,
   "source": "nws"
  },
  {
   "time": "2026-11-15T12:00:00-08:00",
-  "zip": "92120",
-  "temp_f": 72,
-  "heat_index": 72,
-  "aqi": null,
-  "source": "nws"
- },
- {
-  "time": "2026-11-15T12:00:00-08:00",
-  "zip": "91914",
-  "temp_f": 69,
-  "heat_index": 69,
-  "aqi": null,
-  "source": "nws"
- },
- {
-  "time": "2026-11-15T14:00:00-08:00",
-  "zip": "92081",
-  "temp_f": 72,
-  "heat_index": 72,
-  "aqi": null,
-  "source": "nws"
- },
- {
-  "time": "2026-11-15T12:00:00-08:00",
-  "zip": "91932",
-  "temp_f": 70,
-  "heat_index": 70,
-  "aqi": null,
-  "source": "nws"
- },
- {
-  "time": "2026-11-15T12:00:00-08:00",
-  "zip": "91915",
+  "zip": "92126",
   "temp_f": 72,
   "heat_index": 72,
   "aqi": null,
@@ -409,9 +273,57 @@
  },
  {
   "time": "2026-11-15T13:00:00-08:00",
-  "zip": "92067",
-  "temp_f": 73,
-  "heat_index": 73,
+  "zip": "92129",
+  "temp_f": 70,
+  "heat_index": 70,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "91910",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "91913",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92105",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T14:00:00-08:00",
+  "zip": "91901",
+  "temp_f": 67,
+  "heat_index": 67,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92075",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92011",
+  "temp_f": 71,
+  "heat_index": 71,
   "aqi": null,
   "source": "nws"
  },
@@ -425,7 +337,7 @@
  },
  {
   "time": "2026-11-15T12:00:00-08:00",
-  "zip": "91950",
+  "zip": "92115",
   "temp_f": 71,
   "heat_index": 71,
   "aqi": null,
@@ -433,7 +345,7 @@
  },
  {
   "time": "2026-11-15T12:00:00-08:00",
-  "zip": "92083",
+  "zip": "92120",
   "temp_f": 72,
   "heat_index": 72,
   "aqi": null,
@@ -448,14 +360,6 @@
   "source": "nws"
  },
  {
-  "time": "2026-11-15T11:00:00-08:00",
-  "zip": "92014",
-  "temp_f": 70,
-  "heat_index": 70,
-  "aqi": null,
-  "source": "nws"
- },
- {
   "time": "2026-11-15T13:00:00-08:00",
   "zip": "91916",
   "temp_f": 64,
@@ -465,9 +369,81 @@
  },
  {
   "time": "2026-11-15T13:00:00-08:00",
-  "zip": "92020",
+  "zip": "92082",
+  "temp_f": 68,
+  "heat_index": 67,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "91950",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "91932",
+  "temp_f": 70,
+  "heat_index": 70,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92071",
+  "temp_f": 73,
+  "heat_index": 73,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T14:00:00-08:00",
+  "zip": "92081",
   "temp_f": 72,
   "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T11:00:00-08:00",
+  "zip": "92014",
+  "temp_f": 70,
+  "heat_index": 70,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92101",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92083",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92067",
+  "temp_f": 73,
+  "heat_index": 73,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92069",
+  "temp_f": 71,
+  "heat_index": 71,
   "aqi": null,
   "source": "nws"
  },
@@ -481,17 +457,9 @@
  },
  {
   "time": "2026-11-15T13:00:00-08:00",
-  "zip": "92119",
-  "temp_f": 71,
-  "heat_index": 71,
-  "aqi": null,
-  "source": "nws"
- },
- {
-  "time": "2026-11-15T12:00:00-08:00",
-  "zip": "92101",
+  "zip": "92118",
   "temp_f": 72,
-  "heat_index": 72,
+  "heat_index": 71,
   "aqi": null,
   "source": "nws"
  },
@@ -505,17 +473,17 @@
  },
  {
   "time": "2026-11-15T13:00:00-08:00",
-  "zip": "91942",
-  "temp_f": 71,
-  "heat_index": 71,
+  "zip": "91906",
+  "temp_f": 66,
+  "heat_index": 65,
   "aqi": null,
   "source": "nws"
  },
  {
-  "time": "2026-11-15T13:00:00-08:00",
-  "zip": "92118",
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "91915",
   "temp_f": 72,
-  "heat_index": 71,
+  "heat_index": 72,
   "aqi": null,
   "source": "nws"
  },
@@ -536,25 +504,33 @@
   "source": "nws"
  },
  {
-  "time": "2026-11-15T14:00:00-08:00",
-  "zip": "91962",
-  "temp_f": 63,
-  "heat_index": 62,
-  "aqi": null,
-  "source": "nws"
- },
- {
-  "time": "2026-11-15T13:00:00-08:00",
-  "zip": "91941",
-  "temp_f": 71,
+  "time": "2026-11-16T15:00:00-08:00",
+  "zip": "92109",
+  "temp_f": 70,
   "heat_index": 71,
   "aqi": null,
   "source": "nws"
  },
  {
-  "time": "2026-11-16T15:00:00-08:00",
-  "zip": "92109",
-  "temp_f": 70,
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92020",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92110",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "91942",
+  "temp_f": 71,
   "heat_index": 71,
   "aqi": null,
   "source": "nws"
@@ -569,47 +545,7 @@
  },
  {
   "time": "2026-11-15T13:00:00-08:00",
-  "zip": "91906",
-  "temp_f": 66,
-  "heat_index": 65,
-  "aqi": null,
-  "source": "nws"
- },
- {
-  "time": "2026-11-15T12:00:00-08:00",
-  "zip": "92110",
-  "temp_f": 72,
-  "heat_index": 72,
-  "aqi": null,
-  "source": "nws"
- },
- {
-  "time": "2026-11-15T13:00:00-08:00",
-  "zip": "92007",
-  "temp_f": 71,
-  "heat_index": 71,
-  "aqi": null,
-  "source": "nws"
- },
- {
-  "time": "2026-11-15T13:00:00-08:00",
-  "zip": "92113",
-  "temp_f": 72,
-  "heat_index": 72,
-  "aqi": null,
-  "source": "nws"
- },
- {
-  "time": "2026-11-15T13:00:00-08:00",
   "zip": "92173",
-  "temp_f": 71,
-  "heat_index": 71,
-  "aqi": null,
-  "source": "nws"
- },
- {
-  "time": "2026-11-15T13:00:00-08:00",
-  "zip": "91945",
   "temp_f": 71,
   "heat_index": 71,
   "aqi": null,
@@ -625,7 +561,79 @@
  },
  {
   "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92119",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "91978",
+  "temp_f": 66,
+  "heat_index": 65,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92113",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
   "zip": "92117",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92054",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "91941",
+  "temp_f": 71,
+  "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "92103",
+  "temp_f": 72,
+  "heat_index": 72,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T14:00:00-08:00",
+  "zip": "91962",
+  "temp_f": 63,
+  "heat_index": 62,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "91914",
+  "temp_f": 69,
+  "heat_index": 69,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "91945",
   "temp_f": 71,
   "heat_index": 71,
   "aqi": null,
@@ -640,18 +648,10 @@
   "source": "nws"
  },
  {
-  "time": "2026-11-15T12:00:00-08:00",
-  "zip": "92054",
-  "temp_f": 72,
-  "heat_index": 72,
-  "aqi": null,
-  "source": "nws"
- },
- {
   "time": "2026-11-15T13:00:00-08:00",
-  "zip": "92103",
-  "temp_f": 72,
-  "heat_index": 72,
+  "zip": "92007",
+  "temp_f": 71,
+  "heat_index": 71,
   "aqi": null,
   "source": "nws"
  },
@@ -712,18 +712,18 @@
   "source": "nws"
  },
  {
-  "time": "2026-11-15T12:00:00-08:00",
-  "zip": "92108",
-  "temp_f": 72,
-  "heat_index": 72,
-  "aqi": null,
-  "source": "nws"
- },
- {
   "time": "2026-11-15T14:00:00-08:00",
   "zip": "91917",
   "temp_f": 66,
   "heat_index": 65,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T12:00:00-08:00",
+  "zip": "92108",
+  "temp_f": 72,
+  "heat_index": 72,
   "aqi": null,
   "source": "nws"
  },
@@ -752,18 +752,18 @@
   "source": "nws"
  },
  {
-  "time": "2026-11-15T13:00:00-08:00",
-  "zip": "91931",
-  "temp_f": 60,
-  "heat_index": 59,
-  "aqi": null,
-  "source": "nws"
- },
- {
   "time": "2026-11-15T15:00:00-08:00",
   "zip": "92037",
   "temp_f": 71,
   "heat_index": 71,
+  "aqi": null,
+  "source": "nws"
+ },
+ {
+  "time": "2026-11-15T13:00:00-08:00",
+  "zip": "91931",
+  "temp_f": 60,
+  "heat_index": 59,
   "aqi": null,
   "source": "nws"
  },
