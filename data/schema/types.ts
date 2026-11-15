@@ -32,10 +32,6 @@ export interface SiteHours {
   raw_text?: string;         // original text the hours were parsed from, for debugging
 }
 
-export type SiteAccess =
-  | 'open_to_all' | 'students_only' | 'members_only' | 'residents_only' | 'age_restricted' | 'unknown';
-export type SiteVerification = 'confirmed' | 'conflict' | 'single_source' | 'web_only';
-
 export interface Site {
   id: number;
   name: string;

@@ -139,6 +139,44 @@ async function geocode(text: string): Promise<Pt | null> {
   return out;
 }
 
+// ---- Google Geocoding (only when GOOGLE_MAPS_API_KEY is set): addresses and cross streets ("Main St & Magnolia Ave"),
+// which neither Census (full addresses only) nor the landmark index can place. Returns how precise the match was.
+type Precision = NonNullable<FindSitesOutput['location_precision']>;
+const GOOGLE_PRECISION: [string, Precision][] = [
+  ['street_address', 'address'], ['premise', 'address'], ['subpremise', 'address'], ['intersection', 'intersection'],
+  ['point_of_interest', 'landmark'], ['establishment', 'landmark'], ['transit_station', 'landmark'], ['route', 'street'],
+  ['neighborhood', 'area'], ['sublocality', 'area'], ['locality', 'area'], ['postal_code', 'zip'],
+];
+interface GoogleHit { pt: Pt; label: string; precision: Precision; zip: string | null }
+const googleCache = new Map<string, GoogleHit | null>();
+async function googleGeocode(text: string): Promise<GoogleHit | null> {
+  const apiKey = process.env.GOOGLE_MAPS_API_KEY?.trim();
+  if (!apiKey || !text.trim()) return null;
+  const k = text.toLowerCase().trim();
+  if (googleCache.has(k)) return googleCache.get(k) ?? null;
+  try {
+    const q = new URLSearchParams({
+      address: text, key: apiKey, region: 'us',
+      components: 'country:US|administrative_area:CA',
+      bounds: '32.5,-117.62|33.52,-116.07', // bias toward San Diego County
+    });
+    const r = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?${q}`, { signal: AbortSignal.timeout(2500) });
+    const j = (await r.json()) as { status: string; results?: { types: string[]; formatted_address: string; geometry: { location: { lat: number; lng: number } }; address_components: { types: string[]; short_name: string }[] }[] };
+    const top = j.results?.[0];
+    let hit: GoogleHit | null = null;
+    const precision = top && GOOGLE_PRECISION.find(([t]) => top.types.includes(t))?.[1];
+    if (top && precision) {
+      const pt = { lat: top.geometry.location.lat, lon: top.geometry.location.lng };
+      const zip = top.address_components.find((c) => c.types.includes('postal_code'))?.short_name ?? null;
+      if (inCounty(pt)) hit = { pt, label: top.formatted_address.replace(/, USA$/, ''), precision, zip };
+    }
+    if (j.status === 'OK' || j.status === 'ZERO_RESULTS') googleCache.set(k, hit); // do not cache quota/transient errors
+    return hit;
+  } catch { return null; }
+}
+const PRECISE = new Set<Precision>(['address', 'intersection', 'landmark']);
+const CROSS_STREETS = /&|\band\b|\bcorner\b/i;
+
 // ---- landmarks: "I'm in Geisel Library", "outside the Price Center", "at Westfield UTC" ----------------------------
 // data/seed/landmarks.json holds ~5,000 named places (OpenStreetMap + every site we hold). A caller's words are matched
 // by token RARITY, so "Geisel" counts for far more than "library", and nobody has to give a ZIP or a city.
@@ -194,32 +232,43 @@ async function matchLandmark(text: string): Promise<{ pt: Pt; name: string } | n
 
 const STREET_ADDRESS = /\b\d{2,5}\s+(?:[NSEW]\.?\s+)?[A-Za-z0-9.' ]{2,28}\b(?:st|street|ave|avenue|blvd|boulevard|dr|drive|rd|road|ln|lane|way|ct|court|pl|place|hwy|highway|pkwy|parkway|cir|circle|ter|terrace)\b/i;
 
-async function resolveLocation(input: FindSitesInput): Promise<{ pt: Pt; zip: string | null; byZip?: boolean; place?: string } | null> {
+interface Resolved { pt: Pt; zip: string | null; byZip?: boolean; place?: string; label: string; precision: Precision }
+
+async function resolveLocation(input: FindSitesInput): Promise<Resolved | null> {
   const p = await places();
   const nearestZip = (pt: Pt): string | null => {
     let best: string | null = null, d = 15; // km
     for (const [z, c] of Object.entries(p.zips)) { const k = km(pt, c); if (k < d) { d = k; best = z; } }
     return best;
   };
-  if (typeof input.lat === 'number' && typeof input.lon === 'number') { const pt = { lat: input.lat, lon: input.lon }; return { pt, zip: nearestZip(pt) }; }
-
   const text = input.location ?? '';
-  // 1. a street address is the most precise thing a caller can say
-  if (STREET_ADDRESS.test(text)) { const g = await geocode(text); if (g) return { pt: g, zip: nearestZip(g) }; }
+  if (typeof input.lat === 'number' && typeof input.lon === 'number') { const pt = { lat: input.lat, lon: input.lon }; return { pt, zip: nearestZip(pt), label: text, precision: 'address' }; }
+
+  // 1. a street address or cross streets is the most precise thing a caller can say. Google first (handles both),
+  //    accepted only if it found that precise a spot; then Census for plain addresses.
+  const isAddress = STREET_ADDRESS.test(text);
+  if (isAddress || CROSS_STREETS.test(text)) {
+    const gg = await googleGeocode(text);
+    if (gg && PRECISE.has(gg.precision) && gg.precision !== 'landmark') return { pt: gg.pt, zip: gg.zip ?? nearestZip(gg.pt), label: gg.label, precision: gg.precision };
+  }
+  if (isAddress) { const g = await geocode(text); if (g) return { pt: g, zip: nearestZip(g), label: text, precision: 'address' }; }
   // 2. a named place ("Geisel Library", "Price Center", "Westfield UTC"): instant, offline, no ZIP or city needed
   const lm = await matchLandmark(text);
-  if (lm) return { pt: lm.pt, zip: nearestZip(lm.pt), place: lm.name };
+  if (lm) return { pt: lm.pt, zip: nearestZip(lm.pt), place: lm.name, label: lm.name, precision: 'landmark' };
   // 3. a ZIP code
   const zip = text.match(/\b(9[12]\d{3})\b/)?.[1];
-  if (zip && p.zips[zip]) return { pt: p.zips[zip], zip, byZip: true };
+  if (zip && p.zips[zip]) return { pt: p.zips[zip], zip, byZip: true, label: zip, precision: 'zip' };
   // 4. a town or neighborhood
   const lower = ` ${text.toLowerCase().replace(/[^a-z0-9' ]/g, ' ')} `;
   const hit = Object.keys(p.places).filter((n) => lower.includes(` ${n} `)).sort((a, b) => b.length - a.length)[0];
-  if (hit) return { pt: p.places[hit], zip: nearestZip(p.places[hit]) };
-  // 5. anything else: ask an online geocoder (slow, so last)
+  if (hit) return { pt: p.places[hit], zip: nearestZip(p.places[hit]), label: hit.replace(/\b\w/g, (c) => c.toUpperCase()), precision: 'area' };
+  // 5. anything else: ask an online geocoder (slow, so last). Google says how precise it was; OpenStreetMap doesn't, so
+  //    treat its answer as approximate (the agent then won't quote distances).
   const withCampus = /\b(ucsd|uc san diego)\b/i.test(text) ? `${text} La Jolla` : text;
+  const gg = await googleGeocode(withCampus);
+  if (gg) return { pt: gg.pt, zip: gg.zip ?? nearestZip(gg.pt), label: gg.label, precision: gg.precision };
   const g = text.trim() ? (await geocode(withCampus)) ?? (await geocode(toTokens(withCampus).join(' '))) : null; // raw words first, then without the filler
-  return g ? { pt: g, zip: nearestZip(g) } : null;
+  return g ? { pt: g, zip: nearestZip(g), label: text, precision: 'area' } : null;
 }
 
 // ---------------------------------------------------------------- is it open, and for how long?
@@ -372,7 +421,7 @@ export async function findSites(input: FindSitesInput): Promise<FindSitesOutput>
       spoken_summary: said,
     };
   });
-  return { sites, resolved_zip: loc.zip, ...(loc.place ? { resolved_place: loc.place } : {}) };
+  return { sites, resolved_zip: loc.zip, resolved_location: loc.label, location_precision: loc.precision, ...(loc.place ? { resolved_place: loc.place } : {}) };
 }
 
 // Load the catalog, places and landmark index in the background when the server starts, so the first call is already fast.
