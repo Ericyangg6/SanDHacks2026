@@ -93,6 +93,11 @@ export function siteMessage(args: { site: Site; reading: Reading | null; languag
     );
   }
 
+  const label = siteSourceLabel(site);
+  if (label) {
+    lines.push(evidenceLine({ source_label: label, hours_verified_at: site.last_verified_at, evidence: site.evidence, live_checked: false } as SiteResult, language)!);
+  }
+
   // Last, on its own line, so no punctuation ends up inside the link.
   lines.push(pick({ en: 'Map: ', es: 'Mapa: ' }, language) + mapUrl(site.address));
   return lines.join('\n');
@@ -137,6 +142,24 @@ function alertOpening(alert: AlertRow, language: Language): string {
   );
 }
 
+// "Hours verified Nov 14 from the county's Cool Zone list: "Monday 10:00AM - 6:00PM"". The quote is the exact text the
+// hours came from, trimmed to one short fragment. Null when find_sites gave no source, so nothing is made up.
+export function evidenceLine(site: SiteResult, language: Language): string | null {
+  if (!site.source_label || !site.hours_verified_at) return null;
+  const when = new Intl.DateTimeFormat(language === 'es' ? 'es-US' : 'en-US', { timeZone: TIME_ZONE, month: 'short', day: 'numeric' }).format(new Date(site.hours_verified_at));
+  const verb = site.live_checked
+    ? pick({ en: `Checked just now, no closure notice. Hours verified ${when}`, es: `Revisado hace un momento, sin aviso de cierre. Horario verificado el ${when}` }, language)
+    : pick({ en: `Hours verified ${when}`, es: `Horario verificado el ${when}` }, language);
+  const from = pick({ en: 'from', es: 'en' }, language);
+  const quote = site.evidence?.replace(/\s+/g, ' ').split(/\s*\.{3}\s*/).find((f) => /\d/.test(f))?.trim().slice(0, 90);
+  return `${verb} ${from} ${site.source_label}${quote ? `: "${quote}"` : '.'}`;
+}
+
+function siteSourceLabel(site: Site): string | null {
+  if (!/^https?:/.test(site.source_url) || /google\.[a-z.]+\/maps/.test(site.source_url)) return null;
+  try { return `the page at ${new URL(site.source_url).hostname.replace(/^www\./, '')}`; } catch { return null; }
+}
+
 function alertSiteLines(alert: AlertRow, site: SiteResult, language: Language): string[] {
   const smoke = alert.kind === 'air_quality_alert';
   const discovered = site.tier === 'discovered';
@@ -166,6 +189,8 @@ function alertSiteLines(alert: AlertRow, site: SiteResult, language: Language): 
   if (site.call_ahead && site.tier !== 'discovered') {
     lines.push(pick({ en: 'Call ahead to confirm it is open.', es: 'Llama antes para confirmar que está abierto.' }, language));
   }
+  const proof = evidenceLine(site, language);
+  if (proof) lines.push(proof);
   lines.push(site.map_url);
   return lines;
 }

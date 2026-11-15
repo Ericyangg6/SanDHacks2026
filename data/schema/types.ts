@@ -118,6 +118,12 @@ export interface SiteResult {
   call_ahead: boolean;            // true for discovered sites
   map_url: string;
   spoken_summary: string;         // ready-to-read sentence honoring tier honesty rules
+  // Evidence the caller can be shown (SMS / Messenger / dashboard). All optional.
+  evidence?: string | null;       // verbatim quote from the source page behind the hours
+  source_url?: string | null;     // the page the hours came from
+  source_label?: string | null;   // human name for the source, e.g. "the county's Cool Zone list"
+  hours_verified_at?: string | null; // ISO: live check time if we fetched the page just now, else the last crawl
+  live_checked?: boolean;         // true when Bright Data fetched the hours page during this call
 }
 
 /** How precisely find_sites placed the caller. */
