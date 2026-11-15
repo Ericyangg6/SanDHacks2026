@@ -326,7 +326,18 @@ const NOT_ALLOWED = new Set(['students_only', 'members_only', 'residents_only', 
 // Cafes are free to sit in but staff may expect a purchase: allowed, ranked behind free public spaces, and worded honestly.
 const isCafe = (r: Row): boolean => /\b(cafe|café|coffee|espresso|tea house|bakery)\b/i.test(r.category ?? '');
 
+// Overall deadline so a slow geocoder or database never leaves a caller in silence (the voice tool budget is 10 s).
+// On timeout the caller gets a spoken fallback that asks for a ZIP code, which resolves instantly from the gazetteer.
+const DEADLINE_MS = Number(process.env.FIND_SITES_DEADLINE_MS ?? 7000);
 export async function findSites(input: FindSitesInput): Promise<FindSitesOutput> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const slow = new Promise<FindSitesOutput>((done) => {
+    timer = setTimeout(() => done({ sites: [], resolved_zip: null, fallback_message: "I'm taking too long to look that up. Could you give me your zip code or the nearest cross streets? If it's an emergency, call 9 1 1, and 2 1 1 can help find a cooling space." }), DEADLINE_MS);
+  });
+  try { return await Promise.race([findSitesCore(input), slow]); } finally { clearTimeout(timer); }
+}
+
+async function findSitesCore(input: FindSitesInput): Promise<FindSitesOutput> {
   const catalogReady = catalog(); // read the database while the caller's location is being resolved (voice tool budget is 10 s)
   const loc = await resolveLocation(input);
   if (!loc) return { sites: [], resolved_zip: null, fallback_message: "I couldn't tell where you are. Could you give me your zip code or the nearest cross streets?" };
