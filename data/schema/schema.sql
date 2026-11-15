@@ -226,20 +226,22 @@ create table news_items (
   fetched_at timestamptz not null default now()
 );
 
--- Written by: M3 (request_help tool, dispatcher endpoints). Read by: M1 through GET /dispatch/requests only.
+-- Written by: M3 (request_help tool, neighbor replies, needs extraction). Read by: M1 through GET /dispatch/requests only.
 create type request_status as enum ('requesting', 'incoming', 'declined', 'closed');
 create type help_type as enum ('volunteer_pickup', 'ride_211', 'wellness_check');
 create table requests (
   id              serial primary key,
   conversation_id text unique,                -- ElevenLabs conversation; one request per call
-  status          request_status not null default 'requesting',  -- changed only by dispatcher endpoints
-  help_type       help_type,                  -- chosen by the dispatcher on accept
+  status          request_status not null default 'requesting',  -- 'incoming' only when a neighbor replies YES <id>
+  help_type       help_type,                  -- unused since the dispatcher was dropped
   said            text not null,              -- the caller's own words
-  location        text not null,              -- where the caller said they are
+  location        text not null,              -- where the caller said they are; sent only to the neighbor who said yes
   zip             text,
   lat             double precision,
   lon             double precision,
-  needs           text[] not null default '{}',
+  needs           text[] not null default '{}', -- short English facts; the agent's list, overwritten by extraction. Dashboard chips
+  neighbors_messaged int,                     -- how many neighbors the blast reached; null until it has run
+  volunteer_hash  text,                       -- subscribers.phone_hash of the neighbor who said yes
   language        text,
   phone_e164      text,                       -- raw callback number while the request is open; null after decline or close
   created_at      timestamptz not null default now(),

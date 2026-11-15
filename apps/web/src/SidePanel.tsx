@@ -60,7 +60,7 @@ function Requests({ requests, calls, reqError, req, fresh, onReq, readings }: Pr
   );
 }
 
-/** One line: status pill and the latest step. `live` shimmers while the call or the dispatcher's answer is still pending. */
+/** One line: status pill and the latest step. `live` shimmers while the call or a neighbor's answer is still pending. */
 function Trail({ open, onToggle, pill, label, events, live }: { open: boolean; onToggle(): void; pill: string; label: string; events: CallEvent[]; live?: boolean }) {
   return <>
     <button className={`agent ${live ? 'live' : ''}`} aria-expanded={open} title="Show every step of this call" onClick={onToggle}>

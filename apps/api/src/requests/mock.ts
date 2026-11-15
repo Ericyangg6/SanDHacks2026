@@ -35,7 +35,7 @@ if (process.argv[2] === 'clear') {
   // No dispatcher endpoint yet, so show the second state by hand on one of them.
   if (ids[2]) {
     const { rows } = await db.query(`update requests set status = 'incoming', help_type = 'volunteer_pickup', updated_at = now() where id = $1 returning conversation_id`, [ids[2]]);
-    await logEvent(rows[0].conversation_id, 'help_incoming', 'Dispatcher confirmed a volunteer pickup. Help is incoming');
+    await logEvent(rows[0].conversation_id, 'help_incoming', 'A neighbor said yes and was sent the location');
   }
   // One call still in progress that has not asked for help: shows as "On call" above the requests.
   const live = `mock-${Date.now()}-live`;
