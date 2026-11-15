@@ -70,7 +70,9 @@ Open http://localhost:5173. The page polls `GET /dashboard/state` and `GET /disp
 - `?api=https://xxxx.ngrok-free.app` points the page at another API.
 - `?now=2026-11-16T11:00:00-08:00` replays a moment (open hours, recent calls) for demos.
 
-`apps/dashboard/index.html` is the earlier static version of the same page. The resident directions page (`apps/dashboard/directions.html`) is still static, and its street routes are mock data in `apps/dashboard/mock.js`. No volunteer table exists yet.
+The same server also serves the resident directions page at http://localhost:5173/directions.html. That page is a phone-first map with the route to one cooling center. It is all mock data: the destination, the steps, the bus times, the updates and the street route (`apps/web/src/directions/route.ts`). It calls no API, and no directions endpoint exists yet.
+
+`apps/dashboard/index.html` is the earlier static version of the ops dashboard. No volunteer table exists yet.
 
 ### Quick checks
 
@@ -86,8 +88,8 @@ curl -s -o /dev/null -w '%{http_code}\n' -X POST "$(grep ^PUBLIC_API_URL= .env |
 
 ```
 apps/api/      Mastra server: ElevenLabs tool endpoints (src/elevenlabs), dashboard state (src/dashboard), shared find_sites/send_sms/hours/db (src/shared)
-apps/web/       Ops dashboard: React + TypeScript (Vite), reads apps/api
-apps/dashboard/ Resident directions page and the earlier static ops dashboard (no build step)
+apps/web/       Ops dashboard (index.html, reads apps/api) and resident directions page (directions.html, mock data): React + TypeScript (Vite)
+apps/dashboard/ Earlier static ops dashboard (no build step)
 agent/         ElevenLabs agent definition: prompts, tools, sync/test scripts (see agent/README.md)
 data/schema/   Neon schema, shared types, contracts between workstreams
 docs/          Project plan and per-workstream plans (M1 to M4)

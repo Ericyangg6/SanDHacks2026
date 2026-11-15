@@ -49,7 +49,7 @@ Product context: `PRODUCT.md`. Architecture: `docs/PROJECT.md`.
 - [ ] `requests` table exists in `data/schema/schema.sql` and `types.ts`, with a migration file.
 - [ ] `POST /el/tools/request-help` creates one row per conversation and returns `status: requesting` with its `say_this` line. A repeat call in the same conversation returns the existing row.
 - [ ] `GET /dispatch/requests` returns open requests and never returns `phone_e164`.
-- [ ] The dashboard Help requests panel shows live rows and drops the "Mock data" tag. `REQUESTS` leaves `apps/dashboard/mock.js`.
+- [ ] The dashboard Help requests panel shows live rows and drops the "Mock data" tag.
 - [ ] `npm run el:sync` registers the `request_help` tool.
 **Verification:**
 - `cd apps/api && npm run typecheck`
@@ -128,4 +128,3 @@ Product context: `PRODUCT.md`. Architecture: `docs/PROJECT.md`.
 
 - `PRODUCT.md` says help requests are mock, lists two request statuses, and says phone numbers are hashed. This plan makes requests live and dispatcher-run, adds declined and closed, and stores a raw number on open requests. Update with `/project-init product` before T2 ships.
 - `data/schema/contracts.md` has no `requests` table and allows a raw number only in `subscribers.phone_e164`. The schema-change rule requires a PR that tags all four members.
-- `apps/dashboard/mock.js` describes requests as agent-run ("the agent is calling volunteers"). `DESIGN.md` may describe that card. Check with `/project-init design` when T2 changes the panel.
