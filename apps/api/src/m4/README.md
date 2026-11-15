@@ -55,11 +55,15 @@ page-scoped id, not a phone number, so it never goes through `toE164` or `hashPh
   `messenger_psid` / `messenger_page_id` so alerts can be sent. `START` signs a past subscriber up again with the
   zip on file. `STOP` stamps `opted_out_at` and clears the stored ids. `HELP` explains. Questions are still answered
   after STOP: it cancels alerts, and the person wrote to us.
-- **Phone profile.** `JOIN <zip> <phone> [name]`, e.g. `JOIN 92105 6195551234 Ana Ruiz`, also links the Messenger
-  profile to a phone number (`messenger/join.ts` parses it; any order, any common phone format). Only
-  `hashPhone(e164)` is stored, in `subscribers.linked_phone_hash`, never the raw number; the name goes in
-  `display_name`. One number links to one profile: a new link moves it. A JOIN without a phone keeps the link on
-  file, an unreadable phone number is refused with nothing saved, and STOP clears both.
+- **Phone profile.** `JOIN <zip> <phone>`, e.g. `JOIN 92105 6195551234`, also links the Messenger profile to a
+  phone number (`messenger/join.ts` parses it; either order, any common phone format; other words are ignored).
+  Only `hashPhone(e164)` is stored, in `subscribers.linked_phone_hash`, never the raw number. The name is not
+  typed: at JOIN, `messenger/profile.ts` reads `first_name last_name` from the person's Facebook profile through
+  the Graph API and stores it in `display_name`. That needs `FACEBOOK_PAGE_ACCESS_TOKEN` (a Page access token for
+  Shadoes, from a Meta app with Messenger access; in development mode Facebook only answers for people with a role
+  on that app); without it, or when Facebook does not answer within 3 seconds, the name stays unknown and the
+  signup still works. One number links to one profile: a new link moves it. A JOIN without a phone keeps the link
+  on file, an unreadable phone number is refused with nothing saved, and STOP clears the link and the name.
   `db.getMessengerProfileByPhone(hashPhone(e164))` finds the active profile for a number. Nothing sends through it
   yet: routing `send_sms` (the voice agent's "text me the address") to the linked Messenger is the next step.
 - **Alerts.** `dispatchAlert` sends Messenger subscribers the alert from the Page they joined on
@@ -305,6 +309,7 @@ M4_SMS_DRY_RUN=1 node src/m4/dev/run.mjs send-test
 | `TWILIO_WHATSAPP_ALERT_CONTENT_SID_ES` | Optional. The Spanish alert template. Spanish subscribers get the default one without it |
 | `PUBLIC_BASE_URL` | Public origin Twilio calls, needed for the signature check on every webhook (SMS, WhatsApp, Messenger) |
 | `M4_ALERT_SECRET` | Shared secret for `POST /m4/alerts/mock`. The route refuses everything while it is unset |
+| `FACEBOOK_PAGE_ACCESS_TOKEN` | Optional. Page access token for Shadoes, used only to read a Messenger subscriber's name from their Facebook profile at JOIN |
 | `PHONE_SALT` | Salt for `phone_hash`. Must be the same value for M3 |
 | `NEON_DATABASE_URL` | Postgres connection string |
 | `NWS_USER_AGENT` | Contact string NWS asks for, e.g. `shade-sandhacks (you@example.com)` |

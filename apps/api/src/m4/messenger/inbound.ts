@@ -12,6 +12,7 @@ import { detectKeyword, optOutMessenger, subscribeMessenger, type KeywordMatch }
 import type { CallOutcome, Language, SendSmsOutput } from '../types';
 import { hashMessengerId, messengerLogLabel, parseMessengerAddress } from './identity';
 import { parseJoinMessage } from './join';
+import { fetchMessengerName } from './profile';
 import { sendMessengerReply } from './send';
 
 export interface InboundMessenger {
@@ -100,7 +101,7 @@ async function answer(
 
     case 'start':
     case 'join': {
-      // JOIN <zip> [phone] [name]. START re-subscribes with what is on file.
+      // JOIN <zip> [phone]. START re-subscribes with what is on file.
       const request = match.keyword === 'join' ? parseJoinMessage(msg.body) : null;
       if (request?.phoneInvalid) {
         reply = messengerPhoneInvalid(language);
@@ -118,7 +119,8 @@ async function answer(
         zip: newZip,
         language: match.language === 'es' ? 'es' : undefined,
         phoneE164: request?.phoneE164,
-        name: request?.name,
+        // From their Facebook profile, not typed. Null keeps the name on file.
+        name: await fetchMessengerName(msg.psid),
       });
       language = row.language;
       zip = row.zip;

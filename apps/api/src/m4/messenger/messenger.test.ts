@@ -14,25 +14,22 @@ import { handleInboundMessenger, parseMessengerWebhook } from './inbound';
 import { parseJoinMessage } from './join';
 
 describe('parseJoinMessage', () => {
-  it('reads zip, phone and name in any order and format', () => {
-    assert.deepEqual(parseJoinMessage('JOIN 92105'), { zip: '92105', phoneE164: null, phoneInvalid: false, name: null });
+  it('reads zip and phone in either order and any common format, ignoring other words', () => {
+    assert.deepEqual(parseJoinMessage('JOIN 92105'), { zip: '92105', phoneE164: null, phoneInvalid: false });
     assert.deepEqual(parseJoinMessage('JOIN 92105 16195550147'), {
       zip: '92105',
       phoneE164: '+16195550147',
       phoneInvalid: false,
-      name: null,
     });
     assert.deepEqual(parseJoinMessage('join 92105 (619) 555-0147 Ana Ruiz'), {
       zip: '92105',
       phoneE164: '+16195550147',
       phoneInvalid: false,
-      name: 'Ana Ruiz',
     });
     assert.deepEqual(parseJoinMessage('UNIRME 6195550147 92105'), {
       zip: '92105',
       phoneE164: '+16195550147',
       phoneInvalid: false,
-      name: null,
     });
     assert.equal(parseJoinMessage('JOIN 92105 +1 619 555 0147').phoneE164, '+16195550147');
   });
@@ -60,11 +57,13 @@ delete process.env.M4_SMS_DRY_RUN;
 delete process.env.TWILIO_SID;
 delete process.env.TWILIO_SECRET;
 
-type Sent = { url: string; form?: URLSearchParams; sql?: { query: string; params: unknown[] } };
+type Sent = { url: string; form?: URLSearchParams; sql?: { query: string; params: unknown[] }; graph?: URL };
 
 let requests: Sent[] = [];
 let logged: string[] = [];
 let twilioResponse: () => Response;
+// The fake Facebook Graph API's answer to a profile lookup.
+let graphResponse: () => Response;
 const realFetch = globalThis.fetch;
 const realConsole = { log: console.log, info: console.info, warn: console.warn, error: console.error };
 
@@ -113,11 +112,17 @@ beforeEach(() => {
   logged = [];
   db = { subscriber: null, active: [], lastInbound: null };
   twilioResponse = () => Response.json({ sid: 'SM00000000000000000000000000000001' }, { status: 201 });
+  graphResponse = () => Response.json({ first_name: 'Ana', last_name: 'Ruiz', id: PSID });
+  delete process.env.FACEBOOK_PAGE_ACCESS_TOKEN;
   globalThis.fetch = (async (input: string | URL | Request, init?: RequestInit) => {
     const url = String(input);
     if (url.startsWith('https://api.twilio.com/')) {
       requests.push({ url, form: new URLSearchParams(String(init?.body)) });
       return twilioResponse();
+    }
+    if (url.startsWith('https://graph.facebook.com/')) {
+      requests.push({ url, graph: new URL(url) });
+      return graphResponse();
     }
     if (url === 'https://db.example.test/sql') {
       const sql = JSON.parse(String(init?.body)) as { query: string; params: unknown[] };
@@ -137,6 +142,7 @@ afterEach(() => {
 });
 
 const twilioSends = () => requests.filter((r) => r.form);
+const graphCalls = () => requests.filter((r) => r.graph).map((r) => r.graph!);
 const sqlCalls = () => requests.filter((r) => r.sql).map((r) => r.sql!);
 
 function webhook(body: string, messageSid: string): Record<string, string> {
@@ -278,12 +284,19 @@ describe('handleInboundMessenger', () => {
   // A made-up number and name.
   const PHONE = '+16195550147';
 
-  it('links a phone number and name with JOIN <zip> <phone> <name>, storing only the phone hash', async () => {
-    const msg = parseMessengerWebhook(webhook('JOIN 92105 16195550147 Ana Ruiz', 'SMtest-join-phone'))!;
+  it('links a phone number with JOIN <zip> <phone>, taking the name from Facebook and storing only the phone hash', async () => {
+    process.env.FACEBOOK_PAGE_ACCESS_TOKEN = 'test-page-token';
+    // A typed name is ignored: the name comes from the Facebook profile.
+    const msg = parseMessengerWebhook(webhook('JOIN 92105 16195550147 Someone Else', 'SMtest-join-phone'))!;
     const result = await handleInboundMessenger(msg);
     assert.match(result.reply!, /^Shade: Ana, you are signed up/);
     assert.match(result.reply!, /phone number ending in 0147/);
     assert.ok(!result.reply!.includes('6195550147'));
+
+    const [graph] = graphCalls();
+    assert.equal(graph.pathname, `/${PSID}`);
+    assert.equal(graph.searchParams.get('fields'), 'first_name,last_name');
+    assert.equal(graph.searchParams.get('access_token'), 'test-page-token');
 
     const unlink = sqlCalls().find((sql) => /set linked_phone_hash = null/.test(sql.query))!;
     assert.deepEqual(unlink.params, [hashPhone(PHONE), hashMessengerId(PSID)]);
@@ -291,10 +304,23 @@ describe('handleInboundMessenger', () => {
     assert.equal(upsert.params[1], '92105');
     assert.equal(upsert.params[7], hashPhone(PHONE));
     assert.equal(upsert.params[8], 'Ana Ruiz');
-    // The raw phone number goes nowhere: not to the database, not to the log.
+    // The raw phone number, the name and the token go nowhere else: not to the database, not to the log.
     assert.ok(!JSON.stringify(sqlCalls()).includes('6195550147'));
-    assert.ok(!logged.join('\n').includes('6195550147'));
-    assert.ok(!logged.join('\n').includes('Ana'));
+    for (const secret of ['6195550147', 'Ana', 'test-page-token', PSID]) assert.ok(!logged.join('\n').includes(secret));
+  });
+
+  it('signs up without a name when there is no Page token, or Facebook fails', async () => {
+    const plain = await handleInboundMessenger(parseMessengerWebhook(webhook('JOIN 92105', 'SMtest-join-notoken'))!);
+    assert.match(plain.reply!, /^Shade: you are signed up/);
+    assert.equal(graphCalls().length, 0);
+
+    process.env.FACEBOOK_PAGE_ACCESS_TOKEN = 'test-page-token';
+    graphResponse = () => Response.json({ error: { code: 100, message: `Unsupported get request ${PSID}` } }, { status: 400 });
+    const failed = await handleInboundMessenger(parseMessengerWebhook(webhook('JOIN 92105', 'SMtest-join-graphfail'))!);
+    assert.match(failed.reply!, /^Shade: you are signed up/);
+    assert.equal(graphCalls().length, 1);
+    assert.ok(logged.some((line) => /Facebook profile lookup failed: HTTP 400 \(Graph error 100\)/.test(line)));
+    assert.ok(!logged.join('\n').includes(PSID));
   });
 
   it('refuses a JOIN whose phone number cannot be read, saving nothing', async () => {

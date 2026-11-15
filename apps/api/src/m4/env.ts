@@ -25,6 +25,9 @@ export const env = {
   twilio: () => ({ ...twilioCredentials(), phoneNumber: requireEnv('TWILIO_PHONE_NUMBER') }),
   // The WhatsApp sender's number, E.164. Defaults to TWILIO_PHONE_NUMBER, the number the sender is registered on.
   whatsAppFrom: () => process.env.TWILIO_WHATSAPP_FROM || requireEnv('TWILIO_PHONE_NUMBER'),
+  // Optional. A Page access token for the Shadoes Facebook Page, used only to read a Messenger subscriber's name
+  // from their Facebook profile at JOIN (messenger/profile.ts). Without it, names are not stored.
+  facebookPageAccessToken: () => process.env.FACEBOOK_PAGE_ACCESS_TOKEN || null,
   // Content SID (HX...) of the approved WhatsApp alert template, or null while there is none. Without it,
   // WhatsApp subscribers only get alerts within 24 hours of their last message. Spanish subscribers get the
   // _ES template when it is set, else the default one.
