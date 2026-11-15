@@ -35,7 +35,7 @@ export async function handleSendSms(body: z.infer<typeof sendSmsBody>): Promise<
     }
     const code = result.error ?? 'unknown';
     console.warn(`[el send_sms] not sent: ${code} (site ${body.site_id})`);
-    return { ok: false, error: code === 'opted_out' ? OPTED_OUT : NOT_SENT, code };
+    return { ok: false, error: code === 'opted_out' ? OPTED_OUT : (result.note ?? NOT_SENT), code };
   } catch (err) {
     console.error('[el send_sms] failed', err);
     updateCallState(body.conversation_id, { toolError: true });
