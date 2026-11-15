@@ -38,7 +38,7 @@ export function ZonesPanel({ sites, summary, summaryTitle, zone, onZone, onClear
         <p><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z" /><circle cx="12" cy="9.5" r="2.5" /></svg>Caller markers on the map</p>
         <i className="tk req"></i><span>Requesting: waiting for a neighbor to say yes</span>
         <i className="tk req incoming"></i><span>Incoming: a neighbor said yes</span>
-        <i className="dot"></i><span>Called or texted in the last 24h</span>
+        <i className="dot"></i><span>People who called or texted in from this zip, last 24h</span>
       </div>
     </section>
   );

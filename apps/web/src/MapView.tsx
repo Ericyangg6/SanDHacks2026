@@ -18,7 +18,7 @@ export const AST = '<svg viewBox="0 0 24 24"><path d="M12 3v18M4.2 7.5l15.6 9M19
 const icon = (html: string, size: number) => L.divIcon({ className: '', html, iconSize: [size, size], iconAnchor: [size / 2, size / 2] });
 const zoneIcon = (z: Zone, sel: boolean) => icon(`<div class="tk zone ${z.tier} ${sel ? 'sel' : ''}">${AST}</div>`, 34);
 const reqIcon = (r: HelpRequest, sel: boolean) => icon(`<div class="tk req ${r.status === 'incoming' ? 'incoming' : 'requesting'} ${sel ? 'sel' : ''}"></div>`, 30);
-const dotIcon = icon('<div class="dot"></div>', 9);
+const dotIcon = (n: number) => (n === 1 ? icon('<div class="dot"></div>', 9) : icon(`<div class="dot n">${n}</div>`, 18));
 const pad = (): L.FitBoundsOptions => (innerWidth > 1000 ? { paddingTopLeft: [380, 100], paddingBottomRight: [410, 40] } : { padding: [30, 30] });
 
 interface Props {
@@ -60,7 +60,7 @@ export function MapView({ sites, calls, requests, zone, req, onZone, onReq }: Pr
   useEffect(() => {
     const s = m.current!;
     s.calls.clearLayers();
-    for (const c of calls) L.marker([c.lat, c.lon], { icon: dotIcon, interactive: false, keyboard: false }).addTo(s.calls);
+    for (const c of calls) L.marker([c.lat, c.lon], { icon: dotIcon(c.n), interactive: false, keyboard: false }).addTo(s.calls);
   }, [calls]);
 
   useEffect(() => {   // a request whose location couldn't be placed has a card but no marker

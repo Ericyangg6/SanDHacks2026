@@ -157,6 +157,7 @@ async function answer(
           reply = turn.text;
           outcome = turn.outcome;
           siteId = turn.siteId;
+          zip = turn.zip ?? zip; // where they said they are, when the agent looked it up; else the zip on file
           language = turn.language;
         } catch (error) {
           console.error(`[m4] text agent failed for ${label} (${reason(error)})`);
