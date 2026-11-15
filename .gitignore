@@ -1,5 +1,13 @@
 .env
 CLAUDE.md
-
 node_modules/
 .neon
+
+# Claude Code worktrees (full checkouts nested in the repo)
+.claude/worktrees/
+
+# Leftover build output and local DBs from before the Mastra app moved to apps/api
+apps/sandhacks/
+
+# Personal M4 build plan
+docs/outbound.md

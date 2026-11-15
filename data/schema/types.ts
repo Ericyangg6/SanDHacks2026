@@ -11,7 +11,7 @@ export type Language = 'en' | 'es' | 'tl' | 'vi' | 'zh';
 /** messenger: Facebook Messenger through Twilio (M4). whatsapp: WhatsApp through Twilio (M4). */
 export type Channel = 'voice' | 'sms' | 'messenger' | 'whatsapp';
 /** subscribers.alert_channel: where a subscriber's alerts go. null in the database means 'sms'. */
-export type AlertChannel = 'sms' | 'whatsapp';
+export type AlertChannel = 'sms' | 'whatsapp' | 'messenger';
 export type CallDirection = 'inbound' | 'outbound';
 export type CallOutcome =
   | 'site_given' | 'sms_sent' | 'no_site_found' | 'escalated_911' | 'abandoned' | 'error';
