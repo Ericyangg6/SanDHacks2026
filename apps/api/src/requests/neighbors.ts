@@ -2,11 +2,12 @@
 // their phone in subscribers.phone_e164). A help request goes to every volunteer, wherever they live, and the first
 // to reply YES <id> takes it. The blast carries the area and needs only. The volunteer who says yes gets the exact
 // location, a map link and the caller's number; the caller gets the volunteer's number. The volunteer then sends
-// DONE <id> when the person is safe, or CANCEL <id> to hand the request back to the other volunteers.
+// DONE <id> when the person is safe, or CANCEL <id> to hand the request back to the other volunteers. Until then,
+// when the caller has a linked Messenger, the Page relays messages between the two (relay.ts).
 import { getMessengerProfileByPhone, listActiveVolunteers } from '../m4/db';
 import { deliverNowIfWindowOpen, queueFollowup } from '../m4/messenger/followups';
 import { sendMessengerInWindow } from '../m4/messenger/send';
-import { isMessengerContact, type Language, type SubscriberRow } from '../m4/types';
+import { isMessengerContact, type Language, type MessengerContact, type SubscriberRow } from '../m4/types';
 import { db } from '../shared/db';
 import { hashPhone } from '../shared/phone';
 import { logEvent } from './events';
@@ -24,6 +25,12 @@ export function spokenPhone(e164: string): string {
   const m = e164.match(/^\+1(\d{3})(\d{3})(\d{4})$/);
   const digits = (s: string) => s.split('').join(' ');
   return m ? `${digits(m[1])}, ${digits(m[2])}, ${digits(m[3])}` : digits(e164.replace(/\D/g, ''));
+}
+
+/** The caller's Messenger profile, linked to the phone they called from (JOIN <zip> <phone>); null when none. */
+export async function callerProfile(phoneE164: string | null): Promise<MessengerContact | null> {
+  if (!phoneE164 || !process.env.PHONE_SALT) return null;
+  return getMessengerProfileByPhone(hashPhone(phoneE164));
 }
 
 function mapLink(location: string, lat: number | null, lon: number | null): string {
@@ -115,7 +122,10 @@ export async function answerNeighbor(subscriber: Sender, body: string): Promise<
 
   const { rows: [r] } = await db.query(
     `select status, volunteer_hash, location, lat, lon, needs, said, phone_e164 from requests where id = $1`, [id]);
-  if (r && r.volunteer_hash === active.phone_hash && r.status === 'incoming') return handoffMessage(id, r, spanish);
+  if (r && r.volunteer_hash === active.phone_hash && r.status === 'incoming') {
+    const relay = !!(await callerProfile(r.phone_e164).catch(() => null));
+    return handoffMessage(id, r, spanish, relay);
+  }
   if (r && r.status === 'incoming' && (await isVolunteer(active.phone_hash))) {
     return spanish ? 'Gracias. Otro voluntario ya dijo que sí.' : 'Thank you. Another volunteer already said yes.';
   }
@@ -124,8 +134,11 @@ export async function answerNeighbor(subscriber: Sender, body: string): Promise<
 
 interface Assignment { location: string; lat: number | null; lon: number | null; needs: string[]; said: string; phone_e164: string | null }
 
-/** What the volunteer who said yes gets: where to go, the map, who to call, and how to finish. */
-function handoffMessage(id: number, r: Assignment, spanish: boolean): string {
+/**
+ * What the volunteer who said yes gets: where to go, the map, who to call, and how to finish. With `relay`, the
+ * caller is on Messenger and what the volunteer writes here reaches them.
+ */
+function handoffMessage(id: number, r: Assignment, spanish: boolean, relay: boolean): string {
   const map = mapLink(r.location, r.lat, r.lon);
   const said = r.said.slice(0, 500);
   if (spanish) {
@@ -136,6 +149,7 @@ function handoffMessage(id: number, r: Assignment, spanish: boolean): string {
       r.needs.length ? `🙋 Necesitan: ${r.needs.join(', ')}` : '',
       `💬 Sus palabras: "${said}"`,
       r.phone_e164 ? `📞 Su número: ${shownPhone(r.phone_e164)}. Llame cuando esté cerca.` : '',
+      relay ? '💬 Lo que escriba aquí le llega por Messenger. Empiece con SHADE para preguntarle a Shade.' : '',
       `✅ Envíe LISTO ${id} cuando estén a salvo, o CANCELAR ${id} si no puede ir.`,
       'Si alguien tiene señales de golpe de calor, llame al 911.',
     ].filter(Boolean).join('\n');
@@ -147,6 +161,7 @@ function handoffMessage(id: number, r: Assignment, spanish: boolean): string {
     r.needs.length ? `🙋 They need: ${r.needs.join(', ')}` : '',
     `💬 In their words: "${said}"`,
     r.phone_e164 ? `📞 Their number: ${shownPhone(r.phone_e164)}. Call them when you're close.` : '',
+    relay ? "💬 Anything you write here reaches them on Messenger. Start with SHADE to ask Shade instead." : '',
     `✅ Send DONE ${id} when they're safe, or CANCEL ${id} if you can't make it.`,
     'If anyone has signs of heat illness, call 911.',
   ].filter(Boolean).join('\n');
@@ -228,7 +243,7 @@ async function messageCaller(id: number, kind: 'coming' | 'handed_back'): Promis
   try {
     const { rows: [r] } = await db.query(`select phone_e164, language, conversation_id from requests where id = $1`, [id]);
     conversationId = r?.conversation_id ?? null;
-    const profile = r?.phone_e164 && process.env.PHONE_SALT ? await getMessengerProfileByPhone(hashPhone(r.phone_e164)) : null;
+    const profile = await callerProfile(r?.phone_e164 ?? null);
     if (!profile) {
       await logEvent(conversationId, 'help_incoming', 'Caller has no linked Messenger, so no follow-up was sent');
       return;
@@ -238,8 +253,10 @@ async function messageCaller(id: number, kind: 'coming' | 'handed_back'): Promis
     const body = kind === 'coming'
       ? language === 'es'
         ? ['🙋 Un voluntario dijo que puede ir a ayudarle.', phone ? `📞 Su número: ${shownPhone(phone)}` : '',
+            '💬 Responda aquí y le pasaremos su mensaje.',
             'Quédese donde está si puede. Si alguien se siente peor, llame al 911.'].filter(Boolean).join('\n')
         : ['🙋 A volunteer said they can come help you.', phone ? `📞 Their number: ${shownPhone(phone)}` : '',
+            "💬 Reply here and we'll pass your message to them.",
             'Stay where you are if you can. If anyone feels worse, call 911.'].filter(Boolean).join('\n')
       : language === 'es'
         ? 'El voluntario que dijo que sí ya no puede ir. Se lo pedimos a los otros voluntarios. Si necesita ayuda ahora, llame al 211. Si alguien se siente peor, llame al 911.'

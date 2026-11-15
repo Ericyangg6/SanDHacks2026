@@ -1,4 +1,5 @@
 import { activeAssignment, answerNeighbor, helperNote } from '../../requests/neighbors';
+import { relayMessage } from '../../requests/relay';
 import { generateTextReply } from '../agent/reply';
 import { getSubscriber, insertCall, insertMessage } from '../db';
 import {
@@ -53,7 +54,8 @@ function reason(error: unknown): string {
 // already answered Twilio by then, so a slow agent turn cannot hit Twilio's 15-second limit.
 // Messenger is Shade's main channel, with the same keywords as SMS: JOIN <zip> and START sign the person up for
 // alerts here (subscribers row keyed by the Messenger hash, alert_channel 'messenger'), STOP opts them out, HELP
-// explains. Anything else goes to the text agent, keyed by the Messenger hash.
+// explains. While a volunteer is on their help request, the volunteer and the caller write to each other through the
+// Page (requests/relay.ts). Anything else goes to the text agent, keyed by the Messenger hash.
 // Logs one calls row (inbound, messenger), which also opens Messenger's 24-hour window for alerts. Never throws.
 export async function handleInboundMessenger(msg: InboundMessenger): Promise<MessengerResult> {
   const now = Date.now();
@@ -64,7 +66,7 @@ export async function handleInboundMessenger(msg: InboundMessenger): Promise<Mes
   recent.set(msg.messageSid, now);
 
   const match = detectKeyword(msg.body);
-  let reply: string;
+  let reply: string | null;
   let label = 'messenger:unknown';
   try {
     const contactHash = hashMessengerId(msg.psid);
@@ -79,7 +81,8 @@ export async function handleInboundMessenger(msg: InboundMessenger): Promise<Mes
     reply = match?.language === 'es' ? replyUnavailable('es') : `${replyUnavailable('en')}\n\n${replyUnavailable('es')}`;
   }
 
-  const sent = await sendMessengerReply({ pageId: msg.pageId, psid: msg.psid, body: reply });
+  // No reply when the message was relayed: the other side got it.
+  const sent = reply === null ? null : await sendMessengerReply({ pageId: msg.pageId, psid: msg.psid, body: reply });
   return { reply, sent };
 }
 
@@ -88,7 +91,7 @@ async function answer(
   contactHash: string,
   label: string,
   match: KeywordMatch | null,
-): Promise<string> {
+): Promise<string | null> {
   const subscriber = await getSubscriber(contactHash);
   // A Spanish keyword is answered in Spanish. Otherwise the subscriber's language, else English.
   let language: Language = match?.language === 'es' ? 'es' : (subscriber?.language ?? 'en');
@@ -96,7 +99,7 @@ async function answer(
   // call_outcome has no value for a keyword exchange, so those rows keep a null outcome.
   let outcome: CallOutcome | null = null;
   let siteId: number | null = null;
-  let reply: string;
+  let reply: string | null;
 
   switch (match?.keyword) {
     case 'stop':
@@ -143,6 +146,7 @@ async function answer(
       break;
 
     default: {
+      let relay: Awaited<ReturnType<typeof relayMessage>>;
       // YES / DONE / CANCEL <id> on a help request (requests/neighbors.ts). Null for anything else.
       const neighborReply = await answerNeighbor(subscriber, msg.body);
       if (neighborReply) {
@@ -154,6 +158,13 @@ async function answer(
       } else if (!msg.body.trim()) {
         // A sticker or a picture with no words, for example.
         reply = messengerHelpMessage(language);
+      } else if ((relay = await relayMessage(subscriber, contactHash, msg.body).catch((error) => {
+        console.error(`[m4] relay for ${label} failed (${reason(error)})`);
+        return null;
+      }))) {
+        // Passed to the volunteer or the caller on the other end of an open help request.
+        reply = relay.reply;
+        outcome = relay.outcome;
       } else {
         // Answered even after STOP: STOP cancels alerts, and this person just wrote to us.
         try {
