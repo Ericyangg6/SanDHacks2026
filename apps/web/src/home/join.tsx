@@ -74,13 +74,15 @@ function Join() {
             <small id="zip-msg" role={zipErr ? 'alert' : undefined}>{zipErr}</small>
           </label>
           <label className={phoneErr ? 'bad' : ''}>
-            <span>Phone number <em>optional</em></span>
+            <span>Phone number <em>{mode === 'volunteer' ? 'so callers can reach you' : 'optional'}</em></span>
             <input type="tel" inputMode="tel" autoComplete="tel-national" placeholder="(619) 555-0123" value={phone}
               aria-invalid={!!phoneErr} aria-describedby="phone-msg"
               onChange={(e) => setPhone(e.target.value.slice(0, 20))}
               onBlur={() => setTouched((x) => ({ ...x, phone: true }))} />
             <small id="phone-msg" role={phoneErr ? 'alert' : undefined}>
-              {phoneErr || 'The number you call Shade from. Directions from a call then reach you on Messenger.'}
+              {phoneErr || (mode === 'volunteer'
+                ? 'When you say yes to a request, the caller gets this number so they can reach you.'
+                : 'The number you call Shade from. Directions from a call then reach you on Messenger.')}
             </small>
           </label>
 

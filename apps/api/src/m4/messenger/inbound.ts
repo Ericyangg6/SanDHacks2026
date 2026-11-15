@@ -1,6 +1,6 @@
-import { answerNeighbor } from '../../requests/neighbors';
+import { activeAssignment, answerNeighbor, helperNote } from '../../requests/neighbors';
 import { generateTextReply } from '../agent/reply';
-import { getSubscriber, insertCall } from '../db';
+import { getSubscriber, insertCall, insertMessage } from '../db';
 import {
   messengerHelpMessage,
   messengerJoinUsage,
@@ -143,17 +143,26 @@ async function answer(
       break;
 
     default: {
-      // YES <id> to a neighbor's help request (requests/neighbors.ts). Null for anything else.
+      // YES / DONE / CANCEL <id> on a help request (requests/neighbors.ts). Null for anything else.
       const neighborReply = await answerNeighbor(subscriber, msg.body);
       if (neighborReply) {
         reply = neighborReply;
+        // Kept in the conversation, so the agent knows what the volunteer was sent when they write next.
+        await insertMessage({ phoneHash: contactHash, role: 'user', body: msg.body })
+          .then(() => insertMessage({ phoneHash: contactHash, role: 'assistant', body: neighborReply }))
+          .catch((error) => console.error(`[m4] volunteer turn for ${label} not saved (${reason(error)})`));
       } else if (!msg.body.trim()) {
         // A sticker or a picture with no words, for example.
         reply = messengerHelpMessage(language);
       } else {
         // Answered even after STOP: STOP cancels alerts, and this person just wrote to us.
         try {
-          const turn = await generateTextReply({ contactHash, body: msg.body, channel: 'messenger', logLabel: label });
+          // Helper mode: a volunteer on a request gets answers about it instead of the cooling-center script.
+          const assignment = subscriber ? await activeAssignment(contactHash).catch(() => null) : null;
+          const turn = await generateTextReply({
+            contactHash, body: msg.body, channel: 'messenger', logLabel: label,
+            context: assignment ? helperNote(assignment) : undefined,
+          });
           reply = turn.text;
           outcome = turn.outcome;
           siteId = turn.siteId;

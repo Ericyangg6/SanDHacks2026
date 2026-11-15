@@ -120,6 +120,7 @@ export async function generateTextReply(args: {
   body: string;
   channel: TextChannel;
   logLabel: string;
+  context?: string; // extra facts for this turn, such as a volunteer's active help request (helper mode)
 }): Promise<TextReply> {
   const phoneHash = args.contactHash;
   // Messenger hashes never match a subscriber row, so a Messenger turn always takes the non-subscriber path.
@@ -149,7 +150,7 @@ export async function generateTextReply(args: {
         { role: 'user' as const, content: args.body },
       ],
       {
-        system: systemNote(subscriber, disclosed, args.channel),
+        system: args.context ? `${systemNote(subscriber, disclosed, args.channel)}\n\n${args.context}` : systemNote(subscriber, disclosed, args.channel),
         maxSteps: 4,
         modelSettings: { maxOutputTokens: MAX_OUTPUT_TOKENS, timeout: { totalMs: AGENT_TIMEOUT_MS } },
         tracingOptions: { tags: [`m4-${args.channel}`] },
