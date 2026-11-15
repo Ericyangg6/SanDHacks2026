@@ -55,8 +55,9 @@ names.
 - **Messenger and alerts:** **Twilio**'s Facebook Messenger channel posts to signed webhooks on the Mastra server.
   A **Claude** text agent answers with the same `find_sites` tool. JOIN, STOP and HELP are handled in code, and
   Mastra workflows send NWS and reading-based alerts.
-- **Dashboard:** a static page (no build step) on a pale-blue map, polling one Mastra endpoint that reads Neon,
-  with NWS forecasts and US Census data for the cooling-gap view.
+- **Dashboard:** a **React + TypeScript** (Vite) app on a pale-blue map that polls the Mastra API, which reads
+  Neon, with NWS forecasts and US Census data for the cooling-gap view and a dispatcher inbox for help requests. It
+  imports its response types from the API, so a contract change breaks the build instead of the screen.
 
 ## Challenges we ran into
 
@@ -103,4 +104,4 @@ names.
 ## Built with
 
 ElevenLabs · Twilio · Mastra · Neon · Bright Data · Gemini · Claude · Google Geocoding · National Weather Service ·
-US Census · TypeScript · Node.js · Postgres · Leaflet · Cloudflare Tunnel
+US Census · TypeScript · Node.js · React · Vite · Postgres · Leaflet · Cloudflare Tunnel

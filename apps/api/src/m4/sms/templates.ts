@@ -97,7 +97,14 @@ function mapLine(url: string, language: Language): string {
 
 // The Messenger layout of siteMessage.
 function messengerSiteMessage(site: Site, reading: Reading | null, language: Language, now: Date): string {
-  const lines = [`📍 ${site.name}`, site.address, `🕒 ${hoursLine(site.hours, now, language)}`];
+  // A short lead before the details. A discovered site is never called a cooling center; its call-ahead line follows.
+  const lead = pick(
+    site.tier === 'discovered'
+      ? { en: "Here's the place we found for you:", es: 'Este es el lugar que encontramos para ti:' }
+      : { en: "Here's the cooling center we found for you:", es: 'Este es el centro de enfriamiento que encontramos para ti:' },
+    language,
+  );
+  const lines = [lead, `📍 ${site.name}`, site.address, `🕒 ${hoursLine(site.hours, now, language)}`];
   const aqi = aqiLine(reading, language);
   if (aqi) lines.push(`🌫️ ${aqi}`);
   if (site.tier === 'discovered') {
@@ -274,12 +281,55 @@ function alertSiteLines(alert: AlertRow, site: SiteResult, language: Language): 
 
 // The Messenger layout of alertMessage: opening, a blank line, the site as a labelled block, a blank line, then what
 // they can do.
+// "Heads up from Shade: Extreme Heat Warning for your area until Sun 8:00 PM." The same facts as alertOpening, with a
+// friendlier lead for a chat bubble.
+function messengerAlertOpening(alert: AlertRow, language: Language): string {
+  const opening = alertOpening(alert, language);
+  const test = /^Shade (TEST|PRUEBA):/.test(opening);
+  const rest = opening.replace(/^Shade( TEST| PRUEBA)?:\s*/, '');
+  const sentence = rest.charAt(0).toUpperCase() + rest.slice(1);
+  return pick(
+    {
+      en: `⚠️ Heads up from Shade${test ? ' (test)' : ''}: ${sentence}`,
+      es: `⚠️ Aviso de Shade${test ? ' (prueba)' : ''}: ${sentence}`,
+    },
+    language,
+  );
+}
+
+// The line that introduces the site in a Messenger alert. Keeps the honesty rules: a discovered site is never called
+// an official cooling center and always says to call ahead; smoke alerts never promise filtered air.
+function messengerAlertSiteLead(alert: AlertRow, site: SiteResult, language: Language): string {
+  const smoke = alert.kind === 'air_quality_alert' || alert.kind === 'high_aqi';
+  const discovered = site.tier === 'discovered';
+  return pick(
+    smoke
+      ? discovered
+        ? {
+            en: "Here's the nearest open indoor space to get out of the smoke (not an official site, so call ahead first):",
+            es: 'Este es el espacio interior abierto más cercano para alejarte del humo (no es un sitio oficial, así que llama antes):',
+          }
+        : {
+            en: "Here's the nearest open indoor space to get out of the smoke:",
+            es: 'Este es el espacio interior abierto más cercano para alejarte del humo:',
+          }
+      : discovered
+        ? {
+            en: "Here's the nearest open place to cool off (not an official cooling center, so call ahead first):",
+            es: 'Este es el lugar abierto más cercano para refrescarte (no es un centro oficial, así que llama antes):',
+          }
+        : {
+            en: "Here's the nearest cooling center that's open right now:",
+            es: 'Este es el centro de enfriamiento abierto más cercano ahora mismo:',
+          },
+    language,
+  );
+}
+
 function messengerAlertMessage(alert: AlertRow, site: SiteResult | null, language: Language): string {
-  const sections = [`⚠️ ${alertOpening(alert, language)}`];
+  const sections = [messengerAlertOpening(alert, language)];
   if (site) {
-    // The label line ("Nearest open cooling center:"), then the block.
-    const [label] = alertSiteLines(alert, site, language);
-    const block = [label, `📍 ${site.name}`, site.address];
+    const block = [messengerAlertSiteLead(alert, site, language), `📍 ${site.name}`, site.address];
     block.push(pick({ en: `🕒 Hours today: ${site.hours_today}`, es: `🕒 Horario de hoy: ${site.hours_today}` }, language));
     if (site.aqi != null) {
       block.push(pick({ en: `🌫️ Air quality (AQI) there: ${site.aqi}`, es: `🌫️ Calidad del aire (AQI) allí: ${site.aqi}` }, language));
@@ -295,8 +345,8 @@ function messengerAlertMessage(alert: AlertRow, site: SiteResult | null, languag
     sections.push(
       pick(
         {
-          en: 'We could not find an open site near you right now. Call 211 for help finding one, or for a free ride.',
-          es: 'No encontramos un lugar abierto cerca de ti ahora. Llama al 211 para encontrar uno o pedir transporte gratis.',
+          en: "We couldn't find an open place near you right now.\n🚗 Call 211 for help finding one, or for a free ride.",
+          es: 'No encontramos un lugar abierto cerca de ti ahora.\n🚗 Llama al 211 para encontrar uno o pedir transporte gratis.',
         },
         language,
       ),
@@ -305,8 +355,8 @@ function messengerAlertMessage(alert: AlertRow, site: SiteResult | null, languag
   sections.push(
     pick(
       {
-        en: '💬 Reply with questions (no car? need closer?), or STOP to cancel.\n🚨 In an emergency, call 911.',
-        es: '💬 Responde con tus preguntas (¿sin carro? ¿algo más cerca?), o STOP para cancelar.\n🚨 En una emergencia, llama al 911.',
+        en: "💧 Stay cool and drink plenty of water.\n💬 Reply anytime with questions (no car? need something closer?), or STOP to cancel.\n🚨 In an emergency, call 911.",
+        es: '💧 Mantente fresco y toma mucha agua.\n💬 Responde cuando quieras con tus preguntas (¿sin carro? ¿algo más cerca?), o STOP para cancelar.\n🚨 En una emergencia, llama al 911.',
       },
       language,
     ),
@@ -476,7 +526,7 @@ export function messengerOptInConfirmation(
   extra: { phoneLast4?: string | null; name?: string | null } = {},
 ): string {
   const firstName = extra.name?.split(' ')[0];
-  const greeting = firstName ? `${firstName}, ` : '';
+  const greeting = firstName ? `, ${firstName}` : '';
   const linked = extra.phoneLast4
     ? pick(
         {
@@ -488,8 +538,8 @@ export function messengerOptInConfirmation(
     : '';
   return pick(
     {
-      en: `✅ Shade: ${greeting}you are signed up for heat and smoke alerts for ${zip} here on Messenger.${linked}\n\nFacebook only lets us message you within 24 hours of your last message, so write to us now and then to keep alerts coming.\n\nSend STOP to cancel.`,
-      es: `✅ Shade: ${greeting}te suscribiste a las alertas de calor y humo para ${zip} aquí en Messenger.${linked}\n\nFacebook solo nos deja escribirte dentro de las 24 horas de tu último mensaje, así que escríbenos de vez en cuando para seguir recibiendo alertas.\n\nEnvía STOP para cancelar.`,
+      en: `✅ You're all set${greeting}! Shade will message you here with heat and smoke alerts for ${zip}.${linked}\n\n💡 Facebook only lets us message you within 24 hours of your last message, so say hi now and then to keep alerts coming.\n\nSend STOP anytime to cancel.`,
+      es: `✅ ¡Listo${greeting}! Shade te enviará aquí alertas de calor y humo para ${zip}.${linked}\n\n💡 Facebook solo nos deja escribirte dentro de las 24 horas de tu último mensaje, así que salúdanos de vez en cuando para seguir recibiendo alertas.\n\nEnvía STOP cuando quieras para cancelar.`,
     },
     language,
   );
@@ -499,8 +549,8 @@ export function messengerOptInConfirmation(
 export function messengerStopConfirmation(language: Language): string {
   return pick(
     {
-      en: '👋 Shade: you are unsubscribed from alerts and will not get any more here.\n\nYou can still ask us questions any time. Send START to sign up again.',
-      es: '👋 Shade: cancelaste tu suscripción y no recibirás más alertas aquí.\n\nPuedes seguir haciéndonos preguntas cuando quieras. Envía START para volver a suscribirte.',
+      en: "👋 You're unsubscribed. Shade won't send you any more alerts here.\n\nYou can still ask me questions anytime. Send START to sign up again.",
+      es: '👋 Cancelaste tu suscripción. Shade no te enviará más alertas aquí.\n\nPuedes seguir haciéndome preguntas cuando quieras. Envía START para volver a suscribirte.',
     },
     language,
   );
@@ -510,8 +560,8 @@ export function messengerStopConfirmation(language: Language): string {
 export function messengerHelpMessage(language: Language): string {
   return pick(
     {
-      en: 'Shade finds the nearest open cooling center in San Diego.\n\n💬 Ask: "Where can I cool off near 92105?"\n🔔 Alerts: send JOIN and your zip code\n🔕 Stop alerts: send STOP\n🚗 Free ride: call 211\n🚨 Emergency: call 911',
-      es: 'Shade encuentra el centro de enfriamiento abierto más cercano en San Diego.\n\n💬 Pregunta: "¿Dónde me refresco cerca de 92105?"\n🔔 Alertas: envía JOIN y tu código postal\n🔕 Cancelar alertas: envía STOP\n🚗 Transporte gratis: llama al 211\n🚨 Emergencia: llama al 911',
+      en: "Hi! I'm Shade 👋 I help you find the nearest open cooling center in San Diego.\n\n💬 Ask me: \"Where can I cool off near 92105?\"\n🔔 Alerts: send JOIN and your zip code\n🔕 Stop alerts: send STOP\n🚗 Free ride: call 211\n🚨 Emergency: call 911",
+      es: '¡Hola! Soy Shade 👋 Te ayudo a encontrar el centro de enfriamiento abierto más cercano en San Diego.\n\n💬 Pregúntame: "¿Dónde me refresco cerca de 92105?"\n🔔 Alertas: envía JOIN y tu código postal\n🔕 Cancelar alertas: envía STOP\n🚗 Transporte gratis: llama al 211\n🚨 Emergencia: llama al 911',
     },
     language,
   );
@@ -519,5 +569,19 @@ export function messengerHelpMessage(language: Language): string {
 
 // First line of a follow-up held after a phone call (messenger/followups.ts), above the site details.
 export function followupIntro(language: Language): string {
-  return pick({ en: '📞 From your call with Shade:', es: '📞 De tu llamada con Shade:' }, language);
+  return pick(
+    { en: "📞 Here's the follow-up from your call with Shade.", es: '📞 Aquí tienes el seguimiento de tu llamada con Shade.' },
+    language,
+  );
+}
+
+// Last line of that follow-up, below the site details.
+export function followupOutro(language: Language): string {
+  return pick(
+    {
+      en: '💬 Reply here anytime if you need something closer, a ride, or help in another language.',
+      es: '💬 Responde aquí cuando quieras si necesitas algo más cerca, transporte o ayuda en otro idioma.',
+    },
+    language,
+  );
 }

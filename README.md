@@ -143,17 +143,22 @@ messages** to `https://<words>.trycloudflare.com/m4/twilio/messenger` (POST), an
 
 ### Ops dashboard
 
-With terminal 1 running, serve the static dashboard:
+With terminal 1 running, start the dashboard (React + TypeScript, Vite):
 
 ```bash
-python -m http.server 8765 --bind 127.0.0.1 --directory apps/dashboard
+cd apps/web && npm install && npm run dev
 ```
 
-Open http://127.0.0.1:8765/index.html. The page polls `GET /dashboard/state` every 10 s. The API reads Neon when
-`NEON_DATABASE_URL` is set. Otherwise it serves `data/seed/`, and the dashboard shows "Seed data".
+Open http://localhost:5173. The page polls `GET /dashboard/state` and `GET /dispatch/requests` every 10 s. It
+imports its response types from `apps/api`, so `npm run typecheck` fails when the API contract changes. The API
+reads Neon when `NEON_DATABASE_URL` is set. Otherwise it serves `data/seed/`, and the dashboard shows "Seed data".
 
 - `?api=https://xxxx.ngrok-free.app` points the page at another API.
 - `?now=2026-11-16T11:00:00-08:00` replays a moment (open hours, recent calls) for demos.
+
+`apps/dashboard/index.html` is the earlier static version of the same page. The resident directions page
+(`apps/dashboard/directions.html`) is still static, and its street routes are mock data in `apps/dashboard/mock.js`.
+No volunteer table exists yet.
 
 ### Quick checks
 
@@ -176,7 +181,8 @@ apps/api/        Mastra server
   src/shared/      find_sites, hours, geocoding, database (shared by voice and text)
   src/m4/          Messenger text agent, alerts, subscribers (see its README and AGENTS.md)
   src/dashboard/   dashboard state API
-apps/dashboard/  static ops dashboard and resident directions page (no build step)
+apps/web/        ops dashboard: React + TypeScript (Vite), reads apps/api
+apps/dashboard/  resident directions page and the earlier static ops dashboard (no build step)
 agent/           ElevenLabs agent definition: prompts, tools, sync/test scripts
 ingest/          data pipeline: Bright Data scraping, Gemini extraction, verification, Neon loader
 data/schema/     Neon schema, migrations, shared types, contracts between workstreams

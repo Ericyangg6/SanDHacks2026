@@ -42,15 +42,16 @@ The Messenger side of Shade does three things:
 
 | Mode | What happens | Where |
 | --- | --- | --- |
-| 1. After a phone call | When a call ends, the site the caller was given is held for their linked Messenger profile automatically (no text offer needed), and `send_sms` holds it on request too; it goes out the next time they message the Page | `sms/send-sms.ts` (`followUpAfterCall`, `sendSms`), `messenger/followups.ts`, hook in `elevenlabs/post-call.ts` |
+| 1. After a phone call | When a call ends, the site the caller was given is held for their linked Messenger profile automatically (no text offer needed), and `send_sms` does it on request too; it goes out at once if they messaged the Page in the last 24 hours, else the next time they do | `sms/send-sms.ts` (`followUpAfterCall`, `sendSms`), `messenger/followups.ts`, hook in `elevenlabs/post-call.ts` |
 | 2. Full agent | Any message that is not a keyword goes to the text agent: where are you, nearest open site, no car, Spanish, 911 and 211 | `messenger/inbound.ts`, `agent/reply.ts` |
 | 3. Heat and AQI alerts | NWS alerts, plus alerts from our own readings (heat index or AQI over a line), go to Messenger subscribers in the zip | `alerts/dispatch.ts`, `alerts/readings.ts` |
 
-**Mode 1 in detail.** A phone call does not open Facebook's 24-hour window, so nothing can be sent the moment the
-voice agent asks. `sendSms` looks the caller up by `hashPhone(e164)` in `subscribers.linked_phone_hash` (set by
-`JOIN <zip> <phone>` on Messenger). With a profile, the site text goes into `messenger_followups` (kept 7 days) and
-`sendSms` returns `{ ok: true, note }`; the next time they message the Page, `deliverFollowups` sends it first,
-then the normal reply. STOP drops what is held. Without a profile it returns `no_messenger_profile` and a `note`
+**Mode 1 in detail.** A phone call does not open Facebook's 24-hour window, but a recent message to the Page (their
+JOIN counts) does. `sendSms` looks the caller up by `hashPhone(e164)` in `subscribers.linked_phone_hash` (set by
+`JOIN <zip> <phone>` on Messenger). With a profile, the site text goes into `messenger_followups` (kept 7 days).
+If they messaged the Page in the last 24 hours it is sent at once (`deliverNowIfWindowOpen`) and the `note` tells
+the voice agent to say it is in their Messenger now; otherwise the `note` tells the caller to send the Page any
+message, and `deliverFollowups` sends it first when they do, then the normal reply. STOP drops what is held. Without a profile it returns `no_messenger_profile` and a `note`
 telling the voice agent to read the address out and explain how to link Messenger. Nothing goes out by SMS unless
 `M4_SMS_ENABLED=1` (carriers block the number's texts until A2P registration, while Twilio still reports them
 sent). `apps/api/src/shared/send-sms.ts`, which the ElevenLabs tool calls, forwards to this `sendSms`.
