@@ -6,6 +6,7 @@
 //   data/seed/sites.extras.json  provenance not in the schema yet (access rules, verification, evidence,
 //                                review signals), keyed by site id. See data/schema/proposals/.
 import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { geocode } from "./geocode.ts";
 
@@ -147,20 +148,27 @@ async function main() {
   // It is still the same place, so it must keep its id: reuse the old key when a previously seeded site matches by street address +
   // name, or sits within 150 m and shares a name word. Otherwise production would end up with two rows for one library.
   if (registry) {
-    const prevSites: any[] = JSON.parse(await readFile(new URL("../data/seed/sites.json", import.meta.url), "utf8").catch(() => "[]"));
-    const prevExtras: Record<string, any> = JSON.parse(await readFile(new URL("../data/seed/sites.extras.json", import.meta.url), "utf8").catch(() => "{}"));
+    const readJson = async (rel: string) => JSON.parse(await readFile(new URL(rel, import.meta.url), "utf8").catch(() => "null"));
+    // Previous identities = the seed on disk AND the committed seed (what production holds), because a run may rewrite the file first.
+    const gitShow = (f: string) => { try { return JSON.parse(execFileSync("git", ["show", `HEAD:data/seed/${f}`], { cwd: new URL("..", import.meta.url).pathname, encoding: "utf8", maxBuffer: 1e9 })); } catch { return null; } };
+    const prevSites: any[] = []; const prevExtras: Record<string, any> = {};
+    for (const [sites, extras] of [[await readJson("../data/seed/sites.json"), await readJson("../data/seed/sites.extras.json")], [gitShow("sites.json"), gitShow("sites.extras.json")]]) {
+      for (const o of sites ?? []) { const k = extras?.[String(o.id)]?.external_key; if (k && !prevSites.some((p) => p.id === o.id)) { prevSites.push(o); prevExtras[String(o.id)] = extras[String(o.id)]; } }
+    }
     const norm = (t: string) => String(t ?? "").toLowerCase().replace(/[^a-z0-9 ]/g, " ").replace(/\s+/g, " ").trim();
-    const words = (t: string) => new Set(norm(t).split(" ").filter((w) => w.length > 3 && !/^(library|branch|public|diego|county|center|centre|park|recreation)$/.test(w)));
-    const street = (a: string) => norm(String(a ?? "").split(",")[0]);
+    const GENERIC = /^(library|branch|public|diego|county|center|centre|park|recreation|recreational|community|senior|city)$/;
+    // number + first street word ("840 duncan"), so "Road"/"Rd" and a missing comma do not matter
+    const street = (a: string) => norm(String(a ?? "")).split(" ").slice(0, 2).join(" ");
+    const words = (name: string, address: string) => { const inAddr = new Set(norm(address).split(" ")); return new Set(norm(name).split(" ").filter((w) => w.length > 3 && !GENERIC.test(w) && !inAddr.has(w))); };
     const meters = (a: any, b: any) => Math.hypot((a.lat - b.lat) * 111000, (a.lon - b.lon) * 93000);
     const liveKeys = new Set(built.map((b) => b.key));
-    const free = prevSites.map((o) => ({ o, key: prevExtras[String(o.id)]?.external_key as string | undefined })).filter((x) => x.key && !liveKeys.has(x.key));
+    const free = prevSites.map((o) => ({ o, key: prevExtras[String(o.id)].external_key as string })).filter((x) => !liveKeys.has(x.key));
     let linked = 0;
     for (const b of built) {
       if (reg.ids[b.key] != null) continue;
-      const shared = (o: any) => [...words(o.name)].some((w) => words(b.site.name).has(w));
-      const hit = free.find(({ o }) => (street(o.address) === street(b.site.address) && street(o.address) !== "" && (shared(o) || norm(o.name) === norm(b.site.name))) || (o.kind === b.site.kind && meters(o, b.site) < 150 && shared(o)));
-      if (hit) { b.key = hit.key!; free.splice(free.indexOf(hit), 1); linked++; }
+      const shared = (o: any) => { const w = words(o.name, o.address), n = words(b.site.name, b.site.address); return [...w].some((x) => n.has(x)); };
+      const hit = free.find(({ o }) => (street(o.address) !== "" && street(o.address) === street(b.site.address) && (shared(o) || norm(o.name) === norm(b.site.name))) || (o.kind === b.site.kind && meters(o, b.site) < 150 && shared(o)));
+      if (hit) { b.key = hit.key; free.splice(free.indexOf(hit), 1); linked++; }
     }
     if (linked) console.log(`kept the existing id for ${linked} place(s) whose natural key changed`);
   }
