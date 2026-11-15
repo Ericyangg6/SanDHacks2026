@@ -3,6 +3,7 @@ import { useEffect, useRef } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import type { DashboardState, HelpRequest, Zone } from './api';
+import { stage } from './format';
 
 // Leaflet places each marker with translate3d, which gives every marker its own GPU layer: 400+ of them cost ~8 ms a frame
 // while panning. left/top keeps them all in the marker pane's single layer. That rules out animating them through a zoom,
@@ -19,6 +20,16 @@ const icon = (html: string, size: number) => L.divIcon({ className: '', html, ic
 const zoneIcon = (z: Zone, sel: boolean) => icon(`<div class="tk zone ${z.tier} ${sel ? 'sel' : ''}">${AST}</div>`, 34);
 const reqIcon = (r: HelpRequest, sel: boolean) => icon(`<div class="tk req ${r.status === 'incoming' ? 'incoming' : 'requesting'} ${sel ? 'sel' : ''}"></div>`, 30);
 const dotIcon = (n: number) => (n === 1 ? icon('<div class="dot"></div>', 9) : icon(`<div class="dot n">${n}</div>`, 18));
+// Built from DOM nodes: location and the trail come from what callers said, so they never go through innerHTML.
+function reqPopup(r: HelpRequest) {
+  const el = (tag: string, cls: string, text: string) => Object.assign(document.createElement(tag), { className: cls, textContent: text });
+  const { label, pill } = stage(r.events ?? [], r.status);
+  const box = el('div', 'req-pop', '');
+  box.append(el('span', `st ${pill}`, label), el('b', '', r.location));
+  const now = r.events?.at(-1)?.text;
+  if (now) box.append(el('small', '', now));
+  return box;
+}
 const pad = (): L.FitBoundsOptions => (innerWidth > 1000 ? { paddingTopLeft: [380, 100], paddingBottomRight: [410, 40] } : { padding: [30, 30] });
 
 interface Props {
@@ -67,7 +78,9 @@ export function MapView({ sites, calls, requests, zone, req, onZone, onReq }: Pr
     const s = m.current!;
     s.reqs.clearLayers();
     for (const r of requests) if (r.lat != null && r.lon != null) {
-      L.marker([r.lat, r.lon], { icon: reqIcon(r, req === r.id), title: r.location, zIndexOffset: 500 }).addTo(s.reqs).on('click', () => on.current.onReq(r.id));
+      const mk = L.marker([r.lat, r.lon], { icon: reqIcon(r, req === r.id), title: r.location, zIndexOffset: 500 }).addTo(s.reqs).on('click', () => on.current.onReq(r.id));
+      // The selected request's status pops up over its marker; a poll that changes it redraws the popup with it.
+      if (req === r.id) mk.bindPopup(reqPopup(r), { autoPan: false, offset: [0, -10] }).openPopup();
     }
   }, [requests, req]);
 

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { CallEvent, HelpRequest, LiveCall, ReadingRow } from './api';
-import { LANG, SOURCE, clockAt, deg, stamp, whenAt } from './format';
+import { LANG, SOURCE, clockAt, deg, stamp, stage, whenAt } from './format';
 
 interface Props {
   requests: HelpRequest[]; calls: LiveCall[]; reqError: string | null; req: number | null; fresh: number | null; onReq(id: number): void;
@@ -23,7 +23,7 @@ function Requests({ requests, calls, reqError, req, fresh, onReq, readings }: Pr
   const count = (st: string) => requests.filter((r) => r.status === st).length;
   const area = (zip: string | null) => readings.find((r) => r.zip === zip)?.area ?? zip;
   const summary = reqError ? `Can't load help requests (${reqError})`
-    : `${calls.length ? `${calls.length} on call, ` : ''}${count('requesting')} requesting, ${count('incoming')} incoming`;
+    : `${calls.length ? `${calls.length} on call, ` : ''}${count('requesting')} locating help, ${count('incoming')} help incoming`;
   const sorted = [...requests].sort((a, b) => +(a.status === 'incoming') - +(b.status === 'incoming'));
 
   return (
@@ -36,7 +36,7 @@ function Requests({ requests, calls, reqError, req, fresh, onReq, readings }: Pr
         {calls.map((c) => (
           <article key={`c${c.id}`} className="req-row call">
             <h3>Call in progress</h3><span className="meta">No help request yet · started {clockAt(c.started_at)}</span>
-            <Trail open={open.has(`c${c.id}`)} onToggle={() => toggle(`c${c.id}`)} pill="oncall" label="On call" events={c.events} live />
+            <Trail open={open.has(`c${c.id}`)} onToggle={() => toggle(`c${c.id}`)} {...stage(c.events)} events={c.events} live />
           </article>
         ))}
         {sorted.map((r) => {
@@ -49,8 +49,8 @@ function Requests({ requests, calls, reqError, req, fresh, onReq, readings }: Pr
                 <span className="meta">{meta}</span>
               </button>
               <div className="chips">{r.needs.map((x) => <span key={x} className="chip">{x}</span>)}</div>
-              <Trail open={open.has(`r${r.id}`)} onToggle={() => toggle(`r${r.id}`)} pill={want ? 'requesting' : 'incoming'}
-                label={want ? 'Requesting' : 'Incoming'} events={r.events ?? []} live={want} />
+              <Trail open={open.has(`r${r.id}`)} onToggle={() => toggle(`r${r.id}`)} {...stage(r.events ?? [], r.status)}
+                events={r.events ?? []} live={want} />
               <div className="more"><p className="said">“{r.said}”</p></div>
             </article>
           );
