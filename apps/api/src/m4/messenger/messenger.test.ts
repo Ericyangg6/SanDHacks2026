@@ -556,6 +556,19 @@ describe('mode 1: send_sms after a phone call', () => {
     assert.ok(sqlCalls().every((sql) => !/insert into messenger_followups/.test(sql.query)));
   });
 
+  it('logs the text instead (dry run) for a caller with no profile, so the demo fallback works', async () => {
+    db.site = SITE;
+    process.env.M4_SMS_DRY_RUN = '1';
+    try {
+      const result = await sendSms({ to: CALLER, site_id: SITE.id });
+      assert.equal(result.ok, true);
+      assert.equal(twilioSends().length, 0);
+      assert.ok(logged.some((line) => /dry run, not sent/.test(line) && line.includes('Test Library')));
+    } finally {
+      delete process.env.M4_SMS_DRY_RUN;
+    }
+  });
+
   it('still refuses a number that opted out', async () => {
     db.site = SITE;
     db.subscriber = messengerRow({ opted_out_at: '2026-11-14T00:00:00.000Z' });

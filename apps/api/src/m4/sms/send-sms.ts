@@ -100,7 +100,8 @@ const NOTE_NO_MESSENGER =
 // The shared contract function. M3's voice agent calls this when a caller asks to be texted a site.
 // Builds the site text from site_id. Messenger first: when the caller's number is linked to a Messenger profile
 // (JOIN <zip> <phone>), the text is held and sent the next time they message the Page (messenger/followups.ts).
-// Otherwise nothing is sent, unless M4_SMS_ENABLED=1, when it goes out by SMS through sendText.
+// Otherwise nothing is sent, unless M4_SMS_ENABLED=1, when it goes out by SMS through sendText (or, with
+// M4_SMS_DRY_RUN=1, is only logged there).
 // No subscriber row is needed: a caller asking for a text mid-call is consent for that one message. An opted-out
 // number is still refused. Never throws. Errors on top of sendText's: site_not_found, lookup_failed,
 // no_messenger_profile, followup_failed. `note` tells the voice agent what to say about delivery.
@@ -142,7 +143,11 @@ export async function sendSms(input: SendSmsInput): Promise<SendSmsOutput> {
       return { ok: false, error: 'followup_failed', note: NOTE_NO_MESSENGER };
     }
   }
-  if (!env.smsEnabled()) return { ok: false, error: 'no_messenger_profile', note: NOTE_NO_MESSENGER };
+  // With M4_SMS_DRY_RUN=1 the SMS path only logs the text, which the demo shows in place of a real text
+  // (docs/DEMO.md), so it is allowed through: nothing reaches a phone.
+  if (!env.smsEnabled() && !env.smsDryRun()) {
+    return { ok: false, error: 'no_messenger_profile', note: NOTE_NO_MESSENGER };
+  }
 
   // zip stays unset: the dashboard reads calls.zip as demand by zip, SendSmsInput does not carry the caller's
   // zip, and site.zip is not the same thing.
