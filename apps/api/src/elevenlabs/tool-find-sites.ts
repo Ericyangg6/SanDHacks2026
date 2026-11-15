@@ -15,7 +15,21 @@ export const findSitesBody = z.object({
   conversation_id: z.string().optional(),
 });
 
-export async function handleFindSites(body: z.infer<typeof findSitesBody>): Promise<FindSitesOutput> {
+const PRECISE = new Set(['address', 'intersection', 'landmark']);
+
+// When the caller was only placed by zip, street or area, distances are measured from the middle of that area.
+// The model tends to read them out anyway ("a four-minute walk"), so don't hand them over. The agent can ask for
+// a cross street instead (system prompt).
+function forTheAgent(result: FindSitesOutput) {
+  if (!result.location_precision || PRECISE.has(result.location_precision)) return result;
+  return {
+    ...result,
+    sites: result.sites.map(({ travel_minutes: _t, distance_miles: _d, ...site }) => site),
+    note: 'Location is approximate (area or zip only): do not tell the caller distances or walking times.',
+  };
+}
+
+export async function handleFindSites(body: z.infer<typeof findSitesBody>): Promise<FindSitesOutput | ReturnType<typeof forTheAgent>> {
   const { conversation_id, location, language, ...needs } = body;
   try {
     const result = await findSites({ location, language, needs });
@@ -28,7 +42,7 @@ export async function handleFindSites(body: z.infer<typeof findSitesBody>): Prom
     if (result.sites.length === 0 && !result.fallback_message) {
       return { ...result, fallback_message: FALLBACK };
     }
-    return result;
+    return forTheAgent(result);
   } catch (err) {
     console.error('[el find_sites] failed', err);
     updateCallState(conversation_id, { toolError: true });
