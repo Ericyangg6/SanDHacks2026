@@ -568,8 +568,8 @@ export function messengerOptInConfirmation(
   const volunteer = extra.volunteer === undefined ? '' : pick(
     extra.volunteer
       ? {
-          en: `\n🙋 You're a volunteer: when someone near ${zip} calls Shade and needs a person to come, we'll message you here. Reply YES and the number to help.`,
-          es: `\n🙋 Eres voluntario: cuando alguien cerca de ${zip} llame a Shade y necesite que alguien vaya, te escribiremos aquí. Responde SI y el número para ayudar.`,
+          en: `\n🙋 You're a volunteer: when someone calls Shade and needs a person to come, we'll message you here with where they are. Reply YES and the number to help.`,
+          es: `\n🙋 Eres voluntario: cuando alguien llame a Shade y necesite que alguien vaya, te escribiremos aquí con dónde está. Responde SI y el número para ayudar.`,
         }
       : {
           en: `\n🙋 Want to help neighbors in the heat? Send JOIN ${zip} VOLUNTEER.`,

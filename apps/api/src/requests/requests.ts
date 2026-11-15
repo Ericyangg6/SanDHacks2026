@@ -1,4 +1,4 @@
-// Help requests: a caller asks for a pickup, a ride or a check. Neighbors in their zip get a message
+// Help requests: a caller asks for a pickup, a ride or a check. Every volunteer gets a message
 // (neighbors.ts) and the first to reply YES <id> takes it. The agent only reports status: it reads `say_this`,
 // which this file chooses from the request row.
 import { z } from 'zod';

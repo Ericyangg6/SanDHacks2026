@@ -275,6 +275,19 @@ export async function listActiveSubscribersByZips(zips: string[]): Promise<(Subs
   );
 }
 
+// Every opted-in volunteer (JOIN ... VOLUNTEER) reachable on Messenger, wherever they live: help requests go to all
+// of them (requests/neighbors.ts).
+export async function listActiveVolunteers(): Promise<MessengerContact[]> {
+  return withAlertChannel((columns) =>
+    query<MessengerContact>(
+      `select ${columns} from subscribers
+       where opted_out_at is null and volunteer_at is not null
+         and messenger_psid is not null and messenger_page_id is not null
+       order by id`,
+    ),
+  );
+}
+
 // ---- alerts ----
 
 export interface NewAlert {
