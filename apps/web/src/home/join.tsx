@@ -14,7 +14,7 @@ const COPYTEXT: Record<JoinMode, { title: string; lede: string; extra?: string }
     lede: 'When extreme heat or wildfire smoke reaches your zip code, the Shadoes Page messages you the nearest cooling center open right now.',
   },
   volunteer: {
-    title: 'Help a neighbor in the heat',
+    title: 'Sign up to volunteer',
     lede: 'When someone calls Shade and needs a person to come, we message every volunteer with the area they are in. Reply YES and the request number to take it. Only the volunteer who says yes gets their exact location.',
     extra: 'You also get heat alerts for your zip code.',
   },
