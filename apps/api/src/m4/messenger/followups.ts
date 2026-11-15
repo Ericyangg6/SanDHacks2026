@@ -40,7 +40,7 @@ export async function queueFollowup(args: {
   if (args.siteId != null && (await hasRecentFollowup(args.profile.phone_hash, args.siteId, since))) return false;
   await insertFollowup({
     phoneHash: args.profile.phone_hash,
-    body: `${followupIntro(args.language)}\n${args.body}`,
+    body: `${followupIntro(args.language)}\n\n${args.body}`,
     siteId: args.siteId,
     expiresAt: new Date(Date.now() + FOLLOWUP_TTL_DAYS * 24 * 3600_000),
   });

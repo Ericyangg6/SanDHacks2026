@@ -128,7 +128,7 @@ export async function dispatchAlert(alert: AlertRow): Promise<{ textsSent: numbe
       return null;
     });
 
-    const body = alertMessage({ alert, site, language: subscriber.language });
+    const body = alertMessage({ alert, site, language: subscriber.language, style: messenger ? 'messenger' : 'plain' });
     let result: SendSmsOutput;
     if (messenger) {
       // Writes the calls row with alert_id, which is the row both guards read.

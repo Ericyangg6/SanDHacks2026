@@ -357,7 +357,7 @@ describe('handleInboundMessenger', () => {
     // A typed name is ignored: the name comes from the Facebook profile.
     const msg = parseMessengerWebhook(webhook('JOIN 92105 16195550147 Someone Else', 'SMtest-join-phone'))!;
     const result = await handleInboundMessenger(msg);
-    assert.match(result.reply!, /^Shade: Ana, you are signed up/);
+    assert.match(result.reply!, /^✅ Shade: Ana, you are signed up/);
     assert.match(result.reply!, /phone number ending in 0147/);
     assert.ok(!result.reply!.includes('6195550147'));
 
@@ -379,13 +379,13 @@ describe('handleInboundMessenger', () => {
 
   it('signs up without a name when there is no Page token, or Facebook fails', async () => {
     const plain = await handleInboundMessenger(parseMessengerWebhook(webhook('JOIN 92105', 'SMtest-join-notoken'))!);
-    assert.match(plain.reply!, /^Shade: you are signed up/);
+    assert.match(plain.reply!, /^✅ Shade: you are signed up/);
     assert.equal(graphCalls().length, 0);
 
     process.env.FACEBOOK_PAGE_ACCESS_TOKEN = 'test-page-token';
     graphResponse = () => Response.json({ error: { code: 100, message: `Unsupported get request ${PSID}` } }, { status: 400 });
     const failed = await handleInboundMessenger(parseMessengerWebhook(webhook('JOIN 92105', 'SMtest-join-graphfail'))!);
-    assert.match(failed.reply!, /^Shade: you are signed up/);
+    assert.match(failed.reply!, /^✅ Shade: you are signed up/);
     assert.equal(graphCalls().length, 1);
     assert.ok(logged.some((line) => /Facebook profile lookup failed: HTTP 400 \(Graph error 100\)/.test(line)));
     assert.ok(!logged.join('\n').includes(PSID));
@@ -537,7 +537,7 @@ describe('mode 1: automatic follow-up when a call ends', () => {
     db.profile = messengerRow({ linked_phone_hash: hashPhone(CALLER) });
     assert.equal(await followUpAfterCall({ phoneE164: CALLER, siteId: SITE.id, language: 'es' }), 'queued');
     assert.equal(held().length, 1);
-    assert.match(String(held()[0].params[1]), /^De tu llamada con Shade:/);
+    assert.match(String(held()[0].params[1]), /^📞 De tu llamada con Shade:\n\n📍 Test Library/);
     assert.equal(twilioSends().length, 0);
     assert.ok(!JSON.stringify(sqlCalls()).includes('6195550189'));
   });
@@ -568,7 +568,7 @@ describe('mode 1: automatic follow-up when a call ends', () => {
     db.site = SITE;
     db.profile = messengerRow();
     assert.equal(await followUpAfterCall({ phoneE164: CALLER, siteId: SITE.id, language: 'Spanish' }), 'queued');
-    assert.match(String(held()[0].params[1]), /^From your call with Shade:/);
+    assert.match(String(held()[0].params[1]), /^📞 From your call with Shade:\n\n📍 Test Library/);
   });
 });
 
@@ -587,7 +587,7 @@ describe('mode 1: send_sms after a phone call', () => {
     assert.deepEqual(lookup.params, [hashPhone(CALLER)]);
     const held = sqlCalls().find((sql) => /insert into messenger_followups/.test(sql.query))!;
     assert.equal(held.params[0], hashMessengerId(PSID));
-    assert.match(String(held.params[1]), /^From your call with Shade:\n.*Test Library/s);
+    assert.match(String(held.params[1]), /^📞 From your call with Shade:\n\n📍 Test Library\n.*\n🗺️ Map: https:/s);
     assert.equal(held.params[2], SITE.id);
     // The caller's number is only ever hashed.
     assert.ok(!JSON.stringify(sqlCalls()).includes('6195550188'));
@@ -656,7 +656,7 @@ describe('mode 3: alerts from readings', () => {
     assert.equal(insert.params[0], 'high_heat_index');
     assert.equal(insert.params[1], null); // not an NWS alert
     assert.deepEqual(JSON.parse(String(insert.params[2])), ['92105']);
-    assert.match(twilioSends()[0].form!.get('Body')!, /^Shade: it is dangerously hot in your area right now \(heat index 106°F\)/);
+    assert.match(twilioSends()[0].form!.get('Body')!, /^⚠️ Shade: it is dangerously hot in your area right now \(heat index 106°F\)\.\n\n.*\n📍 .*\n🗺️ Map: .*\n\n💬 Reply/s);
   });
 
   it('raises nothing when an alert of that kind went out recently, or readings are under the line', async () => {
@@ -678,6 +678,6 @@ describe('mode 3: alerts from readings', () => {
     const summary = await checkReadingAlerts();
     assert.equal(summary.alertsRaised, 1);
     assert.equal(sqlCalls().find((sql) => /insert into alerts/.test(sql.query))!.params[0], 'high_aqi');
-    assert.match(twilioSends()[0].form!.get('Body')!, /^Shade: the air in your area is unhealthy right now \(AQI 165\)/);
+    assert.match(twilioSends()[0].form!.get('Body')!, /^⚠️ Shade: the air in your area is unhealthy right now \(AQI 165\)/);
   });
 });
