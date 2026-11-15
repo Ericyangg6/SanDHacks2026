@@ -2,8 +2,8 @@ import { toE164 } from '../phone';
 
 // What a Messenger JOIN carries: JOIN <zip> [phone], in either order after the keyword.
 //   JOIN 92105                  zip only
-//   JOIN 92105 14156889097      zip and the phone number to link
-//   JOIN 92105 (415) 688-9097
+//   JOIN 92105 16195550147      zip and the phone number to link
+//   JOIN 92105 (619) 555-0147
 // Any other words are ignored. The person's name is not typed: it comes from their Facebook profile
 // (./profile.ts).
 export interface JoinRequest {
