@@ -55,6 +55,13 @@ page-scoped id, not a phone number, so it never goes through `toE164` or `hashPh
   `messenger_psid` / `messenger_page_id` so alerts can be sent. `START` signs a past subscriber up again with the
   zip on file. `STOP` stamps `opted_out_at` and clears the stored ids. `HELP` explains. Questions are still answered
   after STOP: it cancels alerts, and the person wrote to us.
+- **Phone profile.** `JOIN <zip> <phone> [name]`, e.g. `JOIN 92105 6195551234 Ana Ruiz`, also links the Messenger
+  profile to a phone number (`messenger/join.ts` parses it; any order, any common phone format). Only
+  `hashPhone(e164)` is stored, in `subscribers.linked_phone_hash`, never the raw number; the name goes in
+  `display_name`. One number links to one profile: a new link moves it. A JOIN without a phone keeps the link on
+  file, an unreadable phone number is refused with nothing saved, and STOP clears both.
+  `db.getMessengerProfileByPhone(hashPhone(e164))` finds the active profile for a number. Nothing sends through it
+  yet: routing `send_sms` (the voice agent's "text me the address") to the linked Messenger is the next step.
 - **Alerts.** `dispatchAlert` sends Messenger subscribers the alert from the Page they joined on
   (`sendMessengerAlert`), with the same per-alert and cooldown guards as SMS. Facebook lets a Page message someone
   only within 24 hours of their last message, and no Messenger message tag covers alerts, so a subscriber who has

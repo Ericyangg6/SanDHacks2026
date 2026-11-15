@@ -4,12 +4,14 @@ import {
   messengerHelpMessage,
   messengerJoinUsage,
   messengerOptInConfirmation,
+  messengerPhoneInvalid,
   messengerStopConfirmation,
   replyUnavailable,
 } from '../sms/templates';
 import { detectKeyword, optOutMessenger, subscribeMessenger, type KeywordMatch } from '../subscribers/consent';
 import type { CallOutcome, Language, SendSmsOutput } from '../types';
 import { hashMessengerId, messengerLogLabel, parseMessengerAddress } from './identity';
+import { parseJoinMessage } from './join';
 import { sendMessengerReply } from './send';
 
 export interface InboundMessenger {
@@ -98,8 +100,13 @@ async function answer(
 
     case 'start':
     case 'join': {
-      const typedZip = match.keyword === 'join' ? /\b\d{5}\b/.exec(msg.body)?.[0] : undefined;
-      const newZip = typedZip ?? subscriber?.zip;
+      // JOIN <zip> [phone] [name]. START re-subscribes with what is on file.
+      const request = match.keyword === 'join' ? parseJoinMessage(msg.body) : null;
+      if (request?.phoneInvalid) {
+        reply = messengerPhoneInvalid(language);
+        break;
+      }
+      const newZip = request?.zip ?? subscriber?.zip;
       if (!newZip) {
         reply = messengerJoinUsage(language);
         break;
@@ -110,10 +117,15 @@ async function answer(
         pageId: msg.pageId,
         zip: newZip,
         language: match.language === 'es' ? 'es' : undefined,
+        phoneE164: request?.phoneE164,
+        name: request?.name,
       });
       language = row.language;
       zip = row.zip;
-      reply = messengerOptInConfirmation(language, row.zip);
+      reply = messengerOptInConfirmation(language, row.zip, {
+        phoneLast4: request?.phoneE164?.slice(-4),
+        name: row.display_name,
+      });
       break;
     }
 

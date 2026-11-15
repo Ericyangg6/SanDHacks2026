@@ -49,6 +49,11 @@ export interface SubscriberRow {
   // Like phone_e164, null once they opt out, and never logged. phone_hash holds hashMessengerId(psid).
   messenger_psid: string | null;
   messenger_page_id: string | null;
+  // Messenger profiles: hashPhone(e164) of the number given with JOIN <zip> <phone>, so the profile can be found
+  // from a phone number. The raw number is not stored. display_name is the optional name given with it.
+  // Both are null when not given, and cleared on STOP. Never logged.
+  linked_phone_hash: string | null;
+  display_name: string | null;
 }
 
 // An opted-in SMS or WhatsApp subscriber, whose number is still on file.

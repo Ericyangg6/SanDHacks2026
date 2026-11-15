@@ -11,6 +11,37 @@ import { hashPhone } from '../phone';
 import { sendTwilioMessenger, twilioSignature, validateTwilioSignature } from '../sms/twilio';
 import { hashMessengerId, messengerLogLabel, parseMessengerAddress } from './identity';
 import { handleInboundMessenger, parseMessengerWebhook } from './inbound';
+import { parseJoinMessage } from './join';
+
+describe('parseJoinMessage', () => {
+  it('reads zip, phone and name in any order and format', () => {
+    assert.deepEqual(parseJoinMessage('JOIN 92105'), { zip: '92105', phoneE164: null, phoneInvalid: false, name: null });
+    assert.deepEqual(parseJoinMessage('JOIN 92105 16195550147'), {
+      zip: '92105',
+      phoneE164: '+16195550147',
+      phoneInvalid: false,
+      name: null,
+    });
+    assert.deepEqual(parseJoinMessage('join 92105 (619) 555-0147 Ana Ruiz'), {
+      zip: '92105',
+      phoneE164: '+16195550147',
+      phoneInvalid: false,
+      name: 'Ana Ruiz',
+    });
+    assert.deepEqual(parseJoinMessage('UNIRME 6195550147 92105'), {
+      zip: '92105',
+      phoneE164: '+16195550147',
+      phoneInvalid: false,
+      name: null,
+    });
+    assert.equal(parseJoinMessage('JOIN 92105 +1 619 555 0147').phoneE164, '+16195550147');
+  });
+
+  it('flags digits that are not a phone number', () => {
+    assert.equal(parseJoinMessage('JOIN 92105 555-12').phoneInvalid, true);
+    assert.equal(parseJoinMessage('JOIN 6195550147').zip, null);
+  });
+});
 
 // Made-up values. None of them is a real account, Page or person.
 const PSID = '7712345678901234';
@@ -53,13 +84,22 @@ function messengerRow(overrides: Partial<SubscriberRow> = {}): SubscriberRow {
     alert_channel: 'messenger',
     messenger_psid: PSID,
     messenger_page_id: PAGE_ID,
+    linked_phone_hash: null,
+    display_name: null,
     ...overrides,
   };
 }
 
 function answer(query: string, params: unknown[]): unknown[] {
   if (/insert into subscribers/.test(query)) {
-    return [messengerRow({ zip: String(params[1]), language: params[2] as SubscriberRow['language'] })];
+    return [
+      messengerRow({
+        zip: String(params[1]),
+        language: params[2] as SubscriberRow['language'],
+        linked_phone_hash: (params[7] as string | null) ?? null,
+        display_name: (params[8] as string | null) ?? null,
+      }),
+    ];
   }
   if (/from subscribers where phone_hash/.test(query)) return db.subscriber ? [db.subscriber] : [];
   if (/from subscribers\s+where opted_out_at is null/.test(query)) return db.active;
@@ -216,7 +256,7 @@ describe('handleInboundMessenger', () => {
 
   it('asks for a zip when JOIN has none', async () => {
     const result = await handleInboundMessenger(parseMessengerWebhook(webhook('JOIN', 'SMtest-join-nozip'))!);
-    assert.match(result.reply!, /send JOIN and your zip code/);
+    assert.match(result.reply!, /send JOIN, your zip code and your phone number/);
     assert.ok(sqlCalls().every((sql) => !/insert into subscribers/.test(sql.query)));
   });
 
@@ -233,6 +273,47 @@ describe('handleInboundMessenger', () => {
     db.subscriber = messengerRow({ zip: '92113', opted_out_at: '2026-11-14T00:00:00.000Z' });
     const result = await handleInboundMessenger(parseMessengerWebhook(webhook('START', 'SMtest-start'))!);
     assert.match(result.reply!, /92113/);
+  });
+
+  // A made-up number and name.
+  const PHONE = '+16195550147';
+
+  it('links a phone number and name with JOIN <zip> <phone> <name>, storing only the phone hash', async () => {
+    const msg = parseMessengerWebhook(webhook('JOIN 92105 16195550147 Ana Ruiz', 'SMtest-join-phone'))!;
+    const result = await handleInboundMessenger(msg);
+    assert.match(result.reply!, /^Shade: Ana, you are signed up/);
+    assert.match(result.reply!, /phone number ending in 0147/);
+    assert.ok(!result.reply!.includes('6195550147'));
+
+    const unlink = sqlCalls().find((sql) => /set linked_phone_hash = null/.test(sql.query))!;
+    assert.deepEqual(unlink.params, [hashPhone(PHONE), hashMessengerId(PSID)]);
+    const upsert = sqlCalls().find((sql) => /insert into subscribers/.test(sql.query))!;
+    assert.equal(upsert.params[1], '92105');
+    assert.equal(upsert.params[7], hashPhone(PHONE));
+    assert.equal(upsert.params[8], 'Ana Ruiz');
+    // The raw phone number goes nowhere: not to the database, not to the log.
+    assert.ok(!JSON.stringify(sqlCalls()).includes('6195550147'));
+    assert.ok(!logged.join('\n').includes('6195550147'));
+    assert.ok(!logged.join('\n').includes('Ana'));
+  });
+
+  it('refuses a JOIN whose phone number cannot be read, saving nothing', async () => {
+    for (const [body, sid] of [
+      ['JOIN 92105 555-12', 'SMtest-join-bad'],
+      ['JOIN 92105 12345', 'SMtest-join-bad2'], // the second 5-digit number is read as a (too short) phone
+    ]) {
+      const result = await handleInboundMessenger(parseMessengerWebhook(webhook(body, sid))!);
+      assert.match(result.reply!, /phone number does not look right/);
+    }
+    assert.ok(sqlCalls().every((sql) => !/insert into subscribers/.test(sql.query)));
+  });
+
+  it('clears the phone link and name on STOP', async () => {
+    db.subscriber = messengerRow({ linked_phone_hash: hashPhone(PHONE), display_name: 'Ana Ruiz' });
+    await handleInboundMessenger(parseMessengerWebhook(webhook('STOP', 'SMtest-stop-linked'))!);
+    const update = sqlCalls().find((sql) => /update subscribers set opted_out_at/.test(sql.query))!;
+    assert.match(update.query, /linked_phone_hash = null/);
+    assert.match(update.query, /display_name = null/);
   });
 
   it('reports a failed send without throwing or logging the id', async () => {

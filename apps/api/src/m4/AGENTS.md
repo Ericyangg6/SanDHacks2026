@@ -13,7 +13,8 @@ the only one that delivers today:
 - WhatsApp outbound is blocked by Meta (Twilio error 63051) on the unverified business account.
 
 New text features go to Messenger first: keywords, alerts, the text agent, anything user-facing. Messenger already
-has JOIN <zip>, START, STOP, HELP, the text agent and alerts (`messenger/`, `alerts/dispatch.ts`).
+has JOIN <zip> [phone] [name] (the phone links the Messenger profile to a number, stored only as a hash), START,
+STOP, HELP, the text agent and alerts (`messenger/`, `alerts/dispatch.ts`).
 
 Messenger's one hard limit: Facebook lets the Page message someone only within 24 hours of their last message.
 None of Facebook's message tags covers alerts, so never send outside that window (`MESSENGER_WINDOW_HOURS` in
