@@ -25,20 +25,24 @@ function reason(error: unknown): string {
   return error instanceof Error ? error.message : 'unknown error';
 }
 
-// The same site is not held twice for one person within this many hours, so send_sms during a call and the
-// automatic follow-up when the call ends (followUpAfterCall) do not both go out.
+// The automatic follow-up when a call ends (followUpAfterCall) skips a site already held for the person within
+// this many hours, so it does not repeat what send_sms sent during the call.
 const DEDUPE_HOURS = 2;
 
-// Holds `body` for the profile. Returns false when the same site was already held for them in the last
-// DEDUPE_HOURS. Throws on a database failure; send_sms turns that into an error.
+// Holds `body` for the profile. With `dedupe` (the default), returns false when the same site was already held
+// for them in the last DEDUPE_HOURS. send_sms passes dedupe: false, since the caller asked for it again.
+// Throws on a database failure; send_sms turns that into an error.
 export async function queueFollowup(args: {
   profile: MessengerContact;
   body: string;
   siteId: number | null;
   language: Language;
+  dedupe?: boolean;
 }): Promise<boolean> {
   const since = new Date(Date.now() - DEDUPE_HOURS * 3600_000);
-  if (args.siteId != null && (await hasRecentFollowup(args.profile.phone_hash, args.siteId, since))) return false;
+  if (args.dedupe !== false && args.siteId != null && (await hasRecentFollowup(args.profile.phone_hash, args.siteId, since))) {
+    return false;
+  }
   await insertFollowup({
     phoneHash: args.profile.phone_hash,
     body: `${followupIntro(args.language)}\n\n${args.body}\n\n${followupOutro(args.language)}`,

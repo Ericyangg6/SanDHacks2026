@@ -141,7 +141,8 @@ export async function sendSms(input: SendSmsInput): Promise<SendSmsOutput> {
 
   if (profile) {
     try {
-      await queueFollowup({ profile, body: messengerBody, siteId, language });
+      // Not deduped: a caller who asks again for a site they got earlier gets it again.
+      await queueFollowup({ profile, body: messengerBody, siteId, language, dedupe: false });
       // Out now when Facebook allows it; otherwise it waits for their next message to the Page.
       const sentNow = await deliverNowIfWindowOpen(profile);
       return { ok: true, note: sentNow ? NOTE_SENT_TO_MESSENGER : NOTE_HELD_FOR_MESSENGER };

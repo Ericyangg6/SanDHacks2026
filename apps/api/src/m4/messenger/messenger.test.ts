@@ -570,10 +570,18 @@ describe('mode 1: automatic follow-up when a call ends', () => {
     db.recentFollowup = true;
     assert.equal(await followUpAfterCall({ phoneE164: CALLER, siteId: SITE.id }), 'already_queued');
     assert.equal(held().length, 0);
-    // send_sms is deduped the same way.
+  });
+
+  it('send_sms sends a site again when the caller asks for it again within the dedupe window', async () => {
+    db.site = SITE;
+    db.profile = messengerRow({ linked_phone_hash: hashPhone(CALLER) });
+    db.recentFollowup = true; // the same site went out on an earlier call
+    db.lastInbound = new Date(Date.now() - 3600_000).toISOString();
     const result = await sendSms({ to: CALLER, site_id: SITE.id });
     assert.equal(result.ok, true);
-    assert.equal(held().length, 0);
+    assert.equal(held().length, 1);
+    assert.equal(twilioSends().length, 1);
+    assert.match(result.note!, /Sent to the caller's Facebook Messenger just now/);
   });
 
   it('does nothing without a linked profile, a site, or when the number opted out', async () => {
