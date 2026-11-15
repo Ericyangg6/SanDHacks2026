@@ -6,6 +6,7 @@
 //   data/seed/sites.extras.json  provenance not in the schema yet (access rules, verification, evidence,
 //                                review signals), keyed by site id. See data/schema/proposals/.
 import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
 import { geocode } from "./geocode.ts";
 
 const DAY = { sun: 0, mon: 1, tue: 2, wed: 3, thu: 4, fri: 5, sat: 6 } as const;
@@ -50,14 +51,27 @@ function acFromReviews(sig: any): boolean | null {
   return sig && sig.ac_positive >= 2 && sig.ac_negative === 0 ? true : null;
 }
 
+// STABLE IDS. calls.site_id and the SMS tool reference sites by id, so a site must keep its id on every rebuild.
+// Each site has a natural key (Google place id, county layer object id, else a hash of name + address). data/seed/site_ids.json
+// remembers key -> id forever; new sites get the next free id. Output order is still sorted for readability.
+type Registry = { next_id: number; ids: Record<string, number> };
+const naturalKey = (s: any): string =>
+  s.place_id ? `maps:${s.place_id}` : s.official_objectid != null ? `county:${s.official_objectid}`
+  : `web:${createHash("sha1").update(`${String(s.name).toLowerCase()}|${String(s.address).toLowerCase()}`).digest("hex").slice(0, 16)}`;
+
 async function main() {
   const merged: any[] = await load("merged.json", []);
   const signals: Record<string, any> = await load("review_signals.json", {});
-  const built: { site: any; extra: any }[] = [];
+  const registryFile = new URL("../data/seed/site_ids.json", import.meta.url);
+  const registry: Registry | null = JSON.parse(await readFile(registryFile, "utf8").catch(() => "null"));
+  const built: { site: any; extra: any; key: string }[] = [];
+  const keysSeen = new Set<string>();
   const skipped: Record<string, number> = { no_coords: 0, no_hours: 0, no_address: 0 };
   let geocoded = 0;
 
   for (const s of merged) {
+    // Housing is never a public cooling space (student dormitories, apartment complexes, residence halls).
+    if (/dormitor|apartment|residence hall|housing|condominium|residential/i.test(`${s.category ?? ""} ${s.name ?? ""}`) && s.tier !== "official") { skipped.housing = (skipped.housing ?? 0) + 1; continue; }
     if (!s.address) { skipped.no_address++; continue; }
     const weekly = (s.hours ?? [])
       .filter((h: any) => h.day in DAY)
@@ -75,7 +89,11 @@ async function main() {
     if (lat < 32.5 || lat > 33.52 || lon < -117.62 || lon > -116.07) { skipped.out_of_county = (skipped.out_of_county ?? 0) + 1; continue; }
     const sig = signals[s.place_id];
     const confirmed = s.verification === "confirmed";
+    let key = naturalKey(s);
+    for (let n = 2; keysSeen.has(key); n++) key = `${naturalKey(s)}#${n}`; // two different places never share a key
+    keysSeen.add(key);
     built.push({
+      key,
       site: {
         name: s.name,
         kind: openAirCenter(s) ? "other" : kindOf(s),
@@ -107,6 +125,7 @@ async function main() {
         coords_from: s.tier === "official" ? "county_cool_zones_layer" : typeof s.lat === "number" ? "google_maps" : "census_geocoder",
         ac_from: s.ac_from ?? (typeof s.has_ac === "boolean" ? "site_page" : acFromReviews(sig) ? "reviews" : null),
         official_name: s.official_name ?? null,
+        category: s.category ?? null,
         pet_policy: s.pet_policy ?? null,
         review_signals: sig
           ? { scanned: sig.reviews_scanned, ac_positive: sig.ac_positive, ac_negative: sig.ac_negative,
@@ -122,9 +141,35 @@ async function main() {
     rank(a) - rank(b) || (a.site.zip ?? "").localeCompare(b.site.zip ?? "") ||
     a.site.kind.localeCompare(b.site.kind) || a.site.name.localeCompare(b.site.name));
 
+  // First run (no registry): number in the sorted order above. Later runs: keep every existing id, give new sites the next free one.
+  const reg: Registry = registry ?? { next_id: 1, ids: {} };
+  // A place can change its natural key between runs (a county record later gets linked to a Maps place, a web page to a Maps place).
+  // It is still the same place, so it must keep its id: reuse the old key when a previously seeded site matches by street address +
+  // name, or sits within 150 m and shares a name word. Otherwise production would end up with two rows for one library.
+  if (registry) {
+    const prevSites: any[] = JSON.parse(await readFile(new URL("../data/seed/sites.json", import.meta.url), "utf8").catch(() => "[]"));
+    const prevExtras: Record<string, any> = JSON.parse(await readFile(new URL("../data/seed/sites.extras.json", import.meta.url), "utf8").catch(() => "{}"));
+    const norm = (t: string) => String(t ?? "").toLowerCase().replace(/[^a-z0-9 ]/g, " ").replace(/\s+/g, " ").trim();
+    const words = (t: string) => new Set(norm(t).split(" ").filter((w) => w.length > 3 && !/^(library|branch|public|diego|county|center|centre|park|recreation)$/.test(w)));
+    const street = (a: string) => norm(String(a ?? "").split(",")[0]);
+    const meters = (a: any, b: any) => Math.hypot((a.lat - b.lat) * 111000, (a.lon - b.lon) * 93000);
+    const liveKeys = new Set(built.map((b) => b.key));
+    const free = prevSites.map((o) => ({ o, key: prevExtras[String(o.id)]?.external_key as string | undefined })).filter((x) => x.key && !liveKeys.has(x.key));
+    let linked = 0;
+    for (const b of built) {
+      if (reg.ids[b.key] != null) continue;
+      const shared = (o: any) => [...words(o.name)].some((w) => words(b.site.name).has(w));
+      const hit = free.find(({ o }) => (street(o.address) === street(b.site.address) && street(o.address) !== "" && (shared(o) || norm(o.name) === norm(b.site.name))) || (o.kind === b.site.kind && meters(o, b.site) < 150 && shared(o)));
+      if (hit) { b.key = hit.key!; free.splice(free.indexOf(hit), 1); linked++; }
+    }
+    if (linked) console.log(`kept the existing id for ${linked} place(s) whose natural key changed`);
+  }
+  for (const b of built) if (reg.ids[b.key] == null) reg.ids[b.key] = reg.next_id++;
   const sites: any[] = [];
   const extras: Record<number, any> = {};
-  built.forEach((b, i) => { sites.push({ id: i + 1, ...b.site }); extras[i + 1] = b.extra; });
+  for (const b of built) { const id = reg.ids[b.key]; sites.push({ id, ...b.site }); extras[id] = { ...b.extra, external_key: b.key }; }
+  await writeFile(registryFile, JSON.stringify(reg, null, 1) + "\n");
+  const newIds = registry ? built.filter((b) => registry.ids[b.key] == null || registry.ids[b.key] >= registry.next_id).length : built.length;
 
   // Contract check: required, non-null fields from schema.sql.
   const bad = sites.filter((x) => !x.name || !x.kind || !x.address || x.lat == null || x.lon == null || !x.source_url || !x.last_verified_at);
@@ -135,7 +180,7 @@ async function main() {
   await writeFile(new URL("../data/seed/sites.extras.json", import.meta.url), JSON.stringify(extras, null, 2) + "\n");
 
   const by = (f: (x: any) => string) => sites.reduce((m: any, x) => ((m[f(x)] = (m[f(x)] ?? 0) + 1), m), {});
-  console.log(`${sites.length} sites → data/seed/sites.json  (geocoded ${geocoded}; skipped: ${JSON.stringify(skipped)})`);
+  console.log(`${sites.length} sites → data/seed/sites.json  (${newIds} new ids; geocoded ${geocoded}; skipped: ${JSON.stringify(skipped)})`);
   console.log("by tier:", by((x) => x.tier), "| by kind:", by((x) => x.kind));
   console.log("confirmed on source:", sites.filter((x) => x.hours_confirmed_on_source).length, "| has_ac known:", sites.filter((x) => x.has_ac !== null).length);
   console.log("zips covered:", new Set(sites.map((x) => x.zip).filter(Boolean)).size);

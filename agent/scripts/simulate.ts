@@ -2,7 +2,7 @@
 // Uses the ElevenLabs agent-testing API (simulation tests). Real tools fire, so `npm run dev`
 // and the tunnel must be up. Tests are upserted by name, so re-running doesn't create duplicates.
 //   cd apps/api && npm run el:simulate                 # all scenarios
-//   npm run el:simulate -- en                          # one scenario: en | es | zh | emergency
+//   npm run el:simulate -- en                          # one scenario: en | es | zh | precise | vague-no-car | emergency
 import { el, env } from './el.ts';
 
 const scenarios = {
@@ -31,6 +31,26 @@ const scenarios = {
       '回答要简短。如果对方提出发短信给你，就说好。然后道谢并说再见。',
     success: [
       'The agent replies in Mandarin Chinese after the caller speaks Chinese.',
+      'The agent recommends a specific site that came from the find_sites tool.',
+    ],
+  },
+  precise: {
+    scenario:
+      "You are calling a heat-help line. When asked where you are, say you're at the corner of Main Street and Magnolia Avenue in El Cajon. " +
+      'You have no car. Answer briefly. Decline a text. Then say goodbye.',
+    success: [
+      'The agent passes both cross streets and the city (El Cajon) to find_sites, e.g. "Main St & Magnolia Ave, El Cajon".',
+      'The agent briefly confirms the intersection (Main Street and Magnolia Avenue) before or while giving the site.',
+      'The agent recommends a specific site that came from the find_sites tool.',
+    ],
+  },
+  'vague-no-car': {
+    scenario:
+      "You are calling a heat-help line. When asked where you are, only say 'El Cajon'. You have no car. " +
+      'If the agent asks for a cross street, say "Main Street and Magnolia". Answer briefly. Decline a text, then say goodbye.',
+    success: [
+      'After the caller gives only a city and says they have no car, the agent asks for a nearby cross street or more precise location.',
+      'The agent asks for more detail at most once and does not pressure the caller.',
       'The agent recommends a specific site that came from the find_sites tool.',
     ],
   },

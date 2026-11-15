@@ -20,7 +20,7 @@ const KEYWORDS = [
   "YMCA", "Boys & Girls Club", "transit center", "movie theater", "church hall community room",
 ];
 const JUNK_CATEGORY =
-  /air conditioning|heating|hvac|repair|contractor|plumb|appliance|store|\bshop\b|dealer|restaurant|insurance|attorney|real estate/i;
+  /air conditioning|heating|hvac|repair|contractor|plumb|appliance|store|(?<!coffee )(?<!tea )\bshop\b|dealer|restaurant|insurance|attorney|real estate/i;
 
 const DAYS: Record<string, string> = {
   Monday: "mon", Tuesday: "tue", Wednesday: "wed", Thursday: "thu", Friday: "fri", Saturday: "sat", Sunday: "sun",
@@ -63,7 +63,7 @@ export function parseHours(open_hours: Record<string, string> | null) {
 }
 
 // One Bright Data snapshot: trigger, poll until ready, download.
-async function snapshot(input: any[]): Promise<any[]> {
+export async function snapshot(input: any[]): Promise<any[]> {
   const res = await fetch(
     `https://api.brightdata.com/datasets/v3/trigger?dataset_id=${DATASET}&type=discover_new&discover_by=location&limit_per_input=${LIMIT}&include_errors=true`,
     { method: "POST", headers: H, body: JSON.stringify(input) },

@@ -18,10 +18,16 @@ export const findSitesTool = (apiUrl: string, toolSecret: string) => ({
         properties: {
           location: {
             type: 'string',
-            description: 'Where the caller is, as they said it: zip code, neighborhood, city, address, or cross streets.',
+            description:
+              'Where the caller is, in their own words: a building or campus spot (Geisel Library at UCSD), a store, mall, hospital, ' +
+              'park, trolley station, street address, cross streets joined with & (Main St & Magnolia Ave), neighborhood, city, ' +
+              'or zip code. Pass the whole phrase, and add the city if the caller mentioned it.',
           },
           has_car: { type: 'boolean', description: 'True if the caller has a car. Omit if unknown.' },
-          mobility_issues: { type: 'boolean', description: 'True if the caller has trouble walking. Omit if unknown.' },
+          mobility_issues: {
+            type: 'boolean',
+            description: 'True only if the caller says they have trouble walking (wheelchair, cane, can\'t walk far). Being on foot is not a mobility issue. Omit if unknown.',
+          },
           needs_clean_air: { type: 'boolean', description: 'True if the concern is wildfire smoke rather than heat.' },
           language: {
             type: 'string',
