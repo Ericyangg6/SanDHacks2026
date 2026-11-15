@@ -1,7 +1,10 @@
-import { getLatestReading, getSite, insertCall, setOptedOut } from '../db';
+import { getLatestReading, getMessengerProfileByPhone, getSite, insertCall, setOptedOut } from '../db';
+import { env } from '../env';
+import { queueFollowup } from '../messenger/followups';
 import { hashPhone, maskPhone, toE164 } from '../phone';
 import { isOptedOut } from '../subscribers/consent';
-import type { AlertChannel, Language, Reading, SendSmsInput, SendSmsOutput } from '../types';
+import { LANGUAGES } from '../types';
+import type { AlertChannel, Language, MessengerContact, Reading, SendSmsInput, SendSmsOutput } from '../types';
 import { siteMessage } from './templates';
 import { sendTwilioSms, sendTwilioWhatsApp, TwilioError, type WhatsAppTemplate } from './twilio';
 
@@ -85,30 +88,108 @@ export async function sendText(input: SendTextInput): Promise<SendSmsOutput> {
   return { ok: true };
 }
 
-// The shared contract function. M3's voice agent calls this.
-// Builds the site text from site_id and sends it through sendText. No subscriber row is needed, because
-// a caller asking for a text mid-call is consent for that one message. An opted-out number is still refused.
-// Never throws. On top of sendText's errors it can return site_not_found and lookup_failed.
+// What the voice agent tells the caller (SendSmsOutput.note). Instructions to the voice model, which speaks the
+// caller's language, so they stay in English.
+const NOTE_HELD_FOR_MESSENGER =
+  "Saved for the caller's Messenger. Tell them the address, hours and map link will arrive in Facebook Messenger " +
+  'the next time they send any message to the Shadoes Facebook Page. Offer to read the address out now too.';
+const NOTE_NO_MESSENGER =
+  'Not sent: Shade cannot send text messages right now. Read the address out so the caller can write it down. Tell ' +
+  'them that to get addresses on Facebook Messenger next time, they can message the Shadoes Facebook Page "JOIN", ' +
+  'their zip code and this phone number, for example "JOIN 92105 6195551234".';
+
+// The shared contract function. M3's voice agent calls this when a caller asks to be texted a site.
+// Builds the site text from site_id. Messenger first: when the caller's number is linked to a Messenger profile
+// (JOIN <zip> <phone>), the text is held and sent the next time they message the Page (messenger/followups.ts).
+// Otherwise nothing is sent, unless M4_SMS_ENABLED=1, when it goes out by SMS through sendText (or, with
+// M4_SMS_DRY_RUN=1, is only logged there).
+// No subscriber row is needed: a caller asking for a text mid-call is consent for that one message. An opted-out
+// number is still refused. Never throws. Errors on top of sendText's: site_not_found, lookup_failed,
+// no_messenger_profile, followup_failed. `note` tells the voice agent what to say about delivery.
 export async function sendSms(input: SendSmsInput): Promise<SendSmsOutput> {
   const language = input.language ?? 'en';
+  const to = toE164(input.to);
+  if (!to) return { ok: false, error: 'invalid_number' };
 
   let body: string;
   let siteId: number;
   try {
-    const site = await getSite(input.site_id);
-    if (!site) return { ok: false, error: 'site_not_found' };
-    // A missing air quality reading must not hold the text back.
-    const reading: Reading | null = site.zip ? await getLatestReading(site.zip).catch(() => null) : null;
-    body = siteMessage({ site, reading, language });
-    siteId = site.id;
+    const text = await siteText(input.site_id, language);
+    if (!text) return { ok: false, error: 'site_not_found' };
+    ({ body, siteId } = text);
   } catch (error) {
     console.warn(`[m4] send_sms for site ${input.site_id} failed before sending (${reason(error)})`);
     return { ok: false, error: 'lookup_failed' };
+  }
+
+  // Fail closed, as sendText does: with no answer on opt-out, nothing is held or sent.
+  let profile: MessengerContact | null;
+  try {
+    if (await isOptedOut(to)) return { ok: false, error: 'opted_out' };
+    profile = await getMessengerProfileByPhone(hashPhone(to));
+  } catch (error) {
+    console.warn(`[m4] send_sms to ${maskPhone(to)} not handled: a lookup failed (${reason(error)})`);
+    return { ok: false, error: 'lookup_failed' };
+  }
+
+  if (profile) {
+    try {
+      await queueFollowup({ profile, body, siteId, language });
+      return { ok: true, note: NOTE_HELD_FOR_MESSENGER };
+    } catch (error) {
+      console.warn(`[m4] send_sms to ${maskPhone(to)}: follow-up not saved (${reason(error)})`);
+      return { ok: false, error: 'followup_failed', note: NOTE_NO_MESSENGER };
+    }
+  }
+  // With M4_SMS_DRY_RUN=1 the SMS path only logs the text, which the demo shows in place of a real text
+  // (docs/DEMO.md), so it is allowed through: nothing reaches a phone.
+  if (!env.smsEnabled() && !env.smsDryRun()) {
+    return { ok: false, error: 'no_messenger_profile', note: NOTE_NO_MESSENGER };
   }
 
   // zip stays unset: the dashboard reads calls.zip as demand by zip, SendSmsInput does not carry the caller's
   // zip, and site.zip is not the same thing.
   // TODO: Settle with M3 and M2 whether this row should carry site_id at all. M3 already logs the inbound
   //       voice call with the same site_id, so recent_referrals() in the ranking would count it twice.
-  return sendText({ to: input.to, body, purpose: 'site', siteId, language });
+  return sendText({ to, body, purpose: 'site', siteId, language });
+}
+
+// The site text for one site (address, hours today, AQI, map link), or null when there is no such site. Throws on
+// a database failure.
+async function siteText(siteId: number, language: Language): Promise<{ body: string; siteId: number } | null> {
+  const site = await getSite(siteId);
+  if (!site) return null;
+  // A missing air quality reading must not hold the text back.
+  const reading: Reading | null = site.zip ? await getLatestReading(site.zip).catch(() => null) : null;
+  return { body: siteMessage({ site, reading, language }), siteId: site.id };
+}
+
+export type CallFollowupResult = 'queued' | 'already_queued' | 'no_site' | 'no_profile' | 'opted_out' | 'failed';
+
+// Mode 1, automatic: called when a voice call ends (elevenlabs/post-call.ts). When the caller was given a site and
+// their number is linked to a Messenger profile (JOIN <zip> <phone>), the site details are held for that profile
+// without anyone having to ask for a text: linking Messenger is their opt-in to hearing from Shade there, and the
+// message only goes out after they next write to the Page. Callers without a linked profile get nothing. A site
+// already held for them in the last 2 hours (send_sms during the same call) is not held twice. Never throws.
+export async function followUpAfterCall(args: {
+  phoneE164: string;
+  siteId: number | null;
+  language?: string | null;
+}): Promise<CallFollowupResult> {
+  const to = toE164(args.phoneE164);
+  if (!to || !args.siteId) return 'no_site';
+  const language: Language = (LANGUAGES as readonly string[]).includes(args.language ?? '')
+    ? (args.language as Language)
+    : 'en';
+  try {
+    if (await isOptedOut(to)) return 'opted_out';
+    const profile = await getMessengerProfileByPhone(hashPhone(to));
+    if (!profile) return 'no_profile';
+    const text = await siteText(args.siteId, language);
+    if (!text) return 'no_site';
+    return (await queueFollowup({ profile, body: text.body, siteId: text.siteId, language })) ? 'queued' : 'already_queued';
+  } catch (error) {
+    console.warn(`[m4] follow-up after a call from ${maskPhone(to)} not held (${reason(error)})`);
+    return 'failed';
+  }
 }

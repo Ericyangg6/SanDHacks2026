@@ -2,6 +2,7 @@ import { timingSafeEqual } from 'node:crypto';
 import { registerApiRoute, type ApiRoute } from '@mastra/core/server';
 import { z } from 'zod';
 import { triggerMockAlert } from '../alerts/dispatch';
+import { checkReadingAlerts } from '../alerts/readings';
 import { env } from '../env';
 import { validateTwilioSignature } from '../sms/twilio';
 import { handleInboundSms } from '../subscribers/inbound';
@@ -15,6 +16,7 @@ const TWILIO_SMS_PATH = '/m4/twilio/sms';
 const TWILIO_MESSENGER_PATH = '/m4/twilio/messenger';
 const TWILIO_WHATSAPP_PATH = '/m4/twilio/whatsapp';
 const MOCK_ALERT_PATH = '/m4/alerts/mock';
+const CHECK_READINGS_PATH = '/m4/alerts/check-readings';
 
 // The fields read from Twilio's form post. The signature check still covers every field Twilio sent.
 const twilioSmsParams = z.object({
@@ -204,4 +206,26 @@ const mockAlertRoute = registerApiRoute(MOCK_ALERT_PATH, {
   },
 });
 
-export const m4ApiRoutes: ApiRoute[] = [twilioSmsRoute, twilioWhatsAppRoute, twilioMessengerRoute, mockAlertRoute];
+// Runs the reading-based alert check now (mode 3; alerts/readings.ts), for the dashboard or a cron outside the app.
+// It can message every subscriber in a zip, so it takes the same M4_ALERT_SECRET as the mock alert.
+const checkReadingsRoute = registerApiRoute(CHECK_READINGS_PATH, {
+  method: 'POST',
+  requiresAuth: false,
+  handler: async (c) => {
+    if (!hasAlertSecret(c.req.header('authorization'))) return c.json({ error: 'unauthorized' }, 401);
+    try {
+      return c.json(await checkReadingAlerts(), 200);
+    } catch (error) {
+      c.get('mastra').getLogger()?.error(`Reading check failed: ${error instanceof Error ? error.message : error}`);
+      return c.json({ error: 'Reading check failed' }, 500);
+    }
+  },
+});
+
+export const m4ApiRoutes: ApiRoute[] = [
+  twilioSmsRoute,
+  twilioWhatsAppRoute,
+  twilioMessengerRoute,
+  mockAlertRoute,
+  checkReadingsRoute,
+];

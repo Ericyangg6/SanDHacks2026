@@ -131,6 +131,27 @@ function alertOpening(alert: AlertRow, language: Language): string {
       language,
     );
   }
+  // Raised from our own readings: say what was measured. The headline carries the value ("Heat index 105°F in
+  // 92105 ...", "AQI 165 in 92105 ..."); only the number is taken from it.
+  if (alert.kind === 'high_heat_index' || alert.kind === 'high_aqi') {
+    const value = /\d+/.exec(alert.headline ?? '')?.[0];
+    if (alert.kind === 'high_heat_index') {
+      return pick(
+        {
+          en: `Shade: it is dangerously hot in your area right now${value ? ` (heat index ${value}°F)` : ''}.`,
+          es: `Shade: hace un calor peligroso en tu zona ahora${value ? ` (índice de calor ${value}°F)` : ''}.`,
+        },
+        language,
+      );
+    }
+    return pick(
+      {
+        en: `Shade: the air in your area is unhealthy right now${value ? ` (AQI ${value})` : ''}.`,
+        es: `Shade: el aire en tu zona no es saludable ahora${value ? ` (AQI ${value})` : ''}.`,
+      },
+      language,
+    );
+  }
   // alert.headline is English NWS text, so it is never pasted in: the name per kind is enough.
   const name = pick(ALERT_NAMES[alert.kind], language);
   // Spanish times end in "p.m.", which already closes the sentence.
@@ -163,7 +184,7 @@ function siteSourceLabel(site: Site): string | null {
 }
 
 function alertSiteLines(alert: AlertRow, site: SiteResult, language: Language): string[] {
-  const smoke = alert.kind === 'air_quality_alert';
+  const smoke = alert.kind === 'air_quality_alert' || alert.kind === 'high_aqi';
   const discovered = site.tier === 'discovered';
   const label = pick(
     smoke
@@ -327,19 +348,46 @@ export function aiDisclosure(language: Language): string {
 export function messengerJoinUsage(language: Language): string {
   return pick(
     {
-      en: 'Shade: to get heat and smoke alerts here, send JOIN and your zip code. Example: JOIN 92105',
-      es: 'Shade: para recibir alertas de calor y humo aquí, envía JOIN y tu código postal. Ejemplo: JOIN 92105',
+      en: 'Shade: to get heat and smoke alerts here, send JOIN, your zip code and your phone number. Example: JOIN 92105 6195551234 (the phone number is optional)',
+      es: 'Shade: para recibir alertas de calor y humo aquí, envía JOIN, tu código postal y tu número de teléfono. Ejemplo: JOIN 92105 6195551234 (el teléfono es opcional)',
     },
     language,
   );
 }
 
-// Sent once, right after a Messenger opt-in is recorded.
-export function messengerOptInConfirmation(language: Language, zip: string): string {
+// Reply to a Messenger JOIN whose phone number could not be read. Nothing is saved.
+export function messengerPhoneInvalid(language: Language): string {
   return pick(
     {
-      en: `Shade: you are signed up for heat and smoke alerts for ${zip} here on Messenger. Facebook only lets us message you within 24 hours of your last message, so write to us now and then to keep alerts coming. Send STOP to cancel.`,
-      es: `Shade: te suscribiste a las alertas de calor y humo para ${zip} aquí en Messenger. Facebook solo nos deja escribirte dentro de las 24 horas de tu último mensaje, así que escríbenos de vez en cuando para seguir recibiendo alertas. Envía STOP para cancelar.`,
+      en: 'Shade: that phone number does not look right. Send JOIN, your zip code and your 10-digit phone number. Example: JOIN 92105 6195551234',
+      es: 'Shade: ese número de teléfono no parece correcto. Envía JOIN, tu código postal y tu número de 10 dígitos. Ejemplo: JOIN 92105 6195551234',
+    },
+    language,
+  );
+}
+
+// Sent once, right after a Messenger opt-in is recorded. `phoneLast4` is set when this JOIN linked a phone number,
+// `name` when one was given; the phone itself is never repeated back in full.
+export function messengerOptInConfirmation(
+  language: Language,
+  zip: string,
+  extra: { phoneLast4?: string | null; name?: string | null } = {},
+): string {
+  const firstName = extra.name?.split(' ')[0];
+  const greeting = firstName ? `${firstName}, ` : '';
+  const linked = extra.phoneLast4
+    ? pick(
+        {
+          en: ` Your profile is linked to the phone number ending in ${extra.phoneLast4}.`,
+          es: ` Tu perfil está vinculado al número que termina en ${extra.phoneLast4}.`,
+        },
+        language,
+      )
+    : '';
+  return pick(
+    {
+      en: `Shade: ${greeting}you are signed up for heat and smoke alerts for ${zip} here on Messenger.${linked} Facebook only lets us message you within 24 hours of your last message, so write to us now and then to keep alerts coming. Send STOP to cancel.`,
+      es: `Shade: ${greeting}te suscribiste a las alertas de calor y humo para ${zip} aquí en Messenger.${linked} Facebook solo nos deja escribirte dentro de las 24 horas de tu último mensaje, así que escríbenos de vez en cuando para seguir recibiendo alertas. Envía STOP para cancelar.`,
     },
     language,
   );
@@ -365,4 +413,9 @@ export function messengerHelpMessage(language: Language): string {
     },
     language,
   );
+}
+
+// First line of a follow-up held after a phone call (messenger/followups.ts), above the site details.
+export function followupIntro(language: Language): string {
+  return pick({ en: 'From your call with Shade:', es: 'De tu llamada con Shade:' }, language);
 }

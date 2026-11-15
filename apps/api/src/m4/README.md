@@ -36,6 +36,51 @@ A Spanish keyword is answered in Spanish and makes Spanish the subscriber's lang
 Twilio sometimes delivers a message twice. A repeated `MessageSid` within 10 minutes gets the first reply again and
 is not handled twice. That memory lives in the server process, so a restart clears it.
 
+## Messenger modes
+
+The Messenger side of Shade does three things:
+
+| Mode | What happens | Where |
+| --- | --- | --- |
+| 1. After a phone call | When a call ends, the site the caller was given is held for their linked Messenger profile automatically (no text offer needed), and `send_sms` holds it on request too; it goes out the next time they message the Page | `sms/send-sms.ts` (`followUpAfterCall`, `sendSms`), `messenger/followups.ts`, hook in `elevenlabs/post-call.ts` |
+| 2. Full agent | Any message that is not a keyword goes to the text agent: where are you, nearest open site, no car, Spanish, 911 and 211 | `messenger/inbound.ts`, `agent/reply.ts` |
+| 3. Heat and AQI alerts | NWS alerts, plus alerts from our own readings (heat index or AQI over a line), go to Messenger subscribers in the zip | `alerts/dispatch.ts`, `alerts/readings.ts` |
+
+**Mode 1 in detail.** A phone call does not open Facebook's 24-hour window, so nothing can be sent the moment the
+voice agent asks. `sendSms` looks the caller up by `hashPhone(e164)` in `subscribers.linked_phone_hash` (set by
+`JOIN <zip> <phone>` on Messenger). With a profile, the site text goes into `messenger_followups` (kept 7 days) and
+`sendSms` returns `{ ok: true, note }`; the next time they message the Page, `deliverFollowups` sends it first,
+then the normal reply. STOP drops what is held. Without a profile it returns `no_messenger_profile` and a `note`
+telling the voice agent to read the address out and explain how to link Messenger. Nothing goes out by SMS unless
+`M4_SMS_ENABLED=1` (carriers block the number's texts until A2P registration, while Twilio still reports them
+sent). `apps/api/src/shared/send-sms.ts`, which the ElevenLabs tool calls, forwards to this `sendSms`.
+
+**Automatic.** Nobody has to say yes to a text: linking Messenger with `JOIN <zip> <phone>` is the opt-in. When a
+voice call ends, `elevenlabs/post-call.ts` calls `followUpAfterCall` with the caller's number, the first site the
+tools gave them and the call language; for a linked, not opted-out caller the site is held the same way. The same
+site is never held twice within 2 hours, so a `send_sms` during the call and the automatic follow-up send one
+message. Callers without a linked profile get nothing: Facebook offers no way to find someone on Messenger from a
+phone number, so the person must write to the Page first.
+
+**Suggested voice prompt lines (M3, `agent/prompts/system.md`).** Draft only; the prompt is M3's:
+
+```text
+- After giving a site, say: "If you've linked Shade on Facebook Messenger, the address and map are waiting
+  there; just send our Page any message to get them."
+- If send_sms returns a `note`, follow the note instead of saying the text is on its way.
+- Before ending the call, offer once: "Want heat alerts and addresses on Facebook Messenger? Message the Shadoes
+  Page JOIN, your zip code and this phone number."
+```
+
+**Mode 3 in detail.** `checkReadingAlerts` reads, for every zip with a subscriber, the newest reading from the last
+3 hours (forecast rows more than an hour ahead are left out) and raises a `high_heat_index` alert at heat index
+`M4_ALERT_HEAT_INDEX_F` (default 103°F, NWS's "danger" level) or a `high_aqi` alert at `M4_ALERT_AQI` (default
+101), at most one per zip and kind every 12 hours. The alert says the value ("dangerously hot ... heat index
+106°F") and goes through `dispatchAlert`, so Messenger's 24-hour window and the repeat guards apply. It runs from
+`POST /m4/alerts/check-readings` (same `Authorization: Bearer $M4_ALERT_SECRET` as the mock alert) or on a timer
+when `M4_READING_ALERT_CRON` is set (`readingAlertWorkflow`). As of 2026-11-14 M2's readings carry heat index
+for San Diego zips but no AQI, so AQI alerts wait on an AQI source.
+
 ## Facebook Messenger
 
 **Messenger is Shade's live channel** (see `AGENTS.md`): SMS waits on carrier registration and WhatsApp outbound is
@@ -55,6 +100,17 @@ page-scoped id, not a phone number, so it never goes through `toE164` or `hashPh
   `messenger_psid` / `messenger_page_id` so alerts can be sent. `START` signs a past subscriber up again with the
   zip on file. `STOP` stamps `opted_out_at` and clears the stored ids. `HELP` explains. Questions are still answered
   after STOP: it cancels alerts, and the person wrote to us.
+- **Phone profile.** `JOIN <zip> <phone>`, e.g. `JOIN 92105 6195551234`, also links the Messenger profile to a
+  phone number (`messenger/join.ts` parses it; either order, any common phone format; other words are ignored).
+  Only `hashPhone(e164)` is stored, in `subscribers.linked_phone_hash`, never the raw number. The name is not
+  typed: at JOIN, `messenger/profile.ts` reads `first_name last_name` from the person's Facebook profile through
+  the Graph API and stores it in `display_name`. That needs `FACEBOOK_PAGE_ACCESS_TOKEN` (a Page access token for
+  Shadoes, from a Meta app with Messenger access; in development mode Facebook only answers for people with a role
+  on that app); without it, or when Facebook does not answer within 3 seconds, the name stays unknown and the
+  signup still works. One number links to one profile: a new link moves it. A JOIN without a phone keeps the link
+  on file, an unreadable phone number is refused with nothing saved, and STOP clears the link and the name.
+  `db.getMessengerProfileByPhone(hashPhone(e164))` finds the active profile for a number. Nothing sends through it
+  yet: routing `send_sms` (the voice agent's "text me the address") to the linked Messenger is the next step.
 - **Alerts.** `dispatchAlert` sends Messenger subscribers the alert from the Page they joined on
   (`sendMessengerAlert`), with the same per-alert and cooldown guards as SMS. Facebook lets a Page message someone
   only within 24 hours of their last message, and no Messenger message tag covers alerts, so a subscriber who has
@@ -256,6 +312,7 @@ Run from `apps/api`. Each one loads the repo-root `.env` itself.
 ```shell
 node src/m4/dev/run.mjs send-test ["message"]    # one text to TEST_PHONE_NUMBER, straight through Twilio
 node src/m4/dev/run.mjs text-in "JOIN 92105"     # pretend a phone texted the Twilio number; prints the reply
+node src/m4/dev/run.mjs call-ended --phone +1...  # pretend a voice call ended: holds the site for the linked Messenger
 node src/m4/dev/run.mjs build-zone-zips <file>   # rebuild alerts/zone-zips.ts (see "Live NWS alerts")
 ```
 
@@ -298,6 +355,10 @@ M4_SMS_DRY_RUN=1 node src/m4/dev/run.mjs send-test
 | `TWILIO_WHATSAPP_ALERT_CONTENT_SID_ES` | Optional. The Spanish alert template. Spanish subscribers get the default one without it |
 | `PUBLIC_BASE_URL` | Public origin Twilio calls, needed for the signature check on every webhook (SMS, WhatsApp, Messenger) |
 | `M4_ALERT_SECRET` | Shared secret for `POST /m4/alerts/mock`. The route refuses everything while it is unset |
+| `FACEBOOK_PAGE_ACCESS_TOKEN` | Optional. Page access token for Shadoes, used only to read a Messenger subscriber's name from their Facebook profile at JOIN |
+| `M4_SMS_ENABLED` | Optional. `1` lets `send_sms` fall back to SMS for callers with no linked Messenger profile. Off until the number is carrier-registered |
+| `M4_ALERT_HEAT_INDEX_F`, `M4_ALERT_AQI` | Optional. Reading-alert lines, default 103 (°F) and 101 |
+| `M4_READING_ALERT_CRON` | Optional. Cron (Pacific time) for checking readings automatically, e.g. `*/15 * * * *`. Unset = on demand only |
 | `PHONE_SALT` | Salt for `phone_hash`. Must be the same value for M3 |
 | `NEON_DATABASE_URL` | Postgres connection string |
 | `NWS_USER_AGENT` | Contact string NWS asks for, e.g. `shade-sandhacks (you@example.com)` |

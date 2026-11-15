@@ -5,12 +5,42 @@ import assert from 'node:assert/strict';
 import { afterEach, beforeEach, describe, it } from 'node:test';
 import { Hono } from 'hono';
 import { dispatchAlert } from '../alerts/dispatch';
+import { checkReadingAlerts } from '../alerts/readings';
 import { m4ApiRoutes } from '../mastra/routes';
-import type { AlertRow, SubscriberRow } from '../types';
+import { followUpAfterCall, sendSms } from '../sms/send-sms';
+import type { AlertRow, Site, SubscriberRow } from '../types';
 import { hashPhone } from '../phone';
 import { sendTwilioMessenger, twilioSignature, validateTwilioSignature } from '../sms/twilio';
 import { hashMessengerId, messengerLogLabel, parseMessengerAddress } from './identity';
 import { handleInboundMessenger, parseMessengerWebhook } from './inbound';
+import { parseJoinMessage } from './join';
+
+describe('parseJoinMessage', () => {
+  it('reads zip and phone in either order and any common format, ignoring other words', () => {
+    assert.deepEqual(parseJoinMessage('JOIN 92105'), { zip: '92105', phoneE164: null, phoneInvalid: false });
+    assert.deepEqual(parseJoinMessage('JOIN 92105 16195550147'), {
+      zip: '92105',
+      phoneE164: '+16195550147',
+      phoneInvalid: false,
+    });
+    assert.deepEqual(parseJoinMessage('join 92105 (619) 555-0147 Ana Ruiz'), {
+      zip: '92105',
+      phoneE164: '+16195550147',
+      phoneInvalid: false,
+    });
+    assert.deepEqual(parseJoinMessage('UNIRME 6195550147 92105'), {
+      zip: '92105',
+      phoneE164: '+16195550147',
+      phoneInvalid: false,
+    });
+    assert.equal(parseJoinMessage('JOIN 92105 +1 619 555 0147').phoneE164, '+16195550147');
+  });
+
+  it('flags digits that are not a phone number', () => {
+    assert.equal(parseJoinMessage('JOIN 92105 555-12').phoneInvalid, true);
+    assert.equal(parseJoinMessage('JOIN 6195550147').zip, null);
+  });
+});
 
 // Made-up values. None of them is a real account, Page or person.
 const PSID = '7712345678901234';
@@ -29,16 +59,62 @@ delete process.env.M4_SMS_DRY_RUN;
 delete process.env.TWILIO_SID;
 delete process.env.TWILIO_SECRET;
 
-type Sent = { url: string; form?: URLSearchParams; sql?: { query: string; params: unknown[] } };
+type Sent = { url: string; form?: URLSearchParams; sql?: { query: string; params: unknown[] }; graph?: URL };
 
 let requests: Sent[] = [];
 let logged: string[] = [];
 let twilioResponse: () => Response;
+// The fake Facebook Graph API's answer to a profile lookup.
+let graphResponse: () => Response;
 const realFetch = globalThis.fetch;
 const realConsole = { log: console.log, info: console.info, warn: console.warn, error: console.error };
 
 // The fake database's answers, set per test.
-let db: { subscriber: SubscriberRow | null; active: SubscriberRow[]; lastInbound: string | null };
+let db: {
+  subscriber: SubscriberRow | null;
+  active: SubscriberRow[];
+  lastInbound: string | null;
+  followups: { id: number; phone_hash: string; body: string; site_id: number | null }[];
+  site: Site | null;
+  profile: SubscriberRow | null; // what getMessengerProfileByPhone returns
+  zips: string[];
+  readings: { zip: string; heat_index: number | null; aqi: number | null }[];
+  recentAlert: boolean;
+  recentFollowup: boolean; // the same site was held for this profile in the last 2 hours
+};
+
+// A made-up site, open every day, for send_sms to describe.
+const SITE: Site = {
+  id: 501,
+  name: 'Test Library',
+  kind: 'library',
+  tier: 'official',
+  confidence: null,
+  address: '100 Example St, San Diego, CA 92105',
+  zip: '92105',
+  lat: 32.74,
+  lon: -117.09,
+  hours: { weekly: [0, 1, 2, 3, 4, 5, 6].map((day) => ({ day, open: '00:00', close: '23:59' })) },
+  hours_confirmed_on_source: true,
+  has_ac: true,
+  has_filtration: null,
+  capacity_est: null,
+  phone: null,
+  source_url: 'https://example.test/library',
+  last_verified_at: '2026-11-14T00:00:00.000Z',
+};
+
+const MOCK_ALERT: AlertRow = {
+  id: 9,
+  kind: 'mock',
+  nws_id: null,
+  zips: ['92105'],
+  headline: null,
+  onset_at: null,
+  expires_at: null,
+  detected_at: '2026-11-14T00:00:00.000Z',
+  texts_sent: 0,
+};
 
 function messengerRow(overrides: Partial<SubscriberRow> = {}): SubscriberRow {
   return {
@@ -53,17 +129,37 @@ function messengerRow(overrides: Partial<SubscriberRow> = {}): SubscriberRow {
     alert_channel: 'messenger',
     messenger_psid: PSID,
     messenger_page_id: PAGE_ID,
+    linked_phone_hash: null,
+    display_name: null,
     ...overrides,
   };
 }
 
 function answer(query: string, params: unknown[]): unknown[] {
+  // Before the active-subscribers pattern below, which this query would also match.
+  if (/select distinct zip from subscribers/.test(query)) return db.zips.map((zip) => ({ zip }));
   if (/insert into subscribers/.test(query)) {
-    return [messengerRow({ zip: String(params[1]), language: params[2] as SubscriberRow['language'] })];
+    return [
+      messengerRow({
+        zip: String(params[1]),
+        language: params[2] as SubscriberRow['language'],
+        linked_phone_hash: (params[7] as string | null) ?? null,
+        display_name: (params[8] as string | null) ?? null,
+      }),
+    ];
   }
   if (/from subscribers where phone_hash/.test(query)) return db.subscriber ? [db.subscriber] : [];
   if (/from subscribers\s+where opted_out_at is null/.test(query)) return db.active;
   if (/max\(started_at\)/.test(query)) return [{ at: db.lastInbound }];
+  if (/from messenger_followups where phone_hash = \$1 and site_id/.test(query)) return db.recentFollowup ? [{ '?column?': 1 }] : [];
+  if (/from messenger_followups/.test(query)) return db.followups;
+  if (/from sites where id/.test(query)) return db.site ? [db.site] : [];
+  if (/linked_phone_hash = \$1 and opted_out_at is null/.test(query)) return db.profile ? [db.profile] : [];
+  if (/from unnest/.test(query)) return db.readings;
+  if (/from alerts where kind/.test(query)) return db.recentAlert ? [{ '?column?': 1 }] : [];
+  if (/insert into alerts/.test(query)) {
+    return [{ ...MOCK_ALERT, id: 11, kind: String(params[0]), nws_id: null, zips: JSON.parse(String(params[2])), headline: params[3] }];
+  }
   if (/select 1 from calls/.test(query)) return [];
   return [{ id: 1 }];
 }
@@ -71,13 +167,30 @@ function answer(query: string, params: unknown[]): unknown[] {
 beforeEach(() => {
   requests = [];
   logged = [];
-  db = { subscriber: null, active: [], lastInbound: null };
+  db = {
+    subscriber: null,
+    active: [],
+    lastInbound: null,
+    followups: [],
+    site: null,
+    profile: null,
+    zips: [],
+    readings: [],
+    recentAlert: false,
+    recentFollowup: false,
+  };
   twilioResponse = () => Response.json({ sid: 'SM00000000000000000000000000000001' }, { status: 201 });
+  graphResponse = () => Response.json({ first_name: 'Ana', last_name: 'Ruiz', id: PSID });
+  delete process.env.FACEBOOK_PAGE_ACCESS_TOKEN;
   globalThis.fetch = (async (input: string | URL | Request, init?: RequestInit) => {
     const url = String(input);
     if (url.startsWith('https://api.twilio.com/')) {
       requests.push({ url, form: new URLSearchParams(String(init?.body)) });
       return twilioResponse();
+    }
+    if (url.startsWith('https://graph.facebook.com/')) {
+      requests.push({ url, graph: new URL(url) });
+      return graphResponse();
     }
     if (url === 'https://db.example.test/sql') {
       const sql = JSON.parse(String(init?.body)) as { query: string; params: unknown[] };
@@ -97,6 +210,7 @@ afterEach(() => {
 });
 
 const twilioSends = () => requests.filter((r) => r.form);
+const graphCalls = () => requests.filter((r) => r.graph).map((r) => r.graph!);
 const sqlCalls = () => requests.filter((r) => r.sql).map((r) => r.sql!);
 
 function webhook(body: string, messageSid: string): Record<string, string> {
@@ -216,7 +330,7 @@ describe('handleInboundMessenger', () => {
 
   it('asks for a zip when JOIN has none', async () => {
     const result = await handleInboundMessenger(parseMessengerWebhook(webhook('JOIN', 'SMtest-join-nozip'))!);
-    assert.match(result.reply!, /send JOIN and your zip code/);
+    assert.match(result.reply!, /send JOIN, your zip code and your phone number/);
     assert.ok(sqlCalls().every((sql) => !/insert into subscribers/.test(sql.query)));
   });
 
@@ -233,6 +347,67 @@ describe('handleInboundMessenger', () => {
     db.subscriber = messengerRow({ zip: '92113', opted_out_at: '2026-11-14T00:00:00.000Z' });
     const result = await handleInboundMessenger(parseMessengerWebhook(webhook('START', 'SMtest-start'))!);
     assert.match(result.reply!, /92113/);
+  });
+
+  // A made-up number and name.
+  const PHONE = '+16195550147';
+
+  it('links a phone number with JOIN <zip> <phone>, taking the name from Facebook and storing only the phone hash', async () => {
+    process.env.FACEBOOK_PAGE_ACCESS_TOKEN = 'test-page-token';
+    // A typed name is ignored: the name comes from the Facebook profile.
+    const msg = parseMessengerWebhook(webhook('JOIN 92105 16195550147 Someone Else', 'SMtest-join-phone'))!;
+    const result = await handleInboundMessenger(msg);
+    assert.match(result.reply!, /^Shade: Ana, you are signed up/);
+    assert.match(result.reply!, /phone number ending in 0147/);
+    assert.ok(!result.reply!.includes('6195550147'));
+
+    const [graph] = graphCalls();
+    assert.equal(graph.pathname, `/${PSID}`);
+    assert.equal(graph.searchParams.get('fields'), 'first_name,last_name');
+    assert.equal(graph.searchParams.get('access_token'), 'test-page-token');
+
+    const unlink = sqlCalls().find((sql) => /set linked_phone_hash = null/.test(sql.query))!;
+    assert.deepEqual(unlink.params, [hashPhone(PHONE), hashMessengerId(PSID)]);
+    const upsert = sqlCalls().find((sql) => /insert into subscribers/.test(sql.query))!;
+    assert.equal(upsert.params[1], '92105');
+    assert.equal(upsert.params[7], hashPhone(PHONE));
+    assert.equal(upsert.params[8], 'Ana Ruiz');
+    // The raw phone number, the name and the token go nowhere else: not to the database, not to the log.
+    assert.ok(!JSON.stringify(sqlCalls()).includes('6195550147'));
+    for (const secret of ['6195550147', 'Ana', 'test-page-token', PSID]) assert.ok(!logged.join('\n').includes(secret));
+  });
+
+  it('signs up without a name when there is no Page token, or Facebook fails', async () => {
+    const plain = await handleInboundMessenger(parseMessengerWebhook(webhook('JOIN 92105', 'SMtest-join-notoken'))!);
+    assert.match(plain.reply!, /^Shade: you are signed up/);
+    assert.equal(graphCalls().length, 0);
+
+    process.env.FACEBOOK_PAGE_ACCESS_TOKEN = 'test-page-token';
+    graphResponse = () => Response.json({ error: { code: 100, message: `Unsupported get request ${PSID}` } }, { status: 400 });
+    const failed = await handleInboundMessenger(parseMessengerWebhook(webhook('JOIN 92105', 'SMtest-join-graphfail'))!);
+    assert.match(failed.reply!, /^Shade: you are signed up/);
+    assert.equal(graphCalls().length, 1);
+    assert.ok(logged.some((line) => /Facebook profile lookup failed: HTTP 400 \(Graph error 100\)/.test(line)));
+    assert.ok(!logged.join('\n').includes(PSID));
+  });
+
+  it('refuses a JOIN whose phone number cannot be read, saving nothing', async () => {
+    for (const [body, sid] of [
+      ['JOIN 92105 555-12', 'SMtest-join-bad'],
+      ['JOIN 92105 12345', 'SMtest-join-bad2'], // the second 5-digit number is read as a (too short) phone
+    ]) {
+      const result = await handleInboundMessenger(parseMessengerWebhook(webhook(body, sid))!);
+      assert.match(result.reply!, /phone number does not look right/);
+    }
+    assert.ok(sqlCalls().every((sql) => !/insert into subscribers/.test(sql.query)));
+  });
+
+  it('clears the phone link and name on STOP', async () => {
+    db.subscriber = messengerRow({ linked_phone_hash: hashPhone(PHONE), display_name: 'Ana Ruiz' });
+    await handleInboundMessenger(parseMessengerWebhook(webhook('STOP', 'SMtest-stop-linked'))!);
+    const update = sqlCalls().find((sql) => /update subscribers set opted_out_at/.test(sql.query))!;
+    assert.match(update.query, /linked_phone_hash = null/);
+    assert.match(update.query, /display_name = null/);
   });
 
   it('reports a failed send without throwing or logging the id', async () => {
@@ -350,5 +525,159 @@ describe('dispatchAlert to Messenger subscribers', () => {
     assert.deepEqual(await dispatchAlert(alert), { textsSent: 0 });
     assert.equal(twilioSends().length, 0);
     assert.ok(logged.some((line) => /messenger_window_closed/.test(line)));
+  });
+});
+
+describe('mode 1: automatic follow-up when a call ends', () => {
+  const CALLER = '+16195550189'; // made up
+  const held = () => sqlCalls().filter((sql) => /insert into messenger_followups/.test(sql.query));
+
+  it("holds the site for a linked caller without anyone asking for a text", async () => {
+    db.site = SITE;
+    db.profile = messengerRow({ linked_phone_hash: hashPhone(CALLER) });
+    assert.equal(await followUpAfterCall({ phoneE164: CALLER, siteId: SITE.id, language: 'es' }), 'queued');
+    assert.equal(held().length, 1);
+    assert.match(String(held()[0].params[1]), /^De tu llamada con Shade:/);
+    assert.equal(twilioSends().length, 0);
+    assert.ok(!JSON.stringify(sqlCalls()).includes('6195550189'));
+  });
+
+  it('does not hold the same site twice (send_sms during the call already did)', async () => {
+    db.site = SITE;
+    db.profile = messengerRow();
+    db.recentFollowup = true;
+    assert.equal(await followUpAfterCall({ phoneE164: CALLER, siteId: SITE.id }), 'already_queued');
+    assert.equal(held().length, 0);
+    // send_sms is deduped the same way.
+    const result = await sendSms({ to: CALLER, site_id: SITE.id });
+    assert.equal(result.ok, true);
+    assert.equal(held().length, 0);
+  });
+
+  it('does nothing without a linked profile, a site, or when the number opted out', async () => {
+    db.site = SITE;
+    assert.equal(await followUpAfterCall({ phoneE164: CALLER, siteId: SITE.id }), 'no_profile');
+    assert.equal(await followUpAfterCall({ phoneE164: CALLER, siteId: null }), 'no_site');
+    db.profile = messengerRow();
+    db.subscriber = messengerRow({ opted_out_at: '2026-11-14T00:00:00.000Z' });
+    assert.equal(await followUpAfterCall({ phoneE164: CALLER, siteId: SITE.id }), 'opted_out');
+    assert.equal(held().length, 0);
+  });
+
+  it('falls back to English for a language it does not know', async () => {
+    db.site = SITE;
+    db.profile = messengerRow();
+    assert.equal(await followUpAfterCall({ phoneE164: CALLER, siteId: SITE.id, language: 'Spanish' }), 'queued');
+    assert.match(String(held()[0].params[1]), /^From your call with Shade:/);
+  });
+});
+
+describe('mode 1: send_sms after a phone call', () => {
+  const CALLER = '+16195550188'; // made up
+
+  it("holds the site details for the caller's linked Messenger profile and sends nothing yet", async () => {
+    db.site = SITE;
+    db.profile = messengerRow({ linked_phone_hash: hashPhone(CALLER) });
+    const result = await sendSms({ to: CALLER, site_id: SITE.id, language: 'en' });
+    assert.equal(result.ok, true);
+    assert.match(result.note!, /arrive in Facebook Messenger the next time they send any message/);
+    assert.equal(twilioSends().length, 0);
+
+    const lookup = sqlCalls().find((sql) => /linked_phone_hash = \$1 and opted_out_at is null/.test(sql.query))!;
+    assert.deepEqual(lookup.params, [hashPhone(CALLER)]);
+    const held = sqlCalls().find((sql) => /insert into messenger_followups/.test(sql.query))!;
+    assert.equal(held.params[0], hashMessengerId(PSID));
+    assert.match(String(held.params[1]), /^From your call with Shade:\n.*Test Library/s);
+    assert.equal(held.params[2], SITE.id);
+    // The caller's number is only ever hashed.
+    assert.ok(!JSON.stringify(sqlCalls()).includes('6195550188'));
+    assert.ok(!logged.join('\n').includes('6195550188'));
+  });
+
+  it('sends nothing and explains how to link Messenger when the number has no profile', async () => {
+    db.site = SITE;
+    const result = await sendSms({ to: CALLER, site_id: SITE.id });
+    assert.deepEqual([result.ok, result.error], [false, 'no_messenger_profile']);
+    assert.match(result.note!, /JOIN/);
+    assert.equal(twilioSends().length, 0);
+    assert.ok(sqlCalls().every((sql) => !/insert into messenger_followups/.test(sql.query)));
+  });
+
+  it('logs the text instead (dry run) for a caller with no profile, so the demo fallback works', async () => {
+    db.site = SITE;
+    process.env.M4_SMS_DRY_RUN = '1';
+    try {
+      const result = await sendSms({ to: CALLER, site_id: SITE.id });
+      assert.equal(result.ok, true);
+      assert.equal(twilioSends().length, 0);
+      assert.ok(logged.some((line) => /dry run, not sent/.test(line) && line.includes('Test Library')));
+    } finally {
+      delete process.env.M4_SMS_DRY_RUN;
+    }
+  });
+
+  it('still refuses a number that opted out', async () => {
+    db.site = SITE;
+    db.subscriber = messengerRow({ opted_out_at: '2026-11-14T00:00:00.000Z' });
+    db.profile = messengerRow();
+    const result = await sendSms({ to: CALLER, site_id: SITE.id });
+    assert.deepEqual(result, { ok: false, error: 'opted_out' });
+  });
+
+  it('delivers what was held first when they next message the Page, then answers', async () => {
+    db.followups = [{ id: 31, phone_hash: hashMessengerId(PSID), body: 'From your call with Shade:\nTest Library', site_id: 501 }];
+    const result = await handleInboundMessenger(parseMessengerWebhook(webhook('HELP', 'SMtest-followup'))!);
+    const sends = twilioSends();
+    assert.equal(sends.length, 2);
+    assert.equal(sends[0].form!.get('Body'), 'From your call with Shade:\nTest Library');
+    assert.equal(sends[0].form!.get('To'), `messenger:${PSID}`);
+    assert.equal(sends[1].form!.get('Body'), result.reply);
+    assert.ok(sqlCalls().some((sql) => /set delivered_at = now\(\)/.test(sql.query) && sql.params[0] === 31));
+    assert.ok(sqlCalls().some((sql) => /insert into messages/.test(sql.query) && sql.params[2] === 'From your call with Shade:\nTest Library'));
+  });
+
+  it('drops what was held on STOP instead of sending it', async () => {
+    db.followups = [{ id: 32, phone_hash: hashMessengerId(PSID), body: 'From your call with Shade:\nTest Library', site_id: 501 }];
+    await handleInboundMessenger(parseMessengerWebhook(webhook('STOP', 'SMtest-followup-stop'))!);
+    assert.equal(twilioSends().length, 1); // only the STOP confirmation
+    assert.ok(sqlCalls().some((sql) => /delete from messenger_followups/.test(sql.query)));
+  });
+});
+
+describe('mode 3: alerts from readings', () => {
+  it('raises a heat-index alert for a zip over the line and sends it to Messenger subscribers there', async () => {
+    db.zips = ['92105'];
+    db.readings = [{ zip: '92105', heat_index: 106, aqi: null }];
+    db.active = [messengerRow()];
+    db.lastInbound = new Date(Date.now() - 3600_000).toISOString();
+    assert.deepEqual(await checkReadingAlerts(), { zipsChecked: 1, alertsRaised: 1, textsSent: 1 });
+
+    const insert = sqlCalls().find((sql) => /insert into alerts/.test(sql.query))!;
+    assert.equal(insert.params[0], 'high_heat_index');
+    assert.equal(insert.params[1], null); // not an NWS alert
+    assert.deepEqual(JSON.parse(String(insert.params[2])), ['92105']);
+    assert.match(twilioSends()[0].form!.get('Body')!, /^Shade: it is dangerously hot in your area right now \(heat index 106°F\)/);
+  });
+
+  it('raises nothing when an alert of that kind went out recently, or readings are under the line', async () => {
+    db.zips = ['92105', '92113'];
+    db.readings = [
+      { zip: '92105', heat_index: 110, aqi: null },
+      { zip: '92113', heat_index: 85, aqi: 60 },
+    ];
+    db.recentAlert = true;
+    assert.deepEqual(await checkReadingAlerts(), { zipsChecked: 2, alertsRaised: 0, textsSent: 0 });
+    assert.ok(sqlCalls().every((sql) => !/insert into alerts/.test(sql.query)));
+  });
+
+  it('raises an AQI alert, worded for smoke', async () => {
+    db.zips = ['92105'];
+    db.readings = [{ zip: '92105', heat_index: null, aqi: 165 }];
+    db.active = [messengerRow()];
+    db.lastInbound = new Date(Date.now() - 3600_000).toISOString();
+    const summary = await checkReadingAlerts();
+    assert.equal(summary.alertsRaised, 1);
+    assert.equal(sqlCalls().find((sql) => /insert into alerts/.test(sql.query))!.params[0], 'high_aqi');
+    assert.match(twilioSends()[0].form!.get('Body')!, /^Shade: the air in your area is unhealthy right now \(AQI 165\)/);
   });
 });
