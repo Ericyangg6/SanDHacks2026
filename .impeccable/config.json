@@ -68,6 +68,15 @@
         ],
         "createdAt": "2026-11-15T04:59:03.718Z",
         "reason": "agent triage: page is light (#eaf5fd); shadows are the offset blue-grey elevation DESIGN.md specifies for glass and map tokens, copied from the dispatcher dashboard"
+      },
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "apps/web/src/styles.css"
+        ],
+        "createdAt": "2026-11-15T05:24:00.863Z",
+        "reason": "existing design: live-call shimmer (.agent.live .now) ported verbatim from apps/dashboard/index.html, signals an in-progress call"
       }
     ]
   }
