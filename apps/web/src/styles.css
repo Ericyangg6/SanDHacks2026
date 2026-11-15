@@ -167,6 +167,7 @@ h1, h2, h3, p { margin: 0; }
 
 /* requests */
 .req-row { border-top: 1px solid var(--line); padding: 14px 22px; transition: background .2s; }
+.req-row:not(.call, .sel) { cursor: pointer; }
 .req-row.sel { background: rgba(255, 255, 255, .4); }
 .req-row.new { animation: arrive 1.2s var(--ease); }
 @keyframes arrive { from { background: rgba(244, 167, 101, .4); } }

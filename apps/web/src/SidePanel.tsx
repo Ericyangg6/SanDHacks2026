@@ -34,6 +34,8 @@ function Requests({ requests, calls, reqError, req, fresh, onReq, readings }: Pr
     if (req == null) return;
     scroll.current = true;
     setOpen((s) => new Set(s).add(`r${req}`));
+    // Unpicking (or picking another) collapses the card entirely, trail included.
+    return () => setOpen((s) => { const n = new Set(s); n.delete(`r${req}`); return n; });
   }, [req]);
   const count = (st: string) => requests.filter((r) => r.status === st).length;
   const area = (zip: string | null) => readings.find((r) => r.zip === zip)?.area ?? zip;
@@ -58,8 +60,10 @@ function Requests({ requests, calls, reqError, req, fresh, onReq, readings }: Pr
           const want = r.status === 'requesting';
           const meta = [area(r.zip), `Call${r.language && LANG[r.language] ? `, ${LANG[r.language]}` : ''}`, clockAt(r.created_at)].filter(Boolean).join(' · ');
           return (
-            <article key={r.id} ref={req === r.id ? selRef : undefined} className={`req-row ${req === r.id ? 'sel' : ''} ${fresh === r.id ? 'new' : ''}`}>
-              <button className="open" aria-expanded={req === r.id} onClick={() => onReq(r.id)}>
+            // A click anywhere on the card picks it; only the heading button also unpicks it.
+            <article key={r.id} ref={req === r.id ? selRef : undefined} className={`req-row ${req === r.id ? 'sel' : ''} ${fresh === r.id ? 'new' : ''}`}
+              onClick={() => req !== r.id && onReq(r.id)}>
+              <button className="open" aria-expanded={req === r.id} onClick={(e) => { e.stopPropagation(); onReq(r.id); }}>
                 <h3>{r.location}</h3>
                 <span className="meta">{meta}</span>
               </button>
