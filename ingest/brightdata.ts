@@ -106,7 +106,15 @@ export async function fetchPage(url: string, opts: { fresh?: boolean } = {}): Pr
   // OFFLINE=1: only use what is already cached (rebuild outputs from earlier fetches without any network calls).
   if (process.env.OFFLINE === "1") return { ok: false, status: 0, markdown: "", error: "offline (not cached)", from_cache: false, attempts: 0 };
   let last: PageResult = { ok: false, status: 0, markdown: "", from_cache: false, attempts: 0 };
-  for (let attempt = 1; attempt <= 3; attempt++) {
+  // Bright Data refuses every .gov domain by policy, so go straight to the second fetcher instead of spending a request to be told no.
+  let isGov = false;
+  try { isGov = /\.gov$/i.test(new URL(url).hostname); } catch {}
+  if (isGov && FALLBACK_KEY) {
+    const fb = await fallbackFetch(url);
+    if (fb) { await writeCache(key, fb); return { ok: true, status: 200, markdown: fb, from_cache: false, attempts: 1, via: "fallback" }; }
+    return { ok: false, status: 0, markdown: "", error: ".gov page not retrievable by the second fetcher", blocked_by_policy: true, from_cache: false, attempts: 1 };
+  }
+  for (let attempt = 1; attempt <= 3 && !isGov; attempt++) {
     const raw = await brd({
       zone: UNLOCKER_ZONE,
       url: encodeURI(decodeURI(url)),
