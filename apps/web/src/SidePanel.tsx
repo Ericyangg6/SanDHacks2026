@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { CallEvent, HelpRequest, LiveCall, ReadingRow } from './api';
-import { LANG, SOURCE, aqiBand, clockAt, deg, stamp, whenAt } from './format';
+import { LANG, SOURCE, clockAt, deg, stamp, whenAt } from './format';
 
 interface Props {
   requests: HelpRequest[]; calls: LiveCall[]; reqError: string | null; req: number | null; fresh: number | null; onReq(id: number): void;
@@ -92,15 +92,13 @@ function Readings({ readings, generatedAt, zip, onZip }: Props) {
         <div className="now">
           <div><b>{deg(r.temp_f)}</b><span>Temperature</span></div>
           <div><b>{deg(r.heat_index)}</b><span>Feels like</span></div>
-          <div><b>{r.aqi ?? '–'}</b><span>AQI</span></div>
         </div>
-        <p className="note">{r.aqi != null && <><em>{aqiBand(r.aqi)[0]}</em> air. </>}{SOURCE[r.source]} {future ? 'forecast for' : 'reading at'} {whenAt(r.time)}.</p>
-        <div className="rrow rhead"><span>Area</span><span>Temp</span><span>Feels</span><span>AQI</span></div>
+        <p className="note">{SOURCE[r.source]} {future ? 'forecast for' : 'reading at'} {whenAt(r.time)}.</p>
+        <div className="rrow rhead"><span>Area</span><span>Temp</span><span>Feels</span></div>
         <div>{shown.map((x) => (
           <button key={x.zip} className="rrow" aria-pressed={x.zip === r.zip} onClick={() => onZip(x.zip)}>
             <span className="area">{x.area === x.zip ? '' : x.area}<small className="mono">{x.zip}</small></span>
             <span className="n">{deg(x.temp_f)}</span><span className="n">{deg(x.heat_index)}</span>
-            <span className="n"><span className="aqi" style={{ background: aqiBand(x.aqi)[1] }} title={aqiBand(x.aqi)[0]}>{x.aqi ?? '–'}</span></span>
           </button>
         ))}</div>
       </>}
