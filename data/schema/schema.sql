@@ -201,3 +201,24 @@ create table news_items (
   date_text  text,
   fetched_at timestamptz not null default now()
 );
+
+-- Written by: M3 (request_help tool, dispatcher endpoints). Read by: M1 through GET /dispatch/requests only.
+create type request_status as enum ('requesting', 'incoming', 'declined', 'closed');
+create type help_type as enum ('volunteer_pickup', 'ride_211', 'wellness_check');
+create table requests (
+  id              serial primary key,
+  conversation_id text unique,                -- ElevenLabs conversation; one request per call
+  status          request_status not null default 'requesting',  -- changed only by dispatcher endpoints
+  help_type       help_type,                  -- chosen by the dispatcher on accept
+  said            text not null,              -- the caller's own words
+  location        text not null,              -- where the caller said they are
+  zip             text,
+  lat             double precision,
+  lon             double precision,
+  needs           text[] not null default '{}',
+  language        text,
+  phone_e164      text,                       -- raw callback number while the request is open; null after decline or close
+  created_at      timestamptz not null default now(),
+  updated_at      timestamptz not null default now()
+);
+create index on requests (status, created_at);

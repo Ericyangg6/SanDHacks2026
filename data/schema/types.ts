@@ -138,3 +138,24 @@ export interface SendSmsInput {
   language?: Language;
 }
 export interface SendSmsOutput { ok: boolean; error?: string }
+
+// ---- Help requests (M3) ----
+
+export type RequestStatus = 'requesting' | 'incoming' | 'declined' | 'closed';
+export type HelpType = 'volunteer_pickup' | 'ride_211' | 'wellness_check';
+/** What the dispatcher inbox sees. The callback number never leaves the database. */
+export interface HelpRequest {
+  id: number;
+  status: RequestStatus;
+  help_type: HelpType | null;
+  said: string;
+  location: string;
+  zip: string | null;
+  lat: number | null;
+  lon: number | null;
+  needs: string[];
+  language: string | null;
+  created_at: string;           // ISO 8601
+}
+/** `say_this` is chosen in code from the request status. The agent reads it and adds no status claim of its own. */
+export interface RequestHelpOutput { ok: boolean; request_id?: number; status?: RequestStatus; say_this: string }

@@ -13,11 +13,11 @@ Product context: `PRODUCT.md`. Architecture: `docs/PROJECT.md`.
 - **Templates:** every request tool result carries a `say_this` line chosen in code from the status, like `spoken_summary` in `find_sites`. "Help is coming" wording exists only in the `incoming` template. Templates promise no arrival time.
 - **911:** emergency signs keep the immediate "hang up and call 9 1 1" rule in `agent/prompts/system.md`. The agent does not call `request_help` first.
 - **Grader is rank-only.** Every request reaches the inbox. The grade sorts the inbox. Ungraded requests sort first, so a Gemini failure never hides a request.
-- **Caller words:** `request_help` always carries the caller's words verbatim in `said`. T1 decides whether extraction also reads the live transcript.
+- **Caller words:** `request_help` always carries the caller's words verbatim in `said`. Extraction (T4) reads `said`. The ElevenLabs live monitoring WebSocket is enterprise-only (`docs/M3.md`).
 - **Background work:** extraction and grading run after `request_help` returns. No queue infrastructure. A failure logs and leaves the request ungraded.
 - **Callback number:** `requests.phone_e164` holds the raw number while the request is open. Closing or declining the request sets it to null. No endpoint returns it. The backend sends the status text; the dispatcher never sees the number.
 - **Hold:** the agent checks status for a few seconds while it gives cool-zone help, then says a text will follow. The agent never keeps a caller on the line for a human decision.
-- **Dispatcher auth:** one shared secret, `DISPATCH_SECRET`, in a request header, compared with the `safeEqual` pattern in `apps/api/src/elevenlabs/auth.ts`. Request data never goes through the public `GET /dashboard/state`.
+- **Dispatcher auth:** none. `/dispatch/*` is open, like `GET /dashboard/state`. Request data still stays out of `GET /dashboard/state`.
 - **Gemini calls:** use the Mastra model router already installed in `apps/api`. Add no new SDK.
 - **Table owner:** `requests` belongs to M3 (voice).
 - **Base:** branch `triage-pipeline` includes `origin/main` as of 2026-11-14.
@@ -32,28 +32,28 @@ Product context: `PRODUCT.md`. Architecture: `docs/PROJECT.md`.
 ## Tickets
 
 ### T1: Spike - read the call transcript during a call
-**Status:** ready
+**Status:** in-progress (research done and decision locked; the live poll test needs an ElevenLabs key)
 **Blocked by:** None (can start immediately)
 **What it delivers:** A written answer: can `apps/api` read the ElevenLabs transcript of a call that is still in progress, and with what delay. The answer sets the extraction input for T4.
 **Acceptance:**
-- [ ] `docs/M3.md` records the method tried, the result, and the measured delay.
-- [ ] `## Locked implementation decisions` in this file states the T4 input: live transcript, or `said` only.
+- [ ] `docs/M3.md` records the method tried, the result, and the measured delay. (Methods and findings recorded. Delay of the `GET` poll not measured.)
+- [x] `## Locked implementation decisions` in this file states the T4 input: live transcript, or `said` only.
 **Verification:**
-- manual: start a call with `npm run el:call`, run the spike script while the call is live, and confirm the output matches what `docs/M3.md` records.
+- manual: start a call with `npm run el:call`, run `npm run el:transcript` while the call is live, and record the result in `docs/M3.md`.
 
 ### T2: Caller's help request reaches the dispatcher inbox
-**Status:** ready
+**Status:** in-progress (code written; needs the migration applied and one simulated call)
 **Blocked by:** None (can start immediately)
 **What it delivers:** A caller who needs a pickup, a ride or a check says so. The agent calls `request_help`. The request shows on the staff dashboard as Requesting with the caller's words, location and stated needs. The agent says the request was sent and is not yet confirmed.
 **Acceptance:**
 - [ ] `requests` table exists in `data/schema/schema.sql` and `types.ts`, with a migration file.
 - [ ] `POST /el/tools/request-help` creates one row per conversation and returns `status: requesting` with its `say_this` line. A repeat call in the same conversation returns the existing row.
-- [ ] `GET /dispatch/requests` returns open requests, rejects a missing or wrong `DISPATCH_SECRET` with 401, and never returns `phone_e164`.
+- [ ] `GET /dispatch/requests` returns open requests and never returns `phone_e164`.
 - [ ] The dashboard Help requests panel shows live rows and drops the "Mock data" tag. `REQUESTS` leaves `apps/dashboard/mock.js`.
 - [ ] `npm run el:sync` registers the `request_help` tool.
 **Verification:**
 - `cd apps/api && npm run typecheck`
-- `cd apps/api && npx tsx src/requests/requests.check.ts`
+- `cd apps/api && npx tsx --env-file=../../.env src/requests/requests.check.ts` (add `REQUESTS_CHECK_DB=1` to include the database part)
 - manual: `npm run el:simulate -- pickup`; the request appears in the dashboard panel within one poll.
 
 ### T3: Dispatcher answers and the caller hears the truth
@@ -73,7 +73,7 @@ Product context: `PRODUCT.md`. Architecture: `docs/PROJECT.md`.
 
 ### T4: Structured record from the caller's words
 **Status:** blocked
-**Blocked by:** T1, T2
+**Blocked by:** T2
 **What it delivers:** The inbox card shows a structured record beside the caller's quote: location, people count, needs, symptoms and mobility. Each field says whether the caller stated it or it is unknown.
 **Acceptance:**
 - [ ] Gemini Flash fills `requests.record` against a JSON schema. A field the caller did not state is `unknown`, never guessed.

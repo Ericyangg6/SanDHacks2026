@@ -2,6 +2,7 @@
 // They skip Mastra auth and check their own secrets instead (see auth.ts).
 import { registerApiRoute } from '@mastra/core/server';
 import { isValidToolSecret, isValidWebhookSignature } from './auth';
+import { handleRequestHelp, requestHelpBody } from '../requests/requests';
 import { handlePostCall } from './post-call';
 import { findSitesBody, handleFindSites } from './tool-find-sites';
 import { handleSendSms, sendSmsBody } from './tool-send-sms';
@@ -26,6 +27,17 @@ export const elevenLabsRoutes = [
       const parsed = sendSmsBody.safeParse(await c.req.json().catch(() => null));
       if (!parsed.success) return c.json({ ok: false, error: 'site_id is required' }, 400);
       return c.json(await handleSendSms(parsed.data));
+    },
+  }),
+
+  registerApiRoute('/el/tools/request-help', {
+    method: 'POST',
+    requiresAuth: false,
+    handler: async (c) => {
+      if (!isValidToolSecret(c.req.header('x-shade-tool-secret'))) return c.json({ error: 'unauthorized' }, 401);
+      const parsed = requestHelpBody.safeParse(await c.req.json().catch(() => null));
+      if (!parsed.success) return c.json({ error: 'said and location are required' }, 400);
+      return c.json(await handleRequestHelp(parsed.data));
     },
   }),
 

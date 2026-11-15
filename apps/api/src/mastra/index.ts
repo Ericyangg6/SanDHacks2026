@@ -12,11 +12,12 @@ import { agent } from './agents/agent';
 import { startScheduleTool, stopScheduleTool } from './tools/schedule-tools';
 import { elevenLabsRoutes } from '../elevenlabs/routes';
 import { dashboardRoutes } from '../dashboard/routes';
+import { requestRoutes } from '../requests/routes';
 import { alertWorkflow, m4ApiRoutes, textAgent } from '../m4';
 
 export const mastra = new Mastra({
   server: {
-    apiRoutes: [...elevenLabsRoutes, ...dashboardRoutes, ...m4ApiRoutes],
+    apiRoutes: [...elevenLabsRoutes, ...dashboardRoutes, ...requestRoutes, ...m4ApiRoutes],
   },
   bundler: {
     externals: ['@duckdb/node-bindings'],

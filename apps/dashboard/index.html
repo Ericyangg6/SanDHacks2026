@@ -163,10 +163,7 @@ h1, h2, h3, p { margin: 0; }
 .req-row .meta { color: var(--ink-2); font-size: 13px; }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 9px 0 11px; }
 .chip { padding: 2px 10px; border-radius: 999px; background: rgba(255, 255, 255, .6); font-size: 13px; }
-.chip.e911 { background: var(--aqi-bad); color: #2b0c06; font-weight: 500; }
 .said { margin: 0 0 12px; padding: 10px 12px; border-radius: 12px; background: rgba(255, 255, 255, .55); font-size: 13.5px; }
-.to { display: flex; justify-content: space-between; gap: 10px; color: var(--ink-2); font-size: 13px; margin-bottom: 12px; }
-.to b { color: var(--ink); font-weight: 500; }
 .more { display: none; }
 .req-row.sel .more { display: block; }
 .agent { display: flex; align-items: center; gap: 9px; color: var(--ink-2); font-size: 13px; }
@@ -174,13 +171,6 @@ h1, h2, h3, p { margin: 0; }
 .st { flex: none; padding: 1px 9px; border-radius: 999px; font: 500 11px/18px "Red Hat Mono", ui-monospace, monospace; letter-spacing: .04em; text-transform: uppercase; }
 .st.requesting { background: var(--heat); color: var(--heat-ink); }
 .st.incoming { background: var(--cool); color: #0c2a33; }
-.log { list-style: none; margin: 0 0 12px; padding: 2px 0 2px 16px; border-left: 1.5px solid rgba(3, 105, 161, .3); font-size: 13px; }
-.log li { position: relative; padding: 3px 0; }
-.log li::before { content: ""; position: absolute; left: -20.5px; top: 10px; width: 7px; height: 7px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 0 2px #fff; }
-.log li:last-child { color: var(--ink); font-weight: 500; }
-.log small { display: block; color: var(--ink-2); font: 400 11.5px "Red Hat Mono", ui-monospace, monospace; letter-spacing: .02em; }
-.link { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(11, 60, 110, .4); font-size: 13px; }
-.link:hover { text-decoration-color: var(--blue); }
 
 /* small screens: map on top, panels stacked below */
 @media (max-width: 1000px) {
@@ -215,7 +205,6 @@ h1, h2, h3, p { margin: 0; }
   <div class="glass pill">
     <span class="tag mono" id="src">Loading</span>
     <span class="mono" id="clock"></span>
-    <button class="btn" id="sim">Simulate call</button>
   </div>
 </header>
 
@@ -227,8 +216,8 @@ h1, h2, h3, p { margin: 0; }
   <div class="scroll" id="zlist"></div>
   <div class="legend rule">
     <p><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Caller markers on the map</p>
-    <i class="tk req"></i><span>Waiting on a volunteer</span>
-    <i class="tk req incoming"></i><span>Volunteer on the way</span>
+    <i class="tk req"></i><span>Waiting for a dispatcher</span>
+    <i class="tk req incoming"></i><span>Help confirmed by a dispatcher</span>
     <i class="dot"></i><span>Called or texted in the last 24h</span>
   </div>
 </section>
@@ -236,8 +225,8 @@ h1, h2, h3, p { margin: 0; }
 <aside class="glass panel" id="side">
   <section class="scroll" aria-labelledby="qh">
     <div class="head">
-      <h2 id="qh">Help requests <span class="tag mono">Mock data</span></h2>
-      <p id="qsum"></p>
+      <h2 id="qh">Help requests</h2>
+      <p id="qsum" role="status"></p>
     </div>
     <div id="qlist"></div>
   </section>
@@ -254,7 +243,6 @@ h1, h2, h3, p { margin: 0; }
 </aside>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="mock.js"></script>
 <script>
 const $ = id => document.getElementById(id);
 const qs = new URLSearchParams(location.search);
@@ -274,7 +262,7 @@ const aqiBand = a => a == null ? ['No AQI reading', 'rgba(11, 60, 110, .1)'] : a
   : a <= 150 ? ['Unhealthy for sensitive groups', 'var(--aqi-usg)'] : ['Unhealthy', 'var(--aqi-bad)'];
 const aqiChip = a => `<span class="aqi" style="background:${aqiBand(a)[1]}" title="${aqiBand(a)[0]}">${a ?? '–'}</span>`;
 
-const state = { data: null, key: '', zip: null, req: null, zone: null, live: REQUESTS.filter(r => !r.arrives) };
+const state = { data: null, key: '', zip: null, req: null, zone: null, live: [], rkey: null };
 const sites = () => state.data?.sites ?? [];
 const siteById = id => sites().find(z => z.id === id);
 const readingFor = zip => state.data?.readings.find(r => r.zip === zip);
@@ -290,14 +278,17 @@ const pad = () => wide() ? { paddingTopLeft: [380, 100], paddingBottomRight: [41
 
 const icon = (html, size) => L.divIcon({ className: '', html, iconSize: [size, size], iconAnchor: [size / 2, size / 2] });
 const zoneIcon = z => icon(`<div class="tk zone ${z.tier} ${z.open_now ? '' : 'closed'} ${state.zone === z.id ? 'sel' : ''}">${AST}</div>`, 34);
-const reqIcon = r => icon(`<div class="tk req ${r.status} ${state.req === r.id ? 'sel' : ''}">${r.told911 ? '!' : ''}</div>`, 30);
+const reqIcon = r => icon(`<div class="tk req ${r.status === 'incoming' ? 'incoming' : 'requesting'} ${state.req === r.id ? 'sel' : ''}"></div>`, 30);
 
-const callLayer = L.layerGroup().addTo(map), zoneLayer = L.layerGroup().addTo(map), routeLayer = L.layerGroup().addTo(map);
+const callLayer = L.layerGroup().addTo(map), zoneLayer = L.layerGroup().addTo(map), reqLayer = L.layerGroup().addTo(map);
 const zoneMarkers = {}, reqMarkers = {};
-const addReqMarker = r => {
-  reqMarkers[r.id] = L.marker([r.lat, r.lon], { icon: reqIcon(r), title: r.place, zIndexOffset: 500 }).addTo(map).on('click', () => pickReq(r.id));
-};
-state.live.forEach(addReqMarker);
+function syncReqMarkers() {   // a request whose location couldn't be placed has a card but no marker
+  reqLayer.clearLayers();
+  for (const id in reqMarkers) delete reqMarkers[id];
+  for (const r of state.live) if (r.lat != null) {
+    reqMarkers[r.id] = L.marker([r.lat, r.lon], { icon: reqIcon(r), title: r.location, zIndexOffset: 500 }).addTo(reqLayer).on('click', () => pickReq(r.id));
+  }
+}
 
 function syncMap() {
   const seen = new Set();
@@ -312,7 +303,7 @@ function syncMap() {
 }
 function refreshIcons() {
   sites().forEach(z => zoneMarkers[z.id]?.setIcon(zoneIcon(z)));
-  state.live.forEach(r => reqMarkers[r.id].setIcon(reqIcon(r)));
+  state.live.forEach(r => reqMarkers[r.id]?.setIcon(reqIcon(r)));
 }
 
 /* ---------- top bar ---------- */
@@ -353,7 +344,7 @@ function renderZones() {
 $('zlist').onclick = e => { const b = e.target.closest('[data-z]'); if (b) pickZone(+b.dataset.z); };
 
 function pickZone(id) {
-  state.zone = id; state.req = null; routeLayer.clearLayers();
+  state.zone = id; state.req = null;
   const z = siteById(id);
   map.flyTo([z.lat, z.lon], 14, { duration: .8 });
   if (z.zip && readingFor(z.zip)) state.zip = z.zip;
@@ -384,63 +375,52 @@ function renderReadings() {
 }
 $('rlist').onclick = e => { const b = e.target.closest('[data-zip]'); if (b) { state.zip = b.dataset.zip; renderReadings(); } };
 
-/* ---------- help requests (mock until volunteer dispatch exists) ---------- */
+/* ---------- help requests (GET /dispatch/requests) ---------- */
+const LANG = { en: 'English', es: 'Spanish', tl: 'Tagalog', vi: 'Vietnamese', zh: 'Chinese' };
 function renderReqs(fresh) {
   const n = s => state.live.filter(r => r.status === s).length;
   $('qsum').textContent = `${n('requesting')} requesting, ${n('incoming')} incoming`;
   $('qlist').innerHTML = [...state.live].sort((a, b) => (a.status === 'incoming') - (b.status === 'incoming')).map(r => {
-    const rt = ROUTES[r.route];
-    const a = r.ask || {}, v = r.vol || {}, want = r.status === 'requesting';
-    const line = want ? `Calling ${a.n > 1 ? 'another' : 'a'} volunteer ${a.mi} mi away` : `Volunteer ${v.mi} mi away is on the way, about ${v.eta} min out`;
+    const want = r.status === 'requesting';
+    const meta = [readingFor(r.zip)?.area ?? r.zip, `Call${LANG[r.language] ? `, ${LANG[r.language]}` : ''}`, clockAt(r.created_at)].filter(Boolean).join(' · ');
     return `<article class="req-row ${state.req === r.id ? 'sel' : ''} ${fresh === r.id ? 'new' : ''}" data-q="${r.id}">
       <button class="open" aria-expanded="${state.req === r.id}">
-        <h3>${r.place}</h3>
-        <span class="meta">${r.area} · ${r.channel}, ${r.lang} · ${r.ago}</span>
+        <h3>${esc(r.location)}</h3>
+        <span class="meta">${esc(meta)}</span>
       </button>
-      <div class="chips">${r.told911 ? '<span class="chip e911">Told to call 911</span>' : ''}${r.needs.map(x => `<span class="chip">${x}</span>`).join('')}</div>
-      <div class="agent"><span class="st ${r.status}">${want ? 'Requesting' : 'Incoming'}</span><span>${line}</span></div>
-      <div class="more">
-        <p class="said">“${r.said}”</p>
-        <ol class="log" aria-label="What Shade has done">
-          <li>Took the ${r.channel.toLowerCase()}, noted ${r.needs.join(', ').toLowerCase()}</li>
-          ${want && a.n > 1 ? `<li>${a.n - 1} nearby volunteer${a.n > 2 ? 's' : ''} couldn’t help</li>` : ''}
-          ${want ? `<li>Calling a volunteer ${a.mi} mi away<small>Sharing this location and needs</small></li>`
-            : `<li>Volunteer ${v.mi} mi away said yes<small>Shared this location and needs</small></li><li>On the way, about ${v.eta} min out</li>`}
-        </ol>
-        <p class="to"><span>Nearest open zone<br><b>${r.zone}</b></span><span style="text-align:right">${rt.mi} mi<br>${rt.min} min drive</span></p>
-      </div>
-      <div class="more" style="margin-top:12px"><a class="link" href="directions.html">See the directions page this resident was sent</a></div>
+      <div class="chips">${r.needs.map(x => `<span class="chip">${esc(x)}</span>`).join('')}</div>
+      <div class="agent"><span class="st ${want ? 'requesting' : 'incoming'}">${want ? 'Requesting' : 'Incoming'}</span><span>${want ? 'Waiting for a dispatcher' : 'Help confirmed'}</span></div>
+      <div class="more"><p class="said">“${esc(r.said)}”</p></div>
     </article>`;
   }).join('');
 }
 $('qlist').onclick = e => {
   const row = e.target.closest('[data-q]'); if (!row) return;
-  if (e.target.closest('.open')) pickReq(row.dataset.q);
+  if (e.target.closest('.open')) pickReq(+row.dataset.q);
 };
 
-function pickReq(id, fresh) {
-  state.req = state.req === id && !fresh ? null : id; state.zone = null;
-  routeLayer.clearLayers();
+function pickReq(id) {
+  state.req = state.req === id ? null : id; state.zone = null;
   const r = state.live.find(x => x.id === state.req);
-  if (r) {
-    const line = ROUTES[r.route].line;
-    L.polyline(line, { color: '#ffffff', weight: 8, opacity: .95 }).addTo(routeLayer);
-    L.polyline(line, { color: '#0369a1', weight: 3.5, dashArray: '1 7', lineCap: 'round' }).addTo(routeLayer);
-    map.flyToBounds(L.latLngBounds(line).pad(.6), { ...pad(), duration: .8, maxZoom: 15 });
-  }
+  if (r?.lat != null) map.flyTo([r.lat, r.lon], 14, { duration: .8 });
   if (state.data) renderZones();
-  renderReqs(fresh && id); refreshIcons();
+  renderReqs(); refreshIcons();
 }
 
-$('sim').onclick = () => {
-  const r = REQUESTS.find(x => x.arrives && !state.live.includes(x));
-  state.live.unshift(r); addReqMarker(r); state.zip = '92040';
-  $('sim').disabled = true; $('sim').textContent = 'Call received';
-  if (state.data) renderReadings();
-  pickReq(r.id, true);
-  $('qlist').parentElement.scrollTop = 0;
-};
-
+async function loadReqs() {
+  try {
+    const res = await fetch(`${API}/dispatch/requests`, { cache: 'no-store' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const rows = (await res.json()).requests, key = JSON.stringify(rows);
+    if (key === state.rkey) return;   // re-render only on change, so focus and scroll survive the poll
+    const fresh = state.rkey != null && rows.find(r => !state.live.some(x => x.id === r.id))?.id;
+    state.rkey = key; state.live = rows;
+    if (!rows.some(r => r.id === state.req)) state.req = null;
+    syncReqMarkers(); renderReqs(fresh);
+  } catch (err) {
+    $('qsum').textContent = `Can't load help requests (${err.message})`;
+  }
+}
 /* ---------- data ---------- */
 async function load() {
   try {
@@ -464,8 +444,8 @@ async function load() {
 
 const tick = () => $('clock').textContent = new Date().toLocaleTimeString('en-US', { ...LA, hour: 'numeric', minute: '2-digit' });
 tick(); setInterval(tick, 15000);
-renderReqs();
 load(); setInterval(load, POLL_MS);
+loadReqs(); setInterval(loadReqs, POLL_MS);
 </script>
 </body>
 </html>
