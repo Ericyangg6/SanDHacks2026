@@ -57,7 +57,8 @@ async function sqlRows(query: string, timeoutMs: number): Promise<Record<string,
 }
 
 async function neonRows(): Promise<Row[] | null> {
-  const rows = await sqlRows('select * from sites', 2000);
+  // 5 s: a deployed server waking from sleep can take longer than 2 s for this first ~1 MB read.
+  const rows = await sqlRows('select * from sites', 5000);
   return rows ? rows.map(normalize) : null;
 }
 
@@ -94,8 +95,16 @@ let cache: { at: number; rows: Row[]; source: 'neon' | 'seed' } | null = null;
 async function catalog(): Promise<{ rows: Row[]; source: 'neon' | 'seed' }> {
   if (cache && Date.now() - cache.at < CATALOG_TTL_MS) return cache;
   const db = await neonRows();
-  cache = db ? { at: Date.now(), rows: db, source: 'neon' } : { at: Date.now(), rows: await seedRows(), source: 'seed' };
-  return cache;
+  if (db) {
+    cache = { at: Date.now(), rows: db, source: 'neon' };
+    return cache;
+  }
+  // Neon missed: keep serving the last good catalog rather than falling back. The seed files are not in the deployed
+  // bundle, so the fallback there is empty; never cache an empty fallback, so the next call tries Neon again.
+  if (cache?.source === 'neon') return cache;
+  const seed = await seedRows();
+  if (seed.length) cache = { at: Date.now(), rows: seed, source: 'seed' };
+  return { rows: seed, source: 'seed' };
 }
 
 // ---------------------------------------------------------------- where is the caller?
@@ -110,7 +119,9 @@ async function places(): Promise<Places> {
     for (const r of rows) (r.kind === 'zip' ? out.zips : out.places)[String(r.key)] = { lat: Number(r.lat), lon: Number(r.lon) };
     return (placesCache = out);
   }
-  return (placesCache = ((await readSeed('places.json')) as Places | null) ?? { zips: {}, places: {} });
+  // Not cached when Neon missed: the seed file is absent when deployed, and caching that would break zip and town
+  // lookups until the server restarts.
+  return ((await readSeed('places.json')) as Places | null) ?? { zips: {}, places: {} };
 }
 
 const km = (a: Pt, b: Pt): number => {
@@ -197,7 +208,7 @@ async function landmarks() {
   const raw: [string, number, number, string, number][] | null = rows
     ? rows.map((r) => [String(r.name), Number(r.lat), Number(r.lon), String(r.kind), Number(r.weight)])
     : ((await readSeed('landmarks.json')) as [string, number, number, string, number][] | null);
-  if (!raw) return (lmIndex = null);
+  if (!raw) return null; // not cached: try Neon again on the next call
   const df = new Map<string, number>();
   const items: Landmark[] = raw.map(([name, lat, lon, kind, weight]) => {
     const tokens = [...new Set(toTokens(name))];
