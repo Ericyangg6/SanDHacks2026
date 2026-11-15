@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { CallEvent, HelpRequest, LiveCall, ReadingRow } from './api';
 import { LANG, SOURCE, clockAt, deg, stamp, stage, whenAt } from './format';
 
@@ -20,6 +20,21 @@ export function SidePanel(p: Props) {
 function Requests({ requests, calls, reqError, req, fresh, onReq, readings }: Props) {
   const [open, setOpen] = useState(new Set<string>());
   const toggle = (k: string) => setOpen((s) => { const n = new Set(s); n.has(k) ? n.delete(k) : n.add(k); return n; });
+  // Picking a request (here or on its map marker) expands its card and brings it into view. Small screens stack the
+  // list under the map, so scrolling there would carry the page away from the marker's popup.
+  // The scroll waits for the render that expands the card (declared first, it runs a commit after the effect below).
+  const selRef = useRef<HTMLElement>(null);
+  const scroll = useRef(false);
+  useEffect(() => {
+    if (!scroll.current) return;
+    scroll.current = false;
+    if (matchMedia('(min-width: 1001px)').matches) selRef.current?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  });
+  useEffect(() => {
+    if (req == null) return;
+    scroll.current = true;
+    setOpen((s) => new Set(s).add(`r${req}`));
+  }, [req]);
   const count = (st: string) => requests.filter((r) => r.status === st).length;
   const area = (zip: string | null) => readings.find((r) => r.zip === zip)?.area ?? zip;
   const summary = reqError ? `Can't load help requests (${reqError})`
@@ -43,7 +58,7 @@ function Requests({ requests, calls, reqError, req, fresh, onReq, readings }: Pr
           const want = r.status === 'requesting';
           const meta = [area(r.zip), `Call${r.language && LANG[r.language] ? `, ${LANG[r.language]}` : ''}`, clockAt(r.created_at)].filter(Boolean).join(' · ');
           return (
-            <article key={r.id} className={`req-row ${req === r.id ? 'sel' : ''} ${fresh === r.id ? 'new' : ''}`}>
+            <article key={r.id} ref={req === r.id ? selRef : undefined} className={`req-row ${req === r.id ? 'sel' : ''} ${fresh === r.id ? 'new' : ''}`}>
               <button className="open" aria-expanded={req === r.id} onClick={() => onReq(r.id)}>
                 <h3>{r.location}</h3>
                 <span className="meta">{meta}</span>

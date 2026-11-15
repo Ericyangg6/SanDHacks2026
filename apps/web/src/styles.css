@@ -215,6 +215,5 @@ h1, h2, h3, p { margin: 0; }
 /* ---------- request popup on the map ---------- */
 .leaflet-popup-content-wrapper { border-radius: 14px; box-shadow: 0 12px 24px -10px rgba(11, 50, 100, .45); }
 .leaflet-popup-content { margin: 10px 14px; }
-.req-pop { display: grid; gap: 4px; justify-items: start; max-width: 220px; color: var(--ink); }
-.req-pop b { font-weight: 500; font-size: 14px; }
-.req-pop small { color: var(--ink-2); font-size: 12px; }
+.req-pop { display: flex; align-items: center; gap: 8px; max-width: 260px; color: var(--ink); font-size: 13.5px; }
+.req-pop .need { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

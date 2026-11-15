@@ -20,14 +20,12 @@ const icon = (html: string, size: number) => L.divIcon({ className: '', html, ic
 const zoneIcon = (z: Zone, sel: boolean) => icon(`<div class="tk zone ${z.tier} ${sel ? 'sel' : ''}">${AST}</div>`, 34);
 const reqIcon = (r: HelpRequest, sel: boolean) => icon(`<div class="tk req ${r.status === 'incoming' ? 'incoming' : 'requesting'} ${sel ? 'sel' : ''}"></div>`, 30);
 const dotIcon = (n: number) => (n === 1 ? icon('<div class="dot"></div>', 9) : icon(`<div class="dot n">${n}</div>`, 18));
-// Built from DOM nodes: location and the trail come from what callers said, so they never go through innerHTML.
+// One line: status pill and what the caller needs. Built from DOM nodes: needs come from what callers said, so they never go through innerHTML.
 function reqPopup(r: HelpRequest) {
   const el = (tag: string, cls: string, text: string) => Object.assign(document.createElement(tag), { className: cls, textContent: text });
   const { label, pill } = stage(r.events ?? [], r.status);
   const box = el('div', 'req-pop', '');
-  box.append(el('span', `st ${pill}`, label), el('b', '', r.location));
-  const now = r.events?.at(-1)?.text;
-  if (now) box.append(el('small', '', now));
+  box.append(el('span', `st ${pill}`, label), el('span', 'need', r.needs.length ? r.needs.join(', ') : r.said));
   return box;
 }
 const pad = (): L.FitBoundsOptions => (innerWidth > 1000 ? { paddingTopLeft: [380, 100], paddingBottomRight: [410, 40] } : { padding: [30, 30] });
