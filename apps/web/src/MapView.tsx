@@ -29,6 +29,17 @@ function reqPopup(r: HelpRequest) {
   return box;
 }
 const pad = (): L.FitBoundsOptions => (innerWidth > 1000 ? { paddingTopLeft: [380, 100], paddingBottomRight: [410, 40] } : { padding: [30, 30] });
+// Fly so the point lands mid-way across the map left uncovered by the panels on each side, open cards included.
+function flyClear(map: L.Map, at: L.LatLngExpression) {
+  let dx = 0;
+  if (innerWidth > 1000) {
+    const rects = (sel: string) => [...document.querySelectorAll(sel)].map((e) => e.getBoundingClientRect());
+    const l = Math.max(0, ...rects('#zones, #zcard:not(.leaving)').map((b) => b.right));
+    const r = Math.min(innerWidth, ...rects('#side, #rcard:not(.leaving)').map((b) => b.left));
+    dx = (l + r - innerWidth) / 2;
+  }
+  map.flyTo(map.unproject(map.project(at, 14).subtract([dx, 0]), 14), 14, { duration: 0.8 });
+}
 
 interface Props {
   sites: Zone[]; calls: DashboardState['calls']; requests: HelpRequest[];
@@ -99,11 +110,11 @@ export function MapView({ sites, calls, requests, zone, req, onZone, onReq }: Pr
   // Fly only when the selection changes, not when a poll brings new data.
   useEffect(() => {
     const z = sites.find((x) => x.id === zone);
-    if (z) m.current!.map.flyTo([z.lat, z.lon], 14, { duration: 0.8 });
+    if (z) flyClear(m.current!.map, [z.lat, z.lon]);
   }, [zone]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     const r = requests.find((x) => x.id === req);
-    if (r?.lat != null && r.lon != null) m.current!.map.flyTo([r.lat, r.lon], 14, { duration: 0.8 });
+    if (r?.lat != null && r.lon != null) flyClear(m.current!.map, [r.lat, r.lon]);
   }, [req]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return <div id="map" ref={el} aria-label="Map of San Diego County cool zones and help requests" />;
