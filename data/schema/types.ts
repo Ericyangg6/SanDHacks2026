@@ -32,6 +32,10 @@ export interface SiteHours {
   raw_text?: string;         // original text the hours were parsed from, for debugging
 }
 
+export type SiteAccess =
+  | 'open_to_all' | 'students_only' | 'members_only' | 'residents_only' | 'age_restricted' | 'unknown';
+export type SiteVerification = 'confirmed' | 'conflict' | 'single_source' | 'web_only';
+
 export interface Site {
   id: number;
   name: string;
@@ -120,10 +124,15 @@ export interface SiteResult {
   spoken_summary: string;         // ready-to-read sentence honoring tier honesty rules
 }
 
+/** How precisely find_sites placed the caller. */
+export type LocationPrecision = 'address' | 'intersection' | 'landmark' | 'street' | 'area' | 'zip';
+
 export interface FindSitesOutput {
   sites: SiteResult[];            // top 2, best first; may be empty
   resolved_zip: string | null;
   resolved_place?: string;        // the landmark we understood, e.g. "Geisel Library"; lets the agent confirm instead of asking for a ZIP
+  resolved_location?: string;     // what the location was understood as, e.g. "Main St & Magnolia Ave, El Cajon, CA" or "Geisel Library"
+  location_precision?: LocationPrecision;
   fallback_message?: string;      // set when sites is empty (e.g. "call 211")
 }
 

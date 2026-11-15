@@ -22,6 +22,7 @@ Only the writer changes rows in a table. Everyone else treats it as read-only.
 - **Owner: M2** (it's a database read plus ranking, so it lives with the data). M3 and M4 call it and don't reimplement it.
 - Ranking formula is in `docs/PROJECT.md`. It must exclude sites with stale `last_verified_at` and sites whose hours aren't open now.
 - Returns at most 2 sites. `spoken_summary` carries the honesty rules: official vs discovered wording, "call ahead" for discovered.
+- `location` can be a street address, cross streets ("Main St & Magnolia Ave, El Cajon"), a landmark, a neighborhood or a zip. The output reports `resolved_location` and `location_precision` (`address | intersection | landmark | street | area | zip`) so the agent can confirm the spot or ask for a cross street.
 - Writes nothing. The caller logs the `calls` row.
 
 ### `send_sms(SendSmsInput) -> SendSmsOutput`
