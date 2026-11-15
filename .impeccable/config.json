@@ -1,0 +1,74 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "codex-grid-background",
+        "value": "*",
+        "files": [
+          "apps/dashboard/index.html"
+        ],
+        "createdAt": "2026-11-14T20:53:56.201Z",
+        "reason": "agent triage: user's map reference image shows a cream paper map with a fine survey grid, and asked the map to follow it"
+      },
+      {
+        "rule": "codex-grid-background",
+        "value": "*",
+        "files": [
+          "apps/dashboard/directions.html"
+        ],
+        "createdAt": "2026-11-14T20:53:56.471Z",
+        "reason": "agent triage: user's map reference image shows a cream paper map with a fine survey grid, and asked the map to follow it"
+      },
+      {
+        "rule": "cream-palette",
+        "value": "*",
+        "files": [
+          "apps/dashboard/directions.html"
+        ],
+        "createdAt": "2026-11-14T20:53:56.805Z",
+        "reason": "agent triage: user's map reference image shows a cream paper map with a fine survey grid, and asked the map to follow it"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "grotesk",
+        "createdAt": "2026-11-14T20:59:04.919Z",
+        "reason": "agent triage: false positive, Hanken Grotesk is the declared DESIGN.md family; the detector splits the two-word name"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "apps/dashboard/index.html"
+        ],
+        "createdAt": "2026-11-14T21:00:03.640Z",
+        "reason": "agent triage: glass panels and pills have no own padding by design; rows and the 52px centred pill bar carry the inset"
+      },
+      {
+        "rule": "dark-glow",
+        "value": "*",
+        "files": [
+          "apps/dashboard/index.html"
+        ],
+        "createdAt": "2026-11-14T21:26:44.959Z",
+        "reason": "DESIGN.md Elevation: glass panels carry one blue-tinted drop shadow (#0b3c6e) on a pale blue light page, not a glow on dark"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "hat mono",
+        "createdAt": "2026-11-15T04:59:03.291Z",
+        "reason": "agent triage: Red Hat Mono is declared as the label font in DESIGN.md; the detector split the family name"
+      },
+      {
+        "rule": "dark-glow",
+        "value": "*",
+        "files": [
+          "apps/dashboard/directions.html"
+        ],
+        "createdAt": "2026-11-15T04:59:03.718Z",
+        "reason": "agent triage: page is light (#eaf5fd); shadows are the offset blue-grey elevation DESIGN.md specifies for glass and map tokens, copied from the dispatcher dashboard"
+      }
+    ]
+  }
+}

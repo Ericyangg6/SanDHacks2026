@@ -14,7 +14,10 @@ create type channel as enum ('voice', 'sms', 'messenger', 'whatsapp');
 create type call_outcome as enum (
   'site_given', 'sms_sent', 'no_site_found', 'escalated_911', 'abandoned', 'error'
 );
-create type alert_kind as enum ('extreme_heat_warning', 'heat_advisory', 'air_quality_alert', 'mock');
+-- high_heat_index / high_aqi: raised by M4 from our own readings crossing a threshold, not by NWS (nws_id null).
+create type alert_kind as enum (
+  'extreme_heat_warning', 'heat_advisory', 'air_quality_alert', 'mock', 'high_heat_index', 'high_aqi'
+);
 create type reading_source as enum ('airnow', 'nws', 'purpleair', 'mock');
 
 -- Written by: M2 (ingest). Read by: everyone.
@@ -78,7 +81,8 @@ create table subscribers (
   -- Messenger profiles: the phone number the person gave with JOIN <zip> <phone>, as sha256(salt + e164) only (the
   -- raw number is not stored), so their Messenger can be found from a phone number. One profile per number.
   linked_phone_hash text,
-  -- Optional name given with JOIN (JOIN <zip> <phone> <name>). M4 only; never logged. Cleared on STOP.
+  -- The name on their Facebook profile, read at JOIN when a Page token is set; null otherwise. M4 only; never
+  -- logged. Cleared on STOP.
   display_name      text
   -- Existing databases: data/schema/migrations/20261114d_m4_messenger_phone_link.sql, and:
   --   alter table subscribers add column if not exists alert_channel text;
@@ -142,6 +146,20 @@ create table messages (
   created_at  timestamptz not null default now()
 );
 create index on messages (phone_hash, created_at desc);
+
+-- Written by: M4. Site details a voice caller asked to have "texted" (send_sms), held for their linked Messenger
+-- profile until they next message the Page: Facebook only lets the Page write within 24 hours of their last
+-- message, and a phone call does not count. Delivered first thing on their next message, dropped on STOP.
+create table messenger_followups (
+  id           serial primary key,
+  phone_hash   text not null,               -- the Messenger profile's hash (subscribers.phone_hash)
+  body         text not null,
+  site_id      int references sites,
+  created_at   timestamptz not null default now(),
+  expires_at   timestamptz not null,
+  delivered_at timestamptz
+);
+create index on messenger_followups (phone_hash) where delivered_at is null;
 
 -- Written by: M2 (ingest). One row per fetch of a source page; a new content_hash means the page changed.
 create table source_page_versions (
@@ -207,6 +225,39 @@ create table news_items (
   date_text  text,
   fetched_at timestamptz not null default now()
 );
+
+-- Written by: M3 (request_help tool, dispatcher endpoints). Read by: M1 through GET /dispatch/requests only.
+create type request_status as enum ('requesting', 'incoming', 'declined', 'closed');
+create type help_type as enum ('volunteer_pickup', 'ride_211', 'wellness_check');
+create table requests (
+  id              serial primary key,
+  conversation_id text unique,                -- ElevenLabs conversation; one request per call
+  status          request_status not null default 'requesting',  -- changed only by dispatcher endpoints
+  help_type       help_type,                  -- chosen by the dispatcher on accept
+  said            text not null,              -- the caller's own words
+  location        text not null,              -- where the caller said they are
+  zip             text,
+  lat             double precision,
+  lon             double precision,
+  needs           text[] not null default '{}',
+  language        text,
+  phone_e164      text,                       -- raw callback number while the request is open; null after decline or close
+  created_at      timestamptz not null default now(),
+  updated_at      timestamptz not null default now()
+);
+create index on requests (status, created_at);
+
+-- Written by: M3 (tool handlers, call webhooks, dispatcher endpoints). Read by: M1 through GET /dispatch/requests only.
+-- The step-by-step trail of a call. No phone numbers; before a help request exists, events carry the zip only.
+create table call_events (
+  id              bigserial primary key,
+  conversation_id text not null,              -- ElevenLabs conversation; joins requests.conversation_id
+  at              timestamptz not null default now(),
+  kind            text not null,              -- see types.ts: CallEventKind
+  text            text not null               -- one short line for the dispatcher
+);
+create index on call_events (conversation_id, at);
+create unique index on call_events (conversation_id) where kind = 'call_started';
 
 -- "What changed" feed (migrations/20261114d_m2_site_changes.sql)
 create table site_changes (

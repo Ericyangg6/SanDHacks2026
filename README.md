@@ -57,6 +57,21 @@ npm run el:import-number   # prints ELEVENLABS_PHONE_NUMBER_ID
 
 Then call the Twilio number. Terminals 1 and 2 must stay running for the agent's tools to work.
 
+### Ops dashboard
+
+With terminal 1 running, serve the static dashboard:
+
+```bash
+python -m http.server 8765 --bind 127.0.0.1 --directory apps/dashboard
+```
+
+Open http://127.0.0.1:8765/index.html. The page polls `GET /dashboard/state` every 10 s. The API reads Neon when `NEON_DATABASE_URL` is set. Otherwise it serves `data/seed/`, and the dashboard shows "Seed data".
+
+- `?api=https://xxxx.ngrok-free.app` points the page at another API.
+- `?now=2026-11-16T11:00:00-08:00` replays a moment (open hours, recent calls) for demos.
+
+Help requests and their routes are still mock data in `apps/dashboard/mock.js`. No volunteer table exists yet.
+
 ### Quick checks
 
 ```bash
@@ -70,7 +85,8 @@ curl -s -o /dev/null -w '%{http_code}\n' -X POST "$(grep ^PUBLIC_API_URL= .env |
 ## Layout
 
 ```
-apps/api/      Mastra server: ElevenLabs tool endpoints (src/elevenlabs), shared find_sites/send_sms (src/shared)
+apps/api/      Mastra server: ElevenLabs tool endpoints (src/elevenlabs), dashboard state (src/dashboard), shared find_sites/send_sms/hours/db (src/shared)
+apps/dashboard/ Static ops dashboard and resident directions page (no build step)
 agent/         ElevenLabs agent definition: prompts, tools, sync/test scripts (see agent/README.md)
 data/schema/   Neon schema, shared types, contracts between workstreams
 docs/          Project plan and per-workstream plans (M1 to M4)

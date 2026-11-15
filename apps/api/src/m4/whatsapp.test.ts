@@ -54,6 +54,8 @@ function subscriberRow(overrides: Partial<SubscriberRow> = {}): SubscriberRow {
     alert_channel: null,
     messenger_psid: null,
     messenger_page_id: null,
+    linked_phone_hash: null,
+    display_name: null,
     ...overrides,
   };
 }

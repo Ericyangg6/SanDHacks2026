@@ -15,7 +15,9 @@ export type AlertChannel = 'sms' | 'whatsapp' | 'messenger';
 export type CallDirection = 'inbound' | 'outbound';
 export type CallOutcome =
   | 'site_given' | 'sms_sent' | 'no_site_found' | 'escalated_911' | 'abandoned' | 'error';
-export type AlertKind = 'extreme_heat_warning' | 'heat_advisory' | 'air_quality_alert' | 'mock';
+/** high_heat_index / high_aqi: raised by M4 from readings crossing a threshold (not NWS). */
+export type AlertKind =
+  | 'extreme_heat_warning' | 'heat_advisory' | 'air_quality_alert' | 'mock' | 'high_heat_index' | 'high_aqi';
 
 /** Times are 24h "HH:MM" in America/Los_Angeles. day: 0 = Sunday ... 6 = Saturday. */
 export interface HoursInterval { day: number; open: string; close: string }
@@ -143,4 +145,35 @@ export interface SendSmsInput {
   site_id: number;
   language?: Language;
 }
-export interface SendSmsOutput { ok: boolean; error?: string }
+/**
+ * note: what the voice agent should tell the caller about delivery, when it is not a plain text. M4 sets it when the
+ * site details are held for the caller's Messenger, or when they have no linked Messenger profile.
+ */
+export interface SendSmsOutput { ok: boolean; error?: string; note?: string }
+
+// ---- Help requests (M3) ----
+
+export type RequestStatus = 'requesting' | 'incoming' | 'declined' | 'closed';
+export type HelpType = 'volunteer_pickup' | 'ride_211' | 'wellness_check';
+/** What the dispatcher inbox sees. The callback number never leaves the database. */
+export interface HelpRequest {
+  id: number;
+  status: RequestStatus;
+  help_type: HelpType | null;
+  said: string;
+  location: string;
+  zip: string | null;
+  lat: number | null;
+  lon: number | null;
+  needs: string[];
+  language: string | null;
+  created_at: string;           // ISO 8601
+  events: CallEvent[];          // what happened on the call, oldest first
+}
+/** One step in a call's trail (call_events). Written by apps/api/src/requests/events.ts. */
+export type CallEventKind =
+  | 'call_started' | 'located' | 'site_suggested' | 'no_site' | 'sms_sent'
+  | 'help_requested' | 'help_incoming' | 'declined' | 'closed' | 'call_ended';
+export interface CallEvent { at: string; kind: CallEventKind; text: string }
+/** `say_this` is chosen in code from the request status. The agent reads it and adds no status claim of its own. */
+export interface RequestHelpOutput { ok: boolean; request_id?: number; status?: RequestStatus; say_this: string }

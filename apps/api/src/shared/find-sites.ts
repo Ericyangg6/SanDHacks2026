@@ -239,7 +239,7 @@ const STREET_ADDRESS = /\b\d{2,5}\s+(?:[NSEW]\.?\s+)?[A-Za-z0-9.' ]{2,28}\b(?:st
 
 interface Resolved { pt: Pt; zip: string | null; byZip?: boolean; place?: string; label: string; precision: Precision }
 
-async function resolveLocation(input: FindSitesInput): Promise<Resolved | null> {
+export async function resolveLocation(input: FindSitesInput): Promise<Resolved | null> {
   const p = await places();
   const nearestZip = (pt: Pt): string | null => {
     let best: string | null = null, d = 15; // km

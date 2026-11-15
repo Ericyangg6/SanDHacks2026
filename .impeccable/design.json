@@ -1,0 +1,147 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-14T22:30:00.000Z",
+  "title": "Design System: Shade",
+  "extensions": {
+    "colorMeta": {
+      "blue": {
+        "role": "primary",
+        "displayName": "Deep Water"
+      },
+      "zone": {
+        "role": "secondary",
+        "displayName": "Zone Blue"
+      },
+      "cool": {
+        "role": "secondary",
+        "displayName": "Relief Cyan"
+      },
+      "heat": {
+        "role": "secondary",
+        "displayName": "Ember Orange"
+      },
+      "danger": {
+        "role": "tertiary",
+        "displayName": "Alarm Red"
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Navy Ink"
+      },
+      "ink-2": {
+        "role": "neutral",
+        "displayName": "Ink 2"
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Chart Paper"
+      },
+      "card": {
+        "role": "neutral",
+        "displayName": "Card"
+      }
+    },
+    "shadows": [
+      {
+        "name": "glass",
+        "value": "0 24px 48px -20px rgba(11,60,110,.45), 0 2px 6px -2px rgba(11,60,110,.2), inset 0 1.5px 0 rgba(255,255,255,.95), inset 0 0 28px rgba(255,255,255,.35)",
+        "purpose": "Staff liquid glass panels and pills."
+      },
+      {
+        "name": "token",
+        "value": "0 0 0 3px rgba(255,255,255,.9), 0 6px 12px -4px rgba(11,50,100,.45)",
+        "purpose": "Map tokens: white ring plus soft drop."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(.16, 1, .3, 1)",
+        "purpose": "All state transitions, 200-250ms."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "stack",
+        "value": "1000px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Triggers the main action.",
+      "html": "<button class=\"ds-btn\">Simulate call</button>",
+      "css": ".ds-btn{height:36px;padding:0 16px;border:0;border-radius:18px;background:#0369a1;color:#fff;font:500 14px \"Hanken Grotesk\",sans-serif;cursor:pointer;transition:background .2s}.ds-btn:hover{background:#075985}.ds-btn:focus-visible{outline:2px solid #0369a1;outline-offset:2px}"
+    },
+    {
+      "name": "Glass Panel",
+      "kind": "card",
+      "description": "Staff liquid glass surface floating on the map.",
+      "html": "<div class=\"ds-glass\"><b>Cool zones</b><span>11 open now, 1 closed</span></div>",
+      "css": ".ds-glass{display:grid;gap:2px;padding:20px 22px;border-radius:24px;border:1px solid rgba(255,255,255,.7);background:linear-gradient(160deg,#f6fbff,#e2f2fd 45%,#f1f9ff);box-shadow:0 24px 48px -20px rgba(11,60,110,.45),inset 0 1.5px 0 rgba(255,255,255,.95);color:#0b2540;font:14px \"Hanken Grotesk\",sans-serif}.ds-glass b{font-size:20px;font-weight:300}.ds-glass span{color:#3f5872}"
+    },
+    {
+      "name": "Status Segment",
+      "kind": "custom",
+      "refersTo": "segment-selected",
+      "description": "Two-state request status.",
+      "html": "<div class=\"ds-seg\"><button class=\"ds-on\">Requesting</button><button>Incoming</button></div>",
+      "css": ".ds-seg{display:inline-flex;gap:2px;padding:3px;border-radius:999px;background:#dbe9f4}.ds-seg button{border:0;background:none;padding:5px 13px;border-radius:999px;color:#3f5872;font:14px \"Hanken Grotesk\",sans-serif;cursor:pointer}.ds-seg button:hover{color:#0b2540}.ds-seg .ds-on{background:#f4a765;color:#2a1806;font-weight:500}"
+    },
+    {
+      "name": "Needs Chip",
+      "kind": "chip",
+      "refersTo": "chip-need",
+      "description": "What the caller said they need.",
+      "html": "<span class=\"ds-chip\">No car</span>",
+      "css": ".ds-chip{display:inline-block;padding:2px 10px;border-radius:999px;background:#f3f9fe;color:#0b2540;font:13px \"Hanken Grotesk\",sans-serif}"
+    },
+    {
+      "name": "Cool Zone Token",
+      "kind": "custom",
+      "refersTo": "token-zone",
+      "description": "Map marker for an open official cool zone.",
+      "html": "<div class=\"ds-zone\"><svg viewBox=\"0 0 24 24\"><path d=\"M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9\"/></svg></div>",
+      "css": ".ds-zone{width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:#0b74c9;color:#fff;box-shadow:0 0 0 3px #fff,0 6px 12px -4px rgba(11,50,100,.45)}.ds-zone svg{width:58%;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Water Chart",
+    "overview": "A pale blue chart of the county fills the room; clear glass instruments rest on it and bend the map beneath them. The map is the workspace and never recedes behind chrome.",
+    "keyCharacteristics": [
+      "Full-bleed map, panels float on it.",
+      "Liquid glass for staff, opaque white cards for residents.",
+      "Round tokens carry meaning on the map.",
+      "Thin, large numerals for readings; small mono for codes and times."
+    ],
+    "rules": [
+      {
+        "name": "The One Meaning Rule",
+        "body": "Outside an AQI chip, orange means a person is requesting help. Actions are blue.",
+        "section": "colors"
+      },
+      {
+        "name": "The Tabular Rule",
+        "body": "All figures use tabular numerals so columns of readings line up.",
+        "section": "typography"
+      }
+    ],
+    "dos": [
+      "Do keep the map visible behind and between panels.",
+      "Do keep text on glass at Navy Ink or Ink 2; check contrast where the map shows through.",
+      "Do pair every status color with a word or number.",
+      "Do label mock data wherever it appears.",
+      "Do keep resident tap targets at 56px or taller."
+    ],
+    "donts": [
+      "Don't use orange for anything but a person requesting help, except inside an AQI chip.",
+      "Don't put glass on resident cards; they must stay readable in sunlight.",
+      "Don't add colored glow shadows or violet.",
+      "Don't show a caller's name or phone number; location and stated needs only.",
+      "Don't present a discovered site the same way as an official one."
+    ]
+  }
+}

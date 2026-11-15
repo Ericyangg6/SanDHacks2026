@@ -1,0 +1,45 @@
+// Is a site open right now, and what are its hours today? Hours are local America/Los_Angeles (types.ts: SiteHours).
+// An interval whose close is at or before its open runs past midnight (e.g. 07:00-02:00).
+import type { HoursInterval, SiteHours } from '../../../../data/schema/types';
+
+export interface HoursToday {
+  open_now: boolean;
+  closes_at: string | null; // "HH:MM" close of the interval open now
+  hours_today: string;      // "9:00 AM - 8:00 PM", or "Closed today"
+}
+
+const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const LA = new Intl.DateTimeFormat('en-US', {
+  timeZone: 'America/Los_Angeles', weekday: 'short', year: 'numeric', month: '2-digit', day: '2-digit',
+  hour: '2-digit', minute: '2-digit', hourCycle: 'h23',
+});
+
+function local(now: Date) {
+  const p = Object.fromEntries(LA.formatToParts(now).map((x) => [x.type, x.value]));
+  return { date: `${p.year}-${p.month}-${p.day}`, day: DAYS.indexOf(p.weekday), hm: `${p.hour}:${p.minute}` };
+}
+
+export const to12h = (hm: string) => {
+  const [h, m] = hm.split(':').map(Number);
+  return `${h % 12 || 12}:${String(m).padStart(2, '0')} ${h % 24 < 12 ? 'AM' : 'PM'}`;
+};
+
+const overnight = (i: { open: string; close: string }) => i.close <= i.open;
+
+export function hoursToday(hours: SiteHours, now = new Date()): HoursToday {
+  const { date, day, hm } = local(now);
+  const ex = hours.exceptions?.find((e) => e.date === date);
+  const today: Pick<HoursInterval, 'open' | 'close'>[] = ex?.closed
+    ? []
+    : ex?.open && ex.close
+      ? [{ open: ex.open, close: ex.close }]
+      : hours.weekly.filter((i) => i.day === day).sort((a, b) => a.open.localeCompare(b.open));
+  // Yesterday's overnight interval still running this morning.
+  const spill = ex?.closed ? undefined : hours.weekly.find((i) => i.day === (day + 6) % 7 && overnight(i) && hm < i.close);
+  const current = spill ?? today.find((i) => hm >= i.open && (overnight(i) || hm < i.close));
+  return {
+    open_now: !!current,
+    closes_at: current?.close ?? null,
+    hours_today: today.length ? today.map((i) => `${to12h(i.open)} - ${to12h(i.close)}`).join(', ') : 'Closed today',
+  };
+}

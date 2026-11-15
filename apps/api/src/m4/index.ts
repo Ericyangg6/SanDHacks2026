@@ -4,6 +4,7 @@
 export { textAgent } from './mastra/text-agent';
 export { alertWorkflow } from './mastra/alert-workflow';
 export { m4ApiRoutes } from './mastra/routes';
+export { readingAlertWorkflow } from './mastra/reading-alert-workflow';
 export { sendSmsTool } from './mastra/send-sms-tool';
 export { findSitesTool } from './mastra/find-sites-tool';
 

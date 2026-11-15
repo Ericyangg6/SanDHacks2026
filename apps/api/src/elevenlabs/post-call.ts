@@ -1,9 +1,11 @@
 // ElevenLabs post-call webhook -> one `calls` row per conversation.
 // Combines the agent's data-collection fields (agent/agent.config.ts) with what our tools saw.
 import type { CallOutcome } from '../../../../data/schema/types';
+import { logEvent } from '../requests/events';
 import { insertCall } from '../shared/calls';
 import { hashPhone } from '../shared/phone';
 import { outcomeFromState, takeCallState } from './call-state';
+import { followUpAfterCall } from '../m4/sms/send-sms';
 
 const OUTCOMES: CallOutcome[] = ['site_given', 'sms_sent', 'no_site_found', 'escalated_911', 'abandoned', 'error'];
 
@@ -41,16 +43,27 @@ export async function handlePostCall(event: PostCallEvent): Promise<void> {
   const siteRaw = Number(dc.site_id?.value);
   const start = metadata.start_time_unix_secs ? new Date(metadata.start_time_unix_secs * 1000) : new Date();
   const phone = metadata.phone_call?.external_number;
+  const secs = metadata.call_duration_secs;
+  await logEvent(conversation_id, 'call_ended', `Call ended${secs != null ? ` after ${Math.floor(secs / 60)} min ${secs % 60} s` : ''}`);
+  const direction = metadata.phone_call?.direction ?? 'inbound';
+  const language = str(dc.language?.value) ?? state?.language ?? metadata.main_language ?? null;
+  const siteId = state?.firstSiteId ?? (Number.isInteger(siteRaw) && siteRaw > 0 ? siteRaw : null);
 
-  await insertCall({
-    direction: metadata.phone_call?.direction ?? 'inbound',
-    channel: 'voice',
-    phone_hash: phone ? hashPhone(phone) : null,
-    zip: zipRaw && /^\d{5}$/.test(zipRaw) ? zipRaw : null,
-    language: str(dc.language?.value) ?? state?.language ?? metadata.main_language ?? null,
-    site_id: state?.firstSiteId ?? (Number.isInteger(siteRaw) && siteRaw > 0 ? siteRaw : null),
-    outcome,
-    started_at: start,
-    ended_at: metadata.call_duration_secs != null ? new Date(start.getTime() + metadata.call_duration_secs * 1000) : null,
-  });
+  try {
+    await insertCall({
+      direction,
+      channel: 'voice',
+      phone_hash: phone ? hashPhone(phone) : null,
+      zip: zipRaw && /^\d{5}$/.test(zipRaw) ? zipRaw : null,
+      language,
+      site_id: siteId,
+      outcome,
+      started_at: start,
+      ended_at: metadata.call_duration_secs != null ? new Date(start.getTime() + metadata.call_duration_secs * 1000) : null,
+    });
+  } finally {
+    // M4: hold the site for the caller's linked Facebook Messenger, if they have one (JOIN <zip> <phone>); it goes
+    // out the next time they message the Page. No-op for everyone else. Never throws.
+    if (phone && direction === 'inbound') await followUpAfterCall({ phoneE164: phone, siteId, language });
+  }
 }
