@@ -74,8 +74,13 @@ create table subscribers (
   -- Messenger subscribers only: the page-scoped id and the Page it wrote to, so an alert can be sent. Like
   -- phone_e164, set on opt-in and null after STOP. M4 only; never logged.
   messenger_psid    text,
-  messenger_page_id text
-  -- Existing databases:
+  messenger_page_id text,
+  -- Messenger profiles: the phone number the person gave with JOIN <zip> <phone>, as sha256(salt + e164) only (the
+  -- raw number is not stored), so their Messenger can be found from a phone number. One profile per number.
+  linked_phone_hash text,
+  -- Optional name given with JOIN (JOIN <zip> <phone> <name>). M4 only; never logged. Cleared on STOP.
+  display_name      text
+  -- Existing databases: data/schema/migrations/20261114d_m4_messenger_phone_link.sql, and:
   --   alter table subscribers add column if not exists alert_channel text;
   --   alter table subscribers drop constraint if exists subscribers_alert_channel_check;
   --   alter table subscribers add constraint subscribers_alert_channel_check
@@ -84,6 +89,7 @@ create table subscribers (
   --   alter table subscribers add column if not exists messenger_page_id text;
 );
 create index on subscribers (zip) where opted_out_at is null;
+create index on subscribers (linked_phone_hash) where linked_phone_hash is not null;
 
 -- Written by: M3 (inbound voice), M4 (outbound + sms). Read by: M1, ranking.
 create table calls (
