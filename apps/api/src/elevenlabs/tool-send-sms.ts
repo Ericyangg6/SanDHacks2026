@@ -4,6 +4,7 @@
 import { z } from 'zod';
 import type { SendSmsOutput } from '../../../../data/schema/types';
 import { sendSms } from '../shared/send-sms';
+import { logEvent } from '../requests/events';
 import { updateCallState } from './call-state';
 
 export const sendSmsBody = z.object({
@@ -21,7 +22,10 @@ export async function handleSendSms(body: z.infer<typeof sendSmsBody>): Promise<
   }
   try {
     const result = await sendSms({ to, site_id: body.site_id, language: body.language });
-    if (result.ok) updateCallState(body.conversation_id, { smsSent: true });
+    if (result.ok) {
+      updateCallState(body.conversation_id, { smsSent: true });
+      void logEvent(body.conversation_id, 'sms_sent', 'Texted directions to the caller');
+    }
     return result;
   } catch (err) {
     console.error('[el send_sms] failed', err);

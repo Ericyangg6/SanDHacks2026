@@ -156,6 +156,12 @@ export interface HelpRequest {
   needs: string[];
   language: string | null;
   created_at: string;           // ISO 8601
+  events: CallEvent[];          // what happened on the call, oldest first
 }
+/** One step in a call's trail (call_events). Written by apps/api/src/requests/events.ts. */
+export type CallEventKind =
+  | 'call_started' | 'located' | 'site_suggested' | 'no_site' | 'sms_sent'
+  | 'help_requested' | 'help_incoming' | 'declined' | 'closed' | 'call_ended';
+export interface CallEvent { at: string; kind: CallEventKind; text: string }
 /** `say_this` is chosen in code from the request status. The agent reads it and adds no status claim of its own. */
 export interface RequestHelpOutput { ok: boolean; request_id?: number; status?: RequestStatus; say_this: string }

@@ -222,3 +222,15 @@ create table requests (
   updated_at      timestamptz not null default now()
 );
 create index on requests (status, created_at);
+
+-- Written by: M3 (tool handlers, call webhooks, dispatcher endpoints). Read by: M1 through GET /dispatch/requests only.
+-- The step-by-step trail of a call. No phone numbers; before a help request exists, events carry the zip only.
+create table call_events (
+  id              bigserial primary key,
+  conversation_id text not null,              -- ElevenLabs conversation; joins requests.conversation_id
+  at              timestamptz not null default now(),
+  kind            text not null,              -- see types.ts: CallEventKind
+  text            text not null               -- one short line for the dispatcher
+);
+create index on call_events (conversation_id, at);
+create unique index on call_events (conversation_id) where kind = 'call_started';

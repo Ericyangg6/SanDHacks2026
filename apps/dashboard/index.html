@@ -61,7 +61,9 @@ h1, h2, h3, p { margin: 0; }
 .zone { width: 34px; height: 34px; background: var(--zone); color: #fff; box-shadow: 0 0 0 3px rgba(255, 255, 255, .9), 0 6px 12px -4px rgba(11, 50, 100, .45); }
 .zone.discovered { background: #fff; color: var(--zone); box-shadow: 0 0 0 1.5px var(--zone), 0 0 0 4px rgba(255, 255, 255, .9), 0 6px 12px -4px rgba(11, 50, 100, .45); }
 .zone.closed { background: #c9d6e2; color: #7a8ea3; box-shadow: 0 0 0 3px rgba(255, 255, 255, .7); }
-.zone.sel, .req.sel { transform: scale(1.3); }
+.req.sel { transform: scale(1.3); }
+.zone.sel { transform: scale(1.8); animation: pop .45s var(--ease); box-shadow: 0 0 0 2.5px #fff, 0 0 0 5px var(--zone), 0 0 0 11px rgba(11, 116, 201, .22), 0 12px 20px -6px rgba(11, 50, 100, .55); }
+@keyframes pop { from { transform: scale(1); } }
 .req { width: 30px; height: 30px; position: relative; color: var(--heat-ink); background: var(--heat); box-shadow: 0 0 0 3px #fff, 0 8px 14px -4px rgba(11, 50, 100, .45); font: 600 13px/1 "Hanken Grotesk", sans-serif; }
 .req.incoming { background: var(--cool); color: #0c2a33; box-shadow: 0 0 0 3px #f2fbfd, 0 8px 14px -4px rgba(11, 50, 100, .45); }
 .req.requesting::after { content: ""; position: absolute; inset: -3px; border-radius: 50%; border: 2px solid var(--heat); animation: ping 1.8s var(--ease) infinite; }
@@ -140,9 +142,35 @@ h1, h2, h3, p { margin: 0; }
 .legend .tk::after { display: none; }
 .legend .dot { justify-self: center; }
 
+/* zone detail */
+#zdetail { padding: 0 22px 18px; }
+#zdetail .back { color: var(--blue); font-weight: 500; padding: 4px 0 12px; }
+#zdetail img { display: block; width: 100%; height: 150px; object-fit: cover; border-radius: 16px; margin-bottom: 14px; }
+#zdetail h3 { font-size: 19px; font-weight: 500; letter-spacing: -.01em; line-height: 1.25; margin-bottom: 6px; }
+#zdetail .sub, #zdetail .dim { color: var(--ink-2); font-size: 13px; }
+#zdetail .status { margin: 12px 0 2px; font-size: 15px; font-weight: 500; }
+#zdetail h4 { margin: 18px 0 8px; padding-top: 14px; border-top: 1px solid var(--line); font: 500 11px/1 "Red Hat Mono", ui-monospace, monospace; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
+#zdetail dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; margin: 0; font-size: 13.5px; }
+#zdetail dt { color: var(--ink-2); }
+#zdetail dd { margin: 0; overflow-wrap: anywhere; }
+#zdetail dl .today { font-weight: 600; color: var(--ink); }
+#zdetail a { color: var(--blue); }
+.meter { height: 8px; border-radius: 999px; background: rgba(11, 60, 110, .12); overflow: hidden; margin: 6px 0 8px; }
+.meter i { display: block; height: 100%; border-radius: inherit; background: var(--zone); }
+.meter i.full { background: var(--heat); }
+#zdetail .said { margin: 8px 0 0; }
+#zdetail .links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+#zdetail .links a { display: inline-flex; align-items: center; text-decoration: none; color: #fff; }
+#zdetail .links a.ghost { background: rgba(255, 255, 255, .6); color: var(--blue); }
+
 /* readings */
 .now { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 0 22px 4px; }
-.now b { display: block; font-size: 46px; font-weight: 200; letter-spacing: -.03em; line-height: 1.05; }
+.now b { display: block; font-size: 28px; font-weight: 300; letter-spacing: -.02em; line-height: 1.1; }
+#readings .head { padding: 14px 22px 8px; display: flex; align-items: baseline; gap: 10px; }
+#readings .head h2 { font-size: 16px; font-weight: 400; }
+#readings .head p { margin: 0; }
+#readings .note { padding: 4px 22px 8px; font-size: 12.5px; }
+#readings .rrow { padding-top: 4px; padding-bottom: 4px; }
 .now span { color: var(--ink-2); font-size: 13px; }
 .note { padding: 8px 22px 14px; color: var(--ink-2); font-size: 13px; }
 .note em { font-style: normal; color: var(--ink); }
@@ -163,14 +191,30 @@ h1, h2, h3, p { margin: 0; }
 .req-row .meta { color: var(--ink-2); font-size: 13px; }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 9px 0 11px; }
 .chip { padding: 2px 10px; border-radius: 999px; background: rgba(255, 255, 255, .6); font-size: 13px; }
-.said { margin: 0 0 12px; padding: 10px 12px; border-radius: 12px; background: rgba(255, 255, 255, .55); font-size: 13.5px; }
+.said { margin: 0; padding: 10px 12px; border-radius: 12px; background: rgba(255, 255, 255, .55); font-size: 13.5px; }
 .more { display: none; }
 .req-row.sel .more { display: block; }
-.agent { display: flex; align-items: center; gap: 9px; color: var(--ink-2); font-size: 13px; }
-.req-row.sel .agent { margin-bottom: 12px; }
+.req-row.call h3 { font-weight: 400; color: var(--ink-2); }
+.req-row.call .agent { margin-top: 9px; }
+/* the latest step of a call, in quiet text; click it to read the whole trail */
+.agent { display: flex; align-items: center; gap: 9px; width: 100%; color: var(--ink-2); font-size: 13px; border-radius: 8px; }
+.agent:hover .now { color: var(--ink); }
+.agent .now { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; transition: color .2s; }
+.agent.live .now { background: linear-gradient(90deg, var(--ink-2) 40%, #9fb6cc 50%, var(--ink-2) 60%) 0 0 / 250% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: think 2.2s linear infinite; }
+@keyframes think { from { background-position: 100% 0; } to { background-position: -50% 0; } }
+.agent svg { flex: none; width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; transition: transform .25s var(--ease); }
+.agent[aria-expanded=true] svg { transform: rotate(90deg); }
+@media (prefers-reduced-motion: reduce) { .agent.live .now { animation: none; color: var(--ink-2); background: none; } }
+.log { list-style: none; margin: 10px 0 0; padding: 2px 0 2px 16px; border-left: 1.5px solid rgba(3, 105, 161, .3); font-size: 13px; color: var(--ink-2); }
+.log li { position: relative; padding: 4px 0; }
+.log li::before { content: ""; position: absolute; left: -20.5px; top: 11px; width: 7px; height: 7px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 0 2px #fff; }
+.log li:last-child { color: var(--ink); font-weight: 500; }
+.log small { display: block; color: var(--ink-2); font: 400 11.5px "Red Hat Mono", ui-monospace, monospace; letter-spacing: .02em; }
+.req-row .more { margin-top: 12px; }
 .st { flex: none; padding: 1px 9px; border-radius: 999px; font: 500 11px/18px "Red Hat Mono", ui-monospace, monospace; letter-spacing: .04em; text-transform: uppercase; }
 .st.requesting { background: var(--heat); color: var(--heat-ink); }
 .st.incoming { background: var(--cool); color: #0c2a33; }
+.st.oncall { background: #fff; color: var(--blue); box-shadow: inset 0 0 0 1.5px var(--blue); }
 
 /* small screens: map on top, panels stacked below */
 @media (max-width: 1000px) {
@@ -214,10 +258,11 @@ h1, h2, h3, p { margin: 0; }
     <p id="zsum"></p>
   </div>
   <div class="scroll" id="zlist"></div>
+  <div class="scroll" id="zdetail" hidden></div>
   <div class="legend rule">
     <p><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Caller markers on the map</p>
-    <i class="tk req"></i><span>Waiting for a dispatcher</span>
-    <i class="tk req incoming"></i><span>Help confirmed by a dispatcher</span>
+    <i class="tk req"></i><span>Requesting: waiting for a dispatcher</span>
+    <i class="tk req incoming"></i><span>Incoming: help confirmed by a dispatcher</span>
     <i class="dot"></i><span>Called or texted in the last 24h</span>
   </div>
 </section>
@@ -230,7 +275,7 @@ h1, h2, h3, p { margin: 0; }
     </div>
     <div id="qlist"></div>
   </section>
-  <section class="rule" aria-labelledby="rh" style="padding-bottom:10px">
+  <section class="rule" id="readings" aria-labelledby="rh" style="padding-bottom:8px">
     <div class="head">
       <h2 id="rh">Readings</h2>
       <p id="rwhere"></p>
@@ -262,13 +307,14 @@ const aqiBand = a => a == null ? ['No AQI reading', 'rgba(11, 60, 110, .1)'] : a
   : a <= 150 ? ['Unhealthy for sensitive groups', 'var(--aqi-usg)'] : ['Unhealthy', 'var(--aqi-bad)'];
 const aqiChip = a => `<span class="aqi" style="background:${aqiBand(a)[1]}" title="${aqiBand(a)[0]}">${a ?? '–'}</span>`;
 
-const state = { data: null, key: '', zip: null, req: null, zone: null, live: [], rkey: null };
+const state = { data: null, key: '', zip: null, req: null, zone: null, detail: null, live: [], calls: [], trails: new Set(), rkey: null };
 const sites = () => state.data?.sites ?? [];
 const siteById = id => sites().find(z => z.id === id);
 const readingFor = zip => state.data?.readings.find(r => r.zip === zip);
 
 /* ---------- map ---------- */
-const map = L.map('map', { zoomControl: false }).setView([32.79, -117.04], 11);
+// Locked to San Diego County (32.53..33.51 N, 117.60..116.08 W) plus a margin: Tijuana, Temecula, the Salton Sea.
+const map = L.map('map', { zoomControl: false, minZoom: 10, maxBounds: [[32.0, -118.6], [34.0, -115.2]], maxBoundsViscosity: 1 }).setView([32.79, -117.04], 11);
 L.tileLayer('https://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer/tile/{z}/{y}/{x}', {
   maxZoom: 16, attribution: 'USGS The National Map',
 }).addTo(map);
@@ -302,7 +348,7 @@ function syncMap() {
   refreshIcons();
 }
 function refreshIcons() {
-  sites().forEach(z => zoneMarkers[z.id]?.setIcon(zoneIcon(z)));
+  sites().forEach(z => zoneMarkers[z.id]?.setIcon(zoneIcon(z)).setZIndexOffset(state.zone === z.id ? 1000 : 0));
   state.live.forEach(r => reqMarkers[r.id]?.setIcon(reqIcon(r)));
 }
 
@@ -340,8 +386,56 @@ function renderZones() {
       ${z.open_now ? `<span class="load"><span class="refs" title="Sent by Shade in the last 24h / estimated capacity"><b>${z.referrals_24h}</b>${cap} sent</span><span class="ver">${verified(z)}</span><span class="air">AQI ${aqiChip(readingFor(z.zip)?.aqi)}</span></span>` : ''}
     </button>`;
   }).join('');
+  renderDetail();
 }
 $('zlist').onclick = e => { const b = e.target.closest('[data-z]'); if (b) pickZone(+b.dataset.z); };
+
+/* the selected zone replaces the list (GET /dashboard/sites/:id adds what the snapshot leaves out, and Google Places) */
+const DAY = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const href = u => /^https?:\/\//.test(u ?? '') ? esc(u) : '';   // scraped URLs: http(s) only
+function renderDetail() {
+  const z = siteById(state.zone);
+  $('zlist').hidden = !!z; $('zdetail').hidden = !z;
+  if (!z) return;
+  const mine = state.detail?.id === z.id, d = mine && !state.detail.failed ? state.detail : null, g = d?.google;
+  const official = z.tier === 'official';
+  const row = (k, v) => v ? `<dt>${k}</dt><dd>${v}</dd>` : '';
+  const pct = z.capacity_est ? Math.min(100, Math.round(100 * z.referrals_24h / z.capacity_est)) : 0;
+  const today = DAY.indexOf(new Date().toLocaleDateString('en-US', { ...LA, weekday: 'short' }));
+  const week = d ? [1, 2, 3, 4, 5, 6, 0].map(n => {
+    const v = d.hours.weekly.filter(i => i.day === n).map(i => `${to12h(i.open)} - ${to12h(i.close)}`).join(', ') || 'Closed';
+    return `<dt class="${n === today ? 'today' : ''}">${DAY[n]}</dt><dd class="${n === today ? 'today' : ''}">${v}</dd>`;
+  }).join('') : '';
+  const reviews = d?.reviews_scanned ? `<p class="dim">${d.crowded} of ${d.reviews_scanned} recent Google reviews mention crowding, ${d.spacious} mention plenty of room.</p>${d.crowd_quote ? `<p class="said">“${esc(d.crowd_quote)}”</p>` : ''}` : '';
+  const maps = href(g?.maps_url) || href(d?.maps_url), web = href(g?.website) || href(d?.source_url);
+  $('zdetail').innerHTML = `<button class="back" data-back>&larr; All cool zones</button>
+    ${href(g?.photo) ? `<img src="${href(g.photo)}" alt="">` : ''}
+    <h3>${esc(z.name)}</h3>
+    <span class="sub">${official ? '<span class="ztag cz">Cool Zone</span>' : '<span class="ztag ps">Public Space</span>'}${esc(d?.category || KIND[z.kind])}${g?.rating ? ` · ★ ${esc(g.rating)} (${esc(g.ratings)} on Google)` : ''}</span>
+    <p class="status">${z.open_now ? `Open until ${to12h(z.closes_at)}` : 'Closed now'}</p>
+    <p class="dim">${g?.status && g.status !== 'OPERATIONAL' ? `Google lists this place as ${esc(g.status.toLowerCase().replace(/_/g, ' '))}. ` : ''}${verified(z)}${official ? '' : ' · Call ahead'}</p>
+    ${g?.summary ? `<p class="dim" style="margin-top:8px">${esc(g.summary)}</p>` : ''}
+    <h4>Busyness</h4>
+    <p><b>${z.referrals_24h}</b>${z.capacity_est ? ` of about ${z.capacity_est} seats` : ''} sent here by Shade in the last 24h</p>
+    ${z.capacity_est ? `<div class="meter"><i class="${pct >= 80 ? 'full' : ''}" style="width:${pct}%"></i></div>` : ''}
+    ${reviews}
+    <h4>Details</h4>
+    <dl>${row('Address', esc(z.address))}${row('Phone', d?.phone && `<a href="tel:${esc(d.phone.replace(/[^+\d]/g, ''))}">${esc(d.phone)}</a>`)}
+      ${row('A/C', d ? (d.has_ac == null ? 'Unknown' : d.has_ac ? 'Yes' : 'No') : '')}${row('Access', esc(d?.access_notes))}${row('Pets', esc(d?.pet_policy))}
+      ${row('Air', `AQI ${aqiChip(readingFor(z.zip)?.aqi)}`)}</dl>
+    ${week ? `<h4>Hours</h4><dl>${week}</dl>` : `<p class="dim" style="margin-top:14px">${mine ? 'Could not load more details.' : 'Loading details…'}</p>`}
+    <div class="links">${maps ? `<a class="btn" href="${maps}" target="_blank" rel="noopener">Open in Google Maps</a>` : ''}${web ? `<a class="btn ghost" href="${web}" target="_blank" rel="noopener">Website</a>` : ''}</div>`;
+}
+$('zdetail').onclick = e => { if (e.target.closest('[data-back]')) { state.zone = null; renderZones(); refreshIcons(); } };
+
+async function loadDetail(id) {
+  try {
+    const res = await fetch(`${API}/dashboard/sites/${id}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    state.detail = { id, ...(await res.json()) };
+  } catch { state.detail = { id, failed: true }; }
+  if (state.zone === id) renderDetail();
+}
 
 function pickZone(id) {
   state.zone = id; state.req = null;
@@ -349,6 +443,8 @@ function pickZone(id) {
   map.flyTo([z.lat, z.lon], 14, { duration: .8 });
   if (z.zip && readingFor(z.zip)) state.zip = z.zip;
   renderZones(); renderReqs(); renderReadings(); refreshIcons();
+  $('zdetail').scrollTop = 0;
+  if (state.detail?.id !== id || state.detail.failed) loadDetail(id);
 }
 
 /* ---------- readings ---------- */
@@ -367,7 +463,7 @@ function renderReadings() {
   const future = new Date(r.time) > new Date(state.data.generated_at);
   const when = new Date(r.time).toLocaleString('en-US', { ...LA, weekday: 'short', hour: 'numeric', minute: '2-digit' });
   $('rnote').innerHTML = `${r.aqi != null ? `<em>${aqiBand(r.aqi)[0]}</em> air. ` : ''}${SOURCE[r.source]} ${future ? 'forecast for' : 'reading at'} ${when}.`;
-  const shown = all.slice(0, 6);
+  const shown = all.slice(0, 3);   // the three hottest zips; the selected one is added below if it isn't among them
   if (!shown.includes(r)) shown.push(r);
   $('rlist').innerHTML = shown.map(x => `<button class="rrow" aria-pressed="${x.zip === state.zip}" data-zip="${esc(x.zip)}">
     <span class="area">${esc(x.area === x.zip ? '' : x.area)}<small class="mono">${esc(x.zip)}</small></span>
@@ -377,10 +473,23 @@ $('rlist').onclick = e => { const b = e.target.closest('[data-zip]'); if (b) { s
 
 /* ---------- help requests (GET /dispatch/requests) ---------- */
 const LANG = { en: 'English', es: 'Spanish', tl: 'Tagalog', vi: 'Vietnamese', zh: 'Chinese' };
+const stamp = iso => new Date(iso).toLocaleTimeString('en-US', { ...LA, hour: 'numeric', minute: '2-digit', second: '2-digit' });
+// One line: status pill and the latest step. `live` shimmers while the call or the dispatcher's answer is still pending.
+function trail(key, pill, label, events, live) {
+  const last = events.at(-1), open = state.trails.has(key);
+  return `<button class="agent ${live ? 'live' : ''}" data-t="${key}" aria-expanded="${open}" title="Show every step of this call">
+      <span class="st ${pill}">${label}</span><span class="now">${esc(last?.text ?? 'No steps recorded')}</span>
+      <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+    ${open ? `<ol class="log" aria-label="Every step of this call, oldest first">${events.map(e => `<li>${esc(e.text)}<small>${stamp(e.at)}</small></li>`).join('')}</ol>` : ''}`;
+}
 function renderReqs(fresh) {
   const n = s => state.live.filter(r => r.status === s).length;
-  $('qsum').textContent = `${n('requesting')} requesting, ${n('incoming')} incoming`;
-  $('qlist').innerHTML = [...state.live].sort((a, b) => (a.status === 'incoming') - (b.status === 'incoming')).map(r => {
+  $('qsum').textContent = `${state.calls.length ? `${state.calls.length} on call, ` : ''}${n('requesting')} requesting, ${n('incoming')} incoming`;
+  const calls = state.calls.map(c => `<article class="req-row call">
+      <h3>Call in progress</h3><span class="meta">No help request yet · started ${clockAt(c.started_at)}</span>
+      ${trail('c' + c.id, 'oncall', 'On call', c.events, true)}
+    </article>`).join('');
+  $('qlist').innerHTML = calls + [...state.live].sort((a, b) => (a.status === 'incoming') - (b.status === 'incoming')).map(r => {
     const want = r.status === 'requesting';
     const meta = [readingFor(r.zip)?.area ?? r.zip, `Call${LANG[r.language] ? `, ${LANG[r.language]}` : ''}`, clockAt(r.created_at)].filter(Boolean).join(' · ');
     return `<article class="req-row ${state.req === r.id ? 'sel' : ''} ${fresh === r.id ? 'new' : ''}" data-q="${r.id}">
@@ -389,12 +498,14 @@ function renderReqs(fresh) {
         <span class="meta">${esc(meta)}</span>
       </button>
       <div class="chips">${r.needs.map(x => `<span class="chip">${esc(x)}</span>`).join('')}</div>
-      <div class="agent"><span class="st ${want ? 'requesting' : 'incoming'}">${want ? 'Requesting' : 'Incoming'}</span><span>${want ? 'Waiting for a dispatcher' : 'Help confirmed'}</span></div>
+      ${trail('r' + r.id, want ? 'requesting' : 'incoming', want ? 'Requesting' : 'Incoming', r.events ?? [], want)}
       <div class="more"><p class="said">“${esc(r.said)}”</p></div>
     </article>`;
   }).join('');
 }
 $('qlist').onclick = e => {
+  const t = e.target.closest('[data-t]');
+  if (t) { state.trails.has(t.dataset.t) ? state.trails.delete(t.dataset.t) : state.trails.add(t.dataset.t); return renderReqs(); }
   const row = e.target.closest('[data-q]'); if (!row) return;
   if (e.target.closest('.open')) pickReq(+row.dataset.q);
 };
@@ -411,10 +522,10 @@ async function loadReqs() {
   try {
     const res = await fetch(`${API}/dispatch/requests`, { cache: 'no-store' });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const rows = (await res.json()).requests, key = JSON.stringify(rows);
+    const body = await res.json(), rows = body.requests, key = JSON.stringify(body);
     if (key === state.rkey) return;   // re-render only on change, so focus and scroll survive the poll
     const fresh = state.rkey != null && rows.find(r => !state.live.some(x => x.id === r.id))?.id;
-    state.rkey = key; state.live = rows;
+    state.rkey = key; state.live = rows; state.calls = body.calls ?? [];
     if (!rows.some(r => r.id === state.req)) state.req = null;
     syncReqMarkers(); renderReqs(fresh);
   } catch (err) {

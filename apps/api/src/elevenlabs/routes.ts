@@ -2,6 +2,7 @@
 // They skip Mastra auth and check their own secrets instead (see auth.ts).
 import { registerApiRoute } from '@mastra/core/server';
 import { isValidToolSecret, isValidWebhookSignature } from './auth';
+import { logEvent } from '../requests/events';
 import { handleRequestHelp, requestHelpBody } from '../requests/requests';
 import { handlePostCall } from './post-call';
 import { findSitesBody, handleFindSites } from './tool-find-sites';
@@ -38,6 +39,19 @@ export const elevenLabsRoutes = [
       const parsed = requestHelpBody.safeParse(await c.req.json().catch(() => null));
       if (!parsed.success) return c.json({ error: 'said and location are required' }, 400);
       return c.json(await handleRequestHelp(parsed.data));
+    },
+  }),
+
+  // Conversation initiation webhook: ElevenLabs posts here as an inbound Twilio call connects, before the agent speaks.
+  // It starts the dispatcher's trail. Set it up in ElevenLabs (agent/README.md) with the tool secret as a header.
+  registerApiRoute('/el/webhooks/call-start', {
+    method: 'POST',
+    requiresAuth: false,
+    handler: async (c) => {
+      if (!isValidToolSecret(c.req.header('x-shade-tool-secret'))) return c.json({ error: 'unauthorized' }, 401);
+      const body = await c.req.json().catch(() => null);
+      void logEvent(typeof body?.conversation_id === 'string' ? body.conversation_id : null, 'call_started', '');
+      return c.json({ type: 'conversation_initiation_client_data', dynamic_variables: {} }); // the call waits on this
     },
   }),
 

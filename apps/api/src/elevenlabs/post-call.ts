@@ -1,6 +1,7 @@
 // ElevenLabs post-call webhook -> one `calls` row per conversation.
 // Combines the agent's data-collection fields (agent/agent.config.ts) with what our tools saw.
 import type { CallOutcome } from '../../../../data/schema/types';
+import { logEvent } from '../requests/events';
 import { insertCall } from '../shared/calls';
 import { hashPhone } from '../shared/phone';
 import { outcomeFromState, takeCallState } from './call-state';
@@ -41,6 +42,8 @@ export async function handlePostCall(event: PostCallEvent): Promise<void> {
   const siteRaw = Number(dc.site_id?.value);
   const start = metadata.start_time_unix_secs ? new Date(metadata.start_time_unix_secs * 1000) : new Date();
   const phone = metadata.phone_call?.external_number;
+  const secs = metadata.call_duration_secs;
+  await logEvent(conversation_id, 'call_ended', `Call ended${secs != null ? ` after ${Math.floor(secs / 60)} min ${secs % 60} s` : ''}`);
 
   await insertCall({
     direction: metadata.phone_call?.direction ?? 'inbound',

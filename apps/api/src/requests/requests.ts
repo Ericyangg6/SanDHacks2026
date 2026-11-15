@@ -4,6 +4,7 @@ import { z } from 'zod';
 import type { HelpRequest, RequestHelpOutput, RequestStatus } from '../../../../data/schema/types';
 import { db } from '../shared/db';
 import { resolveLocation } from '../shared/find-sites';
+import { eventsOf, logEvent } from './events';
 
 const FAILED =
   "I couldn't send your request. Please call 2 1 1. They can help, and they can arrange a free ride. If this is an emergency, call 9 1 1.";
@@ -45,6 +46,11 @@ export async function handleRequestHelp(body: z.infer<typeof requestHelpBody>): 
     const row =
       inserted.rows[0] ??
       (await db.query(`select id, status from requests where conversation_id = $1`, [body.conversation_id])).rows[0];
+    if (inserted.rows[0]) {
+      const needs = body.needs?.length ? `: ${body.needs.join(', ')}` : '';
+      await logEvent(body.conversation_id, 'help_requested', `Caller asked for help${needs}`);
+      await logEvent(body.conversation_id, 'help_requested', 'Request sent to the dispatcher inbox. Shade told the caller no one has confirmed yet');
+    }
     return { ok: true, request_id: row.id, status: row.status, say_this: sayThis(row.status) };
   } catch (err) {
     console.error('[requests] request_help failed', err);
@@ -58,7 +64,8 @@ export const INBOX_COLUMNS = 'id, status, help_type, said, location, zip, lat, l
 export async function listOpenRequests(): Promise<HelpRequest[]> {
   if (!db) return [];
   const { rows } = await db.query(
-    `select ${INBOX_COLUMNS} from requests where status in ('requesting', 'incoming') order by created_at`,
+    `select ${INBOX_COLUMNS}, ${eventsOf('requests.conversation_id')} events
+     from requests where status in ('requesting', 'incoming') order by created_at`,
   );
   return rows;
 }

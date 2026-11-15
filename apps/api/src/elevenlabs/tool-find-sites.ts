@@ -2,6 +2,8 @@
 import { z } from 'zod';
 import type { FindSitesOutput } from '../../../../data/schema/types';
 import { findSites } from '../shared/find-sites';
+import { logEvent } from '../requests/events';
+import { to12h } from '../shared/hours';
 import { updateCallState } from './call-state';
 
 const FALLBACK = "I couldn't find an open site near you right now. You can call 2 1 1 any time. They can help, and they can arrange a free ride.";
@@ -29,6 +31,16 @@ function forTheAgent(result: FindSitesOutput) {
   };
 }
 
+// Zip only: a caller who never asks for help leaves no stated location behind (calls are stored by zip too).
+const HOW: Record<string, string> = { address: 'an address', intersection: 'cross streets', landmark: 'a landmark', street: 'a street name', area: 'a neighborhood', zip: 'a zip code' };
+async function logTrail(conversationId: string | undefined, result: FindSitesOutput) {
+  const how = result.location_precision ? ` (from ${HOW[result.location_precision]})` : '';
+  await logEvent(conversationId, 'located', result.resolved_zip ? `Placed the caller in ${result.resolved_zip}${how}` : 'Could not place the caller yet. Asking for a cross street');
+  const top = result.sites[0];
+  if (top) await logEvent(conversationId, 'site_suggested', `Suggested ${top.name}${top.closes_at ? `, open until ${to12h(top.closes_at)}` : ''}`);
+  else if (result.resolved_zip) await logEvent(conversationId, 'no_site', 'No open cool zone nearby. Gave the 2-1-1 line');
+}
+
 export async function handleFindSites(body: z.infer<typeof findSitesBody>): Promise<FindSitesOutput | ReturnType<typeof forTheAgent>> {
   const { conversation_id, location, language, ...needs } = body;
   try {
@@ -39,6 +51,7 @@ export async function handleFindSites(body: z.infer<typeof findSitesBody>): Prom
       language,
       noSiteFound: result.sites.length === 0,
     });
+    void logTrail(conversation_id, result);
     if (result.sites.length === 0 && !result.fallback_message) {
       return { ...result, fallback_message: FALLBACK };
     }
