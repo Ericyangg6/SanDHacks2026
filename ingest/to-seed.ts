@@ -143,12 +143,33 @@ async function main() {
 
   // First run (no registry): number in the sorted order above. Later runs: keep every existing id, give new sites the next free one.
   const reg: Registry = registry ?? { next_id: 1, ids: {} };
+  // A place can change its natural key between runs (a county record later gets linked to a Maps place, a web page to a Maps place).
+  // It is still the same place, so it must keep its id: reuse the old key when a previously seeded site matches by street address +
+  // name, or sits within 150 m and shares a name word. Otherwise production would end up with two rows for one library.
+  if (registry) {
+    const prevSites: any[] = JSON.parse(await readFile(new URL("../data/seed/sites.json", import.meta.url), "utf8").catch(() => "[]"));
+    const prevExtras: Record<string, any> = JSON.parse(await readFile(new URL("../data/seed/sites.extras.json", import.meta.url), "utf8").catch(() => "{}"));
+    const norm = (t: string) => String(t ?? "").toLowerCase().replace(/[^a-z0-9 ]/g, " ").replace(/\s+/g, " ").trim();
+    const words = (t: string) => new Set(norm(t).split(" ").filter((w) => w.length > 3 && !/^(library|branch|public|diego|county|center|centre|park|recreation)$/.test(w)));
+    const street = (a: string) => norm(String(a ?? "").split(",")[0]);
+    const meters = (a: any, b: any) => Math.hypot((a.lat - b.lat) * 111000, (a.lon - b.lon) * 93000);
+    const liveKeys = new Set(built.map((b) => b.key));
+    const free = prevSites.map((o) => ({ o, key: prevExtras[String(o.id)]?.external_key as string | undefined })).filter((x) => x.key && !liveKeys.has(x.key));
+    let linked = 0;
+    for (const b of built) {
+      if (reg.ids[b.key] != null) continue;
+      const shared = (o: any) => [...words(o.name)].some((w) => words(b.site.name).has(w));
+      const hit = free.find(({ o }) => (street(o.address) === street(b.site.address) && street(o.address) !== "" && (shared(o) || norm(o.name) === norm(b.site.name))) || (o.kind === b.site.kind && meters(o, b.site) < 150 && shared(o)));
+      if (hit) { b.key = hit.key!; free.splice(free.indexOf(hit), 1); linked++; }
+    }
+    if (linked) console.log(`kept the existing id for ${linked} place(s) whose natural key changed`);
+  }
   for (const b of built) if (reg.ids[b.key] == null) reg.ids[b.key] = reg.next_id++;
   const sites: any[] = [];
   const extras: Record<number, any> = {};
   for (const b of built) { const id = reg.ids[b.key]; sites.push({ id, ...b.site }); extras[id] = { ...b.extra, external_key: b.key }; }
   await writeFile(registryFile, JSON.stringify(reg, null, 1) + "\n");
-  const newIds = registry ? built.filter((b) => !registry.ids[b.key]).length : built.length;
+  const newIds = registry ? built.filter((b) => registry.ids[b.key] == null || registry.ids[b.key] >= registry.next_id).length : built.length;
 
   // Contract check: required, non-null fields from schema.sql.
   const bad = sites.filter((x) => !x.name || !x.kind || !x.address || x.lat == null || x.lon == null || !x.source_url || !x.last_verified_at);

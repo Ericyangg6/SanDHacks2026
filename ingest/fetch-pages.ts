@@ -33,7 +33,8 @@ async function main() {
   const queue = candidates
     .filter(relevant)
     .filter((c) => {
-      const k = `${c.area}|${c.domain}`;
+      // One page per domain per area keeps big city searches cheap, but a deep search of one place (campus topics) needs EVERY page.
+      const k = String(c.area).startsWith("UCSD") ? c.url : `${c.area}|${c.domain}`;
       if (seen.has(k)) return false;
       seen.add(k);
       return true;

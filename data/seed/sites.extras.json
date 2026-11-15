@@ -17,6 +17,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Bonita-Sunnyside Branch",
+    "category": "Public library",
     "pet_policy": "Service Animals Only",
     "review_signals": {
       "scanned": 10,
@@ -46,6 +47,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "Chula Vista Public Library: Civic Center Branch",
+    "category": "Public library",
     "pet_policy": "Service Animals Only",
     "review_signals": {
       "scanned": 27,
@@ -80,6 +82,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
     "official_name": null,
+    "category": "Public swimming pool",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJwWCRIONN2YARuYvjr2eYLnQ"
@@ -102,6 +105,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "Chula Vista Public Library: South Library",
+    "category": "Public library",
     "pet_policy": "Service Animals Only",
     "review_signals": {
       "scanned": 13,
@@ -132,6 +136,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "City of Chula Vista: Loma Verde Community Center",
+    "category": "Swimming pool",
     "pet_policy": "Service Animals Only",
     "review_signals": {
       "scanned": 4,
@@ -159,6 +164,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
     "official_name": null,
+    "category": "Recreation center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 0,
@@ -188,6 +194,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "City of La Mesa: Adult Enrichment Center",
+    "category": "City government office",
     "pet_policy": "Service Animals Only",
     "review_signals": {
       "scanned": 1,
@@ -218,6 +225,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Lemon Grove Branch",
+    "category": "Public library",
     "pet_policy": "Service Animals Only",
     "review_signals": {
       "scanned": 15,
@@ -248,6 +256,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "National City Public Library",
+    "category": "Public library",
     "pet_policy": "Service Animals Only",
     "review_signals": {
       "scanned": 20,
@@ -301,6 +310,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "Westfield Plaza Bonita",
+    "category": "Shopping mall",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "maps:ChIJ8edfSftR2YARkcftm6nIe_Y"
@@ -322,6 +332,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
     "official_name": null,
+    "category": "Senior citizen center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 1,
@@ -350,6 +361,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "Carlsbad City Library",
+    "category": "Public library",
     "pet_policy": "Service Animals Only",
     "review_signals": {
       "scanned": 40,
@@ -395,6 +407,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego County Library: El Cajon Branch",
+    "category": "Public library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "maps:ChIJgwtD67dZ2YAR-C9a9P4epIQ"
@@ -418,6 +431,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Fletcher Hills Branch",
+    "category": "Public library",
     "pet_policy": "Service Animals Only",
     "review_signals": {
       "scanned": 6,
@@ -448,6 +462,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Crest Branch",
+    "category": "Public library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "maps:ChIJO-4fAsBe2YAReMKVLQdBO5o"
@@ -461,7 +476,8 @@
     "sources": [
       "county_cool_zones_layer",
       "google_maps",
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
+      "https://escondido.gov/facilities/facility/details/East-Valley-Community-Center-2"
     ],
     "conflicts": [],
     "evidence": "Mon 9:00am-8:30pm ... Sun 9:00am-12:00pm",
@@ -469,6 +485,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "City of Escondido: East Valley Community Center",
+    "category": "Community center",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "maps:ChIJbWAQZT3z24ARg-_tAF0_aU4"
@@ -491,6 +508,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "City of Escondido: Park Avenue Community Center",
+    "category": "Community center",
     "pet_policy": "Service Animals Only",
     "review_signals": {
       "scanned": 2,
@@ -519,6 +537,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
     "official_name": null,
+    "category": "Public library",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJQwizpmLz24ARjxIcpS46t6A"
@@ -534,8 +553,7 @@
       "google_maps",
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
       "https://www.sandiego.gov/PlacesToCoolDown",
-      "https://www.insidesandiego.org/city-extends-cooling-center-hours-extended-heat-warning-impacts-region",
-      "https://www.yahoo.com/news/weather-news/articles/where-relief-heat-san-diego-181314220.html"
+      "https://www.insidesandiego.org/city-extends-cooling-center-hours-extended-heat-warning-impacts-region"
     ],
     "conflicts": [],
     "evidence": "Mon 11:30am-8:00pm\nTues 11:30am-8:00pm\nWed 9:30am-6:00pm\nThurs 9:30am-6:00pm\nFri 9:30am-6:00pm\nSat 9:30am-6:00pm\nSun Closed",
@@ -543,6 +561,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego Public Library: La Jolla/Riford Branch",
+    "category": "Public library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "maps:ChIJlaFOS-QD3IARV7RbEzc6ZgQ"
@@ -564,6 +583,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "Oceanside Public Library: Civic Center Branch",
+    "category": "Public library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "maps:ChIJwy0MOzFu3IARxpL16X9RQfI"
@@ -586,6 +606,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
     "official_name": null,
+    "category": "Community center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 1,
@@ -614,6 +635,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "Oceanside Public Library: Mission Branch",
+    "category": "Public library",
     "pet_policy": "Service Animals Only",
     "review_signals": {
       "scanned": 8,
@@ -644,6 +666,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "City of San Marcos: San Marcos Senior Center",
+    "category": "Senior citizen center",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "maps:ChIJ9TVGH6WK24ARL9-CBTWObaw"
@@ -669,6 +692,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Vista Branch",
+    "category": "Public library",
     "pet_policy": "Service Animals Only",
     "review_signals": {
       "scanned": 25,
@@ -689,8 +713,7 @@
     "sources": [
       "google_maps",
       "https://www.sandiego.gov/public-library/central-library",
-      "https://www.sandiego.gov/PlacesToCoolDown",
-      "https://www.yahoo.com/news/weather-news/articles/where-relief-heat-san-diego-181314220.html"
+      "https://www.sandiego.gov/PlacesToCoolDown"
     ],
     "conflicts": [],
     "evidence": "| Monday | 11:30 a.m. - 8 p.m. | ... | Saturday | 10 a.m. - 4 p.m. | ... | Sunday | Closed |",
@@ -698,6 +721,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
     "official_name": null,
+    "category": "Public library",
     "pet_policy": null,
     "review_signals": {
       "scanned": 58,
@@ -733,8 +757,7 @@
       "google_maps",
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
       "https://www.sandiego.gov/PlacesToCoolDown",
-      "https://www.insidesandiego.org/city-extends-cooling-center-hours-extended-heat-warning-impacts-region",
-      "https://www.yahoo.com/news/weather-news/articles/where-relief-heat-san-diego-181314220.html"
+      "https://www.insidesandiego.org/city-extends-cooling-center-hours-extended-heat-warning-impacts-region"
     ],
     "conflicts": [],
     "evidence": "Mon Closed\nTues 11:30am-8:00pm\nWed 9:30am-6:00pm\nThurs 9:30am-6:00pm\nFri 9:30am-6:00pm\nSat 9:30am-6:00pm\nSun Closed",
@@ -742,6 +765,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego Public Library: Mission Hills-Hillcrest/Knox Branch",
+    "category": "Public library",
     "pet_policy": "Service Animals Only",
     "review_signals": {
       "scanned": 19,
@@ -770,6 +794,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
     "official_name": null,
+    "category": "Public library",
     "pet_policy": null,
     "review_signals": {
       "scanned": 17,
@@ -798,6 +823,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego Public Library:  Mission Valley Branch",
+    "category": "Public library",
     "pet_policy": "Service Animals Only",
     "review_signals": {
       "scanned": 16,
@@ -828,7 +854,6 @@
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
       "https://www.sandiego.gov/PlacesToCoolDown",
       "https://www.insidesandiego.org/city-extends-cooling-center-hours-extended-heat-warning-impacts-region",
-      "https://www.yahoo.com/news/weather-news/articles/where-relief-heat-san-diego-181314220.html",
       "https://friendsofsdpl.org/Chapters"
     ],
     "conflicts": [],
@@ -837,6 +862,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego Public Library: Pacific Beach Branch",
+    "category": "Public library",
     "pet_policy": "Service Animals Only",
     "review_signals": {
       "scanned": 19,
@@ -880,7 +906,6 @@
       "https://public-district2.sandiegocounty.gov/news/email/show.aspx?ID=PLYWNG2N75WJW",
       "https://www.sandiego.gov/PlacesToCoolDown",
       "https://www.insidesandiego.org/city-extends-cooling-center-hours-extended-heat-warning-impacts-region",
-      "https://www.yahoo.com/news/weather-news/articles/where-relief-heat-san-diego-181314220.html",
       "https://friendsofsdpl.org/Chapters"
     ],
     "conflicts": [],
@@ -889,6 +914,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego Public Library: San Carlos Branch",
+    "category": "Public library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "maps:ChIJ2SHX4UhW2YARB8yZWZCYjAU"
@@ -910,6 +936,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
     "official_name": null,
+    "category": "Public library",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJyZDG2e7424ARB1cQZV9QNnE"
@@ -924,8 +951,7 @@
       "county_cool_zones_layer",
       "google_maps",
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
-      "https://www.sandiego.gov/PlacesToCoolDown",
-      "https://www.yahoo.com/news/weather-news/articles/where-relief-heat-san-diego-181314220.html"
+      "https://www.sandiego.gov/PlacesToCoolDown"
     ],
     "conflicts": [],
     "evidence": "Mon 11:30am-8:00pm\nTues 11:30am-8:00pm\nWed 9:30am-6:00pm\nThurs 9:30am-6:00pm\nFri 9:30am-6:00pm\nSat 9:30am-6:00pm\nSun Closed",
@@ -933,6 +959,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego Public Library: Carmel Valley Branch",
+    "category": "Library",
     "pet_policy": "Service Animals Only",
     "review_signals": {
       "scanned": 15,
@@ -969,7 +996,6 @@
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
       "https://www.sandiego.gov/PlacesToCoolDown",
       "https://www.insidesandiego.org/city-extends-cooling-center-hours-extended-heat-warning-impacts-region",
-      "https://www.yahoo.com/news/weather-news/articles/where-relief-heat-san-diego-181314220.html",
       "https://friendsofsdpl.org/Chapters"
     ],
     "conflicts": [],
@@ -978,6 +1004,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego Public Library: Pacific Highlands Ranch Branch",
+    "category": "Library",
     "pet_policy": "Service Animals Only",
     "review_signals": {
       "scanned": 12,
@@ -1008,7 +1035,6 @@
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
       "https://www.sandiego.gov/PlacesToCoolDown",
       "https://www.insidesandiego.org/city-extends-cooling-center-hours-extended-heat-warning-impacts-region",
-      "https://www.yahoo.com/news/weather-news/articles/where-relief-heat-san-diego-181314220.html",
       "https://friendsofsdpl.org/Chapters"
     ],
     "conflicts": [],
@@ -1017,6 +1043,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego Public Library: Paradise Hills Branch",
+    "category": "Public library",
     "pet_policy": "Service Animals Only",
     "review_signals": {
       "scanned": 5,
@@ -1045,6 +1072,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Alpine Branch",
+    "category": "library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:230"
@@ -1067,6 +1095,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Campo-Morena Branch",
+    "category": "library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:244"
@@ -1090,6 +1119,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "City of Chula Vista: Norman Park Senior Center",
+    "category": "Senior citizen center",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "maps:ChIJKRy1jwdO2YAR85ENMelsXh8"
@@ -1109,6 +1139,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "site_page",
     "official_name": null,
+    "category": null,
     "pet_policy": null,
     "review_signals": null,
     "external_key": "web:ec83fb6530ed754e"
@@ -1128,6 +1159,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
     "official_name": null,
+    "category": null,
     "pet_policy": null,
     "review_signals": null,
     "external_key": "web:8b561d2ce8260e6a"
@@ -1147,6 +1179,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
     "official_name": null,
+    "category": null,
     "pet_policy": null,
     "review_signals": null,
     "external_key": "web:5a8157d9a14067ac"
@@ -1167,6 +1200,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "Chula Vista Public Library: Otay Ranch",
+    "category": "library",
     "pet_policy": "Service Animals & Pets Allowed",
     "review_signals": null,
     "external_key": "county:215"
@@ -1189,6 +1223,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Descanso Branch",
+    "category": "library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:169"
@@ -1210,6 +1245,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Imperial Beach Branch",
+    "category": "library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:200"
@@ -1230,6 +1266,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
     "official_name": null,
+    "category": null,
     "pet_policy": null,
     "review_signals": null,
     "external_key": "web:f1ca458952e0cfc5"
@@ -1252,6 +1289,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Jacumba Branch",
+    "category": "library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:171"
@@ -1273,6 +1311,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego County Library: La Mesa Branch",
+    "category": "Public library",
     "pet_policy": "Service Animals Only",
     "review_signals": {
       "scanned": 16,
@@ -1300,6 +1339,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "Christian Science Reading Room",
+    "category": "other",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:217"
@@ -1320,6 +1360,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "Grossmont Healthcare District",
+    "category": "other",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:239"
@@ -1341,6 +1382,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Lincoln Acres Branch",
+    "category": "library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:203"
@@ -1363,6 +1405,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Pine Valley Branch",
+    "category": "library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:173"
@@ -1385,6 +1428,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Potrero Branch",
+    "category": "library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:174"
@@ -1405,6 +1449,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "County of San Diego: Spring Valley Community Center",
+    "category": "community_center",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:216"
@@ -1425,6 +1470,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Casa de Oro Branch",
+    "category": "library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:166"
@@ -1446,6 +1492,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Spring Valley Branch",
+    "category": "library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:204"
@@ -1467,6 +1514,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Borrego Springs Branch",
+    "category": "library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:214"
@@ -1489,6 +1537,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Cardiff-by-the-Sea Branch",
+    "category": "library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:165"
@@ -1509,6 +1558,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "County of San Diego: San Elijo Lagoon Nature Center",
+    "category": "other",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:219"
@@ -1530,6 +1580,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
     "official_name": null,
+    "category": "Senior citizen center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 2,
@@ -1546,17 +1597,21 @@
     "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
     "requires_id": null,
     "has_fee": null,
-    "verification": "web_only",
+    "verification": "conflict",
     "sources": [
       "county_cool_zones_layer",
+      "google_maps",
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
     ],
-    "conflicts": [],
+    "conflicts": [
+      "tue: maps 12:00-19:00 vs web 00:00-19:00"
+    ],
     "evidence": "Tues 12:00am-7:00pm",
-    "maps_place_id": null,
+    "maps_place_id": "ChIJI3kvYbQI3IARVwGC128X0KY",
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Del Mar Branch",
+    "category": "Public library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:168"
@@ -1579,6 +1634,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Rancho San Diego Branch",
+    "category": "library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:175"
@@ -1599,6 +1655,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "site_page",
     "official_name": null,
+    "category": "Natural history museum",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJZ3IsV0pa2YARLk_AqDqivoA"
@@ -1620,6 +1677,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
     "official_name": null,
+    "category": "Recreation center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 0,
@@ -1649,6 +1707,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
     "official_name": null,
+    "category": "Community center",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJFQej67dZ2YARLCgMsf0ig1s"
@@ -1670,6 +1729,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
     "official_name": null,
+    "category": "Recreation center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 1,
@@ -1698,6 +1758,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
     "official_name": null,
+    "category": "Recreation center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 3,
@@ -1726,6 +1787,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
     "official_name": null,
+    "category": "Recreation center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 4,
@@ -1754,6 +1816,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
     "official_name": null,
+    "category": null,
     "pet_policy": null,
     "review_signals": null,
     "external_key": "web:afd8b8da5fb7a6da"
@@ -1776,6 +1839,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Encinitas Branch",
+    "category": "library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:198"
@@ -1796,6 +1860,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
     "official_name": null,
+    "category": "Archive",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJIf4CfD7z24AR3Ll9mV9v52Y"
@@ -1816,6 +1881,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
     "official_name": null,
+    "category": "Sports complex",
     "pet_policy": null,
     "review_signals": {
       "scanned": 4,
@@ -1843,6 +1909,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "County of San Diego: Fallbrook Community Center",
+    "category": "community_center",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:212"
@@ -1864,6 +1931,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Fallbrook Branch",
+    "category": "library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:201"
@@ -1884,6 +1952,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Julian Branch",
+    "category": "library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:240"
@@ -1904,6 +1973,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
     "official_name": null,
+    "category": "Recreation center",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJUTj59Ddu3IARS-DOeL0GOhE"
@@ -1926,6 +1996,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "City of Oceanside: Country Club Senior Center",
+    "category": "senior_center",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:235"
@@ -1938,7 +2009,9 @@
     "verification": "web_only",
     "sources": [
       "county_cool_zones_layer",
-      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf"
+      "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
+      "https://www.ymca.org/locations/joe-and-mary-mottino-family-ymca",
+      "https://www.ymcasd.org/y-locations/joe-and-mary-mottino-family-ymca/"
     ],
     "conflicts": [],
     "evidence": "Mon 5:00am-0800pm",
@@ -1946,6 +2019,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "Joe & Mary Mottino YMCA",
+    "category": "rec_center",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:228"
@@ -1969,6 +2043,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "City of Oceanside: El Corazon Senior Center",
+    "category": "senior_center",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:243"
@@ -1989,6 +2064,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
     "official_name": null,
+    "category": "Park",
     "pet_policy": null,
     "review_signals": {
       "scanned": 4,
@@ -2018,6 +2094,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "City of Poway Community Center",
+    "category": "community_center",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:224"
@@ -2039,6 +2116,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Poway Branch",
+    "category": "library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:205"
@@ -2061,6 +2139,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Ramona Branch",
+    "category": "library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:206"
@@ -2082,6 +2161,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "Ramona Senior Center",
+    "category": "senior_center",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:223"
@@ -2103,6 +2183,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Rancho Santa Fe Branch",
+    "category": "library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:176"
@@ -2123,6 +2204,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
     "official_name": null,
+    "category": null,
     "pet_policy": null,
     "review_signals": null,
     "external_key": "web:d3a7cbac2918391e"
@@ -2142,6 +2224,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
     "official_name": null,
+    "category": null,
     "pet_policy": null,
     "review_signals": null,
     "external_key": "web:58be8acf4e668e2f"
@@ -2162,6 +2245,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "County of San Diego: Santa Ysabel Nature Center",
+    "category": "other",
     "pet_policy": "Service Animals & Pets Allowed",
     "review_signals": null,
     "external_key": "county:229"
@@ -2184,6 +2268,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Solana Beach Branch",
+    "category": "library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:179"
@@ -2204,6 +2289,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "County of San Diego: Valley Center Community Hall",
+    "category": "community_center",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:232"
@@ -2226,6 +2312,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Valley Center Branch",
+    "category": "library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:241"
@@ -2245,6 +2332,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
     "official_name": null,
+    "category": null,
     "pet_policy": null,
     "review_signals": null,
     "external_key": "web:bb9db2a35fcef828"
@@ -2259,8 +2347,7 @@
       "county_cool_zones_layer",
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
       "https://www.sandiego.gov/PlacesToCoolDown",
-      "https://www.insidesandiego.org/city-extends-cooling-center-hours-extended-heat-warning-impacts-region",
-      "https://www.yahoo.com/news/weather-news/articles/where-relief-heat-san-diego-181314220.html"
+      "https://www.insidesandiego.org/city-extends-cooling-center-hours-extended-heat-warning-impacts-region"
     ],
     "conflicts": [],
     "evidence": "Mon 11:30am-8:00pm\nTues 11:30-8:00pm\nWed 9:30am-6:00pm\nThurs 9:30am-6:00pm\nFri 9:30pm-6:00pm\nSat 9:30am-6:00pm\nSun Closed",
@@ -2268,6 +2355,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego Public Library: University Heights Branch",
+    "category": "library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:194"
@@ -2277,20 +2365,23 @@
     "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
     "requires_id": null,
     "has_fee": null,
-    "verification": "web_only",
+    "verification": "conflict",
     "sources": [
       "county_cool_zones_layer",
+      "google_maps",
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
       "https://www.sandiego.gov/PlacesToCoolDown",
-      "https://www.yahoo.com/news/weather-news/articles/where-relief-heat-san-diego-181314220.html",
       "https://friendsofsdpl.org/Chapters"
     ],
-    "conflicts": [],
+    "conflicts": [
+      "sat: maps 10:00-16:00 vs web 09:30-18:00"
+    ],
     "evidence": "Mon 11:30am-8:00pm ... Tues 11:30am-8:00pm ... Wed 9:30am-6:00pm ... Sat 9:30am-6:00pm ... Sun Closed",
-    "maps_place_id": null,
+    "maps_place_id": "ChIJUcJa1qyr3oAR7-_5egkjuWU",
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego Public Library: Point Loma/Hervey branch",
+    "category": "Public library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:190"
@@ -2304,8 +2395,7 @@
     "sources": [
       "google_maps",
       "https://www.sandiego.gov/PlacesToCoolDown",
-      "https://www.insidesandiego.org/city-extends-cooling-center-hours-extended-heat-warning-impacts-region",
-      "https://www.yahoo.com/news/weather-news/articles/where-relief-heat-san-diego-181314220.html"
+      "https://www.insidesandiego.org/city-extends-cooling-center-hours-extended-heat-warning-impacts-region"
     ],
     "conflicts": [],
     "evidence": "4616 Clairemont Drive | 858-581-9931",
@@ -2313,6 +2403,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
     "official_name": null,
+    "category": "Public library",
     "pet_policy": null,
     "review_signals": {
       "scanned": 11,
@@ -2329,20 +2420,21 @@
     "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
     "requires_id": null,
     "has_fee": null,
-    "verification": "web_only",
+    "verification": "confirmed",
     "sources": [
       "county_cool_zones_layer",
+      "google_maps",
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
       "https://www.sandiego.gov/PlacesToCoolDown",
-      "https://www.insidesandiego.org/city-extends-cooling-center-hours-extended-heat-warning-impacts-region",
-      "https://www.yahoo.com/news/weather-news/articles/where-relief-heat-san-diego-181314220.html"
+      "https://www.insidesandiego.org/city-extends-cooling-center-hours-extended-heat-warning-impacts-region"
     ],
     "conflicts": [],
     "evidence": "Mon 11:30am-8:00pm\nTues 11:30am-8:00pm\nWed 9:30am-6:00pm\nThurs 9:30am-6:00pm\nFri 9:30am-6:00pm\nSat 9:30am-6:00pm\nSun Closed",
-    "maps_place_id": null,
+    "maps_place_id": "ChIJQWUerU1V2YARcMGK-wM6ASc",
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego Public Library: Linda Vista Branch",
+    "category": "Public library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:184"
@@ -2363,6 +2455,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "St. David's Church",
+    "category": "other",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:195"
@@ -2377,8 +2470,7 @@
       "county_cool_zones_layer",
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
       "https://www.sandiego.gov/PlacesToCoolDown",
-      "https://www.insidesandiego.org/city-extends-cooling-center-hours-extended-heat-warning-impacts-region",
-      "https://www.yahoo.com/news/weather-news/articles/where-relief-heat-san-diego-181314220.html"
+      "https://www.insidesandiego.org/city-extends-cooling-center-hours-extended-heat-warning-impacts-region"
     ],
     "conflicts": [],
     "evidence": "Mon 11:30am-8:00pm ... Tues 11:30am-8:00pm ... Wed 9:30am-6:00pm ... Sat 9:30am-6:00pm ... Sun Closed",
@@ -2386,6 +2478,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego Public Library: Logan Heights Branch",
+    "category": "library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:185"
@@ -2400,8 +2493,7 @@
       "county_cool_zones_layer",
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
       "https://www.sandiego.gov/PlacesToCoolDown",
-      "https://www.insidesandiego.org/city-extends-cooling-center-hours-extended-heat-warning-impacts-region",
-      "https://www.yahoo.com/news/weather-news/articles/where-relief-heat-san-diego-181314220.html"
+      "https://www.insidesandiego.org/city-extends-cooling-center-hours-extended-heat-warning-impacts-region"
     ],
     "conflicts": [],
     "evidence": "Mon Closed\nTues 11:30am-8:00pm\nWed 9:30am-6:00pm\nThurs 9:30am-6:00pm\nFri 9:30am-6:00pm\nSat 9:30am-6:00pm\nSun Closed",
@@ -2409,6 +2501,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego Public Library: Mountain View/Beckwourth Branch",
+    "category": "library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:187"
@@ -2428,6 +2521,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
     "official_name": null,
+    "category": null,
     "pet_policy": null,
     "review_signals": null,
     "external_key": "web:3f11888f274332af"
@@ -2449,6 +2543,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
     "official_name": null,
+    "category": "Public library",
     "pet_policy": null,
     "review_signals": {
       "scanned": 16,
@@ -2476,6 +2571,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
     "official_name": null,
+    "category": "Recreation center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 8,
@@ -2505,8 +2601,7 @@
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
       "https://public-district2.sandiegocounty.gov/news/email/show.aspx?ID=PLYWNG2N75WJW",
       "https://www.sandiego.gov/PlacesToCoolDown",
-      "https://www.insidesandiego.org/city-extends-cooling-center-hours-extended-heat-warning-impacts-region",
-      "https://www.yahoo.com/news/weather-news/articles/where-relief-heat-san-diego-181314220.html"
+      "https://www.insidesandiego.org/city-extends-cooling-center-hours-extended-heat-warning-impacts-region"
     ],
     "conflicts": [],
     "evidence": "Mon 11:30am-8:00pm\nTues 11:30am-8:00pm\nWed 9:30am-6:00pm\nThurs 9:30am-6:00pm\nFri 9:30am-6:00pm\nSat 9:30am-6:00pm\nSun Closed",
@@ -2514,6 +2609,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego Public Library: Allied Gardens/Benjamin Branch",
+    "category": "library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:181"
@@ -2529,7 +2625,6 @@
       "https://www.sandiego.gov/public-library/locations/north-university-community-library",
       "https://www.sandiego.gov/PlacesToCoolDown",
       "https://www.insidesandiego.org/city-extends-cooling-center-hours-extended-heat-warning-impacts-region",
-      "https://www.yahoo.com/news/weather-news/articles/where-relief-heat-san-diego-181314220.html",
       "https://friendsofsdpl.org/Chapters"
     ],
     "conflicts": [],
@@ -2538,6 +2633,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
     "official_name": null,
+    "category": "Public library",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJN-foiMkA3IARh97TSN8EcnM"
@@ -2547,22 +2643,23 @@
     "access_notes": "Public library; no restriction stated on the page",
     "requires_id": null,
     "has_fee": null,
-    "verification": "web_only",
+    "verification": "confirmed",
     "sources": [
       "county_cool_zones_layer",
+      "google_maps",
       "https://www.sandiego.gov/public-library/locations/university-community-library",
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
       "https://www.sandiego.gov/PlacesToCoolDown",
       "https://www.insidesandiego.org/city-extends-cooling-center-hours-extended-heat-warning-impacts-region",
-      "https://www.yahoo.com/news/weather-news/articles/where-relief-heat-san-diego-181314220.html",
       "https://friendsofsdpl.org/Chapters"
     ],
     "conflicts": [],
     "evidence": "Saturday: ... 9:30 a.m. - 6:00 p.m. ... Sunday: Closed ... Monday: Closed ... Tuesday: ... 11:30 a.m. - 8:00 p.m. ... Wednesday: ... 9:30 a.m. - 6:00 p.m.",
-    "maps_place_id": null,
+    "maps_place_id": "ChIJCTYtCMEA3IARBCqwQuTQBBk",
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego Public Library: University Community Branch",
+    "category": "Public library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:193"
@@ -2572,21 +2669,22 @@
     "access_notes": "Listed as a County of San Diego Cool Zone (free, air-conditioned public space)",
     "requires_id": null,
     "has_fee": null,
-    "verification": "web_only",
+    "verification": "single_hours_source",
     "sources": [
       "county_cool_zones_layer",
+      "google_maps",
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
       "https://public-district2.sandiegocounty.gov/news/email/show.aspx?ID=PLYWNG2N75WJW",
       "https://www.sandiego.gov/PlacesToCoolDown",
-      "https://www.yahoo.com/news/weather-news/articles/where-relief-heat-san-diego-181314220.html",
       "https://friendsofsdpl.org/Chapters"
     ],
     "conflicts": [],
     "evidence": "Mon Closed ... Tues 11:30am-8:00pm ... Wed 9:30am-6:00pm ... Sat 9:30am-6:00pm ... Sun Closed",
-    "maps_place_id": null,
+    "maps_place_id": "ChIJG1uRrdb_24ARzvVot7T0EY0",
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego Public Library: Serra Mesa-Kearny Mesa Branch",
+    "category": "Public library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:192"
@@ -2602,7 +2700,6 @@
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
       "https://www.sandiego.gov/PlacesToCoolDown",
       "https://www.insidesandiego.org/city-extends-cooling-center-hours-extended-heat-warning-impacts-region",
-      "https://www.yahoo.com/news/weather-news/articles/where-relief-heat-san-diego-181314220.html",
       "https://friendsofsdpl.org/Chapters"
     ],
     "conflicts": [],
@@ -2611,6 +2708,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego Public Library: Tierrasanta Branch",
+    "category": "library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:210"
@@ -2632,6 +2730,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego County Library: 4S Ranch Branch",
+    "category": "library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:220"
@@ -2645,8 +2744,7 @@
     "sources": [
       "county_cool_zones_layer",
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
-      "https://www.sandiego.gov/PlacesToCoolDown",
-      "https://www.yahoo.com/news/weather-news/articles/where-relief-heat-san-diego-181314220.html"
+      "https://www.sandiego.gov/PlacesToCoolDown"
     ],
     "conflicts": [],
     "evidence": "Mon 9:00am-8:00pm ... Sat 9:00am-3:00pm",
@@ -2654,6 +2752,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "City of San Diego: Lois J. Mangarelli Recreation Center",
+    "category": "rec_center",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:218"
@@ -2669,7 +2768,6 @@
       "https://www.sandiegocounty.gov/content/dam/sdc/hhsa/programs/phs/ExtremeHeat/coolzones/CoolZoneSiteList.pdf",
       "https://www.sandiego.gov/PlacesToCoolDown",
       "https://www.insidesandiego.org/city-extends-cooling-center-hours-extended-heat-warning-impacts-region",
-      "https://www.yahoo.com/news/weather-news/articles/where-relief-heat-san-diego-181314220.html",
       "https://friendsofsdpl.org/Chapters"
     ],
     "conflicts": [],
@@ -2678,6 +2776,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego Public Library: Skyline Hills Branch",
+    "category": "library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "county:209"
@@ -2704,6 +2803,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
     "official_name": null,
+    "category": "Recreation center",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJqWt5SOUD3IARAvP8J7xjOqk"
@@ -2732,6 +2832,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "County of San Diego: Lakeside Community Center",
+    "category": "Community center",
     "pet_policy": "Service Animals Only",
     "review_signals": {
       "scanned": 3,
@@ -2774,6 +2875,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Lakeside Branch",
+    "category": "Public library",
     "pet_policy": "Service Animals Only",
     "review_signals": {
       "scanned": 16,
@@ -2808,6 +2910,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego County Library: San Marcos Branch",
+    "category": "Community center",
     "pet_policy": "Service Animals Only",
     "review_signals": {
       "scanned": 2,
@@ -2840,6 +2943,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": "official_program",
     "official_name": "San Diego County Library: Santee Branch",
+    "category": "Public library",
     "pet_policy": "Service Animals Only",
     "review_signals": null,
     "external_key": "maps:ChIJMTV1hVr924ARoccT1ogmuXk"
@@ -2867,6 +2971,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
     "official_name": null,
+    "category": "Recreation center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 3,
@@ -2900,6 +3005,7 @@
     "coords_from": "county_cool_zones_layer",
     "ac_from": null,
     "official_name": null,
+    "category": "Senior citizen center",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJKVzU-RdJ2YARORrWmmY-X90"
@@ -2920,6 +3026,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Public swimming pool",
     "pet_policy": null,
     "review_signals": {
       "scanned": 10,
@@ -2947,6 +3054,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Public library",
     "pet_policy": null,
     "review_signals": {
       "scanned": 6,
@@ -2974,6 +3082,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Shopping mall",
     "pet_policy": null,
     "review_signals": {
       "scanned": 33,
@@ -3020,6 +3129,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Recreation center",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJyatccZUB3IAR1rzIwhoQXFc"
@@ -3040,6 +3150,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Park",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJX89qj_z_24AR4Nu2zaP5A_Y"
@@ -3060,6 +3171,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Recreation center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 9,
@@ -3086,6 +3198,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "History museum",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJ08_pRwdJ2YARUxutVFsLHtU"
@@ -3105,6 +3218,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Wax museum",
     "pet_policy": null,
     "review_signals": {
       "scanned": 41,
@@ -3131,6 +3245,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "History museum",
     "pet_policy": null,
     "review_signals": {
       "scanned": 35,
@@ -3157,6 +3272,7 @@
     "coords_from": "census_geocoder",
     "ac_from": null,
     "official_name": null,
+    "category": null,
     "pet_policy": null,
     "review_signals": null,
     "external_key": "web:54ea4fcc5c4e7ea0"
@@ -3176,6 +3292,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Community center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 1,
@@ -3202,6 +3319,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Shopping mall",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJuXrcK-dN2YAR_cWHGwb6xwQ"
@@ -3221,6 +3339,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Aquarium",
     "pet_policy": null,
     "review_signals": {
       "scanned": 63,
@@ -3272,6 +3391,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Shopping mall",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJVe9Yyj5O2YAR6o9yEWB9ui8"
@@ -3293,6 +3413,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Recreation center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 1,
@@ -3320,6 +3441,7 @@
     "coords_from": "census_geocoder",
     "ac_from": null,
     "official_name": null,
+    "category": null,
     "pet_policy": null,
     "review_signals": null,
     "external_key": "web:d88997e8bcf57147"
@@ -3339,6 +3461,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Shopping mall",
     "pet_policy": null,
     "review_signals": {
       "scanned": 18,
@@ -3365,6 +3488,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Medical clinic",
     "pet_policy": null,
     "review_signals": {
       "scanned": 1,
@@ -3391,6 +3515,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Recreation center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 2,
@@ -3417,6 +3542,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Senior Citizens Club",
     "pet_policy": null,
     "review_signals": {
       "scanned": 3,
@@ -3443,6 +3569,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Community center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 2,
@@ -3470,6 +3597,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Shopping mall",
     "pet_policy": null,
     "review_signals": {
       "scanned": 45,
@@ -3515,6 +3643,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Swimming school",
     "pet_policy": null,
     "review_signals": {
       "scanned": 90,
@@ -3560,6 +3689,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Shopping mall",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJ3x4brSNX2YARnQWPM6f_F_s"
@@ -3579,6 +3709,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Swimming pool",
     "pet_policy": null,
     "review_signals": {
       "scanned": 5,
@@ -3605,6 +3736,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Senior citizen center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 0,
@@ -3631,6 +3763,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Community center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 2,
@@ -3657,6 +3790,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Community center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 4,
@@ -3683,6 +3817,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Public library",
     "pet_policy": null,
     "review_signals": {
       "scanned": 20,
@@ -3709,6 +3844,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Public library",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJlxjbIxZy3IAR56SdrX4Lh38"
@@ -3728,6 +3864,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Environmental organization",
     "pet_policy": null,
     "review_signals": {
       "scanned": 16,
@@ -3754,6 +3891,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Outlet mall",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJU1iJN_ty3IAR8lZ5wHoL9rQ"
@@ -3773,6 +3911,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Shopping mall",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJEwz0D4lx3IAR7qUT96yL9GE"
@@ -3792,6 +3931,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Shopping mall",
     "pet_policy": null,
     "review_signals": {
       "scanned": 31,
@@ -3818,6 +3958,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Swimming pool",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJBTAE0jpy3IARmEuNX52-Wos"
@@ -3837,6 +3978,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Swimming facility",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJS9TTkqh03IARSswgRMhPbJk"
@@ -3856,6 +3998,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Recreation center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 0,
@@ -3882,6 +4025,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Swimming school",
     "pet_policy": null,
     "review_signals": {
       "scanned": 34,
@@ -3915,6 +4059,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Community center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 0,
@@ -3941,6 +4086,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Museum",
     "pet_policy": null,
     "review_signals": {
       "scanned": 34,
@@ -3967,6 +4113,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Shopping mall",
     "pet_policy": null,
     "review_signals": {
       "scanned": 41,
@@ -4030,6 +4177,7 @@
     "coords_from": "census_geocoder",
     "ac_from": null,
     "official_name": null,
+    "category": null,
     "pet_policy": null,
     "review_signals": null,
     "external_key": "web:59989869ddf369b1"
@@ -4049,6 +4197,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Refrigerated transport service",
     "pet_policy": null,
     "review_signals": {
       "scanned": 1,
@@ -4075,6 +4224,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Art museum",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJmWx8KbZZ2YAREjSGfdSYHr8"
@@ -4094,6 +4244,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "History museum",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJsRTClBNY2YARwTThhONHT5o"
@@ -4113,6 +4264,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Senior citizen center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 0,
@@ -4139,6 +4291,7 @@
     "coords_from": "census_geocoder",
     "ac_from": null,
     "official_name": null,
+    "category": null,
     "pet_policy": null,
     "review_signals": null,
     "external_key": "web:743d40b678a24ba8"
@@ -4158,6 +4311,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Shopping mall",
     "pet_policy": null,
     "review_signals": {
       "scanned": 49,
@@ -4221,6 +4375,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Shopping mall",
     "pet_policy": null,
     "review_signals": {
       "scanned": 57,
@@ -4284,6 +4439,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Shopping Centre",
     "pet_policy": null,
     "review_signals": {
       "scanned": 7,
@@ -4310,6 +4466,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Shopping mall",
     "pet_policy": null,
     "review_signals": {
       "scanned": 6,
@@ -4343,6 +4500,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Children's museum",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJh8vtApz024AR5iQWnfbFYFM"
@@ -4362,6 +4520,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Public swimming pool",
     "pet_policy": null,
     "review_signals": {
       "scanned": 1,
@@ -4388,6 +4547,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Non-profit organization",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJtTd4UQD124ARuoOFgtMrn8U"
@@ -4407,6 +4567,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "University library",
     "pet_policy": null,
     "review_signals": {
       "scanned": 0,
@@ -4433,6 +4594,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Outdoor swimming pool",
     "pet_policy": null,
     "review_signals": {
       "scanned": 0,
@@ -4459,6 +4621,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Shopping mall",
     "pet_policy": null,
     "review_signals": {
       "scanned": 21,
@@ -4487,6 +4650,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Community center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 5,
@@ -4520,6 +4684,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Shopping mall",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJ2el6d80G3IAR01B8PQS7UQ8"
@@ -4529,16 +4694,18 @@
     "access_notes": null,
     "requires_id": null,
     "has_fee": null,
-    "verification": "web_only",
+    "verification": "confirmed",
     "sources": [
+      "google_maps",
       "https://www.ymca.org/locations/dan-mckinney-family-ymca"
     ],
     "conflicts": [],
     "evidence": "Mon - Thu: ... 5:30am - 9:00pm ... Fri: ... 5:30am - 8:00pm ... Sat: ... 7:00am - 6:30pm ... Sun: ... 8:00am - 5:30pm",
-    "maps_place_id": null,
-    "coords_from": "census_geocoder",
+    "maps_place_id": "ChIJ2f77lDUB3IARBy4NBwf4T9U",
+    "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Fitness center",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "web:8ebacd5982561286"
@@ -4558,6 +4725,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Art museum",
     "pet_policy": null,
     "review_signals": {
       "scanned": 50,
@@ -4580,19 +4748,13 @@
     ],
     "conflicts": [],
     "evidence": null,
-    "maps_place_id": "ChIJcdGexPoD3IARa9bYGjDVbtY",
+    "maps_place_id": "ChIJpRv46foD3IARIdG37iaA7QY",
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Museum",
     "pet_policy": null,
-    "review_signals": {
-      "scanned": 1,
-      "ac_positive": 0,
-      "ac_negative": 0,
-      "crowded": 0,
-      "spacious": 0,
-      "quotes": []
-    },
+    "review_signals": null,
     "external_key": "maps:ChIJcdGexPoD3IARa9bYGjDVbtY"
   },
   "178": {
@@ -4610,6 +4772,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Senior citizen center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 0,
@@ -4636,6 +4799,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Shopping mall",
     "pet_policy": null,
     "review_signals": {
       "scanned": 21,
@@ -4681,6 +4845,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Shopping mall",
     "pet_policy": null,
     "review_signals": {
       "scanned": 7,
@@ -4714,6 +4879,7 @@
     "coords_from": "census_geocoder",
     "ac_from": null,
     "official_name": null,
+    "category": null,
     "pet_policy": null,
     "review_signals": null,
     "external_key": "web:984910ab10212ed1"
@@ -4733,6 +4899,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Public swimming pool",
     "pet_policy": null,
     "review_signals": {
       "scanned": 0,
@@ -4759,6 +4926,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Museum",
     "pet_policy": null,
     "review_signals": {
       "scanned": 30,
@@ -4792,6 +4960,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Public swimming pool",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJ1XJhCR5u3IARPdxuomN6s0Q"
@@ -4811,6 +4980,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Senior citizen center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 2,
@@ -4837,6 +5007,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Recreation center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 2,
@@ -4863,6 +5034,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Swimming facility",
     "pet_policy": null,
     "review_signals": {
       "scanned": 20,
@@ -4902,6 +5074,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Senior citizen center",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJQddMD95z3IARQX9W3XSGf5A"
@@ -4921,6 +5094,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Recreation center",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJ8_DwHZhw3IARMjjDpoLgf2E"
@@ -4940,6 +5114,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Swimming facility",
     "pet_policy": null,
     "review_signals": {
       "scanned": 6,
@@ -4966,6 +5141,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Public library",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJF-j7FrCK24ARo8s241Bqgvk"
@@ -4985,6 +5161,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Planetarium",
     "pet_policy": null,
     "review_signals": {
       "scanned": 6,
@@ -5011,6 +5188,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Swimming pool",
     "pet_policy": null,
     "review_signals": {
       "scanned": 2,
@@ -5037,6 +5215,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Shopping mall",
     "pet_policy": null,
     "review_signals": {
       "scanned": 37,
@@ -5076,6 +5255,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Fitness center",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJO_QRkD5a2YARHatLXvXU9NI"
@@ -5095,6 +5275,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Shopping mall",
     "pet_policy": null,
     "review_signals": {
       "scanned": 8,
@@ -5121,6 +5302,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Museum",
     "pet_policy": null,
     "review_signals": {
       "scanned": 1,
@@ -5147,6 +5329,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Indoor playground",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJXXDKJYFZ2YARWxeWkT3qUHI"
@@ -5166,6 +5349,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Park",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJK5n_U67i24ARX85cV1CUiIE"
@@ -5185,6 +5369,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Shopping mall",
     "pet_policy": null,
     "review_signals": {
       "scanned": 17,
@@ -5218,6 +5403,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Recreation center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 1,
@@ -5244,6 +5430,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Shopping mall",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJcR1xGml03IARVi8ncpPRpMw"
@@ -5263,6 +5450,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Shopping mall",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJd-5Koat13IARcLVlFxJHmsc"
@@ -5282,6 +5470,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Shopping mall",
     "pet_policy": null,
     "review_signals": {
       "scanned": 28,
@@ -5321,6 +5510,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Recreation center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 0,
@@ -5347,6 +5537,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Swimming pool",
     "pet_policy": null,
     "review_signals": {
       "scanned": 0,
@@ -5373,6 +5564,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Sculpture museum",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJvcSjadgG3IARkJUCWFTm3MM"
@@ -5392,6 +5584,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "University library",
     "pet_policy": null,
     "review_signals": {
       "scanned": 2,
@@ -5418,6 +5611,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Shopping mall",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJj6yU_VRT2YARRK_XY0FcTD4"
@@ -5437,6 +5631,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "History museum",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJdRGe0MKq3oARRvGm04rrbPg"
@@ -5456,6 +5651,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Maritime museum",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJW3MFtlKr3oARYkZGRPnweDs"
@@ -5475,6 +5671,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Museum",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJH6VyMxxT2YARd2f8XaSqj_A"
@@ -5494,6 +5691,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Museum",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJITq8z71U2YARtcp6IYi3thE"
@@ -5513,6 +5711,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Museum",
     "pet_policy": null,
     "review_signals": {
       "scanned": 58,
@@ -5564,6 +5763,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Natural history museum",
     "pet_policy": null,
     "review_signals": {
       "scanned": 46,
@@ -5609,6 +5809,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Senior citizen center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 12,
@@ -5635,6 +5836,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Senior citizen center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 1,
@@ -5661,6 +5863,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Manufacturer",
     "pet_policy": null,
     "review_signals": {
       "scanned": 0,
@@ -5687,6 +5890,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Recreation center",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJ4flusIJU2YARpsY09810oAo"
@@ -5706,6 +5910,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Art museum",
     "pet_policy": null,
     "review_signals": {
       "scanned": 45,
@@ -5758,6 +5963,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Public swimming pool",
     "pet_policy": null,
     "review_signals": {
       "scanned": 5,
@@ -5784,6 +5990,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Recreation center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 4,
@@ -5810,6 +6017,7 @@
     "coords_from": "census_geocoder",
     "ac_from": null,
     "official_name": null,
+    "category": null,
     "pet_policy": null,
     "review_signals": null,
     "external_key": "web:3def5bc86ff50230"
@@ -5829,6 +6037,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Recreation center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 3,
@@ -5855,6 +6064,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Shopping mall",
     "pet_policy": null,
     "review_signals": {
       "scanned": 46,
@@ -5900,6 +6110,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Shopping mall",
     "pet_policy": null,
     "review_signals": {
       "scanned": 30,
@@ -5926,6 +6137,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Recreation center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 2,
@@ -5959,6 +6171,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Cooling plant",
     "pet_policy": null,
     "review_signals": {
       "scanned": 0,
@@ -5985,6 +6198,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Recreation center",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJb2vgV7ZT2YARMMlBtpws0uQ"
@@ -6004,6 +6218,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Senior citizen center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 1,
@@ -6030,6 +6245,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Senior citizen center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 0,
@@ -6057,6 +6273,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Senior citizen center",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJ6fXHCXVR2YARYfuAQoJ4YUk"
@@ -6076,6 +6293,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Shopping mall",
     "pet_policy": null,
     "review_signals": {
       "scanned": 21,
@@ -6102,6 +6320,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Museum",
     "pet_policy": null,
     "review_signals": {
       "scanned": 2,
@@ -6128,6 +6347,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Recreation center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 4,
@@ -6154,6 +6374,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Park",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJeWuwej4A3IARcF6-yPyr5-4"
@@ -6173,6 +6394,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Senior citizen center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 3,
@@ -6199,6 +6421,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Senior citizen center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 6,
@@ -6225,6 +6448,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Public library",
     "pet_policy": null,
     "review_signals": {
       "scanned": 22,
@@ -6258,6 +6482,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Aquatic center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 4,
@@ -6284,6 +6509,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Public swimming pool",
     "pet_policy": null,
     "review_signals": {
       "scanned": 2,
@@ -6310,6 +6536,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Shopping mall",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJCxnkLqNX2YARgFqSsV1FI8g"
@@ -6329,6 +6556,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Shopping mall",
     "pet_policy": null,
     "review_signals": {
       "scanned": 5,
@@ -6362,6 +6590,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Recreation center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 4,
@@ -6395,6 +6624,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Retirement community",
     "pet_policy": null,
     "review_signals": {
       "scanned": 85,
@@ -6428,6 +6658,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Recreation center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 1,
@@ -6455,6 +6686,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Outdoor swimming pool",
     "pet_policy": null,
     "review_signals": {
       "scanned": 4,
@@ -6481,6 +6713,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Recreation center",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJn_uKPd0A3IARiRMDojjxCs0"
@@ -6500,6 +6733,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Public swimming pool",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJb2pTPd0A3IARFAwowzDhC5o"
@@ -6519,6 +6753,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Swimming pool",
     "pet_policy": null,
     "review_signals": {
       "scanned": 6,
@@ -6546,6 +6781,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Senior citizen center",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJa3RaJe_424ARcBPNPrno9Dw"
@@ -6565,6 +6801,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Parking lot",
     "pet_policy": null,
     "review_signals": {
       "scanned": 0,
@@ -6591,6 +6828,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Shopping mall",
     "pet_policy": null,
     "review_signals": {
       "scanned": 29,
@@ -6630,6 +6868,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Community center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 4,
@@ -6656,6 +6895,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Swimming pool",
     "pet_policy": null,
     "review_signals": {
       "scanned": 3,
@@ -6689,6 +6929,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Recreation center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 0,
@@ -6715,6 +6956,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Entertainment and recreation",
     "pet_policy": null,
     "review_signals": {
       "scanned": 8,
@@ -6741,6 +6983,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Truck stop",
     "pet_policy": null,
     "review_signals": {
       "scanned": 63,
@@ -6792,6 +7035,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Shopping mall",
     "pet_policy": null,
     "review_signals": {
       "scanned": 32,
@@ -6831,6 +7075,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Park",
     "pet_policy": null,
     "review_signals": {
       "scanned": 12,
@@ -6870,6 +7115,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Home health care service",
     "pet_policy": null,
     "review_signals": {
       "scanned": 2,
@@ -6896,6 +7142,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Recreation center",
     "pet_policy": null,
     "review_signals": null,
     "external_key": "maps:ChIJRSZcQDBJ2YARhlskvDmuqOQ"
@@ -6915,6 +7162,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Recreation center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 1,
@@ -6941,6 +7189,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Outlet mall",
     "pet_policy": null,
     "review_signals": {
       "scanned": 30,
@@ -6967,6 +7216,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Shopping mall",
     "pet_policy": null,
     "review_signals": {
       "scanned": 19,
@@ -6993,6 +7243,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Medical clinic",
     "pet_policy": null,
     "review_signals": {
       "scanned": 2,
@@ -7020,6 +7271,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Senior citizen center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 0,
@@ -7046,6 +7298,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Swimming pool",
     "pet_policy": null,
     "review_signals": {
       "scanned": 1,
@@ -7079,6 +7332,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Recreation center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 1,
@@ -7110,6 +7364,7 @@
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Community center",
     "pet_policy": null,
     "review_signals": {
       "scanned": 2,
@@ -7128,69 +7383,2826 @@
     },
     "external_key": "maps:ChIJ4YOwG7lT2YARfq57pGQFFQs"
   },
-  "271": {
+  "274": {
     "access_level": "open_to_all",
     "access_notes": null,
     "requires_id": null,
     "has_fee": null,
-    "verification": "conflict",
+    "verification": "single_hours_source",
     "sources": [
       "google_maps",
-      "https://www.sandiego.org/members/westfield-utc"
+      "https://www.sandiego.gov/PlacesToCoolDown"
     ],
-    "conflicts": [
-      "sat: maps 10:00-20:00 vs web 10:00-21:00",
-      "fri: maps 10:00-20:00 vs web 10:00-21:00",
-      "thu: maps 10:00-20:00 vs web 10:00-21:00",
-      "wed: maps 10:00-20:00 vs web 10:00-21:00",
-      "tue: maps 10:00-20:00 vs web 10:00-21:00",
-      "mon: maps 10:00-20:00 vs web 10:00-21:00"
+    "conflicts": [],
+    "evidence": "Community Room Air Conditioning | 1405 Diamond Street",
+    "maps_place_id": "ChIJJ-p0WZUB3IARrQEX4aEqbf8",
+    "coords_from": "county_cool_zones_layer",
+    "ac_from": "site_page",
+    "official_name": null,
+    "category": "Park",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJJ-p0WZUB3IARrQEX4aEqbf8"
+  },
+  "279": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "confirmed",
+    "sources": [
+      "google_maps",
+      "https://recreation.ucsd.edu/facilities"
     ],
-    "evidence": "Operating Hours: Monday-Saturday: 10:00 AM to 9:00 PM ... Sunday: 11:00 AM to 7:00 PM ... Department store, restaurant and holiday hours may vary.",
-    "maps_place_id": "ChIJ9YPXLNMA3IARmF2_yZ7j3os",
+    "conflicts": [],
+    "evidence": "M-F, 6:00am-11:00pm ... Sa-Su, 8:00am–11:00pm",
+    "maps_place_id": "ChIJizxcHscG3IARWeQaXsmiWU0",
     "coords_from": "google_maps",
     "ac_from": null,
     "official_name": null,
+    "category": "Gym",
     "pet_policy": null,
-    "review_signals": {
-      "scanned": 47,
-      "ac_positive": 0,
-      "ac_negative": 0,
-      "crowded": 3,
-      "spacious": 2,
-      "quotes": [
-        {
-          "signal": "spacious",
-          "quote": "Beautiful mall! Loved the layout—so clean, open, spacious, and filled with natural light. Plenty of great shops and lovely spots to take a break, g",
-          "review_date": "2026-11-10T06:39:09.997Z",
-          "rating": 5
-        },
-        {
-          "signal": "crowded",
-          "quote": "PM, I didn’t get home until 9:30 PM. The parking lot is horrendously crowded and horribly designed for accessibility and efficiency. I beg of you to upgrade the parki",
-          "review_date": "2026-10-14T18:38:14.084Z",
-          "rating": 1
-        },
-        {
-          "signal": "spacious",
-          "quote": "kids. There are so many stores to explore and a huge parking lot with plenty of space. It’s a wonderful place to shop, walk around, and spend time with family. I always look f",
-          "review_date": "2026-10-14T17:46:12.106Z",
-          "rating": 5
-        },
-        {
-          "signal": "crowded",
-          "quote": "metimes the gates don’t work and then long lines of car back into the very busy street causing a safety hazard, when that happens they should have an attendant manually",
-          "review_date": "2026-10-09T02:57:56.294Z",
-          "rating": 1
-        },
-        {
-          "signal": "crowded",
-          "quote": "Crowded but still fun watching all the people and their smiling faces.",
-          "review_date": "2026-10-03T20:01:37.007Z",
-          "rating": 5
-        }
-      ]
-    },
-    "external_key": "maps:ChIJ9YPXLNMA3IARmF2_yZ7j3os"
+    "review_signals": null,
+    "external_key": "maps:ChIJizxcHscG3IARWeQaXsmiWU0"
+  },
+  "280": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJtdl6MXEA3IAR0baiVAZKsg0",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Shopping mall",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJtdl6MXEA3IAR0baiVAZKsg0"
+  },
+  "281": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJsZceqGQM3IARWjNe_5jWAR8",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "History museum",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJsZceqGQM3IARWjNe_5jWAR8"
+  },
+  "282": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJpUTXZ_oD3IARiYwuY6WohfM",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Retirement home",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJpUTXZ_oD3IARiYwuY6WohfM"
+  },
+  "283": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJvyYgZ-8D3IARUpE-PsE_hnk",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Retirement community",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJvyYgZ-8D3IARUpE-PsE_hnk"
+  },
+  "284": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJT54VGHAH3IAR7qBLbrcp8KI",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Community center",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJT54VGHAH3IAR7qBLbrcp8KI"
+  },
+  "285": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJZbhzoCkH3IARgAH2U6hZNOU",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Community center",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJZbhzoCkH3IARgAH2U6hZNOU"
+  },
+  "286": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJGcoA9cQG3IARvvZm5jBkdD4",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Community center",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJGcoA9cQG3IARvvZm5jBkdD4"
+  },
+  "287": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ0wMRZfsD3IARGMmBQSgVLO8",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Library",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJ0wMRZfsD3IARGMmBQSgVLO8"
+  },
+  "288": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJwdaaPeMD3IART_j_BTHP7_w",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Public library",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJwdaaPeMD3IART_j_BTHP7_w"
+  },
+  "289": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJvet86fIG3IARe0uINBI7IfU",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "University library",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJvet86fIG3IARe0uINBI7IfU"
+  },
+  "290": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJZbhzoCkH3IARAtasVus28-c",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Youth social services organization",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJZbhzoCkH3IARAtasVus28-c"
+  },
+  "291": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ5UoEtrMG3IARV_bsjRD41KI",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Public library",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJ5UoEtrMG3IARV_bsjRD41KI"
+  },
+  "292": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJLfLAaeED3IARRQGJToA-gD0",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Library",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJLfLAaeED3IARRQGJToA-gD0"
+  },
+  "293": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJdw2GWvwD3IARTtZi-Fih7Gc",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Shopping mall",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJdw2GWvwD3IARTtZi-Fih7Gc"
+  },
+  "294": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJK8qsYvsD3IARiBlU-s82GNw",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Art gallery",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJK8qsYvsD3IARiBlU-s82GNw"
+  },
+  "295": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ-6dQ_bMG3IARqV9Yevu9XLw",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Aquarium",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJ-6dQ_bMG3IARqV9Yevu9XLw"
+  },
+  "296": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ0ZQDW0MD3IARUjZOQt_XwC8",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Art gallery",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJ0ZQDW0MD3IARUjZOQt_XwC8"
+  },
+  "297": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJC0dmSvsD3IARF2OolQKFbm4",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Cafe",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJC0dmSvsD3IARF2OolQKFbm4"
+  },
+  "298": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJv8enBU4B3IARBOd-k1D8rWo",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Cafe",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJv8enBU4B3IARBOd-k1D8rWo"
+  },
+  "299": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJQzkLWsQH3IARVpFyuS2e860",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Cafe",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJQzkLWsQH3IARVpFyuS2e860"
+  },
+  "300": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ6W-Wg7EG3IARrecMP_8ctwQ",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Cafe",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJ6W-Wg7EG3IARrecMP_8ctwQ"
+  },
+  "301": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJD2DkXEwB3IARYFADzi6HgT0",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Cafe",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJD2DkXEwB3IARYFADzi6HgT0"
+  },
+  "302": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ-RH-ivwD3IARytA6pgbjWxo",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Church",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJ-RH-ivwD3IARytA6pgbjWxo"
+  },
+  "303": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ3fChY_wD3IAR1hLW5qNDj1c",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Art gallery",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJ3fChY_wD3IAR1hLW5qNDj1c"
+  },
+  "304": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJXcznc_sD3IARKNcyJC0tFBY",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Art gallery",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJXcznc_sD3IARKNcyJC0tFBY"
+  },
+  "305": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJj76TKuUD3IAROBlzXpILtGE",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Wedding venue",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJj76TKuUD3IAROBlzXpILtGE"
+  },
+  "306": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJgayCAuYD3IARjBCHRqR35IU",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Event venue",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJgayCAuYD3IARjBCHRqR35IU"
+  },
+  "307": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJdTMxxCDvAi8RYRDidmCCi1k",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Art gallery",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJdTMxxCDvAi8RYRDidmCCi1k"
+  },
+  "308": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJX31myfUB3IAR0YNBc6jNbck",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Cafe",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJX31myfUB3IAR0YNBc6jNbck"
+  },
+  "309": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJJfuT-ysH3IAR5xDKufQkPQs",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Book publisher",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJJfuT-ysH3IAR5xDKufQkPQs"
+  },
+  "310": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ9xm9zLED3IAR_K7RDgx9Mbg",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Fitness center",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJ9xm9zLED3IAR_K7RDgx9Mbg"
+  },
+  "311": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJv4pn0E8H3IARwuNdnZrIgr4",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Cafe",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJv4pn0E8H3IARwuNdnZrIgr4"
+  },
+  "312": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJU5W-w7UD3IARZR6BRB5MA7A",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Art gallery",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJU5W-w7UD3IARZR6BRB5MA7A"
+  },
+  "313": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ83NEDvwD3IARpNCfqXdVsuI",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Gym",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJ83NEDvwD3IARpNCfqXdVsuI"
+  },
+  "314": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ9Si8yHYD3IARYhnbKdhX6FE",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Wedding venue",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJ9Si8yHYD3IARYhnbKdhX6FE"
+  },
+  "315": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJx9s9NfsD3IARUy7yJtYLeaw",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Corporate office",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJx9s9NfsD3IARUy7yJtYLeaw"
+  },
+  "316": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ3fChY_wD3IARyM01KfJNX8g",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Live music venue",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJ3fChY_wD3IARyM01KfJNX8g"
+  },
+  "317": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJi_dPI-UD3IARtzAbWBSo6zQ",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Church",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJi_dPI-UD3IARtzAbWBSo6zQ"
+  },
+  "318": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ1T2CXD0D3IARvYrII2HyPAo",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Shopping mall",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJ1T2CXD0D3IARvYrII2HyPAo"
+  },
+  "319": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJVfsqawAD3IAR70OotsQ5Pno",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Gym",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJVfsqawAD3IAR70OotsQ5Pno"
+  },
+  "320": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ___DRPwD3IARpSvtkXMFir8",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Art gallery",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJ___DRPwD3IARpSvtkXMFir8"
+  },
+  "321": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJOfQHbPsD3IARMCAN5J0eMuo",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Bakery",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJOfQHbPsD3IARMCAN5J0eMuo"
+  },
+  "322": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJf8Wbcl4B3IARDFy88xvwh4w",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Fitness center",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJf8Wbcl4B3IARDFy88xvwh4w"
+  },
+  "323": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ12OyyOUD3IARE7SPJgfZl8o",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Chapel",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJ12OyyOUD3IARE7SPJgfZl8o"
+  },
+  "324": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJz4Z0vAcD3IARoN4cV_T_6J0",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Coffee stand",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJz4Z0vAcD3IARoN4cV_T_6J0"
+  },
+  "325": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJR8odk-MD3IAR-p1QF_Lnq3s",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Art gallery",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJR8odk-MD3IAR-p1QF_Lnq3s"
+  },
+  "326": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJWcIJY-MD3IAR24GGR94vvsM",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Art gallery",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJWcIJY-MD3IAR24GGR94vvsM"
+  },
+  "327": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ6zi00isH3IAR3g4YWXh1h_4",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Shopping mall",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJ6zi00isH3IAR3g4YWXh1h_4"
+  },
+  "328": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJwatpBPsD3IARm18GfNSg4Iw",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Office space rental agency",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJwatpBPsD3IARm18GfNSg4Iw"
+  },
+  "329": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJF8YrhFID3IARlqx9IRBrkvs",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Cafe",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJF8YrhFID3IARlqx9IRBrkvs"
+  },
+  "330": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJu0I6SikH3IARTEE1dtdO1Nw",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Cultural center",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJu0I6SikH3IARTEE1dtdO1Nw"
+  },
+  "331": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ10IWmfwD3IARW09QtYUEW9Q",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Fitness center",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJ10IWmfwD3IARW09QtYUEW9Q"
+  },
+  "332": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJD0VQQ_wD3IARg4Hb-TwAuOc",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Art gallery",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJD0VQQ_wD3IARg4Hb-TwAuOc"
+  },
+  "333": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJGyDst_0D3IARtREP0jfnn0I",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Tourist attraction",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJGyDst_0D3IARtREP0jfnn0I"
+  },
+  "334": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJIRIL8uUD3IARbKEk9dEWlCc",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Wedding service",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJIRIL8uUD3IARbKEk9dEWlCc"
+  },
+  "335": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJLSQ6i1kB3IARb6lUQ8htw1o",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Bistro",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJLSQ6i1kB3IARb6lUQ8htw1o"
+  },
+  "336": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJQ7ABhc0G3IARJcPElevBiI0",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Shopping mall",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJQ7ABhc0G3IARJcPElevBiI0"
+  },
+  "337": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJH99EveQD3IARUcbpRRXZp4E",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Art gallery",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJH99EveQD3IARUcbpRRXZp4E"
+  },
+  "338": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJhQMuOwAH3IAR4G-tIaEkdTQ",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Bakery",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJhQMuOwAH3IAR4G-tIaEkdTQ"
+  },
+  "339": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJARuwAM4G3IAR6IUzxSkVVEI",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Shopping mall",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJARuwAM4G3IAR6IUzxSkVVEI"
+  },
+  "340": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJwc04hvsD3IAR3v71g45sMKk",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Wine bar",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJwc04hvsD3IAR3v71g45sMKk"
+  },
+  "341": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJzTetaVkH3IARsFoYIdwkbaE",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Archery club",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJzTetaVkH3IARsFoYIdwkbaE"
+  },
+  "342": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ9Q6Q4_sD3IAROr3uf6M5qoU",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Park",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJ9Q6Q4_sD3IAROr3uf6M5qoU"
+  },
+  "343": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJZbhzoCkH3IARQALZSHK5AFw",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Public swimming pool",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJZbhzoCkH3IARQALZSHK5AFw"
+  },
+  "344": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJZbhzoCkH3IARgErgfX3w1b4",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Gym",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJZbhzoCkH3IARgErgfX3w1b4"
+  },
+  "345": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJufB1Z1IB3IARkvDlKFghK7Y",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Park",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJufB1Z1IB3IARkvDlKFghK7Y"
+  },
+  "346": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJn0hTOOUD3IARuI9ojLLlJmY",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Park",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJn0hTOOUD3IARuI9ojLLlJmY"
+  },
+  "348": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJmboG91MB3IARhyEg1DluNjA",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "City park",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJmboG91MB3IARhyEg1DluNjA"
+  },
+  "349": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ48Kq7cYG3IARnIoM7Kc43LQ",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Community center",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJ48Kq7cYG3IARnIoM7Kc43LQ"
+  },
+  "350": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJwUuK8cYG3IARLs0SYywt_7Q",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "University library",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJwUuK8cYG3IARLs0SYywt_7Q"
+  },
+  "351": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJRTCxPIUH3IARzqqqg_QZLy0",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "University library",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJRTCxPIUH3IARzqqqg_QZLy0"
+  },
+  "352": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJvcSjadgG3IARqn7HwaX2g8o",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "University library",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJvcSjadgG3IARqn7HwaX2g8o"
+  },
+  "353": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJvcSjadgG3IARdxO7YZaA3CQ",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Library",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJvcSjadgG3IARdxO7YZaA3CQ"
+  },
+  "354": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJWXZAZ-cH3IARvRCXIRe0Jb0",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Shipping and mailing service",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJWXZAZ-cH3IARvRCXIRe0Jb0"
+  },
+  "355": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ-5SKe8QG3IARL4QzjZW05wM",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Association / Organization",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJ-5SKe8QG3IARL4QzjZW05wM"
+  },
+  "356": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJUb55C8QG3IAROMG6NhWoa4s",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Cafe",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJUb55C8QG3IAROMG6NhWoa4s"
+  },
+  "357": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJkfb0uJcH3IARIO7BkW-XIVc",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Academic department",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJkfb0uJcH3IARIO7BkW-XIVc"
+  },
+  "358": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ54ezlLUH3IAR4L1vNKd-PtE",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "School center",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJ54ezlLUH3IAR4L1vNKd-PtE"
+  },
+  "359": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ_WqDfIcH3IARKTFa4PwJNNA",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Gym",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJ_WqDfIcH3IARKTFa4PwJNNA"
+  },
+  "360": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJdXwD9MMG3IARBOTPI4FJyXU",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Lounge bar",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJdXwD9MMG3IARBOTPI4FJyXU"
+  },
+  "361": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJWWNKhtwG3IARv3wqE8-ffN8",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Digital printing service",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJWWNKhtwG3IARv3wqE8-ffN8"
+  },
+  "362": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJM0Z7OtYH3IAR1-94lb9d96A",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Pottery classes",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJM0Z7OtYH3IAR1-94lb9d96A"
+  },
+  "363": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJacRfd8QG3IARWg1TxuHtNVI",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Cultural center",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJacRfd8QG3IARWg1TxuHtNVI"
+  },
+  "364": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJa2Gb7sYG3IARPhD3Q2n5yGY",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Academic department",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJa2Gb7sYG3IARPhD3Q2n5yGY"
+  },
+  "365": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJT69MQcQG3IARpz6Rifyqtu8",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Public university",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJT69MQcQG3IARpz6Rifyqtu8"
+  },
+  "366": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJvcSjadgG3IARD3MWFocEzEs",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Gastropub",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJvcSjadgG3IARD3MWFocEzEs"
+  },
+  "367": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ-WrvIcUG3IARwMKQ82uDhIA",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Parking garage",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJ-WrvIcUG3IARwMKQ82uDhIA"
+  },
+  "368": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJKQfx0LxU2YARLRX14eAkak0",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Museum",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJKQfx0LxU2YARLRX14eAkak0"
+  },
+  "369": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJI8fhtatU2YARH_nFBvdm7x4",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Museum",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJI8fhtatU2YARH_nFBvdm7x4"
+  },
+  "370": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJV6IUNpZU2YARAQRTp-SrHAw",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Museum",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJV6IUNpZU2YARAQRTp-SrHAw"
+  },
+  "371": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJmXZejb1U2YARR7F0GIoN_mQ",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Art museum",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJmXZejb1U2YARR7F0GIoN_mQ"
+  },
+  "372": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJwYBuKqtU2YARslNFQDCJt_s",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Maritime museum",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJwYBuKqtU2YARslNFQDCJt_s"
+  },
+  "373": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJNWKzDO4B3IARnCvBN8A4MpU",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Shopping mall",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJNWKzDO4B3IARnCvBN8A4MpU"
+  },
+  "374": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJiRWjbMEB3IAREC21uD2Pu0k",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "United Methodist church",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJiRWjbMEB3IAREC21uD2Pu0k"
+  },
+  "375": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJSSumU78B3IARGI3ovMd_iPc",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Shopping mall",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJSSumU78B3IARGI3ovMd_iPc"
+  },
+  "376": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJl_Mq8pkB3IARy9OJb0L14B8",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Christian church",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJl_Mq8pkB3IARy9OJb0L14B8"
+  },
+  "377": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ6cFyNScA3IARSmaAUYskCRI",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Church",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJ6cFyNScA3IARSmaAUYskCRI"
+  },
+  "378": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJOy0J1fqq3oARNgmOVX_Rt8w",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Shopping mall",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJOy0J1fqq3oARNgmOVX_Rt8w"
+  },
+  "379": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJAXbOvOiq3oARbpoUMiCd6Ow",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Catholic church",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJAXbOvOiq3oARbpoUMiCd6Ow"
+  },
+  "380": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJMekITN6q3oARpRZuOxLbgKY",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Museum",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJMekITN6q3oARpRZuOxLbgKY"
+  },
+  "381": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJo30Nc3QA3IARfPpHn_dKaMk",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Shopping mall",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJo30Nc3QA3IARfPpHn_dKaMk"
+  },
+  "382": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJb9zruXUA3IAR6A-mrQGTfkw",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Catholic church",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJb9zruXUA3IAR6A-mrQGTfkw"
+  },
+  "383": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ74yuVh3_24AR5PFi_WwmbMA",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Shopping mall",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJ74yuVh3_24AR5PFi_WwmbMA"
+  },
+  "384": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJkyrO3FMA3IAR0HJd4MmUO8M",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Park",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJkyrO3FMA3IAR0HJd4MmUO8M"
+  },
+  "385": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ3YhjbgSr3oAR9mgKWQ0PEVw",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Cafe",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJ3YhjbgSr3oAR9mgKWQ0PEVw"
+  },
+  "386": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJvZWnmeEG3IAR0tbleKE-Pqs",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Gym",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJvZWnmeEG3IAR0tbleKE-Pqs"
+  },
+  "387": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ_YMQGDIH3IART81IJi4YmUE",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Cafe",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJ_YMQGDIH3IART81IJi4YmUE"
+  },
+  "388": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJrYIAfyEH3IARYOsBXLcncuo",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Cafe",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJrYIAfyEH3IARYOsBXLcncuo"
+  },
+  "389": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJWzKzSlgH3IARzARj3cHCtYI",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Cafe",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJWzKzSlgH3IARzARj3cHCtYI"
+  },
+  "390": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJWz80xaf424AR6GqEP_YkCXY",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Food bank",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJWz80xaf424AR6GqEP_YkCXY"
+  },
+  "391": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJydMaT98H3IARuBRlFEPfdQ4",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Fitness center",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJydMaT98H3IARuBRlFEPfdQ4"
+  },
+  "392": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ66FLJy8H3IARhmK5Dpxrwt4",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Episcopal church",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJ66FLJy8H3IARhmK5Dpxrwt4"
+  },
+  "393": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJjcuNTGIH3IAR7Y10EniONMc",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Christian church",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJjcuNTGIH3IAR7Y10EniONMc"
+  },
+  "394": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJhW0bEyoB3IAR1qobhi88ZGk",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Church",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJhW0bEyoB3IAR1qobhi88ZGk"
+  },
+  "395": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJM_TNrSAB3IARbyu3oaqdCXQ",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Library",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJM_TNrSAB3IARbyu3oaqdCXQ"
+  },
+  "396": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJz1ztmi0H3IARLfm1FAUQ-QM",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Gym",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJz1ztmi0H3IARLfm1FAUQ-QM"
+  },
+  "397": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJeRQnOjIH3IARdWg375yxtoE",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Cafe",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJeRQnOjIH3IARdWg375yxtoE"
+  },
+  "398": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJaw9o8SwH3IARXRCDMvPgluM",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Cafe",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJaw9o8SwH3IARXRCDMvPgluM"
+  },
+  "399": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJMTpAa9QG3IARxNMioKqTKb0",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Cafe",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJMTpAa9QG3IARxNMioKqTKb0"
+  },
+  "400": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJDSxUotMG3IARLJ0ClyzPjls",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Business center",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJDSxUotMG3IARLJ0ClyzPjls"
+  },
+  "401": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ-4Rgw5IB3IARY8ETHK77_nI",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Church",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJ-4Rgw5IB3IARY8ETHK77_nI"
+  },
+  "402": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJz510MQAH3IARrgQadwiDAU0",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Bakery",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJz510MQAH3IARrgQadwiDAU0"
+  },
+  "403": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJg0ux9SwH3IARxsA5WlFCLOA",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Cocktail bar",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJg0ux9SwH3IARxsA5WlFCLOA"
+  },
+  "404": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ_V1NyM0A3IARGyqO-L2GV08",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Shopping mall",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJ_V1NyM0A3IARGyqO-L2GV08"
+  },
+  "405": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJXSbsHyEB3IARKcy3L-MiUGI",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Christian church",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJXSbsHyEB3IARKcy3L-MiUGI"
+  },
+  "406": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ3zBK694A3IARelvCIw26RjU",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Shopping mall",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJ3zBK694A3IARelvCIw26RjU"
+  },
+  "407": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJT67N8SAB3IARtN7L-dO85Ko",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Church",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJT67N8SAB3IARtN7L-dO85Ko"
+  },
+  "408": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJTbZG1sMA3IARwPn_mQL8p_g",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Shopping mall",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJTbZG1sMA3IARwPn_mQL8p_g"
+  },
+  "409": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJcbPB8NMG3IAR7g9BdB3anOE",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Coworking space",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJcbPB8NMG3IAR7g9BdB3anOE"
+  },
+  "410": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJlbpwjqEB3IARktEXMZtMtOQ",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Playground",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJlbpwjqEB3IARktEXMZtMtOQ"
+  },
+  "411": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJiw_3KcoA3IARFzUM__0NDhQ",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Park",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJiw_3KcoA3IARFzUM__0NDhQ"
+  },
+  "412": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJfzF3Cdb_24ARi_ZppQ9fVkc",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Recreation center",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJfzF3Cdb_24ARi_ZppQ9fVkc"
+  },
+  "413": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJd55c5S8G3IARs4GmB56504g",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Shopping mall",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJd55c5S8G3IARs4GmB56504g"
+  },
+  "414": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ1zehCK4H3IARVJsOjvADH9k",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Shopping mall",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJ1zehCK4H3IARVJsOjvADH9k"
+  },
+  "415": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJ21K_Zp0I3IAR1jLWi4Pknx8",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Recreation center",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJ21K_Zp0I3IAR1jLWi4Pknx8"
+  },
+  "416": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJW31klcMG3IAR0oQ8gzZiR8w",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Public library",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJW31klcMG3IAR0oQ8gzZiR8w"
+  },
+  "417": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJx1sfdMMG3IARv6pcuDzTHeI",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "College",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJx1sfdMMG3IARv6pcuDzTHeI"
+  },
+  "418": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJX9gJa8cG3IAReMyX9MJ6eTg",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Athletic field",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJX9gJa8cG3IAReMyX9MJ6eTg"
+  },
+  "419": {
+    "access_level": "unknown",
+    "access_notes": null,
+    "requires_id": null,
+    "has_fee": null,
+    "verification": "maps_only",
+    "sources": [
+      "google_maps"
+    ],
+    "conflicts": [],
+    "evidence": null,
+    "maps_place_id": "ChIJjXUvhcUG3IARvp_8FKU6FRY",
+    "coords_from": "google_maps",
+    "ac_from": null,
+    "official_name": null,
+    "category": "Medical clinic",
+    "pet_policy": null,
+    "review_signals": null,
+    "external_key": "maps:ChIJjXUvhcUG3IARvp_8FKU6FRY"
   }
 }
