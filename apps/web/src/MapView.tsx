@@ -38,7 +38,7 @@ interface Props {
 
 export function MapView({ sites, calls, requests, zone, req, onZone, onReq }: Props) {
   const el = useRef<HTMLDivElement>(null);
-  const m = useRef<{ map: L.Map; calls: L.LayerGroup; zones: L.LayerGroup; reqs: L.LayerGroup; markers: Map<number, L.Marker>; fitted: boolean }>(null);
+  const m = useRef<{ map: L.Map; calls: L.LayerGroup; zones: L.LayerGroup; reqs: L.LayerGroup; markers: Map<number, L.Marker>; reqMarkers: Map<number, L.Marker>; reqsLoaded: boolean; fitted: boolean }>(null);
   const on = useRef({ onZone, onReq });
   on.current = { onZone, onReq };
 
@@ -47,7 +47,7 @@ export function MapView({ sites, calls, requests, zone, req, onZone, onReq }: Pr
     const map = L.map(el.current!, { zoomControl: false, markerZoomAnimation: false, minZoom: 10, maxBounds: [[32.0, -118.6], [34.0, -115.2]], maxBoundsViscosity: 1 }).setView([32.79, -117.04], 11);
     L.tileLayer('https://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer/tile/{z}/{y}/{x}', { maxZoom: 16, attribution: 'USGS The National Map' }).addTo(map);
     L.control.zoom({ position: 'bottomright' }).addTo(map);
-    m.current = { map, calls: L.layerGroup().addTo(map), zones: L.layerGroup().addTo(map), reqs: L.layerGroup().addTo(map), markers: new Map(), fitted: false };
+    m.current = { map, calls: L.layerGroup().addTo(map), zones: L.layerGroup().addTo(map), reqs: L.layerGroup().addTo(map), markers: new Map(), reqMarkers: new Map(), reqsLoaded: false, fitted: false };
     return () => { map.remove(); m.current = null; };
   }, []);
 
@@ -72,14 +72,28 @@ export function MapView({ sites, calls, requests, zone, req, onZone, onReq }: Pr
     for (const c of calls) L.marker([c.lat, c.lon], { icon: dotIcon(c.n), interactive: false, keyboard: false }).addTo(s.calls);
   }, [calls]);
 
+  // Markers are kept across polls and only redrawn when their look changes, so a poll doesn't restart the
+  // "requesting" ring or replay the popup. A request that shows up after the first load lands with an animation.
   useEffect(() => {   // a request whose location couldn't be placed has a card but no marker
     const s = m.current!;
-    s.reqs.clearLayers();
+    const live = new Set<number>();
     for (const r of requests) if (r.lat != null && r.lon != null) {
-      const mk = L.marker([r.lat, r.lon], { icon: reqIcon(r, req === r.id), title: r.location, zIndexOffset: 500 }).addTo(s.reqs).on('click', () => on.current.onReq(r.id));
-      // The selected request's status pops up over its marker; a poll that changes it redraws the popup with it.
-      if (req === r.id) mk.bindPopup(reqPopup(r), { autoPan: false, offset: [0, -10] }).openPopup();
+      live.add(r.id);
+      const ic = reqIcon(r, req === r.id);
+      let mk = s.reqMarkers.get(r.id);
+      if (!mk) {
+        mk = L.marker([r.lat, r.lon], { icon: ic, title: r.location, zIndexOffset: 500 }).addTo(s.reqs).on('click', () => on.current.onReq(r.id));
+        s.reqMarkers.set(r.id, mk);
+        if (s.reqsLoaded) mk.getElement()?.firstElementChild?.classList.add('new');
+      } else if ((mk.options.icon as L.DivIcon).options.html !== ic.options.html) mk.setIcon(ic);
+      // The selected request's status pops up over its marker; a poll that changes it updates the popup in place.
+      if (req === r.id) {
+        if (mk.getPopup()) mk.setPopupContent(reqPopup(r)); else mk.bindPopup(reqPopup(r), { autoPan: false, offset: [0, -10] });
+        if (!mk.isPopupOpen()) mk.openPopup();
+      } else if (mk.getPopup()) mk.unbindPopup();
     }
+    for (const [id, mk] of s.reqMarkers) if (!live.has(id)) { s.reqs.removeLayer(mk); s.reqMarkers.delete(id); }
+    if (requests.length) s.reqsLoaded = true;
   }, [requests, req]);
 
   // Fly only when the selection changes, not when a poll brings new data.

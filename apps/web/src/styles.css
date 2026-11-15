@@ -11,6 +11,9 @@
   --forest: #0b2540;
   --r: 24px;
   --ease: cubic-bezier(.16, 1, .3, 1);
+  /* motion: distances go to 0 under reduced motion (bottom of file); fades and color changes stay */
+  --t-press: 90ms; --t-state: 200ms; --t-move: 360ms;
+  --rise: 10px; --shift: 14px; --blur: 8px;
 }
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
@@ -58,7 +61,6 @@ h1, h2, h3, p { margin: 0; }
 .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--forest); box-shadow: 0 0 0 2px rgba(255, 255, 255, .9); opacity: .7; }
 /* Count of callers in one zip. Grows sideways past 99; the icon anchor stays at 18px, so 3 digits sit ~3px off center. */
 .dot.n { width: auto; min-width: 18px; height: 18px; padding: 0 4px; border-radius: 9px; opacity: .85; color: #fff; font: 600 11px/18px 'Hanken Grotesk', sans-serif; text-align: center; }
-@media (prefers-reduced-motion: reduce) { .req.requesting::after { animation: none; } * { transition: none !important; } }
 
 /* ---------- glass ---------- */
 .glass {   /* liquid glass: clear, bright-edged, bends the map beneath it */
@@ -89,14 +91,14 @@ h1, h2, h3, p { margin: 0; }
 .alert i { width: 8px; height: 8px; border-radius: 50%; background: var(--heat); }
 .alert b { font-weight: 500; }
 .alert span { color: var(--ink-2); }
-.btn { height: 36px; padding: 0 16px; border-radius: 18px; background: var(--blue); color: #fff; font-weight: 500; transition: background .2s, transform .2s var(--ease); }
+.btn { height: 36px; padding: 0 16px; border-radius: 18px; background: var(--blue); color: #fff; font-weight: 500; transition: background var(--t-state), color var(--t-state), transform var(--t-state) var(--ease); }
 .btn:hover { background: #075985; }
-.btn:active { transform: scale(.97); }
+.btn:active:not(:disabled) { transform: scale(.97); transition-duration: var(--t-press); }
 .btn:disabled { background: rgba(11, 60, 110, .12); color: var(--ink-2); cursor: default; }
 /* Test alert by zip (SendAlert.tsx): pushed to the right end of the top bar. */
 .sendalert { margin-left: auto; padding-right: 8px; gap: 10px; }
 .sendalert label { font-weight: 500; }
-.sendalert input { width: 72px; height: 36px; padding: 0 12px; font: inherit; color: var(--ink); text-align: center; letter-spacing: .04em; background: rgba(255, 255, 255, .6); border: 1px solid var(--line); border-radius: 999px; }
+.sendalert input { width: 72px; height: 36px; padding: 0 12px; font: inherit; color: var(--ink); text-align: center; letter-spacing: .04em; background: rgba(255, 255, 255, .6); border: 1px solid var(--line); border-radius: 999px; transition: background var(--t-state), border-color var(--t-state); }
 .sendalert .ok { color: var(--blue); }
 .sendalert .err { color: #b4361f; }
 
@@ -106,7 +108,7 @@ h1, h2, h3, p { margin: 0; }
 .head { padding: 20px 22px 14px; }
 .head h2 { font-size: 20px; font-weight: 300; letter-spacing: -.01em; }
 .head p { color: var(--ink-2); margin-top: 2px; }
-.head input { display: block; width: 100%; height: 38px; margin-top: 12px; padding: 0 14px; font: inherit; color: var(--ink); background: rgba(255, 255, 255, .6); border: 1px solid var(--line); border-radius: 999px; }
+.head input { display: block; width: 100%; height: 38px; margin-top: 12px; padding: 0 14px; font: inherit; color: var(--ink); background: rgba(255, 255, 255, .6); border: 1px solid var(--line); border-radius: 999px; transition: background var(--t-state), border-color var(--t-state); }
 .head input::placeholder { color: var(--ink-2); }
 .head input:focus-visible { border-radius: 999px; }
 #zlist .none { padding: 13px 22px; color: var(--ink-2); border-top: 1px solid var(--line); }
@@ -177,8 +179,6 @@ h1, h2, h3, p { margin: 0; }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 9px 0 11px; }
 .chip { padding: 2px 10px; border-radius: 999px; background: rgba(255, 255, 255, .6); font-size: 13px; }
 .said { margin: 0; padding: 10px 12px; border-radius: 12px; background: rgba(255, 255, 255, .55); font-size: 13.5px; }
-.more { display: none; }
-.req-row.sel .more { display: block; }
 .req-row.call h3 { font-weight: 400; color: var(--ink-2); }
 .req-row.call .agent { margin-top: 9px; }
 /* the latest step of a call, in quiet text; click it to read the whole trail */
@@ -195,8 +195,7 @@ h1, h2, h3, p { margin: 0; }
 .log li::before { content: ""; position: absolute; left: -20.5px; top: 11px; width: 7px; height: 7px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 0 2px #fff; }
 .log li:last-child { color: var(--ink); font-weight: 500; }
 .log small { display: block; color: var(--ink-2); font: 400 11.5px "Red Hat Mono", ui-monospace, monospace; letter-spacing: .02em; }
-.req-row .more { margin-top: 12px; }
-.st { flex: none; padding: 1px 9px; border-radius: 999px; font: 500 11px/18px "Red Hat Mono", ui-monospace, monospace; letter-spacing: .04em; text-transform: uppercase; }
+.st { flex: none; transition: background var(--t-move), color var(--t-move), box-shadow var(--t-move); padding: 1px 9px; border-radius: 999px; font: 500 11px/18px "Red Hat Mono", ui-monospace, monospace; letter-spacing: .04em; text-transform: uppercase; }
 .st.requesting { background: var(--heat); color: var(--heat-ink); }
 .st.incoming { background: var(--cool); color: #0c2a33; }
 .st.oncall { background: #fff; color: var(--blue); box-shadow: inset 0 0 0 1.5px var(--blue); }
@@ -218,3 +217,74 @@ h1, h2, h3, p { margin: 0; }
 .leaflet-popup-content { margin: 10px 14px; }
 .req-pop { display: flex; align-items: center; gap: 8px; max-width: 260px; color: var(--ink); font-size: 13.5px; }
 .req-pop .need { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ---------- motion ----------
+   Focal moment: the glass condenses out of the water on load. Everything else explains a state change:
+   list and detail swap sides, a picked card opens, a new caller lands on the map. Exits are instant or faster. */
+@keyframes surface { from { opacity: 0; transform: translateY(var(--rise)) scale(.985); filter: blur(var(--blur)); } }
+@keyframes rise { from { opacity: 0; transform: translateY(calc(var(--rise) * .6)); } }
+@keyframes from-right { from { opacity: 0; transform: translateX(var(--shift)); } }
+@keyframes from-left { from { opacity: 0; transform: translateX(calc(var(--shift) * -1)); } }
+@keyframes fade { from { opacity: 0; } }
+.top > *, .panel { animation: surface .6s var(--ease) backwards; }
+.top .alert { animation-delay: 60ms; }
+.top .sendalert { animation-delay: 120ms; }
+#zones { animation-delay: 80ms; }
+#side { animation-delay: 160ms; }
+
+/* the zone list fills in as a list (first ten rows staggered, 225ms at most); a picked zone slides in from the right */
+.zrow { animation: rise .4s var(--ease) backwards; }
+.zrow:nth-child(2) { animation-delay: 25ms; } .zrow:nth-child(3) { animation-delay: 50ms; } .zrow:nth-child(4) { animation-delay: 75ms; }
+.zrow:nth-child(5) { animation-delay: 100ms; } .zrow:nth-child(6) { animation-delay: 125ms; } .zrow:nth-child(7) { animation-delay: 150ms; }
+.zrow:nth-child(8) { animation-delay: 175ms; } .zrow:nth-child(9) { animation-delay: 200ms; } .zrow:nth-child(10) { animation-delay: 225ms; }
+.zrow:active, .rrow:active { background: rgba(255, 255, 255, .6); transition-duration: var(--t-press); }
+#zdetail { animation: from-right var(--t-move) var(--ease) backwards; }
+#zlist.back-in { animation: from-left var(--t-move) var(--ease) backwards; }
+#zlist.back-in .zrow { animation: none; }
+#zdetail .back span { display: inline-block; transition: transform var(--t-state) var(--ease); }
+#zdetail .back:hover span { transform: translateX(-3px); }
+#zdetail img { opacity: 0; filter: saturate(.3) blur(6px); transition: opacity .5s var(--ease), filter .7s var(--ease); }
+#zdetail img.loaded { opacity: 1; filter: none; }
+#zdetail .late { animation: fade var(--t-move) var(--ease) backwards; }
+.head input:hover, .sendalert input:hover { background: rgba(255, 255, 255, .75); }
+.head input:focus, .sendalert input:focus { background: #fff; border-color: rgba(3, 105, 161, .45); }
+.sendalert [role=status] { animation: from-right var(--t-state) var(--ease) backwards; }
+
+/* help requests: a card arrives from above with an orange wash; picking one opens it in place */
+.req-row { animation: rise .4s var(--ease) backwards; scroll-margin: 12px 0 72px; }
+.req-row.new { animation: arrive 1.4s var(--ease) backwards; }
+@keyframes arrive {
+  0% { opacity: 0; transform: translateY(calc(var(--rise) * -1)); background: rgba(244, 167, 101, .45); }
+  25% { opacity: 1; transform: none; background: rgba(244, 167, 101, .45); }
+}
+.more { display: grid; grid-template-rows: 0fr; opacity: 0; visibility: hidden;
+  transition: grid-template-rows var(--t-move) var(--ease), opacity var(--t-state), visibility 0s var(--t-move); }
+.more > div { min-height: 0; overflow: hidden; }
+.more .said { margin-top: 12px; }
+.req-row.sel .more { grid-template-rows: 1fr; opacity: 1; visibility: visible; transition: grid-template-rows var(--t-move) var(--ease), opacity var(--t-move) 60ms; }
+.log { animation: fade var(--t-state) var(--ease) backwards; }
+.log li { animation: rise .32s var(--ease) backwards; animation-delay: calc(min(var(--i, 0), 8) * 35ms); }
+
+/* readings: a picked zip's numbers settle in */
+.now > div { animation: rise var(--t-move) var(--ease) backwards; }
+.now > div + div { animation-delay: 50ms; }
+
+/* map: a hovered zone answers, a picked request pops, a caller who just asked lands, the popup rises off its marker,
+   and markers fade back after a zoom instead of blinking in (they hide during it, see MapView.tsx) */
+@media (hover: hover) and (pointer: fine) {
+  .leaflet-marker-icon:hover > .zone:not(.sel), .leaflet-marker-icon:hover > .req:not(.sel) { transform: scale(1.15); }
+}
+.req.sel { animation: pop .45s var(--ease); }
+.req.new { animation: land .7s var(--ease); }
+@keyframes land { from { opacity: 0; transform: scale(.3) translateY(calc(var(--rise) * -2)); } }
+.leaflet-popup-content-wrapper, .leaflet-popup-tip-container { animation: rise var(--t-state) var(--ease); }
+.leaflet-marker-pane { transition: opacity .22s var(--ease); }
+.leaflet-zoom-anim .leaflet-marker-pane { opacity: 0; transition: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --rise: 0px; --shift: 0px; --blur: 0px; }
+  .req.requesting::after, .zone.sel, .req.sel, .req.new { animation: none; }
+  .leaflet-marker-icon:hover > .zone, .leaflet-marker-icon:hover > .req { transform: none; }
+  #zdetail .back:hover span { transform: none; }
+  #zdetail img { filter: none; }
+}

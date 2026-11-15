@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import type { CallEvent, HelpRequest, LiveCall, ReadingRow } from './api';
 import { LANG, SOURCE, clockAt, deg, stamp, stage, whenAt } from './format';
 
@@ -70,7 +70,7 @@ function Requests({ requests, calls, reqError, req, fresh, onReq, readings }: Pr
               <div className="chips">{r.needs.map((x) => <span key={x} className="chip">{x}</span>)}</div>
               <Trail open={open.has(`r${r.id}`)} onToggle={() => toggle(`r${r.id}`)} {...stage(r.events ?? [], r.status)}
                 events={r.events ?? []} live={want} />
-              <div className="more"><p className="said">“{r.said}”</p></div>
+              <div className="more"><div><p className="said">“{r.said}”</p></div></div>
             </article>
           );
         })}
@@ -87,7 +87,7 @@ function Trail({ open, onToggle, pill, label, events, live }: { open: boolean; o
       <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" /></svg>
     </button>
     {open && <ol className="log" aria-label="Every step of this call, oldest first">
-      {events.map((e, i) => <li key={i}>{e.text}<small>{stamp(e.at)}</small></li>)}
+      {events.map((e, i) => <li key={i} style={{ '--i': i } as CSSProperties}>{e.text}<small>{stamp(e.at)}</small></li>)}
     </ol>}
   </>;
 }
@@ -108,7 +108,7 @@ function Readings({ readings, generatedAt, zip, onZip }: Props) {
         <p>{!r ? 'No readings yet' : r.area === r.zip ? r.zip : `${r.area} ${r.zip}`}</p>
       </div>
       {r && <>
-        <div className="now">
+        <div className="now" key={r.zip}>
           <div><b>{deg(r.temp_f)}</b><span>Temperature</span></div>
           <div><b>{deg(r.heat_index)}</b><span>Feels like</span></div>
         </div>

@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState, type ReactNode } from 'react';
+import { Fragment, useEffect, useRef, useState, type ReactNode } from 'react';
 import { get, type SiteDetail, type Zone } from './api';
 import { DAY, KIND, hoursSpan, href, to12h, todayIndex } from './format';
 
@@ -10,6 +10,9 @@ interface Props { sites: Zone[]; summary: string; summaryTitle?: string; zone: n
 export function ZonesPanel({ sites, summary, summaryTitle, zone, onZone, onClear }: Props) {
   const [q, setQ] = useState('');
   const z = sites.find((x) => x.id === zone);
+  // The list slides back in only when returning from a zone, not on first load.
+  const wasDetail = useRef(false);
+  if (z) wasDetail.current = true;
   const needle = q.trim().toLowerCase();
   const official = (x: Zone) => +(x.tier === 'official');
   const rows = sites.filter((x) => x.name.toLowerCase().includes(needle))
@@ -25,7 +28,7 @@ export function ZonesPanel({ sites, summary, summaryTitle, zone, onZone, onClear
           value={q} onChange={(e) => { setQ(e.target.value); onClear(); }} />
       </div>
       {z ? <ZoneDetail key={z.id} z={z} onBack={onClear} /> : (
-        <div className="scroll" id="zlist">
+        <div className={`scroll ${wasDetail.current ? 'back-in' : ''}`} id="zlist">
           {rows.length ? rows.map((x) => (
             <button key={x.id} className={`zrow ${zone === x.id ? 'sel' : ''}`} title={`${x.address}. Today: ${x.hours_today}`} onClick={() => onZone(x.id)}>
               <span><h3>{x.name}</h3><span className="sub"><Tag z={x} />{KIND[x.kind]}</span></span>
@@ -62,8 +65,8 @@ function ZoneDetail({ z, onBack }: { z: Zone; onBack(): void }) {
 
   return (
     <div className="scroll" id="zdetail">
-      <button className="back" onClick={onBack}>&larr; All cool zones</button>
-      {href(g?.photo) && <img src={href(g?.photo)} alt="" />}
+      <button className="back" onClick={onBack}><span aria-hidden="true">&larr;</span> All cool zones</button>
+      {href(g?.photo) && <img src={href(g?.photo)} alt="" onLoad={(e) => e.currentTarget.classList.add('loaded')} />}
       <h3>{z.name}</h3>
       <span className="sub"><Tag z={z} />{det?.category || KIND[z.kind]}{g?.rating ? ` · ★ ${g.rating} (${g.ratings} on Google)` : ''}</span>
       <p className="status">{z.closes_at ? `Open until ${to12h(z.closes_at)}` : 'Open 24 hours'}</p>
@@ -77,8 +80,8 @@ function ZoneDetail({ z, onBack }: { z: Zone; onBack(): void }) {
         {row('Pets', det?.pet_policy)}
       </dl>
       {det ? <>
-        <h4>Hours</h4>
-        <dl>{[1, 2, 3, 4, 5, 6, 0].map((n) => {
+        <h4 className="late">Hours</h4>
+        <dl className="late">{[1, 2, 3, 4, 5, 6, 0].map((n) => {
           const v = det.hours.weekly.filter((i) => i.day === n).map(hoursSpan).join(', ') || 'Closed';
           const cls = n === today ? 'today' : undefined;
           return <Fragment key={n}><dt className={cls}>{DAY[n]}</dt><dd className={cls}>{v}</dd></Fragment>;
