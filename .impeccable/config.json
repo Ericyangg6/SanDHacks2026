@@ -53,6 +53,21 @@
         ],
         "createdAt": "2026-11-14T21:26:44.959Z",
         "reason": "DESIGN.md Elevation: glass panels carry one blue-tinted drop shadow (#0b3c6e) on a pale blue light page, not a glow on dark"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "hat mono",
+        "createdAt": "2026-11-15T04:59:03.291Z",
+        "reason": "agent triage: Red Hat Mono is declared as the label font in DESIGN.md; the detector split the family name"
+      },
+      {
+        "rule": "dark-glow",
+        "value": "*",
+        "files": [
+          "apps/dashboard/directions.html"
+        ],
+        "createdAt": "2026-11-15T04:59:03.718Z",
+        "reason": "agent triage: page is light (#eaf5fd); shadows are the offset blue-grey elevation DESIGN.md specifies for glass and map tokens, copied from the dispatcher dashboard"
       }
     ]
   }

@@ -60,7 +60,6 @@ h1, h2, h3, p { margin: 0; }
 .tk svg { width: 58%; height: 58%; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; }
 .zone { width: 34px; height: 34px; background: var(--zone); color: #fff; box-shadow: 0 0 0 3px rgba(255, 255, 255, .9), 0 6px 12px -4px rgba(11, 50, 100, .45); }
 .zone.discovered { background: #fff; color: var(--zone); box-shadow: 0 0 0 1.5px var(--zone), 0 0 0 4px rgba(255, 255, 255, .9), 0 6px 12px -4px rgba(11, 50, 100, .45); }
-.zone.closed { background: #c9d6e2; color: #7a8ea3; box-shadow: 0 0 0 3px rgba(255, 255, 255, .7); }
 .req.sel { transform: scale(1.3); }
 .zone.sel { transform: scale(1.8); animation: pop .45s var(--ease); box-shadow: 0 0 0 2.5px #fff, 0 0 0 5px var(--zone), 0 0 0 11px rgba(11, 116, 201, .22), 0 12px 20px -6px rgba(11, 50, 100, .55); }
 @keyframes pop { from { transform: scale(1); } }
@@ -100,9 +99,6 @@ h1, h2, h3, p { margin: 0; }
 .alert i { width: 8px; height: 8px; border-radius: 50%; background: var(--heat); }
 .alert b { font-weight: 500; }
 .alert span { color: var(--ink-2); }
-.spacer { flex: 1; }
-.tag { border: 1px dashed rgba(11, 60, 110, .45); border-radius: 999px; padding: 3px 10px; color: var(--ink-2); }
-.head .tag { font-weight: 400; letter-spacing: .01em; vertical-align: 3px; margin-left: 6px; }
 .btn { height: 36px; padding: 0 16px; border-radius: 18px; background: var(--blue); color: #fff; font-weight: 500; transition: background .2s, transform .2s var(--ease); }
 .btn:hover { background: #075985; }
 .btn:active { transform: scale(.97); }
@@ -114,6 +110,10 @@ h1, h2, h3, p { margin: 0; }
 .head { padding: 20px 22px 14px; }
 .head h2 { font-size: 20px; font-weight: 300; letter-spacing: -.01em; }
 .head p { color: var(--ink-2); margin-top: 2px; }
+.head input { display: block; width: 100%; height: 38px; margin-top: 12px; padding: 0 14px; font: inherit; color: var(--ink); background: rgba(255, 255, 255, .6); border: 1px solid var(--line); border-radius: 999px; }
+.head input::placeholder { color: var(--ink-2); }
+.head input:focus-visible { border-radius: 999px; }
+#zlist .none { padding: 13px 22px; color: var(--ink-2); border-top: 1px solid var(--line); }
 .scroll { overflow-y: auto; flex: 1; scrollbar-width: thin; scrollbar-color: rgba(11, 60, 110, .25) transparent; }
 .rule { border-top: 1px solid var(--line); }
 
@@ -124,16 +124,9 @@ h1, h2, h3, p { margin: 0; }
 .zrow .sub { color: var(--ink-2); font-size: 13px; }
 .zrow .closes { text-align: right; white-space: nowrap; }
 .zrow .closes small { display: block; color: var(--ink-2); font-size: 12px; }
-.load { grid-column: 1 / -1; display: flex; align-items: center; color: var(--ink-2); font-size: 12.5px; margin-top: 4px; font-variant-numeric: tabular-nums; }
-.load .refs b { color: var(--ink); font-weight: 600; }
-.load .ver::before { content: "\00b7"; margin: 0 8px; }
-.load .air { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; font-family: 'Red Hat Mono', ui-monospace, monospace; font-size: 11.5px; letter-spacing: .04em; }
-.zrow.closed h3, .zrow.closed .closes { color: var(--ink-2); }
 .ztag { display: inline-block; margin-right: 7px; padding: 0 8px; border-radius: 999px; font-size: 11.5px; font-weight: 500; line-height: 18px; vertical-align: 1px; white-space: nowrap; }
 .ztag.cz { background: var(--zone); color: #fff; }
 .ztag.ps { background: #fff; color: var(--zone); box-shadow: inset 0 0 0 1.5px var(--zone); }
-.zrow.closed .ztag.cz { background: #c9d6e2; color: var(--ink); }
-.zrow.closed .ztag.ps { color: var(--ink-2); box-shadow: inset 0 0 0 1.5px #9fb3c6; }
 .aqi { display: inline-block; min-width: 34px; text-align: center; padding: 1px 7px; border-radius: 999px; color: #1b2014; font-weight: 500; font-size: 12.5px; }
 .legend { padding: 12px 22px 16px; display: grid; grid-template-columns: 14px 1fr; gap: 7px 10px; align-items: center; color: var(--ink-2); font-size: 12.5px; }
 .legend p { grid-column: 1 / -1; margin: 0 0 2px; color: var(--ink); font-weight: 500; font-size: 13px; }
@@ -155,10 +148,6 @@ h1, h2, h3, p { margin: 0; }
 #zdetail dd { margin: 0; overflow-wrap: anywhere; }
 #zdetail dl .today { font-weight: 600; color: var(--ink); }
 #zdetail a { color: var(--blue); }
-.meter { height: 8px; border-radius: 999px; background: rgba(11, 60, 110, .12); overflow: hidden; margin: 6px 0 8px; }
-.meter i { display: block; height: 100%; border-radius: inherit; background: var(--zone); }
-.meter i.full { background: var(--heat); }
-#zdetail .said { margin: 8px 0 0; }
 #zdetail .links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
 #zdetail .links a { display: inline-flex; align-items: center; text-decoration: none; color: #fff; }
 #zdetail .links a.ghost { background: rgba(255, 255, 255, .6); color: var(--blue); }
@@ -221,7 +210,7 @@ h1, h2, h3, p { margin: 0; }
   body { overflow-y: auto; }
   #map { position: relative; inset: auto; height: 58vh; }
   .top { position: absolute; flex-wrap: wrap; }
-  .top .alert span, .top .brand span, .top .tag, .spacer { display: none; }
+  .top .alert span, .top .brand span { display: none; }
   .panel { position: static; width: auto !important; margin: 12px; max-height: none; }
   .scroll { overflow: visible; }
   .leaflet-bottom.leaflet-right { right: 0; }
@@ -245,17 +234,13 @@ h1, h2, h3, p { margin: 0; }
   <div class="glass pill alert" role="status" id="alert" hidden>
     <i></i><b id="alertk"></b><span id="alertw"></span>
   </div>
-  <div class="spacer"></div>
-  <div class="glass pill">
-    <span class="tag mono" id="src">Loading</span>
-    <span class="mono" id="clock"></span>
-  </div>
 </header>
 
 <section class="glass panel" id="zones" aria-labelledby="zh">
   <div class="head">
     <h2 id="zh">Cool zones</h2>
     <p id="zsum"></p>
+    <input type="search" id="zq" placeholder="Search by name" aria-label="Search cool zones by name" autocomplete="off">
   </div>
   <div class="scroll" id="zlist"></div>
   <div class="scroll" id="zdetail" hidden></div>
@@ -314,7 +299,14 @@ const readingFor = zip => state.data?.readings.find(r => r.zip === zip);
 
 /* ---------- map ---------- */
 // Locked to San Diego County (32.53..33.51 N, 117.60..116.08 W) plus a margin: Tijuana, Temecula, the Salton Sea.
-const map = L.map('map', { zoomControl: false, minZoom: 10, maxBounds: [[32.0, -118.6], [34.0, -115.2]], maxBoundsViscosity: 1 }).setView([32.79, -117.04], 11);
+// Leaflet places each marker with translate3d, which gives every marker its own GPU layer: 400+ of them cost ~8 ms a frame
+// while panning. left/top keeps them all in the marker pane's single layer. That rules out animating them through a zoom,
+// so markerZoomAnimation is off and they hide for the 250 ms zoom instead. Past a few thousand sites, draw them on a canvas.
+L.Marker.include({ _setPos(pos) {
+  if (this._icon) { this._icon.style.left = `${pos.x}px`; this._icon.style.top = `${pos.y}px`; }
+  this._zIndex = pos.y + this.options.zIndexOffset; this._resetZIndex();
+} });
+const map = L.map('map', { zoomControl: false, markerZoomAnimation: false, minZoom: 10, maxBounds: [[32.0, -118.6], [34.0, -115.2]], maxBoundsViscosity: 1 }).setView([32.79, -117.04], 11);
 L.tileLayer('https://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer/tile/{z}/{y}/{x}', {
   maxZoom: 16, attribution: 'USGS The National Map',
 }).addTo(map);
@@ -323,7 +315,7 @@ const wide = () => innerWidth > 1000;
 const pad = () => wide() ? { paddingTopLeft: [380, 100], paddingBottomRight: [410, 40] } : { padding: [30, 30] };
 
 const icon = (html, size) => L.divIcon({ className: '', html, iconSize: [size, size], iconAnchor: [size / 2, size / 2] });
-const zoneIcon = z => icon(`<div class="tk zone ${z.tier} ${z.open_now ? '' : 'closed'} ${state.zone === z.id ? 'sel' : ''}">${AST}</div>`, 34);
+const zoneIcon = z => icon(`<div class="tk zone ${z.tier} ${state.zone === z.id ? 'sel' : ''}">${AST}</div>`, 34);
 const reqIcon = r => icon(`<div class="tk req ${r.status === 'incoming' ? 'incoming' : 'requesting'} ${state.req === r.id ? 'sel' : ''}"></div>`, 30);
 
 const callLayer = L.layerGroup().addTo(map), zoneLayer = L.layerGroup().addTo(map), reqLayer = L.layerGroup().addTo(map);
@@ -340,16 +332,18 @@ function syncMap() {
   const seen = new Set();
   for (const z of sites()) {
     seen.add(z.id);
-    zoneMarkers[z.id] ??= L.marker([z.lat, z.lon], { title: z.name }).addTo(zoneLayer).on('click', () => pickZone(z.id));
+    zoneMarkers[z.id] ??= L.marker([z.lat, z.lon], { title: z.name, icon: zoneIcon(z) }).addTo(zoneLayer).on('click', () => pickZone(z.id));
   }
   for (const id in zoneMarkers) if (!seen.has(+id)) { zoneLayer.removeLayer(zoneMarkers[id]); delete zoneMarkers[id]; }
   callLayer.clearLayers();
   state.data.calls.forEach(c => L.marker([c.lat, c.lon], { icon: icon('<div class="dot"></div>', 9), interactive: false, keyboard: false }).addTo(callLayer));
   refreshIcons();
 }
+// setIcon rebuilds the marker's DOM node, and there are 400+ of them: only touch the ones whose look changed.
+const reIcon = (m, ic) => m && m.options.icon.options.html !== ic.options.html ? m.setIcon(ic) : null;
 function refreshIcons() {
-  sites().forEach(z => zoneMarkers[z.id]?.setIcon(zoneIcon(z)).setZIndexOffset(state.zone === z.id ? 1000 : 0));
-  state.live.forEach(r => reqMarkers[r.id]?.setIcon(reqIcon(r)));
+  sites().forEach(z => reIcon(zoneMarkers[z.id], zoneIcon(z))?.setZIndexOffset(state.zone === z.id ? 1000 : 0));
+  state.live.forEach(r => reIcon(reqMarkers[r.id], reqIcon(r)));
 }
 
 /* ---------- top bar ---------- */
@@ -360,34 +354,25 @@ function renderTop() {
     $('alertk').textContent = ALERT[a.kind] + (d.alerts.length > 1 ? ` +${d.alerts.length - 1} more` : '');
     $('alertw').textContent = [`${a.zips.length} zip${a.zips.length === 1 ? '' : 's'}`, a.expires_at && `until ${clockAt(a.expires_at)}`].filter(Boolean).join(', ');
   }
-  $('src').textContent = d.source === 'neon' ? 'Live data' : 'Seed data';
-  $('src').title = d.source === 'neon' ? 'Neon database' : 'Snapshot from data/seed/, no live calls or alerts';
 }
 
 /* ---------- cool zones ---------- */
-function verified(z) {
-  if (z.stale) return 'Not verified in 24h';
-  const d = new Date(z.last_verified_at), today = new Date().toLocaleDateString('en-US', LA);
-  return d.toLocaleDateString('en-US', LA) === today ? 'Verified today' : `Verified ${d.toLocaleDateString('en-US', { ...LA, month: 'short', day: 'numeric' })}`;
-}
 function renderZones() {
-  const all = sites(), open = all.filter(z => z.open_now);
-  $('zsum').textContent = `${open.length} open now, ${all.length - open.length} closed`;
+  $('zsum').textContent = state.data.source === 'seed' ? 'Seed data, not live' : '';   // also carries the API-offline notice
+  $('zsum').title = '';
   const official = z => z.tier === 'official';
-  const rows = [...all].sort((a, b) => b.open_now - a.open_now || official(b) - official(a) || b.referrals_24h - a.referrals_24h || a.name.localeCompare(b.name));
+  const q = $('zq').value.trim().toLowerCase();
+  const rows = sites().filter(z => z.name.toLowerCase().includes(q)).sort((a, b) => official(b) - official(a) || b.referrals_24h - a.referrals_24h || a.name.localeCompare(b.name));
   $('zlist').innerHTML = rows.map(z => {
     const tag = official(z) ? '<span class="ztag cz">Cool Zone</span>' : '<span class="ztag ps">Public Space</span>';
-    const sure = z.confidence != null ? `, ${Math.round(z.confidence * 100)}% sure of hours` : '';
-    const sub = official(z) ? KIND[z.kind] : `${KIND[z.kind]} · Call ahead${sure}`;
-    const cap = z.capacity_est ? `/${z.capacity_est}` : '';
-    return `<button class="zrow ${z.open_now ? '' : 'closed'} ${state.zone === z.id ? 'sel' : ''}" data-z="${z.id}" title="${esc(z.address)}. Today: ${esc(z.hours_today)}">
-      <span><h3>${esc(z.name)}</h3><span class="sub">${tag}${esc(sub)}</span></span>
-      <span class="closes">${z.open_now ? `${to12h(z.closes_at)}<small>closes</small>` : 'Closed now'}</span>
-      ${z.open_now ? `<span class="load"><span class="refs" title="Sent by Shade in the last 24h / estimated capacity"><b>${z.referrals_24h}</b>${cap} sent</span><span class="ver">${verified(z)}</span><span class="air">AQI ${aqiChip(readingFor(z.zip)?.aqi)}</span></span>` : ''}
+    return `<button class="zrow ${state.zone === z.id ? 'sel' : ''}" data-z="${z.id}" title="${esc(z.address)}. Today: ${esc(z.hours_today)}">
+      <span><h3>${esc(z.name)}</h3><span class="sub">${tag}${esc(KIND[z.kind])}</span></span>
+      <span class="closes">${to12h(z.closes_at)}<small>closes</small></span>
     </button>`;
-  }).join('');
+  }).join('') || `<p class="none">${q ? 'No open cool zone matches that name.' : 'No cool zones are open right now.'}</p>`;
   renderDetail();
 }
+$('zq').oninput = () => { state.zone = null; renderZones(); refreshIcons(); };   // typing while a zone is open returns to the list
 $('zlist').onclick = e => { const b = e.target.closest('[data-z]'); if (b) pickZone(+b.dataset.z); };
 
 /* the selected zone replaces the list (GET /dashboard/sites/:id adds what the snapshot leaves out, and Google Places) */
@@ -400,29 +385,23 @@ function renderDetail() {
   const mine = state.detail?.id === z.id, d = mine && !state.detail.failed ? state.detail : null, g = d?.google;
   const official = z.tier === 'official';
   const row = (k, v) => v ? `<dt>${k}</dt><dd>${v}</dd>` : '';
-  const pct = z.capacity_est ? Math.min(100, Math.round(100 * z.referrals_24h / z.capacity_est)) : 0;
   const today = DAY.indexOf(new Date().toLocaleDateString('en-US', { ...LA, weekday: 'short' }));
   const week = d ? [1, 2, 3, 4, 5, 6, 0].map(n => {
     const v = d.hours.weekly.filter(i => i.day === n).map(i => `${to12h(i.open)} - ${to12h(i.close)}`).join(', ') || 'Closed';
     return `<dt class="${n === today ? 'today' : ''}">${DAY[n]}</dt><dd class="${n === today ? 'today' : ''}">${v}</dd>`;
   }).join('') : '';
-  const reviews = d?.reviews_scanned ? `<p class="dim">${d.crowded} of ${d.reviews_scanned} recent Google reviews mention crowding, ${d.spacious} mention plenty of room.</p>${d.crowd_quote ? `<p class="said">“${esc(d.crowd_quote)}”</p>` : ''}` : '';
+  const note = g?.status && g.status !== 'OPERATIONAL' ? `Google lists this place as ${esc(g.status.toLowerCase().replace(/_/g, ' '))}.` : '';
   const maps = href(g?.maps_url) || href(d?.maps_url), web = href(g?.website) || href(d?.source_url);
   $('zdetail').innerHTML = `<button class="back" data-back>&larr; All cool zones</button>
     ${href(g?.photo) ? `<img src="${href(g.photo)}" alt="">` : ''}
     <h3>${esc(z.name)}</h3>
     <span class="sub">${official ? '<span class="ztag cz">Cool Zone</span>' : '<span class="ztag ps">Public Space</span>'}${esc(d?.category || KIND[z.kind])}${g?.rating ? ` · ★ ${esc(g.rating)} (${esc(g.ratings)} on Google)` : ''}</span>
-    <p class="status">${z.open_now ? `Open until ${to12h(z.closes_at)}` : 'Closed now'}</p>
-    <p class="dim">${g?.status && g.status !== 'OPERATIONAL' ? `Google lists this place as ${esc(g.status.toLowerCase().replace(/_/g, ' '))}. ` : ''}${verified(z)}${official ? '' : ' · Call ahead'}</p>
+    <p class="status">Open until ${to12h(z.closes_at)}</p>
+    ${note ? `<p class="dim">${note}</p>` : ''}
     ${g?.summary ? `<p class="dim" style="margin-top:8px">${esc(g.summary)}</p>` : ''}
-    <h4>Busyness</h4>
-    <p><b>${z.referrals_24h}</b>${z.capacity_est ? ` of about ${z.capacity_est} seats` : ''} sent here by Shade in the last 24h</p>
-    ${z.capacity_est ? `<div class="meter"><i class="${pct >= 80 ? 'full' : ''}" style="width:${pct}%"></i></div>` : ''}
-    ${reviews}
     <h4>Details</h4>
     <dl>${row('Address', esc(z.address))}${row('Phone', d?.phone && `<a href="tel:${esc(d.phone.replace(/[^+\d]/g, ''))}">${esc(d.phone)}</a>`)}
-      ${row('A/C', d ? (d.has_ac == null ? 'Unknown' : d.has_ac ? 'Yes' : 'No') : '')}${row('Access', esc(d?.access_notes))}${row('Pets', esc(d?.pet_policy))}
-      ${row('Air', `AQI ${aqiChip(readingFor(z.zip)?.aqi)}`)}</dl>
+      ${row('Access', esc(d?.access_notes))}${row('Pets', esc(d?.pet_policy))}</dl>
     ${week ? `<h4>Hours</h4><dl>${week}</dl>` : `<p class="dim" style="margin-top:14px">${mine ? 'Could not load more details.' : 'Loading details…'}</p>`}
     <div class="links">${maps ? `<a class="btn" href="${maps}" target="_blank" rel="noopener">Open in Google Maps</a>` : ''}${web ? `<a class="btn ghost" href="${web}" target="_blank" rel="noopener">Website</a>` : ''}</div>`;
 }
@@ -547,16 +526,17 @@ async function load() {
     }
     if (first && d.sites.length) map.fitBounds(L.latLngBounds(d.sites.map(z => [z.lat, z.lon])), pad());
   } catch (err) {
-    $('src').textContent = 'API offline';
-    $('src').title = `${API}: ${err.message}`;
-    if (!state.data) $('zsum').textContent = `Can't reach the Shade API at ${API}`;
+    state.key = null;   // re-render on the next good poll, which restores the summary line
+    $('zsum').textContent = `Can't reach the Shade API at ${API}`;
+    $('zsum').title = err.message;
   }
 }
 
-const tick = () => $('clock').textContent = new Date().toLocaleTimeString('en-US', { ...LA, hour: 'numeric', minute: '2-digit' });
-tick(); setInterval(tick, 15000);
 load(); setInterval(load, POLL_MS);
 loadReqs(); setInterval(loadReqs, POLL_MS);
 </script>
+<!-- impeccable-live-start -->
+<script src="http://localhost:8400/live.js?token=285564dc-2f3a-4772-a337-1d4563d30b5c"></script>
+<!-- impeccable-live-end -->
 </body>
 </html>
