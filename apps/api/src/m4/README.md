@@ -312,6 +312,7 @@ Run from `apps/api`. Each one loads the repo-root `.env` itself.
 ```shell
 node src/m4/dev/run.mjs send-test ["message"]    # one text to TEST_PHONE_NUMBER, straight through Twilio
 node src/m4/dev/run.mjs text-in "JOIN 92105"     # pretend a phone texted the Twilio number; prints the reply
+node src/m4/dev/run.mjs call-ended --phone +1...  # pretend a voice call ended: holds the site for the linked Messenger
 node src/m4/dev/run.mjs build-zone-zips <file>   # rebuild alerts/zone-zips.ts (see "Live NWS alerts")
 ```
 
