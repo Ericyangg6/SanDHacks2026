@@ -78,7 +78,8 @@ create table subscribers (
   -- Messenger profiles: the phone number the person gave with JOIN <zip> <phone>, as sha256(salt + e164) only (the
   -- raw number is not stored), so their Messenger can be found from a phone number. One profile per number.
   linked_phone_hash text,
-  -- Optional name given with JOIN (JOIN <zip> <phone> <name>). M4 only; never logged. Cleared on STOP.
+  -- The name on their Facebook profile, read at JOIN when a Page token is set; null otherwise. M4 only; never
+  -- logged. Cleared on STOP.
   display_name      text
   -- Existing databases: data/schema/migrations/20261114d_m4_messenger_phone_link.sql, and:
   --   alter table subscribers add column if not exists alert_channel text;
