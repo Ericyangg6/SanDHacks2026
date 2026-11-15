@@ -1,5 +1,6 @@
 // Neighbor help over Messenger. Volunteers sign up with JOIN <zip> VOLUNTEER (subscribers.volunteer_at). A help
-// request goes to every volunteer in the caller's zip, and the first to reply YES <id> takes it. The blast carries the area and needs only; the exact location goes to the neighbor who said yes.
+// request goes to every volunteer in the caller's zip, and the first to reply YES <id> takes it. The blast carries the area and needs only; the exact location and the caller's
+// callback number go to the neighbor who said yes.
 // The caller then gets a Messenger follow-up.
 import { getMessengerProfileByPhone, listActiveSubscribersByZips } from '../m4/db';
 import { deliverNowIfWindowOpen, queueFollowup } from '../m4/messenger/followups';
@@ -77,7 +78,7 @@ export async function answerNeighbor(
   if (reply.done) {
     // Only the neighbor who took the request can close it.
     const closed = await db.query(
-      `update requests set status = 'closed', updated_at = now()
+      `update requests set status = 'closed', phone_e164 = null, updated_at = now()
        where id = $1 and status = 'incoming' and volunteer_hash = $2
        returning conversation_id`,
       [id, active.phone_hash],
@@ -100,13 +101,14 @@ export async function answerNeighbor(
     void messageCaller(id);
   }
 
-  const { rows: [r] } = await db.query(`select status, zip, volunteer_hash, location, needs, said from requests where id = $1`, [id]);
+  const { rows: [r] } = await db.query(`select status, zip, volunteer_hash, location, needs, said, phone_e164 from requests where id = $1`, [id]);
   if (r && r.zip === active.zip && r.volunteer_hash === active.phone_hash && r.status === 'incoming') {
     const needs = r.needs.length ? (spanish ? `\nNecesitan: ${r.needs.join(', ')}` : `\nThey need: ${r.needs.join(', ')}`) : '';
+    const phone = r.phone_e164 ? (spanish ? `\nSu número: ${r.phone_e164}` : `\nTheir number: ${r.phone_e164}`) : '';
     const said = r.said.slice(0, 500);
     return spanish
-      ? `Gracias. Vaya a: ${r.location}${needs}\nSus palabras: "${said}"\nSi alguien tiene señales de golpe de calor, llame al 911.\nCuando termine, responda LISTO ${id}.`
-      : `Thank you. Go to: ${r.location}${needs}\nIn their words: "${said}"\nIf anyone has signs of heat illness, call 911.\nWhen you're done, reply DONE ${id}.`;
+      ? `Gracias. Vaya a: ${r.location}${phone}${needs}\nSus palabras: "${said}"\nSi alguien tiene señales de golpe de calor, llame al 911.\nCuando termine, responda LISTO ${id}.`
+      : `Thank you. Go to: ${r.location}${phone}${needs}\nIn their words: "${said}"\nIf anyone has signs of heat illness, call 911.\nWhen you're done, reply DONE ${id}.`;
   }
   if (r && r.zip === active.zip && r.status === 'incoming') {
     return spanish ? 'Gracias. Otro vecino ya dijo que sí.' : 'Thank you. Another neighbor already said yes.';

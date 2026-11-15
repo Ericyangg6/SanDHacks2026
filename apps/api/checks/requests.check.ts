@@ -60,15 +60,17 @@ if (db && process.env.REQUESTS_CHECK_DB === '1') {
     }
     // Someone who never sent JOIN, or a subscriber who never volunteered, learns nothing.
     assert.equal(await answerNeighbor(null, `YES ${first.request_id}`), null);
-    assert.doesNotMatch((await answerNeighbor(sub('check-c'), `YES ${first.request_id}`))!, /Borrego/);
-    // The first volunteer's YES wins and gets the location; the second does not.
+    assert.doesNotMatch((await answerNeighbor(sub('check-c'), `YES ${first.request_id}`))!, /Borrego|6195550100/);
+    // The first volunteer's YES wins and gets the location and the caller's number; the second gets neither.
     const [ra, rb] = await Promise.all([
       answerNeighbor(sub('check-a'), `YES ${first.request_id}`), answerNeighbor(sub('check-b'), `YES ${first.request_id}`),
     ]);
     const winner = ra!.includes('Go to:') ? ra! : rb!;
     const loser = winner === ra ? rb! : ra!;
     assert.match(winner, /Borrego Springs 92004/);
+    assert.match(winner, /Their number: \+16195550100/);
     assert.match(loser, /already said yes/);
+    assert.doesNotMatch(loser, /6195550100/);
     assert.equal((await handleCheckStatus({ conversation_id })).status, 'incoming');
     // Only the winner's DONE closes it, and a closed request leaves the dashboard.
     const loserSub = sub(winner === ra ? 'check-b' : 'check-a');
@@ -77,6 +79,7 @@ if (db && process.env.REQUESTS_CHECK_DB === '1') {
     assert.equal((await handleCheckStatus({ conversation_id })).status, 'incoming');
     assert.match((await answerNeighbor(winnerSub, `DONE ${first.request_id}`))!, /is closed/);
     assert.equal((await handleCheckStatus({ conversation_id })).status, 'closed');
+    assert.equal((await db.query(`select phone_e164 from requests where id = $1`, [first.request_id])).rows[0].phone_e164, null);
     assert.ok(!(await listOpenRequests()).some((r) => r.id === first.request_id));
     console.log('requests db ok: request', first.request_id);
   } finally {
