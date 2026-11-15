@@ -70,6 +70,8 @@ async function main() {
   let geocoded = 0;
 
   for (const s of merged) {
+    // Housing is never a public cooling space (student dormitories, apartment complexes, residence halls).
+    if (/dormitor|apartment|residence hall|housing|condominium|residential/i.test(`${s.category ?? ""} ${s.name ?? ""}`) && s.tier !== "official") { skipped.housing = (skipped.housing ?? 0) + 1; continue; }
     if (!s.address) { skipped.no_address++; continue; }
     const weekly = (s.hours ?? [])
       .filter((h: any) => h.day in DAY)

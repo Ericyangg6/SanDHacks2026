@@ -229,11 +229,18 @@ function localNow(now: Date): { dow: number; date: string; min: number } {
   return { dow, date: `${parts.year}-${parts.month}-${parts.day}`, min: Number(parts.hour) * 60 + Number(parts.minute) };
 }
 const toMin = (t: string): number => Number(t.slice(0, 2)) * 60 + Number(t.slice(3, 5));
-const hhmm = (m: number): string => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
+const hhmm = (m: number): string => { const x = m % 1440; return `${String(Math.floor(x / 60)).padStart(2, '0')}:${String(x % 60).padStart(2, '0')}`; };
 
 interface Status { open: boolean; closesMin: number | null; nextOpenMin: number | null; intervals: [number, number][]; note: string | null }
-function status(h: SiteHours, now: { dow: number; date: string; min: number }): Status {
-  let intervals: [number, number][] = h.weekly.filter((i) => i.day === now.dow).map((i) => [toMin(i.open), toMin(i.close)] as [number, number]).filter(([o, c]) => c > o);
+function status(h: SiteHours, now: { dow: number; date: string; min: number }, ignoreAllDay = false): Status {
+  // Minutes since midnight. An interval whose close is at or before its open runs PAST midnight ("7 AM - 2 AM"); a close of
+  // 00:00 means midnight (1440). Such intervals can exceed 1440, and yesterday's late-night tail counts from 00:00 today.
+  const day = (d: number) => h.weekly.filter((i) => i.day === d).map((i) => [toMin(i.open), toMin(i.close)] as [number, number]);
+  let intervals: [number, number][] = [];
+  for (const [o, c] of day(now.dow)) intervals.push(c > o ? [o, c] : c === 0 ? [o, 1440] : [o, 1440 + c]);
+  for (const [o, c] of day((now.dow + 6) % 7)) if (c <= o && c > 0) intervals.push([0, c]); // still open after midnight from last night
+  // Google's "open 24 hours" (00:00-23:59) on a place we only know from Maps is almost always wrong for a building: ignore it there.
+  if (ignoreAllDay) intervals = intervals.filter(([o, c]) => !(o === 0 && c >= 1439));
   const ex = h.exceptions?.find((e) => e.date === now.date);
   let note: string | null = null;
   if (ex?.closed) { intervals = []; note = ex.note ? `closed today for ${ex.note}` : 'closed today'; }
@@ -254,13 +261,14 @@ function speakAddress(addr: string): string {
   return city && !/^\d/.test(city) ? `${s} in ${city}` : s;
 }
 function speakTime(min: number, relativeTo: number): string {
-  if (min >= 23 * 60 + 55) return 'midnight';
+  if (min >= 23 * 60 + 55 && min <= 1440) return 'midnight';
+  if (min > 1440) { const m = min - 1440, h12 = Math.floor(m / 60) % 12 || 12; return `${h12}${m % 60 ? ' ' + String(m % 60).padStart(2, '0') : ''} in the morning`; }
   const h24 = Math.floor(min / 60), m = min % 60, h12 = h24 % 12 || 12;
   const t = m ? `${h12} ${String(m).padStart(2, '0')}` : `${h12}`;
   const part = h24 >= 17 ? (relativeTo >= 17 * 60 ? 'tonight' : 'this evening') : h24 >= 12 ? 'this afternoon' : 'this morning';
   return `${t} ${part}`;
 }
-const clock = (min: number): string => { const h24 = Math.floor(min / 60), m = min % 60; return `${h24 % 12 || 12}:${String(m).padStart(2, '0')} ${h24 >= 12 ? 'PM' : 'AM'}`; };
+const clock = (min: number): string => { const x = min % 1440, h24 = Math.floor(x / 60), m = x % 60; return `${h24 % 12 || 12}:${String(m).padStart(2, '0')} ${h24 >= 12 ? 'PM' : 'AM'}`; };
 
 // ---------------------------------------------------------------- the tool
 
@@ -298,7 +306,7 @@ export async function findSites(input: FindSitesInput): Promise<FindSitesOutput>
     const mode: 'car' | 'walk' | 'transit' = !noCar ? 'car' : miles <= 1 ? 'walk' : 'transit';
     const travel = Math.round(mode === 'car' ? 3 + (miles / 22) * 60 : mode === 'walk' ? miles * 20 : 10 + (miles / 12) * 60);
     if (travel > maxTravel) continue;
-    const st = status(r.hours, lt);
+    const st = status(r.hours, lt, r.tier === 'discovered' && r.verification !== 'confirmed');
     if (!st.open) { if (st.nextOpenMin !== null) later.push({ r, miles, st }); continue; }
     if (st.closesMin! - lt.min < travel + 10) continue;                                  // would close before or just after arrival
     const trust = r.tier === 'discovered' ? 20 * (1 - (r.confidence ?? 0.5)) : 0;       // low-trust penalty (docs/PROJECT.md)
