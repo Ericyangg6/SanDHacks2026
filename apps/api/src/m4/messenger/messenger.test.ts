@@ -153,6 +153,12 @@ function answer(query: string, params: unknown[]): unknown[] {
   if (/max\(started_at\)/.test(query)) return [{ at: db.lastInbound }];
   if (/from messenger_followups where phone_hash = \$1 and site_id/.test(query)) return db.recentFollowup ? [{ '?column?': 1 }] : [];
   if (/from messenger_followups/.test(query)) return db.followups;
+  // A held follow-up becomes pending, as in the real table.
+  if (/insert into messenger_followups/.test(query)) {
+    const id = 900 + db.followups.length;
+    db.followups.push({ id, phone_hash: String(params[0]), body: String(params[1]), site_id: params[2] as number | null });
+    return [{ id }];
+  }
   if (/from sites where id/.test(query)) return db.site ? [db.site] : [];
   if (/linked_phone_hash = \$1 and opted_out_at is null/.test(query)) return db.profile ? [db.profile] : [];
   if (/from unnest/.test(query)) return db.readings;
@@ -312,7 +318,7 @@ describe('handleInboundMessenger', () => {
 
   it('signs JOIN up for Messenger alerts, storing the ids only on the subscriber row', async () => {
     const result = await handleInboundMessenger(parseMessengerWebhook(webhook('JOIN 92105', 'SMtest-join'))!);
-    assert.match(result.reply!, /signed up for heat and smoke alerts for 92105 here on Messenger/);
+    assert.match(result.reply!, /Shade will message you here with heat and smoke alerts for 92105/);
     assert.deepEqual(result.sent, { ok: true });
 
     const upsert = sqlCalls().find((sql) => /insert into subscribers/.test(sql.query))!;
@@ -337,7 +343,7 @@ describe('handleInboundMessenger', () => {
   it('opts a Spanish STOP out, answering in Spanish', async () => {
     db.subscriber = messengerRow();
     const result = await handleInboundMessenger(parseMessengerWebhook(webhook('ALTO', 'SMtest-stop'))!);
-    assert.match(result.reply!, /cancelaste tu suscripción/);
+    assert.match(result.reply!, /Cancelaste tu suscripción/);
     const update = sqlCalls().find((sql) => /update subscribers set opted_out_at/.test(sql.query))!;
     assert.equal(update.params[0], hashMessengerId(PSID));
     assert.match(update.query, /messenger_psid = null/);
@@ -357,7 +363,7 @@ describe('handleInboundMessenger', () => {
     // A typed name is ignored: the name comes from the Facebook profile.
     const msg = parseMessengerWebhook(webhook('JOIN 92105 16195550147 Someone Else', 'SMtest-join-phone'))!;
     const result = await handleInboundMessenger(msg);
-    assert.match(result.reply!, /^✅ Shade: Ana, you are signed up/);
+    assert.match(result.reply!, /^✅ You're all set, Ana!/);
     assert.match(result.reply!, /phone number ending in 0147/);
     assert.ok(!result.reply!.includes('6195550147'));
 
@@ -379,13 +385,13 @@ describe('handleInboundMessenger', () => {
 
   it('signs up without a name when there is no Page token, or Facebook fails', async () => {
     const plain = await handleInboundMessenger(parseMessengerWebhook(webhook('JOIN 92105', 'SMtest-join-notoken'))!);
-    assert.match(plain.reply!, /^✅ Shade: you are signed up/);
+    assert.match(plain.reply!, /^✅ You're all set!/);
     assert.equal(graphCalls().length, 0);
 
     process.env.FACEBOOK_PAGE_ACCESS_TOKEN = 'test-page-token';
     graphResponse = () => Response.json({ error: { code: 100, message: `Unsupported get request ${PSID}` } }, { status: 400 });
     const failed = await handleInboundMessenger(parseMessengerWebhook(webhook('JOIN 92105', 'SMtest-join-graphfail'))!);
-    assert.match(failed.reply!, /^✅ Shade: you are signed up/);
+    assert.match(failed.reply!, /^✅ You're all set!/);
     assert.equal(graphCalls().length, 1);
     assert.ok(logged.some((line) => /Facebook profile lookup failed: HTTP 400 \(Graph error 100\)/.test(line)));
     assert.ok(!logged.join('\n').includes(PSID));
@@ -510,7 +516,7 @@ describe('dispatchAlert to Messenger subscribers', () => {
     const [send] = twilioSends();
     assert.equal(send.form!.get('From'), `messenger:${PAGE_ID}`);
     assert.equal(send.form!.get('To'), `messenger:${PSID}`);
-    assert.match(send.form!.get('Body')!, /Shade TEST/);
+    assert.match(send.form!.get('Body')!, /^⚠️ Heads up from Shade \(test\): This is a practice alert/);
 
     const call = sqlCalls().find((sql) => /insert into calls/.test(sql.query))!;
     assert.deepEqual(call.params.slice(0, 3), ['outbound', 'messenger', hashMessengerId(PSID)]);
@@ -532,12 +538,28 @@ describe('mode 1: automatic follow-up when a call ends', () => {
   const CALLER = '+16195550189'; // made up
   const held = () => sqlCalls().filter((sql) => /insert into messenger_followups/.test(sql.query));
 
+  it('sends at once, from the call or from send_sms, when the caller messaged the Page in the last 24 hours', async () => {
+    db.site = SITE;
+    db.profile = messengerRow({ linked_phone_hash: hashPhone(CALLER) });
+    db.lastInbound = new Date(Date.now() - 2 * 3600_000).toISOString(); // their JOIN, two hours ago
+    assert.equal(await followUpAfterCall({ phoneE164: CALLER, siteId: SITE.id, language: 'en' }), 'sent');
+    const [send] = twilioSends();
+    assert.equal(send.form!.get('To'), `messenger:${PSID}`);
+    assert.match(send.form!.get('Body')!, /^📞 Here's the follow-up from your call with Shade\./);
+    assert.ok(sqlCalls().some((sql) => /set delivered_at = now\(\)/.test(sql.query)));
+
+    const result = await sendSms({ to: '+16195550177', site_id: SITE.id });
+    assert.equal(result.ok, true);
+    assert.match(result.note!, /Sent to the caller's Facebook Messenger just now/);
+    assert.doesNotMatch(result.note!, /send any message/);
+  });
+
   it("holds the site for a linked caller without anyone asking for a text", async () => {
     db.site = SITE;
     db.profile = messengerRow({ linked_phone_hash: hashPhone(CALLER) });
     assert.equal(await followUpAfterCall({ phoneE164: CALLER, siteId: SITE.id, language: 'es' }), 'queued');
     assert.equal(held().length, 1);
-    assert.match(String(held()[0].params[1]), /^📞 De tu llamada con Shade:\n\n📍 Test Library/);
+    assert.match(String(held()[0].params[1]), /^📞 Aquí tienes el seguimiento de tu llamada con Shade\.\n\nEste es el centro de enfriamiento que encontramos para ti:\n📍 Test Library/);
     assert.equal(twilioSends().length, 0);
     assert.ok(!JSON.stringify(sqlCalls()).includes('6195550189'));
   });
@@ -568,7 +590,7 @@ describe('mode 1: automatic follow-up when a call ends', () => {
     db.site = SITE;
     db.profile = messengerRow();
     assert.equal(await followUpAfterCall({ phoneE164: CALLER, siteId: SITE.id, language: 'Spanish' }), 'queued');
-    assert.match(String(held()[0].params[1]), /^📞 From your call with Shade:\n\n📍 Test Library/);
+    assert.match(String(held()[0].params[1]), /^📞 Here's the follow-up from your call with Shade\.\n\nHere's the cooling center we found for you:\n📍 Test Library/);
   });
 });
 
@@ -580,14 +602,15 @@ describe('mode 1: send_sms after a phone call', () => {
     db.profile = messengerRow({ linked_phone_hash: hashPhone(CALLER) });
     const result = await sendSms({ to: CALLER, site_id: SITE.id, language: 'en' });
     assert.equal(result.ok, true);
-    assert.match(result.note!, /arrive in Facebook Messenger the next time they send any message/);
+    assert.match(result.note!, /send any message to the Shadoes Facebook Page/);
+    assert.match(result.note!, /Do not call it a text message/);
     assert.equal(twilioSends().length, 0);
 
     const lookup = sqlCalls().find((sql) => /linked_phone_hash = \$1 and opted_out_at is null/.test(sql.query))!;
     assert.deepEqual(lookup.params, [hashPhone(CALLER)]);
     const held = sqlCalls().find((sql) => /insert into messenger_followups/.test(sql.query))!;
     assert.equal(held.params[0], hashMessengerId(PSID));
-    assert.match(String(held.params[1]), /^📞 From your call with Shade:\n\n📍 Test Library\n.*\n🗺️ Map: https:/s);
+    assert.match(String(held.params[1]), /^📞 Here's the follow-up from your call with Shade\.\n\nHere's the cooling center we found for you:\n📍 Test Library\n.*\n🗺️ Map: https:.*\n\n💬 Reply here anytime/s);
     assert.equal(held.params[2], SITE.id);
     // The caller's number is only ever hashed.
     assert.ok(!JSON.stringify(sqlCalls()).includes('6195550188'));
@@ -656,7 +679,7 @@ describe('mode 3: alerts from readings', () => {
     assert.equal(insert.params[0], 'high_heat_index');
     assert.equal(insert.params[1], null); // not an NWS alert
     assert.deepEqual(JSON.parse(String(insert.params[2])), ['92105']);
-    assert.match(twilioSends()[0].form!.get('Body')!, /^⚠️ Shade: it is dangerously hot in your area right now \(heat index 106°F\)\.\n\n.*\n📍 .*\n🗺️ Map: .*\n\n💬 Reply/s);
+    assert.match(twilioSends()[0].form!.get('Body')!, /^⚠️ Heads up from Shade: It is dangerously hot in your area right now \(heat index 106°F\)\.\n\nHere's the nearest cooling center that's open right now:\n📍 .*\n🗺️ Map: .*\n\n💧 Stay cool/s);
   });
 
   it('raises nothing when an alert of that kind went out recently, or readings are under the line', async () => {
@@ -678,6 +701,6 @@ describe('mode 3: alerts from readings', () => {
     const summary = await checkReadingAlerts();
     assert.equal(summary.alertsRaised, 1);
     assert.equal(sqlCalls().find((sql) => /insert into alerts/.test(sql.query))!.params[0], 'high_aqi');
-    assert.match(twilioSends()[0].form!.get('Body')!, /^⚠️ Shade: the air in your area is unhealthy right now \(AQI 165\)/);
+    assert.match(twilioSends()[0].form!.get('Body')!, /^⚠️ Heads up from Shade: The air in your area is unhealthy right now \(AQI 165\)/);
   });
 });

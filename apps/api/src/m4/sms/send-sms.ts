@@ -1,6 +1,6 @@
 import { getLatestReading, getMessengerProfileByPhone, getSite, insertCall, setOptedOut } from '../db';
 import { env } from '../env';
-import { queueFollowup } from '../messenger/followups';
+import { deliverNowIfWindowOpen, queueFollowup } from '../messenger/followups';
 import { hashPhone, maskPhone, toE164 } from '../phone';
 import { isOptedOut } from '../subscribers/consent';
 import { LANGUAGES } from '../types';
@@ -90,9 +90,15 @@ export async function sendText(input: SendTextInput): Promise<SendSmsOutput> {
 
 // What the voice agent tells the caller (SendSmsOutput.note). Instructions to the voice model, which speaks the
 // caller's language, so they stay in English.
+// Sent now: the caller messaged the Page in the last 24 hours, so Facebook let it go out straight away.
+const NOTE_SENT_TO_MESSENGER =
+  "Sent to the caller's Facebook Messenger just now. Tell them the address, today's hours and a map link are " +
+  'waiting in their Messenger from the Shadoes Page. Do not call it a text message. Offer to read the address out too.';
+// Held: they have not messaged the Page in 24 hours, and Facebook only lets the Page reply after they write.
 const NOTE_HELD_FOR_MESSENGER =
-  "Saved for the caller's Messenger. Tell them the address, hours and map link will arrive in Facebook Messenger " +
-  'the next time they send any message to the Shadoes Facebook Page. Offer to read the address out now too.';
+  "Saved for the caller's Facebook Messenger. Facebook only lets the Shadoes Page reply after they message it, so " +
+  'tell them: send any message to the Shadoes Facebook Page, and the address, hours and map link come right back. ' +
+  'Do not call it a text message. Offer to read the address out now too.';
 const NOTE_NO_MESSENGER =
   'Not sent: Shade cannot send text messages right now. Read the address out so the caller can write it down. Tell ' +
   'them that to get addresses on Facebook Messenger next time, they can message the Shadoes Facebook Page "JOIN", ' +
@@ -136,7 +142,9 @@ export async function sendSms(input: SendSmsInput): Promise<SendSmsOutput> {
   if (profile) {
     try {
       await queueFollowup({ profile, body: messengerBody, siteId, language });
-      return { ok: true, note: NOTE_HELD_FOR_MESSENGER };
+      // Out now when Facebook allows it; otherwise it waits for their next message to the Page.
+      const sentNow = await deliverNowIfWindowOpen(profile);
+      return { ok: true, note: sentNow ? NOTE_SENT_TO_MESSENGER : NOTE_HELD_FOR_MESSENGER };
     } catch (error) {
       console.warn(`[m4] send_sms to ${maskPhone(to)}: follow-up not saved (${reason(error)})`);
       return { ok: false, error: 'followup_failed', note: NOTE_NO_MESSENGER };
@@ -172,13 +180,21 @@ async function siteText(
   };
 }
 
-export type CallFollowupResult = 'queued' | 'already_queued' | 'no_site' | 'no_profile' | 'opted_out' | 'failed';
+export type CallFollowupResult =
+  | 'sent'
+  | 'queued'
+  | 'already_queued'
+  | 'no_site'
+  | 'no_profile'
+  | 'opted_out'
+  | 'failed';
 
 // Mode 1, automatic: called when a voice call ends (elevenlabs/post-call.ts). When the caller was given a site and
-// their number is linked to a Messenger profile (JOIN <zip> <phone>), the site details are held for that profile
-// without anyone having to ask for a text: linking Messenger is their opt-in to hearing from Shade there, and the
-// message only goes out after they next write to the Page. Callers without a linked profile get nothing. A site
-// already held for them in the last 2 hours (send_sms during the same call) is not held twice. Never throws.
+// their number is linked to a Messenger profile (JOIN <zip> <phone>), the site details go to that profile without
+// anyone having to ask for a text: linking Messenger is their opt-in to hearing from Shade there. 'sent' when they
+// messaged the Page in the last 24 hours, so it went out at once; 'queued' when it waits for their next message.
+// Callers without a linked profile get nothing. A site already handled for them in the last 2 hours (send_sms
+// during the same call) is not sent twice. Never throws.
 export async function followUpAfterCall(args: {
   phoneE164: string;
   siteId: number | null;
@@ -195,7 +211,9 @@ export async function followUpAfterCall(args: {
     if (!profile) return 'no_profile';
     const text = await siteText(args.siteId, language);
     if (!text) return 'no_site';
-    return (await queueFollowup({ profile, body: text.messengerBody, siteId: text.siteId, language })) ? 'queued' : 'already_queued';
+    const queued = await queueFollowup({ profile, body: text.messengerBody, siteId: text.siteId, language });
+    if (!queued) return 'already_queued';
+    return (await deliverNowIfWindowOpen(profile)) ? 'sent' : 'queued';
   } catch (error) {
     console.warn(`[m4] follow-up after a call from ${maskPhone(to)} not held (${reason(error)})`);
     return 'failed';

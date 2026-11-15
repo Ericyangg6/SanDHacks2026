@@ -4,13 +4,14 @@ import {
   insertCall,
   insertFollowup,
   insertMessage,
+  lastInboundAt,
   listPendingFollowups,
   markFollowupDelivered,
 } from '../db';
-import { followupIntro } from '../sms/templates';
+import { followupIntro, followupOutro } from '../sms/templates';
 import type { Language, MessengerContact } from '../types';
 import { messengerLogLabel } from './identity';
-import { sendMessengerReply } from './send';
+import { MESSENGER_WINDOW_HOURS, sendMessengerReply } from './send';
 
 // Mode 1: after a phone call. When the voice agent's send_sms asks to "text" a caller the site details and the
 // caller has a linked Messenger profile (JOIN <zip> <phone>), the details are held here and sent the next time
@@ -40,7 +41,7 @@ export async function queueFollowup(args: {
   if (args.siteId != null && (await hasRecentFollowup(args.profile.phone_hash, args.siteId, since))) return false;
   await insertFollowup({
     phoneHash: args.profile.phone_hash,
-    body: `${followupIntro(args.language)}\n\n${args.body}`,
+    body: `${followupIntro(args.language)}\n\n${args.body}\n\n${followupOutro(args.language)}`,
     siteId: args.siteId,
     expiresAt: new Date(Date.now() + FOLLOWUP_TTL_DAYS * 24 * 3600_000),
   });
@@ -88,6 +89,20 @@ export async function deliverFollowups(args: { contactHash: string; psid: string
     }
   }
   return sent;
+}
+
+// Sends what is held for this profile right away when Facebook allows it: the person messaged the Page in the last
+// MESSENGER_WINDOW_HOURS (their JOIN counts). Returns true when something went out now, false when it stays held
+// until they next write. Never throws; an unknown window counts as closed.
+export async function deliverNowIfWindowOpen(profile: MessengerContact): Promise<boolean> {
+  const last = await lastInboundAt(profile.phone_hash, 'messenger').catch(() => null);
+  if (!last || Date.now() - last.getTime() >= MESSENGER_WINDOW_HOURS * 3600_000) return false;
+  const sent = await deliverFollowups({
+    contactHash: profile.phone_hash,
+    psid: profile.messenger_psid,
+    pageId: profile.messenger_page_id,
+  });
+  return sent > 0;
 }
 
 // STOP: nothing held is sent after it.

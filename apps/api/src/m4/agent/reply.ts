@@ -43,7 +43,8 @@ function systemNote(subscriber: SubscriberRow | null, disclosed: boolean, channe
       'This conversation is on Facebook Messenger, not SMS. To get heat and smoke alerts here, the person sends JOIN and their zip code (for example JOIN 92105); STOP cancels them.',
       [
         'Formatting for Messenger: plain text with line breaks; Messenger shows no markdown. Keep the reply under about 500 characters.',
-        'Give a site as a block of short lines, in this order:',
+        'Sound warm and human. Before a site, write one short lead-in line, such as "Here\'s the nearest open spot:" or "Good news, there\'s a cooling center close by:". Never call a discovered site a cooling center in the lead-in.',
+        'Then give the site as a block of short lines, in this order:',
         '📍 Site name',
         'Street address, city',
         '🕒 Open until 9:30 PM · 0.2 mi away (whatever hours and distance the tool gave)',
