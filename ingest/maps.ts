@@ -20,7 +20,7 @@ const KEYWORDS = [
   "YMCA", "Boys & Girls Club", "transit center", "movie theater", "church hall community room",
 ];
 const JUNK_CATEGORY =
-  /air conditioning|heating|hvac|repair|contractor|plumb|appliance|store|\bshop\b|dealer|restaurant|insurance|attorney|real estate/i;
+  /air conditioning|heating|hvac|repair|contractor|plumb|appliance|store|(?<!coffee )(?<!tea )\bshop\b|dealer|restaurant|insurance|attorney|real estate/i;
 
 const DAYS: Record<string, string> = {
   Monday: "mon", Tuesday: "tue", Wednesday: "wed", Thursday: "thu", Friday: "fri", Saturday: "sat", Sunday: "sun",

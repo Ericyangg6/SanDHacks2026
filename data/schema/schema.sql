@@ -50,7 +50,8 @@ create table sites (
   external_key     text,                                         -- stable natural key (maps:/county:/web:), the upsert key for ingest
   pet_policy       text,
   official_name    text,                                         -- the official listing's name; name stays the short public name
-  ac_source        text                                          -- where has_ac comes from: official_program | site_page | reviews (null = unknown)
+  ac_source        text,                                         -- where has_ac comes from: official_program | site_page | reviews (null = unknown)
+  category         text                                          -- source category, e.g. 'Cafe', 'Public library' (existing databases: migrations/20261114c)
 );
 create unique index on sites (external_key);
 create unique index on sites (maps_place_id);

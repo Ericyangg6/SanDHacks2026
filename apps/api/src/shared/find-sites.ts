@@ -22,7 +22,7 @@ interface Row {
   address: string; zip: string | null; lat: number; lon: number; hours: SiteHours;
   hours_confirmed_on_source: boolean; has_ac: boolean | null; has_filtration: boolean | null; capacity_est: number | null;
   phone: string | null; last_verified_at: string;
-  access_level: string; verification: string; ac_source: string | null; has_fee: boolean | null;
+  access_level: string; verification: string; ac_source: string | null; has_fee: boolean | null; category: string | null;
 }
 
 // ---------------------------------------------------------------- catalog (Neon first, seed as the safety net)
@@ -72,6 +72,7 @@ function normalize(r: Record<string, unknown>): Row {
     verification: r.verification == null ? 'single_source' : String(r.verification),
     ac_source: r.ac_source == null ? null : String(r.ac_source),
     has_fee: r.has_fee == null ? null : Boolean(r.has_fee),
+    category: r.category == null ? null : String(r.category),
   };
 }
 
@@ -80,7 +81,7 @@ async function seedRows(): Promise<Row[]> {
   const extras = ((await readSeed('sites.extras.json')) ?? {}) as Record<string, Record<string, unknown>>;
   return (sites ?? []).map((s) => {
     const x = extras[String(s.id)] ?? {};
-    return normalize({ ...s, access_level: x.access_level, verification: x.verification, ac_source: x.ac_from, has_fee: x.has_fee });
+    return normalize({ ...s, access_level: x.access_level, verification: x.verification, ac_source: x.ac_from, has_fee: x.has_fee, category: x.category });
   });
 }
 
@@ -273,6 +274,8 @@ const clock = (min: number): string => { const x = min % 1440, h24 = Math.floor(
 // ---------------------------------------------------------------- the tool
 
 const NOT_ALLOWED = new Set(['students_only', 'members_only', 'residents_only', 'age_restricted']);
+// Cafes are free to sit in but staff may expect a purchase: allowed, ranked behind free public spaces, and worded honestly.
+const isCafe = (r: Row): boolean => /\b(cafe|café|coffee|espresso|tea house|bakery)\b/i.test(r.category ?? '');
 
 export async function findSites(input: FindSitesInput): Promise<FindSitesOutput> {
   const catalogReady = catalog(); // read the database while the caller's location is being resolved (voice tool budget is 10 s)
@@ -297,7 +300,7 @@ export async function findSites(input: FindSitesInput): Promise<FindSitesOutput>
     if (NOT_ALLOWED.has(r.access_level)) continue;                                       // students / members / residents / age-restricted
     if (r.has_fee === true) continue;                                                    // free public spaces only
     if (r.tier === 'discovered') {
-      if (r.kind === 'other' && r.has_ac !== true) continue;                             // parks, attractions: not known to be cool
+      if (r.kind === 'other' && r.has_ac !== true && !isCafe(r)) continue;               // parks, attractions: not known to be cool (cafes are allowed)
       if (/\b(museum|zoo|aquarium|gallery|theat(?:er|re)|cinema)\b/i.test(r.name)) continue; // usually paid admission
       const allDay = r.hours.weekly.length >= 5 && r.hours.weekly.every((i) => i.open === '00:00' && i.close >= '23:59');
       if (allDay && r.verification !== 'confirmed') continue;                            // Maps "open 24 hours" is almost always an outdoor place
@@ -310,7 +313,7 @@ export async function findSites(input: FindSitesInput): Promise<FindSitesOutput>
     if (!st.open) { if (st.nextOpenMin !== null) later.push({ r, miles, st }); continue; }
     if (st.closesMin! - lt.min < travel + 10) continue;                                  // would close before or just after arrival
     const trust = r.tier === 'discovered' ? 20 * (1 - (r.confidence ?? 0.5)) : 0;       // low-trust penalty (docs/PROJECT.md)
-    const score = travel + trust + (r.verification === 'conflict' ? 10 : 0) - (r.hours_confirmed_on_source ? 2 : 0);
+    const score = travel + trust + (r.verification === 'conflict' ? 10 : 0) - (r.hours_confirmed_on_source ? 2 : 0) + (isCafe(r) ? 8 : 0); // free public spaces first
     cands.push({ r, miles, travel, st, score, mode });
   }
   cands.sort((a, b) => a.score - b.score);
@@ -320,6 +323,7 @@ export async function findSites(input: FindSitesInput): Promise<FindSitesOutput>
   for (const c of cands) {                                                                // top 2, no duplicate places
     const key = c.r.address.toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 24);
     if (seen.has(key)) continue;
+    if (isCafe(c.r) && picked.some((p) => isCafe(p.r))) continue;                         // never offer two cafes
     seen.add(key); picked.push(c);
     if (picked.length === 2) break;
   }
@@ -345,9 +349,11 @@ export async function findSites(input: FindSitesInput): Promise<FindSitesOutput>
     const lead = i === 0 ? (loc.place && !here ? `From ${loc.place}, the closest option is` : 'The closest option is') : 'Another option is';
     let said: string;
     if (here && i === 0) {
-      said = `You're right at ${nm}, and it's ${until}.${r.has_ac ? ' It should be air conditioned.' : ''}`;
+      said = `You're right at ${nm}, and it's ${until}.${r.has_ac ? ' It should be air conditioned.' : ''}${isCafe(r) ? ' It is a café, so they may expect you to buy something.' : ''}`;
     } else if (r.tier === 'official') {
       said = `${lead} ${nm} at ${speakAddress(r.address)}. ${coolZone ? 'It is an official county Cool Zone' : 'It is an official city or county facility'}, ${until}.`;
+    } else if (isCafe(r)) {
+      said = `${lead} ${nm}, a café at ${speakAddress(r.address)}. They may expect you to buy something. It's not an official cooling center, but it should be ${until}. You may want to call ahead.`;
     } else {
       said = `${lead} ${nm} at ${speakAddress(r.address)}. It's not an official cooling center, but it should be ${r.has_ac ? 'air conditioned and ' : ''}${until}. You may want to call ahead.`;
     }

@@ -79,8 +79,8 @@ async function main() {
       `insert into sites (id, name, kind, tier, confidence, address, zip, lat, lon, hours, hours_confirmed_on_source,
          has_ac, has_filtration, capacity_est, phone, source_url, last_verified_at,
          access_level, access_notes, requires_id, has_fee, verification, conflicts, evidence, source_urls, maps_place_id,
-         external_key, pet_policy, official_name, ac_source)
-       values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30)
+         external_key, pet_policy, official_name, ac_source, category)
+       values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30,$31)
        on conflict (external_key) do update set
          name=excluded.name, kind=excluded.kind, tier=excluded.tier, confidence=excluded.confidence, address=excluded.address,
          zip=excluded.zip, lat=excluded.lat, lon=excluded.lon, hours=excluded.hours,
@@ -90,12 +90,12 @@ async function main() {
          requires_id=excluded.requires_id, has_fee=excluded.has_fee, verification=excluded.verification,
          conflicts=excluded.conflicts, evidence=excluded.evidence, source_urls=excluded.source_urls,
          maps_place_id=excluded.maps_place_id, pet_policy=excluded.pet_policy, official_name=excluded.official_name,
-         ac_source=excluded.ac_source`,
+         ac_source=excluded.ac_source, category=excluded.category`,
       [s.id, s.name, s.kind, s.tier, s.confidence, s.address, s.zip, s.lat, s.lon, JSON.stringify(s.hours), s.hours_confirmed_on_source,
        s.has_ac, s.has_filtration, s.capacity_est, s.phone, s.source_url, s.last_verified_at,
        x.access_level ?? "unknown", x.access_notes ?? null, x.requires_id ?? null, x.has_fee ?? null,
        VERIFICATION[x.verification] ?? "single_source", JSON.stringify(x.conflicts ?? []), x.evidence ?? null,
-       x.sources ?? [], placeId, x.external_key, x.pet_policy ?? null, x.official_name ?? null, x.ac_from ?? null],
+       x.sources ?? [], placeId, x.external_key, x.pet_policy ?? null, x.official_name ?? null, x.ac_from ?? null, x.category ?? null],
     );
   }
   await db.query(`select setval(pg_get_serial_sequence('sites','id'), (select coalesce(max(id),1) from sites))`);

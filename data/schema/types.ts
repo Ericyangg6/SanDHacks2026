@@ -64,6 +64,7 @@ export interface Site {
   pet_policy?: string | null;
   official_name?: string | null;
   ac_source?: 'official_program' | 'site_page' | 'reviews' | null;
+  category?: string | null;
 }
 
 export interface ZipGap {

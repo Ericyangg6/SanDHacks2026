@@ -125,6 +125,7 @@ async function main() {
         coords_from: s.tier === "official" ? "county_cool_zones_layer" : typeof s.lat === "number" ? "google_maps" : "census_geocoder",
         ac_from: s.ac_from ?? (typeof s.has_ac === "boolean" ? "site_page" : acFromReviews(sig) ? "reviews" : null),
         official_name: s.official_name ?? null,
+        category: s.category ?? null,
         pet_policy: s.pet_policy ?? null,
         review_signals: sig
           ? { scanned: sig.reviews_scanned, ac_positive: sig.ac_positive, ac_negative: sig.ac_negative,
