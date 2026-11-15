@@ -12,7 +12,7 @@ import { agent } from './agents/agent';
 import { startScheduleTool, stopScheduleTool } from './tools/schedule-tools';
 import { elevenLabsRoutes } from '../elevenlabs/routes';
 import { changesFeedRoute } from '../shared/changes-feed';
-import { alertWorkflow, m4ApiRoutes, textAgent } from '../m4';
+import { alertWorkflow, m4ApiRoutes, readingAlertWorkflow, textAgent } from '../m4';
 
 export const mastra = new Mastra({
   server: {
@@ -22,7 +22,7 @@ export const mastra = new Mastra({
     externals: ['@duckdb/node-bindings'],
   },
   agents: { agent, textAgent },
-  workflows: { alertWorkflow },
+  workflows: { alertWorkflow, readingAlertWorkflow },
   tools: { startScheduleTool, stopScheduleTool },
   storage: new MastraCompositeStore({
     id: 'composite-storage',

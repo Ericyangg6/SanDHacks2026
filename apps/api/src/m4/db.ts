@@ -307,6 +307,59 @@ export async function addTextsSent(alertId: number, count: number): Promise<void
   await query(`update alerts set texts_sent = texts_sent + $2::int where id = $1::int`, [alertId, count]);
 }
 
+// True when an alert of this kind covering the zip was raised at or after `since`. Keeps reading-based alerts to
+// one per zip and kind per cooldown.
+export async function hasRecentAlertForZip(kind: AlertKind, zip: string, since: Date): Promise<boolean> {
+  const rows = await query(
+    `select 1 from alerts where kind = $1::alert_kind and $2 = any(zips) and detected_at >= $3::timestamptz limit 1`,
+    [kind, zip, since.toISOString()],
+  );
+  return rows.length > 0;
+}
+
+// ---- messenger_followups (send_sms held for a caller's Messenger) ----
+
+export interface FollowupRow {
+  id: number;
+  phone_hash: string;
+  body: string;
+  site_id: number | null;
+}
+
+export async function insertFollowup(followup: {
+  phoneHash: string; // the Messenger profile's hash
+  body: string;
+  siteId: number | null;
+  expiresAt: Date;
+}): Promise<{ id: number }> {
+  const rows = await query<{ id: number }>(
+    `insert into messenger_followups (phone_hash, body, site_id, expires_at)
+     values ($1, $2, (select id from sites where id = $3::int), $4::timestamptz)
+     returning id`,
+    [followup.phoneHash, followup.body, followup.siteId, followup.expiresAt.toISOString()],
+  );
+  return rows[0];
+}
+
+// Not yet delivered and not expired, oldest first.
+export async function listPendingFollowups(phoneHash: string): Promise<FollowupRow[]> {
+  return query<FollowupRow>(
+    `select id, phone_hash, body, site_id from messenger_followups
+     where phone_hash = $1 and delivered_at is null and expires_at > now()
+     order by id`,
+    [phoneHash],
+  );
+}
+
+export async function markFollowupDelivered(id: number): Promise<void> {
+  await query(`update messenger_followups set delivered_at = now() where id = $1::int`, [id]);
+}
+
+// STOP: drops everything still waiting for this profile.
+export async function cancelFollowups(phoneHash: string): Promise<void> {
+  await query(`delete from messenger_followups where phone_hash = $1 and delivered_at is null`, [phoneHash]);
+}
+
 // ---- messages (text agent memory) ----
 
 export interface NewMessage {
@@ -423,4 +476,36 @@ export async function getLatestReading(zip: string): Promise<Reading | null> {
     [zip, READING_MAX_AGE_HOURS],
   );
   return rows[0] ?? null;
+}
+
+// Zips with at least one opted-in subscriber who can be reached, on any channel.
+export async function listActiveSubscriberZips(): Promise<string[]> {
+  const rows = await query<{ zip: string }>(
+    `select distinct zip from subscribers
+     where opted_out_at is null and (phone_e164 is not null or messenger_psid is not null)
+     order by zip`,
+  );
+  return rows.map((row) => row.zip);
+}
+
+export interface CurrentReading {
+  zip: string;
+  heat_index: number | null;
+  aqi: number | null;
+}
+
+// Per zip, the newest heat index and the newest AQI measured in the last READING_MAX_AGE_HOURS. Rows dated more
+// than an hour ahead are forecasts and are left out, so an alert says what it is like now.
+export async function currentReadings(zips: string[]): Promise<CurrentReading[]> {
+  if (zips.length === 0) return [];
+  const window = `readings."time" between now() - make_interval(hours => $2::int) and now() + interval '1 hour'`;
+  return query<CurrentReading>(
+    `select z.zip,
+       (select heat_index from readings where readings.zip = z.zip and heat_index is not null and ${window}
+        order by readings."time" desc limit 1) as heat_index,
+       (select aqi from readings where readings.zip = z.zip and aqi is not null and ${window}
+        order by readings."time" desc limit 1) as aqi
+     from unnest(${textArray('$1')}) as z(zip)`,
+    [JSON.stringify(zips), READING_MAX_AGE_HOURS],
+  );
 }

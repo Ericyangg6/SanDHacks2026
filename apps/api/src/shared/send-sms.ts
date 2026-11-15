@@ -1,8 +1,9 @@
-// STUB until M4 ships the real Twilio sender. Keep the signature; M4 replaces the body.
+// send_sms, owned by M4 (apps/api/src/m4/sms/send-sms.ts). Signature unchanged.
+// Shade cannot send SMS yet, so M4 holds the site details for the caller's linked Facebook Messenger profile and
+// sends them the next time they message the Page; the result's `note` says what to tell the caller.
 import type { SendSmsInput, SendSmsOutput } from '../../../../data/schema/types';
-import { maskPhone } from './phone';
+import { sendSms as m4SendSms } from '../m4/sms/send-sms';
 
 export async function sendSms(input: SendSmsInput): Promise<SendSmsOutput> {
-  console.log(`[send_sms stub] would text site ${input.site_id} (${input.language ?? 'en'}) to ${maskPhone(input.to)}`);
-  return { ok: true };
+  return m4SendSms(input);
 }

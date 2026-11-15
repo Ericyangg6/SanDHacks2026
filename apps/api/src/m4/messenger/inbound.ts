@@ -10,6 +10,7 @@ import {
 } from '../sms/templates';
 import { detectKeyword, optOutMessenger, subscribeMessenger, type KeywordMatch } from '../subscribers/consent';
 import type { CallOutcome, Language, SendSmsOutput } from '../types';
+import { deliverFollowups, dropFollowups } from './followups';
 import { hashMessengerId, messengerLogLabel, parseMessengerAddress } from './identity';
 import { parseJoinMessage } from './join';
 import { fetchMessengerName } from './profile';
@@ -67,6 +68,9 @@ export async function handleInboundMessenger(msg: InboundMessenger): Promise<Mes
   try {
     const contactHash = hashMessengerId(msg.psid);
     label = messengerLogLabel(contactHash);
+    // Anything held from a phone call goes out first, now that they have written (mode 1). STOP drops it instead.
+    if (match?.keyword === 'stop') await dropFollowups(contactHash);
+    else await deliverFollowups({ contactHash, psid: msg.psid, pageId: msg.pageId });
     reply = await answer(msg, contactHash, label, match);
   } catch (error) {
     console.error(`[m4] inbound Messenger message from ${label} failed (${reason(error)})`);

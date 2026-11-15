@@ -36,6 +36,35 @@ A Spanish keyword is answered in Spanish and makes Spanish the subscriber's lang
 Twilio sometimes delivers a message twice. A repeated `MessageSid` within 10 minutes gets the first reply again and
 is not handled twice. That memory lives in the server process, so a restart clears it.
 
+## Messenger modes
+
+The Messenger side of Shade does three things:
+
+| Mode | What happens | Where |
+| --- | --- | --- |
+| 1. After a phone call | The voice agent's `send_sms` holds the site details (address, hours, map link) for the caller's linked Messenger profile; they go out the next time that person messages the Page | `sms/send-sms.ts` (`sendSms`), `messenger/followups.ts` |
+| 2. Full agent | Any message that is not a keyword goes to the text agent: where are you, nearest open site, no car, Spanish, 911 and 211 | `messenger/inbound.ts`, `agent/reply.ts` |
+| 3. Heat and AQI alerts | NWS alerts, plus alerts from our own readings (heat index or AQI over a line), go to Messenger subscribers in the zip | `alerts/dispatch.ts`, `alerts/readings.ts` |
+
+**Mode 1 in detail.** A phone call does not open Facebook's 24-hour window, so nothing can be sent the moment the
+voice agent asks. `sendSms` looks the caller up by `hashPhone(e164)` in `subscribers.linked_phone_hash` (set by
+`JOIN <zip> <phone>` on Messenger). With a profile, the site text goes into `messenger_followups` (kept 7 days) and
+`sendSms` returns `{ ok: true, note }`; the next time they message the Page, `deliverFollowups` sends it first,
+then the normal reply. STOP drops what is held. Without a profile it returns `no_messenger_profile` and a `note`
+telling the voice agent to read the address out and explain how to link Messenger. Nothing goes out by SMS unless
+`M4_SMS_ENABLED=1` (carriers block the number's texts until A2P registration, while Twilio still reports them
+sent). `apps/api/src/shared/send-sms.ts`, which the ElevenLabs tool calls, forwards to this `sendSms`. The voice
+prompt (`agent/prompts/system.md`, M3's) should read out `note` instead of promising a text.
+
+**Mode 3 in detail.** `checkReadingAlerts` reads, for every zip with a subscriber, the newest reading from the last
+3 hours (forecast rows more than an hour ahead are left out) and raises a `high_heat_index` alert at heat index
+`M4_ALERT_HEAT_INDEX_F` (default 103°F, NWS's "danger" level) or a `high_aqi` alert at `M4_ALERT_AQI` (default
+101), at most one per zip and kind every 12 hours. The alert says the value ("dangerously hot ... heat index
+106°F") and goes through `dispatchAlert`, so Messenger's 24-hour window and the repeat guards apply. It runs from
+`POST /m4/alerts/check-readings` (same `Authorization: Bearer $M4_ALERT_SECRET` as the mock alert) or on a timer
+when `M4_READING_ALERT_CRON` is set (`readingAlertWorkflow`). As of 2026-11-14 M2's readings carry heat index
+for San Diego zips but no AQI, so AQI alerts wait on an AQI source.
+
 ## Facebook Messenger
 
 **Messenger is Shade's live channel** (see `AGENTS.md`): SMS waits on carrier registration and WhatsApp outbound is
@@ -310,6 +339,9 @@ M4_SMS_DRY_RUN=1 node src/m4/dev/run.mjs send-test
 | `PUBLIC_BASE_URL` | Public origin Twilio calls, needed for the signature check on every webhook (SMS, WhatsApp, Messenger) |
 | `M4_ALERT_SECRET` | Shared secret for `POST /m4/alerts/mock`. The route refuses everything while it is unset |
 | `FACEBOOK_PAGE_ACCESS_TOKEN` | Optional. Page access token for Shadoes, used only to read a Messenger subscriber's name from their Facebook profile at JOIN |
+| `M4_SMS_ENABLED` | Optional. `1` lets `send_sms` fall back to SMS for callers with no linked Messenger profile. Off until the number is carrier-registered |
+| `M4_ALERT_HEAT_INDEX_F`, `M4_ALERT_AQI` | Optional. Reading-alert lines, default 103 (°F) and 101 |
+| `M4_READING_ALERT_CRON` | Optional. Cron (Pacific time) for checking readings automatically, e.g. `*/15 * * * *`. Unset = on demand only |
 | `PHONE_SALT` | Salt for `phone_hash`. Must be the same value for M3 |
 | `NEON_DATABASE_URL` | Postgres connection string |
 | `NWS_USER_AGENT` | Contact string NWS asks for, e.g. `shade-sandhacks (you@example.com)` |

@@ -5,8 +5,10 @@ import assert from 'node:assert/strict';
 import { afterEach, beforeEach, describe, it } from 'node:test';
 import { Hono } from 'hono';
 import { dispatchAlert } from '../alerts/dispatch';
+import { checkReadingAlerts } from '../alerts/readings';
 import { m4ApiRoutes } from '../mastra/routes';
-import type { AlertRow, SubscriberRow } from '../types';
+import { sendSms } from '../sms/send-sms';
+import type { AlertRow, Site, SubscriberRow } from '../types';
 import { hashPhone } from '../phone';
 import { sendTwilioMessenger, twilioSignature, validateTwilioSignature } from '../sms/twilio';
 import { hashMessengerId, messengerLogLabel, parseMessengerAddress } from './identity';
@@ -68,7 +70,50 @@ const realFetch = globalThis.fetch;
 const realConsole = { log: console.log, info: console.info, warn: console.warn, error: console.error };
 
 // The fake database's answers, set per test.
-let db: { subscriber: SubscriberRow | null; active: SubscriberRow[]; lastInbound: string | null };
+let db: {
+  subscriber: SubscriberRow | null;
+  active: SubscriberRow[];
+  lastInbound: string | null;
+  followups: { id: number; phone_hash: string; body: string; site_id: number | null }[];
+  site: Site | null;
+  profile: SubscriberRow | null; // what getMessengerProfileByPhone returns
+  zips: string[];
+  readings: { zip: string; heat_index: number | null; aqi: number | null }[];
+  recentAlert: boolean;
+};
+
+// A made-up site, open every day, for send_sms to describe.
+const SITE: Site = {
+  id: 501,
+  name: 'Test Library',
+  kind: 'library',
+  tier: 'official',
+  confidence: null,
+  address: '100 Example St, San Diego, CA 92105',
+  zip: '92105',
+  lat: 32.74,
+  lon: -117.09,
+  hours: { weekly: [0, 1, 2, 3, 4, 5, 6].map((day) => ({ day, open: '00:00', close: '23:59' })) },
+  hours_confirmed_on_source: true,
+  has_ac: true,
+  has_filtration: null,
+  capacity_est: null,
+  phone: null,
+  source_url: 'https://example.test/library',
+  last_verified_at: '2026-11-14T00:00:00.000Z',
+};
+
+const MOCK_ALERT: AlertRow = {
+  id: 9,
+  kind: 'mock',
+  nws_id: null,
+  zips: ['92105'],
+  headline: null,
+  onset_at: null,
+  expires_at: null,
+  detected_at: '2026-11-14T00:00:00.000Z',
+  texts_sent: 0,
+};
 
 function messengerRow(overrides: Partial<SubscriberRow> = {}): SubscriberRow {
   return {
@@ -90,6 +135,8 @@ function messengerRow(overrides: Partial<SubscriberRow> = {}): SubscriberRow {
 }
 
 function answer(query: string, params: unknown[]): unknown[] {
+  // Before the active-subscribers pattern below, which this query would also match.
+  if (/select distinct zip from subscribers/.test(query)) return db.zips.map((zip) => ({ zip }));
   if (/insert into subscribers/.test(query)) {
     return [
       messengerRow({
@@ -103,6 +150,14 @@ function answer(query: string, params: unknown[]): unknown[] {
   if (/from subscribers where phone_hash/.test(query)) return db.subscriber ? [db.subscriber] : [];
   if (/from subscribers\s+where opted_out_at is null/.test(query)) return db.active;
   if (/max\(started_at\)/.test(query)) return [{ at: db.lastInbound }];
+  if (/from messenger_followups/.test(query)) return db.followups;
+  if (/from sites where id/.test(query)) return db.site ? [db.site] : [];
+  if (/linked_phone_hash = \$1 and opted_out_at is null/.test(query)) return db.profile ? [db.profile] : [];
+  if (/from unnest/.test(query)) return db.readings;
+  if (/from alerts where kind/.test(query)) return db.recentAlert ? [{ '?column?': 1 }] : [];
+  if (/insert into alerts/.test(query)) {
+    return [{ ...MOCK_ALERT, id: 11, kind: String(params[0]), nws_id: null, zips: JSON.parse(String(params[2])), headline: params[3] }];
+  }
   if (/select 1 from calls/.test(query)) return [];
   return [{ id: 1 }];
 }
@@ -110,7 +165,17 @@ function answer(query: string, params: unknown[]): unknown[] {
 beforeEach(() => {
   requests = [];
   logged = [];
-  db = { subscriber: null, active: [], lastInbound: null };
+  db = {
+    subscriber: null,
+    active: [],
+    lastInbound: null,
+    followups: [],
+    site: null,
+    profile: null,
+    zips: [],
+    readings: [],
+    recentAlert: false,
+  };
   twilioResponse = () => Response.json({ sid: 'SM00000000000000000000000000000001' }, { status: 201 });
   graphResponse = () => Response.json({ first_name: 'Ana', last_name: 'Ruiz', id: PSID });
   delete process.env.FACEBOOK_PAGE_ACCESS_TOKEN;
@@ -457,5 +522,102 @@ describe('dispatchAlert to Messenger subscribers', () => {
     assert.deepEqual(await dispatchAlert(alert), { textsSent: 0 });
     assert.equal(twilioSends().length, 0);
     assert.ok(logged.some((line) => /messenger_window_closed/.test(line)));
+  });
+});
+
+describe('mode 1: send_sms after a phone call', () => {
+  const CALLER = '+16195550188'; // made up
+
+  it("holds the site details for the caller's linked Messenger profile and sends nothing yet", async () => {
+    db.site = SITE;
+    db.profile = messengerRow({ linked_phone_hash: hashPhone(CALLER) });
+    const result = await sendSms({ to: CALLER, site_id: SITE.id, language: 'en' });
+    assert.equal(result.ok, true);
+    assert.match(result.note!, /arrive in Facebook Messenger the next time they send any message/);
+    assert.equal(twilioSends().length, 0);
+
+    const lookup = sqlCalls().find((sql) => /linked_phone_hash = \$1 and opted_out_at is null/.test(sql.query))!;
+    assert.deepEqual(lookup.params, [hashPhone(CALLER)]);
+    const held = sqlCalls().find((sql) => /insert into messenger_followups/.test(sql.query))!;
+    assert.equal(held.params[0], hashMessengerId(PSID));
+    assert.match(String(held.params[1]), /^From your call with Shade:\n.*Test Library/s);
+    assert.equal(held.params[2], SITE.id);
+    // The caller's number is only ever hashed.
+    assert.ok(!JSON.stringify(sqlCalls()).includes('6195550188'));
+    assert.ok(!logged.join('\n').includes('6195550188'));
+  });
+
+  it('sends nothing and explains how to link Messenger when the number has no profile', async () => {
+    db.site = SITE;
+    const result = await sendSms({ to: CALLER, site_id: SITE.id });
+    assert.deepEqual([result.ok, result.error], [false, 'no_messenger_profile']);
+    assert.match(result.note!, /JOIN/);
+    assert.equal(twilioSends().length, 0);
+    assert.ok(sqlCalls().every((sql) => !/insert into messenger_followups/.test(sql.query)));
+  });
+
+  it('still refuses a number that opted out', async () => {
+    db.site = SITE;
+    db.subscriber = messengerRow({ opted_out_at: '2026-11-14T00:00:00.000Z' });
+    db.profile = messengerRow();
+    const result = await sendSms({ to: CALLER, site_id: SITE.id });
+    assert.deepEqual(result, { ok: false, error: 'opted_out' });
+  });
+
+  it('delivers what was held first when they next message the Page, then answers', async () => {
+    db.followups = [{ id: 31, phone_hash: hashMessengerId(PSID), body: 'From your call with Shade:\nTest Library', site_id: 501 }];
+    const result = await handleInboundMessenger(parseMessengerWebhook(webhook('HELP', 'SMtest-followup'))!);
+    const sends = twilioSends();
+    assert.equal(sends.length, 2);
+    assert.equal(sends[0].form!.get('Body'), 'From your call with Shade:\nTest Library');
+    assert.equal(sends[0].form!.get('To'), `messenger:${PSID}`);
+    assert.equal(sends[1].form!.get('Body'), result.reply);
+    assert.ok(sqlCalls().some((sql) => /set delivered_at = now\(\)/.test(sql.query) && sql.params[0] === 31));
+    assert.ok(sqlCalls().some((sql) => /insert into messages/.test(sql.query) && sql.params[2] === 'From your call with Shade:\nTest Library'));
+  });
+
+  it('drops what was held on STOP instead of sending it', async () => {
+    db.followups = [{ id: 32, phone_hash: hashMessengerId(PSID), body: 'From your call with Shade:\nTest Library', site_id: 501 }];
+    await handleInboundMessenger(parseMessengerWebhook(webhook('STOP', 'SMtest-followup-stop'))!);
+    assert.equal(twilioSends().length, 1); // only the STOP confirmation
+    assert.ok(sqlCalls().some((sql) => /delete from messenger_followups/.test(sql.query)));
+  });
+});
+
+describe('mode 3: alerts from readings', () => {
+  it('raises a heat-index alert for a zip over the line and sends it to Messenger subscribers there', async () => {
+    db.zips = ['92105'];
+    db.readings = [{ zip: '92105', heat_index: 106, aqi: null }];
+    db.active = [messengerRow()];
+    db.lastInbound = new Date(Date.now() - 3600_000).toISOString();
+    assert.deepEqual(await checkReadingAlerts(), { zipsChecked: 1, alertsRaised: 1, textsSent: 1 });
+
+    const insert = sqlCalls().find((sql) => /insert into alerts/.test(sql.query))!;
+    assert.equal(insert.params[0], 'high_heat_index');
+    assert.equal(insert.params[1], null); // not an NWS alert
+    assert.deepEqual(JSON.parse(String(insert.params[2])), ['92105']);
+    assert.match(twilioSends()[0].form!.get('Body')!, /^Shade: it is dangerously hot in your area right now \(heat index 106°F\)/);
+  });
+
+  it('raises nothing when an alert of that kind went out recently, or readings are under the line', async () => {
+    db.zips = ['92105', '92113'];
+    db.readings = [
+      { zip: '92105', heat_index: 110, aqi: null },
+      { zip: '92113', heat_index: 85, aqi: 60 },
+    ];
+    db.recentAlert = true;
+    assert.deepEqual(await checkReadingAlerts(), { zipsChecked: 2, alertsRaised: 0, textsSent: 0 });
+    assert.ok(sqlCalls().every((sql) => !/insert into alerts/.test(sql.query)));
+  });
+
+  it('raises an AQI alert, worded for smoke', async () => {
+    db.zips = ['92105'];
+    db.readings = [{ zip: '92105', heat_index: null, aqi: 165 }];
+    db.active = [messengerRow()];
+    db.lastInbound = new Date(Date.now() - 3600_000).toISOString();
+    const summary = await checkReadingAlerts();
+    assert.equal(summary.alertsRaised, 1);
+    assert.equal(sqlCalls().find((sql) => /insert into alerts/.test(sql.query))!.params[0], 'high_aqi');
+    assert.match(twilioSends()[0].form!.get('Body')!, /^Shade: the air in your area is unhealthy right now \(AQI 165\)/);
   });
 });

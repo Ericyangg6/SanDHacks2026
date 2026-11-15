@@ -131,6 +131,27 @@ function alertOpening(alert: AlertRow, language: Language): string {
       language,
     );
   }
+  // Raised from our own readings: say what was measured. The headline carries the value ("Heat index 105°F in
+  // 92105 ...", "AQI 165 in 92105 ..."); only the number is taken from it.
+  if (alert.kind === 'high_heat_index' || alert.kind === 'high_aqi') {
+    const value = /\d+/.exec(alert.headline ?? '')?.[0];
+    if (alert.kind === 'high_heat_index') {
+      return pick(
+        {
+          en: `Shade: it is dangerously hot in your area right now${value ? ` (heat index ${value}°F)` : ''}.`,
+          es: `Shade: hace un calor peligroso en tu zona ahora${value ? ` (índice de calor ${value}°F)` : ''}.`,
+        },
+        language,
+      );
+    }
+    return pick(
+      {
+        en: `Shade: the air in your area is unhealthy right now${value ? ` (AQI ${value})` : ''}.`,
+        es: `Shade: el aire en tu zona no es saludable ahora${value ? ` (AQI ${value})` : ''}.`,
+      },
+      language,
+    );
+  }
   // alert.headline is English NWS text, so it is never pasted in: the name per kind is enough.
   const name = pick(ALERT_NAMES[alert.kind], language);
   // Spanish times end in "p.m.", which already closes the sentence.
@@ -163,7 +184,7 @@ function siteSourceLabel(site: Site): string | null {
 }
 
 function alertSiteLines(alert: AlertRow, site: SiteResult, language: Language): string[] {
-  const smoke = alert.kind === 'air_quality_alert';
+  const smoke = alert.kind === 'air_quality_alert' || alert.kind === 'high_aqi';
   const discovered = site.tier === 'discovered';
   const label = pick(
     smoke
@@ -392,4 +413,9 @@ export function messengerHelpMessage(language: Language): string {
     },
     language,
   );
+}
+
+// First line of a follow-up held after a phone call (messenger/followups.ts), above the site details.
+export function followupIntro(language: Language): string {
+  return pick({ en: 'From your call with Shade:', es: 'De tu llamada con Shade:' }, language);
 }
