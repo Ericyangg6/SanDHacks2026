@@ -86,7 +86,7 @@ const NEWER_SUBSCRIBER_FIELDS = {
 const ALERT_COLUMNS = `id, kind, nws_id, zips, headline, ${iso('onset_at')}, ${iso('expires_at')}, ${iso('detected_at')}, texts_sent`;
 const MESSAGE_COLUMNS = `id, phone_hash, role, body, ${iso('created_at')}`;
 const SITE_COLUMNS = `id, name, kind, tier, confidence, address, zip, lat, lon, hours, hours_confirmed_on_source,
-  has_ac, has_filtration, capacity_est, phone, source_url, ${iso('last_verified_at')}`;
+  has_ac, has_filtration, capacity_est, phone, source_url, ${iso('last_verified_at')}, evidence`;
 
 // ---- subscribers ----
 

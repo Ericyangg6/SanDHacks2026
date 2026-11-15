@@ -208,3 +208,17 @@ create table news_items (
   date_text  text,
   fetched_at timestamptz not null default now()
 );
+
+-- "What changed" feed (migrations/20261114d_m2_site_changes.sql)
+create table site_changes (
+  id          text primary key,
+  detected_at timestamptz not null,
+  kind        text not null check (kind in ('hours_changed', 'new_closure')),
+  url         text not null,
+  site_ids    int[] not null default '{}',
+  site_names  text[] not null default '{}',
+  summary     text not null,
+  before      jsonb not null default '[]',
+  after       jsonb not null default '[]'
+);
+create index on site_changes (detected_at desc);
