@@ -18,7 +18,7 @@ const nwsAlertSchema = z.object({
 // Timestamps are ISO strings, as AlertRow declares. A row carrying Date objects fails validation between steps.
 const alertRowSchema = z.object({
   id: z.number().int(),
-  kind: z.enum(['extreme_heat_warning', 'heat_advisory', 'air_quality_alert', 'mock']),
+  kind: z.enum(['extreme_heat_warning', 'heat_advisory', 'air_quality_alert', 'mock', 'high_heat_index', 'high_aqi']),
   nws_id: z.string().nullable(),
   zips: z.array(z.string()),
   headline: z.string().nullable(),

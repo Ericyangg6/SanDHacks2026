@@ -107,6 +107,8 @@ const ALERT_NAMES: Record<Exclude<AlertKind, 'mock'>, Copy> = {
   extreme_heat_warning: { en: 'Extreme Heat Warning', es: 'Advertencia de calor extremo' },
   heat_advisory: { en: 'Heat Advisory', es: 'Aviso de calor' },
   air_quality_alert: { en: 'Air Quality Alert', es: 'Alerta de calidad del aire' },
+  high_heat_index: { en: 'Dangerous heat', es: 'Calor peligroso' },
+  high_aqi: { en: 'Unhealthy air', es: 'Aire no saludable' },
 };
 
 // "Sun 8:00 PM" / "dom, 8:00 p. m.", in local time.
