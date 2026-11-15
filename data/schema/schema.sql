@@ -14,7 +14,10 @@ create type channel as enum ('voice', 'sms', 'messenger', 'whatsapp');
 create type call_outcome as enum (
   'site_given', 'sms_sent', 'no_site_found', 'escalated_911', 'abandoned', 'error'
 );
-create type alert_kind as enum ('extreme_heat_warning', 'heat_advisory', 'air_quality_alert', 'mock');
+-- high_heat_index / high_aqi: raised by M4 from our own readings crossing a threshold, not by NWS (nws_id null).
+create type alert_kind as enum (
+  'extreme_heat_warning', 'heat_advisory', 'air_quality_alert', 'mock', 'high_heat_index', 'high_aqi'
+);
 create type reading_source as enum ('airnow', 'nws', 'purpleair', 'mock');
 
 -- Written by: M2 (ingest). Read by: everyone.
@@ -143,6 +146,20 @@ create table messages (
   created_at  timestamptz not null default now()
 );
 create index on messages (phone_hash, created_at desc);
+
+-- Written by: M4. Site details a voice caller asked to have "texted" (send_sms), held for their linked Messenger
+-- profile until they next message the Page: Facebook only lets the Page write within 24 hours of their last
+-- message, and a phone call does not count. Delivered first thing on their next message, dropped on STOP.
+create table messenger_followups (
+  id           serial primary key,
+  phone_hash   text not null,               -- the Messenger profile's hash (subscribers.phone_hash)
+  body         text not null,
+  site_id      int references sites,
+  created_at   timestamptz not null default now(),
+  expires_at   timestamptz not null,
+  delivered_at timestamptz
+);
+create index on messenger_followups (phone_hash) where delivered_at is null;
 
 -- Written by: M2 (ingest). One row per fetch of a source page; a new content_hash means the page changed.
 create table source_page_versions (

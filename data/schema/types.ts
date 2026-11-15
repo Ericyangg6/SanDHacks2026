@@ -15,7 +15,9 @@ export type AlertChannel = 'sms' | 'whatsapp' | 'messenger';
 export type CallDirection = 'inbound' | 'outbound';
 export type CallOutcome =
   | 'site_given' | 'sms_sent' | 'no_site_found' | 'escalated_911' | 'abandoned' | 'error';
-export type AlertKind = 'extreme_heat_warning' | 'heat_advisory' | 'air_quality_alert' | 'mock';
+/** high_heat_index / high_aqi: raised by M4 from readings crossing a threshold (not NWS). */
+export type AlertKind =
+  | 'extreme_heat_warning' | 'heat_advisory' | 'air_quality_alert' | 'mock' | 'high_heat_index' | 'high_aqi';
 
 /** Times are 24h "HH:MM" in America/Los_Angeles. day: 0 = Sunday ... 6 = Saturday. */
 export interface HoursInterval { day: number; open: string; close: string }
@@ -143,4 +145,8 @@ export interface SendSmsInput {
   site_id: number;
   language?: Language;
 }
-export interface SendSmsOutput { ok: boolean; error?: string }
+/**
+ * note: what the voice agent should tell the caller about delivery, when it is not a plain text. M4 sets it when the
+ * site details are held for the caller's Messenger, or when they have no linked Messenger profile.
+ */
+export interface SendSmsOutput { ok: boolean; error?: string; note?: string }
