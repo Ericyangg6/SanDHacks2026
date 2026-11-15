@@ -1,9 +1,9 @@
-// npx tsx --env-file=../../.env src/requests/requests.check.ts
+// npx tsx --env-file=../../.env checks/requests.check.ts  (outside src/ so the Mastra deploy skips it)
 // The database part writes and deletes one test request, so it runs only with REQUESTS_CHECK_DB=1.
 import assert from 'node:assert/strict';
-import { db } from '../shared/db';
-import { answerNeighbor, blastMessage, parseYes } from './neighbors';
-import { blastArea, handleCheckStatus, handleRequestHelp, INBOX_COLUMNS, listOpenRequests, requestHelpBody, sayThis } from './requests';
+import { db } from '../src/shared/db';
+import { answerNeighbor, blastMessage, parseYes } from '../src/requests/neighbors';
+import { blastArea, handleCheckStatus, handleRequestHelp, INBOX_COLUMNS, listOpenRequests, requestHelpBody, sayThis } from '../src/requests/requests';
 
 // The caller's words and a location are required; a bad needs list is dropped, not fatal.
 assert.equal(requestHelpBody.safeParse({ said: ' ', location: 'El Cajon' }).success, false);

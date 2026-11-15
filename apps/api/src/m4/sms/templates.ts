@@ -96,7 +96,42 @@ function mapLine(url: string, language: Language): string {
 }
 
 // The Messenger layout of siteMessage.
-function messengerSiteMessage(site: Site, reading: Reading | null, language: Language, now: Date): string {
+// Group size and assistance from the voice intake (send_sms). The group line appears when the size is known; the
+// assistance line only when someone needs assistance, never as "no assistance needed".
+export interface PartyInfo {
+  size?: number;
+  needsAssistance?: boolean;
+  details?: string;
+}
+
+function partyLines(party: PartyInfo | undefined, language: Language): string[] {
+  if (!party) return [];
+  const lines: string[] = [];
+  if (party.size && party.size > 0) {
+    const n = party.size;
+    lines.push(
+      pick(
+        { en: `👥 Group: ${n} ${n === 1 ? 'person' : 'people'}`, es: `👥 Grupo: ${n} ${n === 1 ? 'persona' : 'personas'}` },
+        language,
+      ),
+    );
+  }
+  if (party.needsAssistance) {
+    const details = party.details?.trim();
+    lines.push(
+      pick(
+        {
+          en: details ? `🦽 Needs assistance: ${details}` : '🦽 Needs assistance',
+          es: details ? `🦽 Necesita ayuda: ${details}` : '🦽 Necesita ayuda',
+        },
+        language,
+      ),
+    );
+  }
+  return lines;
+}
+
+function messengerSiteMessage(site: Site, reading: Reading | null, language: Language, now: Date, party?: PartyInfo): string {
   // A short lead before the details. A discovered site is never called a cooling center; its call-ahead line follows.
   const lead = pick(
     site.tier === 'discovered'
@@ -107,6 +142,7 @@ function messengerSiteMessage(site: Site, reading: Reading | null, language: Lan
   const lines = [lead, `📍 ${site.name}`, site.address, `🕒 ${hoursLine(site.hours, now, language)}`];
   const aqi = aqiLine(reading, language);
   if (aqi) lines.push(`🌫️ ${aqi}`);
+  lines.push(...partyLines(party, language));
   if (site.tier === 'discovered') {
     const phone = site.phone ? `: ${site.phone}` : '';
     lines.push(
@@ -133,13 +169,16 @@ export function siteMessage(args: {
   language: Language;
   now?: Date;
   style?: MessageStyle;
+  party?: PartyInfo;
 }): string {
   const { site, language } = args;
-  if (args.style === 'messenger') return messengerSiteMessage(site, args.reading, language, args.now ?? new Date());
+  if (args.style === 'messenger') return messengerSiteMessage(site, args.reading, language, args.now ?? new Date(), args.party);
   const lines = [`Shade: ${site.name}`, site.address, hoursLine(site.hours, args.now ?? new Date(), language)];
 
   const aqi = aqiLine(args.reading, language);
   if (aqi) lines.push(aqi);
+  // Plain text: drop the emoji the Messenger style uses.
+  lines.push(...partyLines(args.party, language).map((l) => l.replace(/^\S+\s/, '')));
 
   if (site.tier === 'discovered') {
     const phone = site.phone ? `: ${site.phone}` : '';

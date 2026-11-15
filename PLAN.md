@@ -51,7 +51,7 @@ Product context: `PRODUCT.md`. Architecture: `docs/PROJECT.md`.
 - [ ] The dashboard Help requests panel shows live rows.
 **Verification:**
 - `cd apps/api && npm run typecheck`
-- `cd apps/api && npx tsx --env-file=../../.env src/requests/requests.check.ts` (add `REQUESTS_CHECK_DB=1` for the database part)
+- `cd apps/api && npx tsx --env-file=../../.env checks/requests.check.ts` (add `REQUESTS_CHECK_DB=1` for the database part)
 - manual: `npm run el:simulate -- pickup`; the request appears in the dashboard panel within one poll.
 
 ### T3: Neighbor blast and the first YES
@@ -65,7 +65,7 @@ Product context: `PRODUCT.md`. Architecture: `docs/PROJECT.md`.
 - [x] A bare "yes" still goes to the text agent.
 - [x] The winning YES sends the caller a Messenger follow-up, held until they write if their window is closed.
 **Verification:**
-- `cd apps/api && REQUESTS_CHECK_DB=1 npx tsx --env-file=../../.env src/requests/requests.check.ts`
+- `cd apps/api && REQUESTS_CHECK_DB=1 npx tsx --env-file=../../.env checks/requests.check.ts`
 - `cd apps/api && npx tsx --test src/m4/messenger/messenger.test.ts src/m4/whatsapp.test.ts`
 - manual: phone B sends `JOIN 92105`; phone A sends `JOIN 92105 <phone A number>`, then calls from phone A and asks for help; phone B gets the blast, replies `YES <id>`, and gets the location; phone A's Messenger gets the follow-up.
 
@@ -79,7 +79,7 @@ Product context: `PRODUCT.md`. Architecture: `docs/PROJECT.md`.
 - [ ] A Gemini error leaves the agent's `needs` in place and the request visible.
 **Verification:**
 - `cd apps/api && npm run typecheck`
-- `cd apps/api && npx tsx src/requests/extract.check.ts` (fixture quotes, asserts no invented facts)
+- `cd apps/api && npx tsx checks/extract.check.ts` (fixture quotes, asserts no invented facts)
 
 ### T5: Hold and the caller hears the truth
 **Status:** in-progress (prompt and `check_request_status` written; needs `npm run el:sync` and a live call)
