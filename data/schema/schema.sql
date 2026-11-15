@@ -14,7 +14,10 @@ create type channel as enum ('voice', 'sms', 'messenger', 'whatsapp');
 create type call_outcome as enum (
   'site_given', 'sms_sent', 'no_site_found', 'escalated_911', 'abandoned', 'error'
 );
-create type alert_kind as enum ('extreme_heat_warning', 'heat_advisory', 'air_quality_alert', 'mock');
+-- high_heat_index / high_aqi: raised by M4 from our own readings crossing a threshold, not by NWS (nws_id null).
+create type alert_kind as enum (
+  'extreme_heat_warning', 'heat_advisory', 'air_quality_alert', 'mock', 'high_heat_index', 'high_aqi'
+);
 create type reading_source as enum ('airnow', 'nws', 'purpleair', 'mock');
 
 -- Written by: M2 (ingest). Read by: everyone.
@@ -74,8 +77,14 @@ create table subscribers (
   -- Messenger subscribers only: the page-scoped id and the Page it wrote to, so an alert can be sent. Like
   -- phone_e164, set on opt-in and null after STOP. M4 only; never logged.
   messenger_psid    text,
-  messenger_page_id text
-  -- Existing databases:
+  messenger_page_id text,
+  -- Messenger profiles: the phone number the person gave with JOIN <zip> <phone>, as sha256(salt + e164) only (the
+  -- raw number is not stored), so their Messenger can be found from a phone number. One profile per number.
+  linked_phone_hash text,
+  -- The name on their Facebook profile, read at JOIN when a Page token is set; null otherwise. M4 only; never
+  -- logged. Cleared on STOP.
+  display_name      text
+  -- Existing databases: data/schema/migrations/20261114d_m4_messenger_phone_link.sql, and:
   --   alter table subscribers add column if not exists alert_channel text;
   --   alter table subscribers drop constraint if exists subscribers_alert_channel_check;
   --   alter table subscribers add constraint subscribers_alert_channel_check
@@ -84,6 +93,7 @@ create table subscribers (
   --   alter table subscribers add column if not exists messenger_page_id text;
 );
 create index on subscribers (zip) where opted_out_at is null;
+create index on subscribers (linked_phone_hash) where linked_phone_hash is not null;
 
 -- Written by: M3 (inbound voice), M4 (outbound + sms). Read by: M1, ranking.
 create table calls (
@@ -136,6 +146,20 @@ create table messages (
   created_at  timestamptz not null default now()
 );
 create index on messages (phone_hash, created_at desc);
+
+-- Written by: M4. Site details a voice caller asked to have "texted" (send_sms), held for their linked Messenger
+-- profile until they next message the Page: Facebook only lets the Page write within 24 hours of their last
+-- message, and a phone call does not count. Delivered first thing on their next message, dropped on STOP.
+create table messenger_followups (
+  id           serial primary key,
+  phone_hash   text not null,               -- the Messenger profile's hash (subscribers.phone_hash)
+  body         text not null,
+  site_id      int references sites,
+  created_at   timestamptz not null default now(),
+  expires_at   timestamptz not null,
+  delivered_at timestamptz
+);
+create index on messenger_followups (phone_hash) where delivered_at is null;
 
 -- Written by: M2 (ingest). One row per fetch of a source page; a new content_hash means the page changed.
 create table source_page_versions (
@@ -234,3 +258,17 @@ create table call_events (
 );
 create index on call_events (conversation_id, at);
 create unique index on call_events (conversation_id) where kind = 'call_started';
+
+-- "What changed" feed (migrations/20261114d_m2_site_changes.sql)
+create table site_changes (
+  id          text primary key,
+  detected_at timestamptz not null,
+  kind        text not null check (kind in ('hours_changed', 'new_closure')),
+  url         text not null,
+  site_ids    int[] not null default '{}',
+  site_names  text[] not null default '{}',
+  summary     text not null,
+  before      jsonb not null default '[]',
+  after       jsonb not null default '[]'
+);
+create index on site_changes (detected_at desc);

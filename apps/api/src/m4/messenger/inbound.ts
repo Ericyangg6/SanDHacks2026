@@ -4,12 +4,16 @@ import {
   messengerHelpMessage,
   messengerJoinUsage,
   messengerOptInConfirmation,
+  messengerPhoneInvalid,
   messengerStopConfirmation,
   replyUnavailable,
 } from '../sms/templates';
 import { detectKeyword, optOutMessenger, subscribeMessenger, type KeywordMatch } from '../subscribers/consent';
 import type { CallOutcome, Language, SendSmsOutput } from '../types';
+import { deliverFollowups, dropFollowups } from './followups';
 import { hashMessengerId, messengerLogLabel, parseMessengerAddress } from './identity';
+import { parseJoinMessage } from './join';
+import { fetchMessengerName } from './profile';
 import { sendMessengerReply } from './send';
 
 export interface InboundMessenger {
@@ -64,6 +68,9 @@ export async function handleInboundMessenger(msg: InboundMessenger): Promise<Mes
   try {
     const contactHash = hashMessengerId(msg.psid);
     label = messengerLogLabel(contactHash);
+    // Anything held from a phone call goes out first, now that they have written (mode 1). STOP drops it instead.
+    if (match?.keyword === 'stop') await dropFollowups(contactHash);
+    else await deliverFollowups({ contactHash, psid: msg.psid, pageId: msg.pageId });
     reply = await answer(msg, contactHash, label, match);
   } catch (error) {
     console.error(`[m4] inbound Messenger message from ${label} failed (${reason(error)})`);
@@ -98,8 +105,13 @@ async function answer(
 
     case 'start':
     case 'join': {
-      const typedZip = match.keyword === 'join' ? /\b\d{5}\b/.exec(msg.body)?.[0] : undefined;
-      const newZip = typedZip ?? subscriber?.zip;
+      // JOIN <zip> [phone]. START re-subscribes with what is on file.
+      const request = match.keyword === 'join' ? parseJoinMessage(msg.body) : null;
+      if (request?.phoneInvalid) {
+        reply = messengerPhoneInvalid(language);
+        break;
+      }
+      const newZip = request?.zip ?? subscriber?.zip;
       if (!newZip) {
         reply = messengerJoinUsage(language);
         break;
@@ -110,10 +122,16 @@ async function answer(
         pageId: msg.pageId,
         zip: newZip,
         language: match.language === 'es' ? 'es' : undefined,
+        phoneE164: request?.phoneE164,
+        // From their Facebook profile, not typed. Null keeps the name on file.
+        name: await fetchMessengerName(msg.psid),
       });
       language = row.language;
       zip = row.zip;
-      reply = messengerOptInConfirmation(language, row.zip);
+      reply = messengerOptInConfirmation(language, row.zip, {
+        phoneLast4: request?.phoneE164?.slice(-4),
+        name: row.display_name,
+      });
       break;
     }
 

@@ -15,7 +15,9 @@ export type AlertChannel = 'sms' | 'whatsapp' | 'messenger';
 export type CallDirection = 'inbound' | 'outbound';
 export type CallOutcome =
   | 'site_given' | 'sms_sent' | 'no_site_found' | 'escalated_911' | 'abandoned' | 'error';
-export type AlertKind = 'extreme_heat_warning' | 'heat_advisory' | 'air_quality_alert' | 'mock';
+/** high_heat_index / high_aqi: raised by M4 from readings crossing a threshold (not NWS). */
+export type AlertKind =
+  | 'extreme_heat_warning' | 'heat_advisory' | 'air_quality_alert' | 'mock' | 'high_heat_index' | 'high_aqi';
 
 /** Times are 24h "HH:MM" in America/Los_Angeles. day: 0 = Sunday ... 6 = Saturday. */
 export interface HoursInterval { day: number; open: string; close: string }
@@ -118,6 +120,12 @@ export interface SiteResult {
   call_ahead: boolean;            // true for discovered sites
   map_url: string;
   spoken_summary: string;         // ready-to-read sentence honoring tier honesty rules
+  // Evidence the caller can be shown (SMS / Messenger / dashboard). All optional.
+  evidence?: string | null;       // verbatim quote from the source page behind the hours
+  source_url?: string | null;     // the page the hours came from
+  source_label?: string | null;   // human name for the source, e.g. "the county's Cool Zone list"
+  hours_verified_at?: string | null; // ISO: live check time if we fetched the page just now, else the last crawl
+  live_checked?: boolean;         // true when Bright Data fetched the hours page during this call
 }
 
 /** How precisely find_sites placed the caller. */
@@ -137,7 +145,11 @@ export interface SendSmsInput {
   site_id: number;
   language?: Language;
 }
-export interface SendSmsOutput { ok: boolean; error?: string }
+/**
+ * note: what the voice agent should tell the caller about delivery, when it is not a plain text. M4 sets it when the
+ * site details are held for the caller's Messenger, or when they have no linked Messenger profile.
+ */
+export interface SendSmsOutput { ok: boolean; error?: string; note?: string }
 
 // ---- Help requests (M3) ----
 

@@ -69,7 +69,8 @@ async function shouldText(subscriber: SubscriberRow, alert: AlertRow, since: Dat
 
 // The nearest open site for this subscriber, or null. M2 owns the ranking: the result is never re-sorted here.
 async function nearestSite(subscriber: SubscriberRow, alert: AlertRow): Promise<SiteResult | null> {
-  const needs = alert.kind === 'air_quality_alert' ? { ...subscriber.needs, needs_clean_air: true } : subscriber.needs;
+  const smoke = alert.kind === 'air_quality_alert' || alert.kind === 'high_aqi';
+  const needs = smoke ? { ...subscriber.needs, needs_clean_air: true } : subscriber.needs;
   const { sites } = await findSites({ location: subscriber.zip, needs, language: subscriber.language });
   return sites[0] ?? null;
 }
@@ -127,7 +128,7 @@ export async function dispatchAlert(alert: AlertRow): Promise<{ textsSent: numbe
       return null;
     });
 
-    const body = alertMessage({ alert, site, language: subscriber.language });
+    const body = alertMessage({ alert, site, language: subscriber.language, style: messenger ? 'messenger' : 'plain' });
     let result: SendSmsOutput;
     if (messenger) {
       // Writes the calls row with alert_id, which is the row both guards read.

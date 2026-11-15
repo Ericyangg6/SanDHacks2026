@@ -40,6 +40,11 @@ const siteResultSchema = z.object({
   call_ahead: z.boolean().describe('True for discovered sites: tell the person to call ahead.'),
   map_url: z.string(),
   spoken_summary: z.string().describe('Ready-to-use sentence that already follows the tier honesty rules.'),
+  evidence: z.string().nullable().optional().describe('Exact quote from the source page the hours came from.'),
+  source_url: z.string().nullable().optional(),
+  source_label: z.string().nullable().optional().describe('Where the hours came from, e.g. "the county\'s Cool Zone list".'),
+  hours_verified_at: z.string().nullable().optional().describe('ISO time the hours were last checked against the source.'),
+  live_checked: z.boolean().optional().describe('True when the source page was fetched live during this lookup.'),
 });
 
 const findSitesOutputSchema = z.object({

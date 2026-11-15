@@ -1,0 +1,34 @@
+name: daily-recrawl
+# Re-fetches every site's own page through Bright Data and publishes what changed (data/seed/changes_feed.json + Neon site_changes).
+on:
+  schedule: [{ cron: "0 13 * * *" }]   # 06:00 Pacific, before the afternoon heat
+  workflow_dispatch: {}
+permissions: { contents: write }
+jobs:
+  recrawl:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: npm ci
+        working-directory: ingest
+      # history.jsonl and snapshots are git-ignored, so the previous run's baseline travels through the Actions cache
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ingest/data/history.jsonl
+            ingest/data/snapshots
+          key: recrawl-baseline-${{ github.run_id }}
+          restore-keys: recrawl-baseline-
+      - run: node ingest/daily-recrawl.ts --push
+        env:
+          BRIGHTDATA_API_TOKEN: ${{ secrets.BRIGHTDATA_API_TOKEN }}
+          BRIGHTDATA_UNLOCKER_ZONE: ${{ secrets.BRIGHTDATA_UNLOCKER_ZONE }}
+          CONTEXT_DEV_API_KEY: ${{ secrets.CONTEXT_DEV_API_KEY }}
+          NEON_DATABASE_URL_UNPOOLED: ${{ secrets.NEON_DATABASE_URL_UNPOOLED }}
+      - name: Commit the feed
+        run: |
+          git config user.name "shade-recrawl"; git config user.email "recrawl@users.noreply.github.com"
+          git add data/seed/changes_feed.json
+          git diff --cached --quiet || git commit -m "Daily re-crawl: update changes feed" && git push

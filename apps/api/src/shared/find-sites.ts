@@ -10,9 +10,11 @@
 import type { FindSitesInput, FindSitesOutput, SiteHours, SiteResult } from '../../../../data/schema/types';
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
+import { liveCheckMany, type LiveCheck } from './live-check';
 
 const TZ = 'America/Los_Angeles';
-const MAX_AGE_H = Number(process.env.SITE_MAX_AGE_HOURS ?? 24);
+// 30 days by default so the demo never goes silent on stale data; the daily re-crawl keeps hours fresh. Override with SITE_MAX_AGE_HOURS.
+const MAX_AGE_H = Number(process.env.SITE_MAX_AGE_HOURS ?? 720);
 const DB_URL = (process.env.SITES_DATABASE_URL ?? process.env.NEON_DATABASE_URL ?? '').replace(/^"|"$/g, '');
 const CATALOG_TTL_MS = 60_000;
 
@@ -23,6 +25,7 @@ interface Row {
   hours_confirmed_on_source: boolean; has_ac: boolean | null; has_filtration: boolean | null; capacity_est: number | null;
   phone: string | null; last_verified_at: string;
   access_level: string; verification: string; ac_source: string | null; has_fee: boolean | null; category: string | null;
+  source_url: string | null; evidence: string | null;
 }
 
 // ---------------------------------------------------------------- catalog (Neon first, seed as the safety net)
@@ -73,6 +76,8 @@ function normalize(r: Record<string, unknown>): Row {
     ac_source: r.ac_source == null ? null : String(r.ac_source),
     has_fee: r.has_fee == null ? null : Boolean(r.has_fee),
     category: r.category == null ? null : String(r.category),
+    source_url: r.source_url == null ? null : String(r.source_url),
+    evidence: r.evidence == null ? null : String(r.evidence),
   };
 }
 
@@ -81,7 +86,7 @@ async function seedRows(): Promise<Row[]> {
   const extras = ((await readSeed('sites.extras.json')) ?? {}) as Record<string, Record<string, unknown>>;
   return (sites ?? []).map((s) => {
     const x = extras[String(s.id)] ?? {};
-    return normalize({ ...s, access_level: x.access_level, verification: x.verification, ac_source: x.ac_from, has_fee: x.has_fee, category: x.category });
+    return normalize({ ...s, access_level: x.access_level, verification: x.verification, ac_source: x.ac_from, has_fee: x.has_fee, category: x.category, evidence: x.evidence });
   });
 }
 
@@ -320,13 +325,35 @@ function speakTime(min: number, relativeTo: number): string {
 }
 const clock = (min: number): string => { const x = min % 1440, h24 = Math.floor(x / 60), m = x % 60; return `${h24 % 12 || 12}:${String(m).padStart(2, '0')} ${h24 >= 12 ? 'PM' : 'AM'}`; };
 
+// ---------------------------------------------------------------- evidence a caller can hear or read
+
+const isCheckable = (u: string | null): boolean => !!u && /^https?:/.test(u) && !/google\.[a-z.]+\/maps|maps\.app\.goo/i.test(u);
+const shortDate = (iso: string): string => new Intl.DateTimeFormat('en-US', { timeZone: TZ, month: 'short', day: 'numeric' }).format(new Date(iso));
+// "the county's Cool Zone list" for the official program, otherwise the site's own host ("sdcl.org").
+function sourceLabel(r: Row): string | null {
+  if (r.ac_source === 'official_program') return "the county's Cool Zone list";
+  if (!isCheckable(r.source_url)) return null;
+  try { return `the page at ${new URL(r.source_url!).hostname.replace(/^www\./, '')}`; } catch { return null; }
+}
+
 // ---------------------------------------------------------------- the tool
 
 const NOT_ALLOWED = new Set(['students_only', 'members_only', 'residents_only', 'age_restricted']);
 // Cafes are free to sit in but staff may expect a purchase: allowed, ranked behind free public spaces, and worded honestly.
 const isCafe = (r: Row): boolean => /\b(cafe|café|coffee|espresso|tea house|bakery)\b/i.test(r.category ?? '');
 
+// Overall deadline so a slow geocoder or database never leaves a caller in silence (the voice tool budget is 10 s).
+// On timeout the caller gets a spoken fallback that asks for a ZIP code, which resolves instantly from the gazetteer.
+const DEADLINE_MS = Number(process.env.FIND_SITES_DEADLINE_MS ?? 7000);
 export async function findSites(input: FindSitesInput): Promise<FindSitesOutput> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const slow = new Promise<FindSitesOutput>((done) => {
+    timer = setTimeout(() => done({ sites: [], resolved_zip: null, fallback_message: "I'm taking too long to look that up. Could you give me your zip code or the nearest cross streets? If it's an emergency, call 9 1 1, and 2 1 1 can help find a cooling space." }), DEADLINE_MS);
+  });
+  try { return await Promise.race([findSitesCore(input), slow]); } finally { clearTimeout(timer); }
+}
+
+async function findSitesCore(input: FindSitesInput): Promise<FindSitesOutput> {
   const catalogReady = catalog(); // read the database while the caller's location is being resolved (voice tool budget is 10 s)
   const loc = await resolveLocation(input);
   if (!loc) return { sites: [], resolved_zip: null, fallback_message: "I couldn't tell where you are. Could you give me your zip code or the nearest cross streets?" };
@@ -366,6 +393,18 @@ export async function findSites(input: FindSitesInput): Promise<FindSitesOutput>
     cands.push({ r, miles, travel, st, score, mode });
   }
   cands.sort((a, b) => a.score - b.score);
+
+  // Live path: Bright Data fetches the hours page of the best candidates we have NOT confirmed on their own page, under one
+  // hard cap (LIVE_CHECK_MS, default 3 s). A same-day closure drops the site; a timeout or block keeps the stored data.
+  const liveByUrl = new Map<string, LiveCheck>();
+  if (process.env.LIVE_CHECK !== '0') {
+    const toCheck = cands.slice(0, 5).filter((c) => !c.r.hours_confirmed_on_source && isCheckable(c.r.source_url));
+    for (const [u, v] of await liveCheckMany(toCheck.map((c) => c.r.source_url!), lt.date)) liveByUrl.set(u, v);
+    for (let i = cands.length - 1; i >= 0; i--) {
+      const v = cands[i].r.source_url ? liveByUrl.get(cands[i].r.source_url!) : undefined;
+      if (v?.status === 'closed') cands.splice(i, 1);
+    }
+  }
 
   const picked: typeof cands = [];
   const seen = new Set<string>();
@@ -410,6 +449,11 @@ export async function findSites(input: FindSitesInput): Promise<FindSitesOutput>
     if (st.note) said += ` Note: it is ${st.note}.`;
     if (c.mode === 'transit') said += ' If you do not have a ride, 2 1 1 can help arrange free transportation to a cooling space.';
     const q = encodeURIComponent(`${r.name} ${r.address}`);
+    const live = r.source_url ? liveByUrl.get(r.source_url) : undefined;
+    const liveOk = live?.status === 'open_ok';
+    const verifiedAt = liveOk ? live!.checked_at : r.last_verified_at;
+    const label = sourceLabel(r);
+    if (label) said += liveOk ? ` I just checked ${label} and it shows no closure notice. Hours were last verified ${shortDate(r.last_verified_at)}.` : ` Hours verified ${shortDate(r.last_verified_at)} from ${label}.`;
     return {
       site_id: r.id, name: r.name, kind: r.kind, tier: r.tier, address: r.address,
       open_now: true, closes_at: hhmm(closes),
@@ -419,6 +463,7 @@ export async function findSites(input: FindSitesInput): Promise<FindSitesOutput>
       has_filtration: r.has_filtration, confidence: r.confidence, call_ahead: callAhead,
       map_url: `https://www.google.com/maps/search/?api=1&query=${q}`,
       spoken_summary: said,
+      evidence: r.evidence, source_url: r.source_url, source_label: label, hours_verified_at: verifiedAt, live_checked: liveOk,
     };
   });
   return { sites, resolved_zip: loc.zip, resolved_location: loc.label, location_precision: loc.precision, ...(loc.place ? { resolved_place: loc.place } : {}) };

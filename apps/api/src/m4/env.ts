@@ -25,6 +25,18 @@ export const env = {
   twilio: () => ({ ...twilioCredentials(), phoneNumber: requireEnv('TWILIO_PHONE_NUMBER') }),
   // The WhatsApp sender's number, E.164. Defaults to TWILIO_PHONE_NUMBER, the number the sender is registered on.
   whatsAppFrom: () => process.env.TWILIO_WHATSAPP_FROM || requireEnv('TWILIO_PHONE_NUMBER'),
+  // Optional. A Page access token for the Shadoes Facebook Page, used only to read a Messenger subscriber's name
+  // from their Facebook profile at JOIN (messenger/profile.ts). Without it, names are not stored.
+  facebookPageAccessToken: () => process.env.FACEBOOK_PAGE_ACCESS_TOKEN || null,
+  // M4_SMS_ENABLED=1: send_sms falls back to a real SMS when the caller has no linked Messenger profile. Off by
+  // default: US carriers block the number's texts until A2P registration, while Twilio still reports them sent.
+  smsEnabled: () => isOn(process.env.M4_SMS_ENABLED),
+  // Reading-based alerts (alerts/readings.ts): a current reading at or above these raises an alert for the zip.
+  heatIndexAlertF: () => numberOr(process.env.M4_ALERT_HEAT_INDEX_F, 103),
+  aqiAlert: () => numberOr(process.env.M4_ALERT_AQI, 101),
+  // Optional cron (America/Los_Angeles) for checking readings automatically, e.g. "*/15 * * * *". Unset = only on
+  // demand through POST /m4/alerts/check-readings.
+  readingAlertCron: () => process.env.M4_READING_ALERT_CRON || null,
   // Content SID (HX...) of the approved WhatsApp alert template, or null while there is none. Without it,
   // WhatsApp subscribers only get alerts within 24 hours of their last message. Spanish subscribers get the
   // _ES template when it is set, else the default one.
@@ -47,4 +59,9 @@ export const env = {
 
 function isOn(value: string | undefined): boolean {
   return value === '1' || value === 'true';
+}
+
+function numberOr(value: string | undefined, fallback: number): number {
+  const parsed = Number(value);
+  return value && Number.isFinite(parsed) ? parsed : fallback;
 }

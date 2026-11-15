@@ -41,7 +41,20 @@ function systemNote(subscriber: SubscriberRow | null, disclosed: boolean, channe
   if (channel === 'messenger') {
     lines.push(
       'This conversation is on Facebook Messenger, not SMS. To get heat and smoke alerts here, the person sends JOIN and their zip code (for example JOIN 92105); STOP cancels them.',
+      [
+        'Formatting for Messenger: plain text with line breaks; Messenger shows no markdown. Keep the reply under about 500 characters.',
+        'Give a site as a block of short lines, in this order:',
+        '📍 Site name',
+        'Street address, city',
+        '🕒 Open until 9:30 PM · 0.2 mi away (whatever hours and distance the tool gave)',
+        '☎️ One short line for any call-ahead or not-official caveat, when there is one',
+        '🗺️ Map: <the map link exactly as the tool returned it>',
+        'Put a blank line between the site block and anything else, such as the 211 ride tip or a question.',
+        'Use emojis only as these line labels (📍 🕒 ☎️ 🗺️, plus 🚗 for a ride tip and 🚨 for 911), never decoration, and no more than five.',
+      ].join('\n'),
     );
+  } else {
+    lines.push('Formatting for SMS: plain text only, no emojis or bullets. Keep each reply under about 300 characters, and shorter when you can.');
   }
   if (subscriber) {
     const needs = Object.entries(subscriber.needs)
@@ -149,7 +162,7 @@ export async function generateTextReply(args: {
     const language = tools.language ?? fallbackLanguage;
     reply = {
       // Enforced here rather than left to the prompt: the first reply always says it is an AI.
-      text: disclosed ? text : `${aiDisclosure(language)}\n${text}`,
+      text: disclosed ? text : `${aiDisclosure(language)}${args.channel === 'messenger' ? '\n\n' : '\n'}${text}`,
       outcome: tools.outcome,
       siteId: tools.siteId,
       language,
