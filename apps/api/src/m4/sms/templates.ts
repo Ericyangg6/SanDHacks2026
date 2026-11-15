@@ -562,8 +562,21 @@ export function messengerPhoneInvalid(language: Language): string {
 export function messengerOptInConfirmation(
   language: Language,
   zip: string,
-  extra: { phoneLast4?: string | null; name?: string | null } = {},
+  extra: { phoneLast4?: string | null; name?: string | null; volunteer?: boolean } = {},
 ): string {
+  // A volunteer learns what YES does; a plain JOIN learns how to become one; START (undefined) gets neither.
+  const volunteer = extra.volunteer === undefined ? '' : pick(
+    extra.volunteer
+      ? {
+          en: `\n🙋 You're a volunteer: when someone near ${zip} calls Shade and needs a person to come, we'll message you here. Reply YES and the number to help.`,
+          es: `\n🙋 Eres voluntario: cuando alguien cerca de ${zip} llame a Shade y necesite que alguien vaya, te escribiremos aquí. Responde SI y el número para ayudar.`,
+        }
+      : {
+          en: `\n🙋 Want to help neighbors in the heat? Send JOIN ${zip} VOLUNTEER.`,
+          es: `\n🙋 ¿Quieres ayudar a tus vecinos con el calor? Envía JOIN ${zip} VOLUNTARIO.`,
+        },
+    language,
+  );
   const firstName = extra.name?.split(' ')[0];
   const greeting = firstName ? `, ${firstName}` : '';
   const linked = extra.phoneLast4
@@ -577,8 +590,8 @@ export function messengerOptInConfirmation(
     : '';
   return pick(
     {
-      en: `✅ You're all set${greeting}! Shade will message you here with heat and smoke alerts for ${zip}.${linked}\n\n💡 Facebook only lets us message you within 24 hours of your last message, so say hi now and then to keep alerts coming.\n\nSend STOP anytime to cancel.`,
-      es: `✅ ¡Listo${greeting}! Shade te enviará aquí alertas de calor y humo para ${zip}.${linked}\n\n💡 Facebook solo nos deja escribirte dentro de las 24 horas de tu último mensaje, así que salúdanos de vez en cuando para seguir recibiendo alertas.\n\nEnvía STOP cuando quieras para cancelar.`,
+      en: `✅ You're all set${greeting}! Shade will message you here with heat and smoke alerts for ${zip}.${linked}${volunteer}\n\n💡 Facebook only lets us message you within 24 hours of your last message, so say hi now and then to keep alerts coming.\n\nSend STOP anytime to cancel.`,
+      es: `✅ ¡Listo${greeting}! Shade te enviará aquí alertas de calor y humo para ${zip}.${linked}${volunteer}\n\n💡 Facebook solo nos deja escribirte dentro de las 24 horas de tu último mensaje, así que salúdanos de vez en cuando para seguir recibiendo alertas.\n\nEnvía STOP cuando quieras para cancelar.`,
     },
     language,
   );

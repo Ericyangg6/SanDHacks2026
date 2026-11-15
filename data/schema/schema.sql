@@ -83,8 +83,10 @@ create table subscribers (
   linked_phone_hash text,
   -- The name on their Facebook profile, read at JOIN when a Page token is set; null otherwise. M4 only; never
   -- logged. Cleared on STOP.
-  display_name      text
-  -- Existing databases: data/schema/migrations/20261114d_m4_messenger_phone_link.sql, and:
+  display_name      text,
+  -- Set by JOIN <zip> VOLUNTEER, cleared by a JOIN without it: they get neighbors' help requests in their zip.
+  volunteer_at      timestamptz
+  -- Existing databases: data/schema/migrations/20261115_m3_volunteers.sql, and: data/schema/migrations/20261114d_m4_messenger_phone_link.sql, and:
   --   alter table subscribers add column if not exists alert_channel text;
   --   alter table subscribers drop constraint if exists subscribers_alert_channel_check;
   --   alter table subscribers add constraint subscribers_alert_channel_check

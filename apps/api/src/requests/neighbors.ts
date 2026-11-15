@@ -1,5 +1,5 @@
-// Neighbor help over Messenger. A help request goes to every subscriber in the caller's zip, and the first to reply
-// YES <id> takes it. The blast carries the area and needs only; the exact location goes to the neighbor who said yes.
+// Neighbor help over Messenger. Volunteers sign up with JOIN <zip> VOLUNTEER (subscribers.volunteer_at). A help
+// request goes to every volunteer in the caller's zip, and the first to reply YES <id> takes it. The blast carries the area and needs only; the exact location goes to the neighbor who said yes.
 // The caller then gets a Messenger follow-up.
 import { getMessengerProfileByPhone, listActiveSubscribersByZips } from '../m4/db';
 import { deliverNowIfWindowOpen, queueFollowup } from '../m4/messenger/followups';
@@ -18,7 +18,7 @@ export function blastMessage(id: number, area: string, needs: string[], language
     : `Shade: a neighbor ${area} needs help in the heat.${said} Can you go to them? Reply YES ${id} and we'll send you where they are. If anyone has signs of heat illness, call 911.`;
 }
 
-/** Messages every reachable subscriber in the zip, except the caller, and records how many it reached. Never throws. */
+/** Messages every reachable volunteer in the zip, except the caller, and records how many it reached. Never throws. */
 export async function blastNeighbors(r: {
   id: number; conversationId?: string; zip: string | null; area: string; needs: string[]; callerHash: string | null;
 }): Promise<void> {
@@ -26,10 +26,13 @@ export async function blastNeighbors(r: {
   let reached = 0;
   try {
     if (r.zip) {
+      const { rows } = await db.query(
+        `select phone_hash from subscribers where zip = $1 and volunteer_at is not null and opted_out_at is null`, [r.zip]);
+      const volunteers = new Set(rows.map((v) => v.phone_hash));
       // Messenger only: SMS is carrier-blocked and WhatsApp is parked (src/m4/AGENTS.md).
       const contacts = (await listActiveSubscribersByZips([r.zip]))
         .filter(isMessengerContact)
-        .filter((c) => c.linked_phone_hash !== r.callerHash);
+        .filter((c) => volunteers.has(c.phone_hash) && c.linked_phone_hash !== r.callerHash);
       // All at once: the caller is waiting on the line. Fine for one zip; batch it if a zip grows to thousands.
       const sent = await Promise.all(
         contacts.map((c) => sendMessengerInWindow(c, blastMessage(r.id, r.area, r.needs, c.language), `help request ${r.id}`)),
@@ -42,7 +45,7 @@ export async function blastNeighbors(r: {
   await db.query(`update requests set neighbors_messaged = $2 where id = $1`, [r.id, reached])
     .catch((err) => console.error(`[neighbors] request ${r.id}: count not saved`, err.message));
   await logEvent(r.conversationId, 'help_requested',
-    reached ? `Sent to ${reached} neighbor${reached === 1 ? '' : 's'} in ${r.zip}` : `No neighbor in ${r.zip ?? 'the area'} could be messaged`);
+    reached ? `Sent to ${reached} volunteer${reached === 1 ? '' : 's'} in ${r.zip}` : `No volunteer in ${r.zip ?? 'the area'} could be messaged`);
 }
 
 const YES = /^\s*(?:yes|si|sí)\s*#?\s*(\d{1,9})\s*[.!]*\s*$/i;
@@ -65,11 +68,13 @@ export async function answerNeighbor(
   const active = subscriber && !subscriber.opted_out_at ? subscriber : null;
   if (id === null || !active || !db) return null;
   const spanish = es(active.language);
-  // One statement, so two neighbors can't both win. Only an active subscriber from the request's own zip can take it.
+  // One statement, so two neighbors can't both win. Only an active volunteer from the request's own zip can take it.
   const won = await db.query(
     `update requests set status = 'incoming', volunteer_hash = $2, updated_at = now()
-     where id = $1 and status = 'requesting' and zip = $3 returning conversation_id`,
-    [id, active.phone_hash, active.zip],
+     where id = $1 and status = 'requesting'
+       and zip = (select zip from subscribers where phone_hash = $2 and volunteer_at is not null and opted_out_at is null)
+     returning conversation_id`,
+    [id, active.phone_hash],
   );
   if (won.rows[0]) {
     await logEvent(won.rows[0].conversation_id, 'help_incoming', 'A neighbor said yes and was sent the location');

@@ -106,7 +106,7 @@ async function answer(
 
     case 'start':
     case 'join': {
-      // JOIN <zip> [phone]. START re-subscribes with what is on file.
+      // JOIN <zip> [phone] [VOLUNTEER]. START re-subscribes with what is on file, volunteering included.
       const request = match.keyword === 'join' ? parseJoinMessage(msg.body) : null;
       if (request?.phoneInvalid) {
         reply = messengerPhoneInvalid(language);
@@ -126,12 +126,14 @@ async function answer(
         phoneE164: request?.phoneE164,
         // From their Facebook profile, not typed. Null keeps the name on file.
         name: await fetchMessengerName(msg.psid),
+        volunteer: request?.volunteer,
       });
       language = row.language;
       zip = row.zip;
       reply = messengerOptInConfirmation(language, row.zip, {
         phoneLast4: request?.phoneE164?.slice(-4),
         name: row.display_name,
+        volunteer: request?.volunteer,
       });
       break;
     }

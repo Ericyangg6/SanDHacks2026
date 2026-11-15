@@ -1,5 +1,5 @@
 // npx tsx --env-file=../../.env checks/requests.check.ts  (outside src/ so the Mastra deploy skips it)
-// The database part writes and deletes one test request, so it runs only with REQUESTS_CHECK_DB=1.
+// The database part writes and deletes one test request and three test subscribers, so it runs only with REQUESTS_CHECK_DB=1.
 import assert from 'node:assert/strict';
 import { db } from '../src/shared/db';
 import { answerNeighbor, blastMessage, parseYes } from '../src/requests/neighbors';
@@ -50,10 +50,15 @@ if (db && process.env.REQUESTS_CHECK_DB === '1') {
 
     const zip = (await db.query(`select zip from requests where id = $1`, [first.request_id])).rows[0].zip;
     const sub = (phone_hash: string, z = zip) => ({ phone_hash, zip: z, language: 'en' as const, opted_out_at: null });
-    // Someone who never sent JOIN, or a subscriber from another zip, learns nothing.
+    // check-a and check-b are volunteers in the zip; check-c is a subscriber there who never volunteered.
+    for (const [h, v] of [['check-a', true], ['check-b', true], ['check-c', false]] as const) {
+      await db.query(`insert into subscribers (phone_hash, zip, consent_at, volunteer_at) values ($1, $2, now(), $3)`,
+        [h, zip, v ? new Date() : null]);
+    }
+    // Someone who never sent JOIN, or a subscriber who never volunteered, learns nothing.
     assert.equal(await answerNeighbor(null, `YES ${first.request_id}`), null);
-    assert.doesNotMatch((await answerNeighbor(sub('check-c', '00000'), `YES ${first.request_id}`))!, /Borrego/);
-    // The first YES from the zip wins and gets the location; the second does not.
+    assert.doesNotMatch((await answerNeighbor(sub('check-c'), `YES ${first.request_id}`))!, /Borrego/);
+    // The first volunteer's YES wins and gets the location; the second does not.
     const [ra, rb] = await Promise.all([
       answerNeighbor(sub('check-a'), `YES ${first.request_id}`), answerNeighbor(sub('check-b'), `YES ${first.request_id}`),
     ]);
@@ -67,6 +72,7 @@ if (db && process.env.REQUESTS_CHECK_DB === '1') {
     await new Promise((r) => setTimeout(r, 3000)); // let the blast finish writing before cleanup
     await db.query(`delete from requests where conversation_id = $1`, [conversation_id]);
     await db.query(`delete from call_events where conversation_id = $1`, [conversation_id]);
+    await db.query(`delete from subscribers where phone_hash = any($1)`, [['check-a', 'check-b', 'check-c']]);
     await db.end();
   }
 } else {

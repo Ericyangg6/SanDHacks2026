@@ -10,8 +10,8 @@ Product context: `PRODUCT.md`. Architecture: `docs/PROJECT.md`.
 
 - **No dispatcher.** A neighbor's YES is the only thing that confirms help. No model output changes status.
 - **Request status:** `requesting -> incoming` when the first neighbor in the request's zip replies `YES <id>` (one atomic update). `declined` and `closed` stay in the enum, unused. Dashboard labels stay "Requesting" and "Incoming".
-- **Who gets asked:** every registered subscriber (JOIN <zip>) in the caller's zip. No separate volunteer opt-in. Only a subscriber from the request's zip can take it.
-- **Blast:** on `request_help`, every subscriber in the caller's zip, except the caller's own linked profile, gets one message with the area and needs. Messenger only: SMS is carrier-blocked and WhatsApp is parked (`apps/api/src/m4/AGENTS.md`). Only subscribers who wrote to the Page in the last 24 hours can be reached.
+- **Who gets asked:** volunteers. A Messenger subscriber opts in with `JOIN <zip> VOLUNTEER` (or `VOLUNTARIO`), which sets `subscribers.volunteer_at`. A JOIN without it turns volunteering off; START keeps what is on file. Only a volunteer from the request's zip can take it.
+- **Blast:** on `request_help`, every volunteer in the caller's zip, except the caller's own linked profile, gets one message with the area and needs. Messenger only: SMS is carrier-blocked and WhatsApp is parked (`apps/api/src/m4/AGENTS.md`). Only volunteers who wrote to the Page in the last 24 hours can be reached.
 - **Location privacy:** the blast names an intersection, landmark or neighborhood, else the zip, never a street address. The exact location, needs and the caller's words go only to the neighbor who said yes. A YES from another zip learns nothing.
 - **Reply format:** `YES <id>` (or `SI <id>`). A bare "yes" goes to the text agent, so a reply to the agent's own question never takes a request.
 - **Templates:** every request tool result carries a `say_this` line chosen in code from the status. "Help is coming" wording exists only in the `incoming` template. Templates promise no arrival time. When the blast reached nobody, the line sends the caller to 211.
@@ -26,7 +26,7 @@ Product context: `PRODUCT.md`. Architecture: `docs/PROJECT.md`.
 ## Out of scope
 
 - Calling the caller back by phone when a YES arrives after the call ended. The Messenger follow-up covers it.
-- A separate volunteer opt-in, vetting, ratings and arrival estimates.
+- Volunteer vetting, ratings and arrival estimates.
 - Help requests from the SMS, WhatsApp and Messenger channels.
 - Custom-LLM output filter between ElevenLabs and Gemini. Add it only if T7 shows promise leaks.
 
@@ -61,13 +61,14 @@ Product context: `PRODUCT.md`. Architecture: `docs/PROJECT.md`.
 **Acceptance:**
 - [x] `request_help` starts the blast after it returns and stores `neighbors_messaged`; the trail shows how many neighbors it reached.
 - [x] The blast never contains a street address.
-- [x] Two simultaneous YES replies: one gets the location, the other gets "already said yes". A non-subscriber or another zip gets no details.
+- [x] Two simultaneous YES replies: one gets the location, the other gets "already said yes". A non-volunteer or another zip gets no details.
+- [x] `JOIN <zip> VOLUNTEER` marks a volunteer and the confirmation says so; a plain JOIN invites them to volunteer.
 - [x] A bare "yes" still goes to the text agent.
 - [x] The winning YES sends the caller a Messenger follow-up, held until they write if their window is closed.
 **Verification:**
 - `cd apps/api && REQUESTS_CHECK_DB=1 npx tsx --env-file=../../.env checks/requests.check.ts`
 - `cd apps/api && npx tsx --test src/m4/messenger/messenger.test.ts src/m4/whatsapp.test.ts`
-- manual: phone B sends `JOIN 92105`; phone A sends `JOIN 92105 <phone A number>`, then calls from phone A and asks for help; phone B gets the blast, replies `YES <id>`, and gets the location; phone A's Messenger gets the follow-up.
+- manual: phone B sends `JOIN 92105 VOLUNTEER`; phone A sends `JOIN 92105 <phone A number>`, then calls from phone A and asks for help; phone B gets the blast, replies `YES <id>`, and gets the location; phone A's Messenger gets the follow-up.
 
 ### T4: Need facts from the caller's words (friend's part)
 **Status:** blocked
@@ -111,4 +112,3 @@ Product context: `PRODUCT.md`. Architecture: `docs/PROJECT.md`.
 
 - `PRODUCT.md` says help requests are mock and that nothing on screen identifies a caller beyond location and needs. Neighbors now receive the exact location after YES. Update with `/project-init product`.
 - `data/schema/contracts.md` has no `requests` table and allows a raw number only in `subscribers.phone_e164`. The schema-change rule requires a PR that tags all four members.
-- Subscribers joined for heat alerts; they now also get neighbors' help requests and, after YES, a caller's location. The JOIN confirmation (`messengerOptInConfirmation`, M4) should say so.
