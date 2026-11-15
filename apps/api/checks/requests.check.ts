@@ -2,7 +2,7 @@
 // The database part writes and deletes one test request and three test subscribers, so it runs only with REQUESTS_CHECK_DB=1.
 import assert from 'node:assert/strict';
 import { db } from '../src/shared/db';
-import { answerNeighbor, blastMessage, parseYes } from '../src/requests/neighbors';
+import { answerNeighbor, blastMessage, parseReply } from '../src/requests/neighbors';
 import { blastArea, handleCheckStatus, handleRequestHelp, INBOX_COLUMNS, listOpenRequests, requestHelpBody, sayThis } from '../src/requests/requests';
 
 // The caller's words and a location are required; a bad needs list is dropped, not fatal.
@@ -17,12 +17,15 @@ assert.match(sayThis('incoming'), /come help you/);
 for (const s of ['requesting', 'declined', 'closed'] as const) assert.doesNotMatch(sayThis(s), /on the way|will be there|come help you/i);
 for (const s of ['requesting', 'incoming', 'closed'] as const) assert.doesNotMatch(sayThis(s), /minute|hour|soon/i);
 
-// A neighbor takes a request only with its id; a bare "yes" goes to the text agent.
-assert.equal(parseYes('YES 12'), 12);
-assert.equal(parseYes(' si #7! '), 7);
-assert.equal(parseYes('Sí 3'), 3);
-assert.equal(parseYes('yes'), null);
-assert.equal(parseYes('yes, is there one closer? 12'), null);
+// A neighbor takes or closes a request only with its id; a bare "yes" goes to the text agent.
+assert.deepEqual(parseReply('YES 12'), { id: 12, done: false });
+assert.deepEqual(parseReply(' si #7! '), { id: 7, done: false });
+assert.deepEqual(parseReply('Sí 3'), { id: 3, done: false });
+assert.deepEqual(parseReply('Done 12.'), { id: 12, done: true });
+assert.deepEqual(parseReply('LISTO #4'), { id: 4, done: true });
+assert.equal(parseReply('yes'), null);
+assert.equal(parseReply('done'), null);
+assert.equal(parseReply('yes, is there one closer? 12'), null);
 
 // The blast never carries a street address.
 assert.equal(blastArea({ label: '123 Main St, El Cajon', precision: 'address' }, '92020'), 'in 92020');
@@ -67,6 +70,14 @@ if (db && process.env.REQUESTS_CHECK_DB === '1') {
     assert.match(winner, /Borrego Springs 92004/);
     assert.match(loser, /already said yes/);
     assert.equal((await handleCheckStatus({ conversation_id })).status, 'incoming');
+    // Only the winner's DONE closes it, and a closed request leaves the dashboard.
+    const loserSub = sub(winner === ra ? 'check-b' : 'check-a');
+    const winnerSub = sub(winner === ra ? 'check-a' : 'check-b');
+    assert.match((await answerNeighbor(loserSub, `DONE ${first.request_id}`))!, /not open to you/);
+    assert.equal((await handleCheckStatus({ conversation_id })).status, 'incoming');
+    assert.match((await answerNeighbor(winnerSub, `DONE ${first.request_id}`))!, /is closed/);
+    assert.equal((await handleCheckStatus({ conversation_id })).status, 'closed');
+    assert.ok(!(await listOpenRequests()).some((r) => r.id === first.request_id));
     console.log('requests db ok: request', first.request_id);
   } finally {
     await new Promise((r) => setTimeout(r, 3000)); // let the blast finish writing before cleanup

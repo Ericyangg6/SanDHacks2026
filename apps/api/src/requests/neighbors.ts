@@ -48,26 +48,45 @@ export async function blastNeighbors(r: {
     reached ? `Sent to ${reached} volunteer${reached === 1 ? '' : 's'} in ${r.zip}` : `No volunteer in ${r.zip ?? 'the area'} could be messaged`);
 }
 
-const YES = /^\s*(?:yes|si|sí)\s*#?\s*(\d{1,9})\s*[.!]*\s*$/i;
+const REPLY = /^\s*(yes|si|sí|done|listo)\s*#?\s*(\d{1,9})\s*[.!]*\s*$/i;
 
-/** The request id in a "YES 12" / "SI 12" reply, or null. A bare "yes" is left to the text agent. */
-export function parseYes(body: string): number | null {
-  const m = body.match(YES);
-  return m ? Number(m[1]) : null;
+/**
+ * A neighbor's "YES 12" / "SI 12" (take request 12) or "DONE 12" / "LISTO 12" (finished it), or null.
+ * A bare "yes" is left to the text agent.
+ */
+export function parseReply(body: string): { id: number; done: boolean } | null {
+  const m = body.match(REPLY);
+  return m ? { id: Number(m[2]), done: /^(done|listo)$/i.test(m[1]) } : null;
 }
 
 /**
- * Answers YES <id> from Messenger, or returns null for anything else.
+ * Answers YES <id> and DONE <id> from Messenger, or returns null for anything else.
  * `subscriber` is the sender's row, null when they never sent JOIN.
  */
 export async function answerNeighbor(
   subscriber: Pick<SubscriberRow, 'phone_hash' | 'zip' | 'language' | 'opted_out_at'> | null,
   body: string,
 ): Promise<string | null> {
-  const id = parseYes(body);
+  const reply = parseReply(body);
   const active = subscriber && !subscriber.opted_out_at ? subscriber : null;
-  if (id === null || !active || !db) return null;
+  if (!reply || !active || !db) return null;
+  const { id } = reply;
   const spanish = es(active.language);
+  const notOpen = spanish ? `La solicitud ${id} no está abierta para usted. Gracias.` : `Request ${id} is not open to you. Thank you.`;
+
+  if (reply.done) {
+    // Only the neighbor who took the request can close it.
+    const closed = await db.query(
+      `update requests set status = 'closed', updated_at = now()
+       where id = $1 and status = 'incoming' and volunteer_hash = $2
+       returning conversation_id`,
+      [id, active.phone_hash],
+    );
+    if (!closed.rows[0]) return notOpen;
+    await logEvent(closed.rows[0].conversation_id, 'closed', 'The neighbor who went marked it done');
+    return spanish ? `Gracias por ayudar. La solicitud ${id} está cerrada.` : `Thank you for helping. Request ${id} is closed.`;
+  }
+
   // One statement, so two neighbors can't both win. Only an active volunteer from the request's own zip can take it.
   const won = await db.query(
     `update requests set status = 'incoming', volunteer_hash = $2, updated_at = now()
@@ -86,13 +105,13 @@ export async function answerNeighbor(
     const needs = r.needs.length ? (spanish ? `\nNecesitan: ${r.needs.join(', ')}` : `\nThey need: ${r.needs.join(', ')}`) : '';
     const said = r.said.slice(0, 500);
     return spanish
-      ? `Gracias. Vaya a: ${r.location}${needs}\nSus palabras: "${said}"\nSi alguien tiene señales de golpe de calor, llame al 911.`
-      : `Thank you. Go to: ${r.location}${needs}\nIn their words: "${said}"\nIf anyone has signs of heat illness, call 911.`;
+      ? `Gracias. Vaya a: ${r.location}${needs}\nSus palabras: "${said}"\nSi alguien tiene señales de golpe de calor, llame al 911.\nCuando termine, responda LISTO ${id}.`
+      : `Thank you. Go to: ${r.location}${needs}\nIn their words: "${said}"\nIf anyone has signs of heat illness, call 911.\nWhen you're done, reply DONE ${id}.`;
   }
   if (r && r.zip === active.zip && r.status === 'incoming') {
     return spanish ? 'Gracias. Otro vecino ya dijo que sí.' : 'Thank you. Another neighbor already said yes.';
   }
-  return spanish ? `La solicitud ${id} no está abierta para usted. Gracias.` : `Request ${id} is not open to you. Thank you.`;
+  return notOpen;
 }
 
 /**
