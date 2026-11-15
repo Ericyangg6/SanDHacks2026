@@ -15,7 +15,7 @@ const COPYTEXT: Record<JoinMode, { title: string; lede: string; extra?: string }
   },
   volunteer: {
     title: 'Help a neighbor in the heat',
-    lede: 'When someone calls Shade and needs a person to come, we message every volunteer with the area they're in. Reply YES and the request number to take it. Only the volunteer who says yes gets their exact location.',
+    lede: 'When someone calls Shade and needs a person to come, we message every volunteer with the area they are in. Reply YES and the request number to take it. Only the volunteer who says yes gets their exact location.',
     extra: 'You also get heat alerts for your zip code.',
   },
 };
