@@ -1,3 +1,4 @@
+import { answerNeighbor } from '../../requests/neighbors';
 import { generateTextReply } from '../agent/reply';
 import { getSubscriber, insertCall } from '../db';
 import {
@@ -139,8 +140,12 @@ async function answer(
       reply = messengerHelpMessage(language);
       break;
 
-    default:
-      if (!msg.body.trim()) {
+    default: {
+      // YES <id> to a neighbor's help request (requests/neighbors.ts). Null for anything else.
+      const neighborReply = await answerNeighbor(subscriber, msg.body);
+      if (neighborReply) {
+        reply = neighborReply;
+      } else if (!msg.body.trim()) {
         // A sticker or a picture with no words, for example.
         reply = messengerHelpMessage(language);
       } else {
@@ -157,6 +162,7 @@ async function answer(
           outcome = 'error';
         }
       }
+    }
   }
 
   // The reply matters more than the log row.
