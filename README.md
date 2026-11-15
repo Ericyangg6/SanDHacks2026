@@ -72,7 +72,7 @@ Open http://localhost:5173. The page polls `GET /dashboard/state` and `GET /disp
 
 The same server also serves the resident directions page at http://localhost:5173/directions.html. That page is a phone-first map with the route to one cooling center. It is all mock data: the destination, the steps, the bus times, the updates and the street route (`apps/web/src/directions/route.ts`). It calls no API, and no directions endpoint exists yet.
 
-`apps/dashboard/index.html` is the earlier static version of the ops dashboard. No volunteer table exists yet.
+No volunteer table exists yet.
 
 ### Quick checks
 
@@ -88,8 +88,7 @@ curl -s -o /dev/null -w '%{http_code}\n' -X POST "$(grep ^PUBLIC_API_URL= .env |
 
 ```
 apps/api/      Mastra server: ElevenLabs tool endpoints (src/elevenlabs), dashboard state (src/dashboard), shared find_sites/send_sms/hours/db (src/shared)
-apps/web/       Ops dashboard (index.html, reads apps/api) and resident directions page (directions.html, mock data): React + TypeScript (Vite)
-apps/dashboard/ Earlier static ops dashboard (no build step)
+apps/web/      Ops dashboard (index.html, reads apps/api) and resident directions page (directions.html, mock data): React + TypeScript (Vite)
 agent/         ElevenLabs agent definition: prompts, tools, sync/test scripts (see agent/README.md)
 data/schema/   Neon schema, shared types, contracts between workstreams
 docs/          Project plan and per-workstream plans (M1 to M4)

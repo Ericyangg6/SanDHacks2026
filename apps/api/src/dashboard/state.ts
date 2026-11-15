@@ -1,4 +1,4 @@
-// Everything the ops dashboard (apps/dashboard) shows, in one read-only snapshot.
+// Everything the ops dashboard (apps/web) shows, in one read-only snapshot.
 // Rows come from Neon when it is configured, otherwise from data/seed/. Both go through buildState.
 import type { AlertKind, CallDirection, CallOutcome, Channel, Reading, Site } from '../../../../data/schema/types';
 import sitesSeed from '../../../../data/seed/sites.json';
