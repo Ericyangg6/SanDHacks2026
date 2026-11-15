@@ -13,7 +13,7 @@ function Home() {
     <Chart onCount={setOpen} />
     <header className="top">
       <a className="glass pill brand" href="/"><span className="tk">{STAR}</span><b>Shade</b><span>San Diego County</span></a>
-      <a className="glass pill quiet" href="/dashboard.html">County staff</a>
+      <a className="glass pill nav" href="/dashboard.html">Ops dashboard<span className="go">{ARROW}</span></a>
     </header>
     <main className="sheet">
       <section className="glass panel hero" aria-labelledby="h">

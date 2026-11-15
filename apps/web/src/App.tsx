@@ -46,6 +46,9 @@ export function App() {
         <span>{[`${a.zips.length} zip${a.zips.length === 1 ? '' : 's'}`, a.expires_at && `until ${clockAt(String(a.expires_at))}`].filter(Boolean).join(', ')}</span>
       </div>}
       <SendAlert zip={zip} />
+      <a className="glass pill nav" href="/">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6" /></svg>Home page
+      </a>
     </header>
     <ZonesPanel sites={sites} zone={zone} onZone={pickZone} onClear={() => setZone(null)}
       summary={st.error ? `Can't reach the Shade API at ${API}` : d?.source === 'seed' ? 'Seed data, not live' : ''} summaryTitle={st.error ?? undefined} />

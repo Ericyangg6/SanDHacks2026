@@ -73,8 +73,11 @@ input { caret-color: var(--blue); }
 .tk svg { width: 58%; height: 58%; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; }
 .brand b { font-weight: 500; font-size: 17px; letter-spacing: -.01em; }
 .brand span:last-child { color: var(--ink-2); font-size: 15px; }
-.quiet { color: var(--ink-2); font-size: 15px; transition: color .2s; }
-.quiet:hover { color: var(--blue); }
+/* to the ops dashboard (and back: the dashboard's "Home page" pill) */
+.nav { gap: 8px; padding-right: 14px; color: var(--blue); font-weight: 500; font-size: 15px; }
+.nav .go { display: grid; transition: transform .25s var(--ease); }
+.nav .go svg { width: 18px; height: 18px; }
+.nav:hover .go { transform: translateX(3px); }
 
 /* ---------- the panel ---------- */
 .sheet { position: relative; z-index: 1; min-height: 100vh; display: grid; align-content: center;
