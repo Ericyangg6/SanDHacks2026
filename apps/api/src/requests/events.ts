@@ -31,6 +31,9 @@ export const eventsOf = (col: string) =>
   `coalesce((select json_agg(json_build_object('at', e.at, 'kind', e.kind, 'text', e.text) order by e.at, e.id)
              from call_events e where e.conversation_id = ${col}), '[]'::json)`;
 
+/** SQL expression: the id of the conversation in `col` as a live call (LiveCall.id), so a request can name the call it grew out of. */
+export const callIdOf = (col: string) => `(select min(e.id)::int from call_events e where e.conversation_id = ${col})`;
+
 export interface LiveCall { id: number; started_at: string; events: CallEvent[] }
 
 /** Calls Shade is on right now that have not asked for help: active in the last 15 minutes and not ended. */

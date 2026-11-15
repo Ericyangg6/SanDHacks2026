@@ -195,15 +195,11 @@ button.req-row { display: block; width: 100%; }
 .chip { padding: 2px 10px; border-radius: 999px; background: rgba(255, 255, 255, .6); font-size: 13px; }
 .said { margin: 0; padding: 10px 12px; border-radius: 12px; background: rgba(255, 255, 255, .55); font-size: 13.5px; }
 .req-row.call h3 { font-weight: 400; color: var(--ink-2); }
-.req-row.call .agent { margin-top: 9px; }
-/* the latest step of a call, in quiet text; click it to read the whole trail */
+/* the latest step of a call, in quiet text; the row's card shows the whole trail */
 .agent { display: flex; align-items: center; gap: 9px; width: 100%; color: var(--ink-2); font-size: 13px; border-radius: 8px; }
-.agent:hover .now { color: var(--ink); }
 .agent .now { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; transition: color .2s; }
 .agent.live .now { background: linear-gradient(90deg, var(--ink-2) 40%, #9fb6cc 50%, var(--ink-2) 60%) 0 0 / 250% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: think 2.2s linear infinite; }
 @keyframes think { from { background-position: 100% 0; } to { background-position: -50% 0; } }
-.agent svg { flex: none; width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; transition: transform .25s var(--ease); }
-.agent[aria-expanded=true] svg { transform: rotate(90deg); }
 @media (prefers-reduced-motion: reduce) { .agent.live .now { animation: none; color: var(--ink-2); background: none; } }
 .log { list-style: none; margin: 10px 0 0; padding: 2px 0 2px 16px; border-left: 1.5px solid rgba(3, 105, 161, .3); font-size: 13px; color: var(--ink-2); }
 .log li { position: relative; padding: 4px 0; }

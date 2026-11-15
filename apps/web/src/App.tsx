@@ -8,9 +8,11 @@ import { ZonesPanel } from './ZonesPanel';
 
 export function App() {
   const st = usePoll<DashboardState>(statePath);
-  const inbox = usePoll<Inbox>('/dispatch/requests');
+  // Fast enough to follow a call step by step (each tool the agent runs logs one).
+  const inbox = usePoll<Inbox>('/dispatch/requests', 2000);
   const [zone, setZone] = useState<number | null>(null);
   const [req, setReq] = useState<number | null>(null);
+  const [call, setCall] = useState<number | null>(null);
   const [zip, setZip] = useState<string | null>(null);
 
   const d = st.data, sites = d?.sites ?? [], readings = d?.readings ?? [];
@@ -27,11 +29,16 @@ export function App() {
   }, [inbox.data]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const pickZone = (id: number) => {
-    setZone(id); setReq(null);
+    setZone(id); setReq(null); setCall(null);
     const z = sites.find((x) => x.id === id);
     if (z?.zip && readings.some((r) => r.zip === z.zip)) setZip(z.zip);
   };
-  const pickReq = (id: number) => { setReq((cur) => (cur === id ? null : id)); setZone(null); };
+  // A call that asks for help becomes a help request: keep its card open, now on the request.
+  const grown = call != null ? requests.find((r) => r.call_id === call) : undefined;
+  if (grown) { setReq(grown.id); setCall(null); }
+
+  const pickReq = (id: number) => { setReq((cur) => (cur === id ? null : id)); setCall(null); setZone(null); };
+  const pickCall = (id: number) => { setCall((cur) => (cur === id ? null : id)); setReq(null); setZone(null); };
 
   const a = d?.alerts[0];
   return <>
@@ -52,7 +59,8 @@ export function App() {
     </header>
     <ZonesPanel sites={sites} zone={zone} onZone={pickZone} onClear={() => setZone(null)}
       summary={st.error ? `Can't reach the Shade API at ${API}` : d?.source === 'seed' ? 'Seed data, not live' : ''} summaryTitle={st.error ?? undefined} />
-    <SidePanel requests={requests} calls={inbox.data?.calls ?? []} reqError={inbox.error} req={req} fresh={fresh} onReq={pickReq} onClose={() => setReq(null)}
+    <SidePanel requests={requests} calls={inbox.data?.calls ?? []} reqError={inbox.error} req={req} call={call} fresh={fresh}
+      onReq={pickReq} onCall={pickCall} onClose={() => { setReq(null); setCall(null); }}
       readings={readings} generatedAt={d?.generated_at ?? null} zip={zip} onZip={setZip} />
   </>;
 }

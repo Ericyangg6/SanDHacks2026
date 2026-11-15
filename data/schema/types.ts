@@ -172,6 +172,7 @@ export interface HelpRequest {
   language: string | null;
   created_at: string;           // ISO 8601
   events: CallEvent[];          // what happened on the call, oldest first
+  call_id: number | null;       // the live call this request grew out of (LiveCall.id)
 }
 /** One step in a call's trail (call_events). Written by apps/api/src/requests/events.ts. */
 export type CallEventKind =

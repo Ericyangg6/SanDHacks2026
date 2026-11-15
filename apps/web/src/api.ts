@@ -18,7 +18,6 @@ export interface SiteDetail {
 const qs = new URLSearchParams(location.search);
 export const API = qs.get('api') || 'http://localhost:4111';   // ?api=https://xxxx.ngrok-free.app
 const NOW = qs.get('now');                                     // ?now=2026-11-16T11:00:00-08:00 replays a moment for demos
-const POLL_MS = 10000;
 
 export async function get<T>(path: string): Promise<T> {
   const res = await fetch(`${API}${path}`, { cache: 'no-store' });
@@ -28,8 +27,8 @@ export async function get<T>(path: string): Promise<T> {
 
 export const statePath = `/dashboard/state${NOW ? `?now=${encodeURIComponent(NOW)}` : ''}`;
 
-/** Polls `path`. Keeps the last good data through errors; only swaps it when the content changed. */
-export function usePoll<T>(path: string) {
+/** Polls `path` every `ms`. Keeps the last good data through errors; only swaps it when the content changed. */
+export function usePoll<T>(path: string, ms = 10000) {
   const [s, set] = useState<{ data: T | null; error: string | null; key: string }>({ data: null, error: null, key: '' });
   useEffect(() => {
     const tick = async () => {
@@ -43,8 +42,8 @@ export function usePoll<T>(path: string) {
       }
     };
     tick();
-    const t = setInterval(tick, POLL_MS);
+    const t = setInterval(tick, ms);
     return () => clearInterval(t);
-  }, [path]);
+  }, [path, ms]);
   return s;
 }

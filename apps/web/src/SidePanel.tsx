@@ -1,21 +1,25 @@
-import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { useEffect, useRef, type CSSProperties } from 'react';
 import type { CallEvent, HelpRequest, LiveCall, ReadingRow } from './api';
 import { Card } from './Card';
 import { LANG, SOURCE, clockAt, deg, stamp, stage, whenAt } from './format';
 
 interface Props {
-  requests: HelpRequest[]; calls: LiveCall[]; reqError: string | null; req: number | null; fresh: number | null; onReq(id: number): void; onClose(): void;
+  requests: HelpRequest[]; calls: LiveCall[]; reqError: string | null; req: number | null; call: number | null; fresh: number | null;
+  onReq(id: number): void; onCall(id: number): void; onClose(): void;
   readings: ReadingRow[]; generatedAt: string | null; zip: string | null; onZip(zip: string): void;
 }
 
 export function SidePanel(p: Props) {
-  const r = p.requests.find((x) => x.id === p.req);
+  // Requests and calls share one card beside the list; a call has no location, which tells them apart.
+  const item = p.requests.find((x) => x.id === p.req) ?? p.calls.find((x) => x.id === p.call);
   return <>
     <aside className="glass panel" id="side">
       <Requests {...p} />
       <Readings {...p} />
     </aside>
-    <Card id="rcard" item={r} label={(x) => x.location} onClose={p.onClose}>{(x) => <RequestDetail key={x.id} r={x} readings={p.readings} />}</Card>
+    <Card id="rcard" item={item} label={(x) => 'location' in x ? x.location : 'Call in progress'} onClose={p.onClose}>
+      {(x) => 'location' in x ? <RequestDetail key={`r${x.id}`} r={x} readings={p.readings} /> : <CallDetail key={`c${x.id}`} c={x} />}
+    </Card>
   </>;
 }
 
@@ -23,9 +27,7 @@ const meta = (r: HelpRequest, readings: ReadingRow[]) => [readings.find((x) => x
   `Call${r.language && LANG[r.language] ? `, ${LANG[r.language]}` : ''}`, clockAt(r.created_at)].filter(Boolean).join(' · ');
 
 /* ---------- help requests (GET /dispatch/requests) ---------- */
-function Requests({ requests, calls, reqError, req, fresh, onReq, readings }: Props) {
-  const [open, setOpen] = useState(new Set<number>());
-  const toggle = (id: number) => setOpen((s) => { const n = new Set(s); n.has(id) ? n.delete(id) : n.add(id); return n; });
+function Requests({ requests, calls, reqError, req, call, fresh, onReq, onCall, readings }: Props) {
   // A request picked on its map marker scrolls into view. Small screens stack the list under the map,
   // so scrolling there would carry the page away from the marker's popup.
   const selRef = useRef<HTMLButtonElement>(null);
@@ -45,14 +47,10 @@ function Requests({ requests, calls, reqError, req, fresh, onReq, readings }: Pr
       </div>
       <div>
         {calls.map((c) => (
-          <article key={`c${c.id}`} className="req-row call">
-            <h3>Call in progress</h3><span className="meta">No help request yet · started {clockAt(c.started_at)}</span>
-            <button className="agent live" aria-expanded={open.has(c.id)} title="Show every step of this call" onClick={() => toggle(c.id)}>
-              <Step {...stage(c.events)} events={c.events} />
-              <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" /></svg>
-            </button>
-            {open.has(c.id) && <Log events={c.events} />}
-          </article>
+          <button key={`c${c.id}`} className={`req-row call ${call === c.id ? 'sel' : ''}`} aria-pressed={call === c.id} onClick={() => onCall(c.id)}>
+            <h3>Call in progress</h3><span className="meta">{callMeta(c)}</span>
+            <span className="agent live"><Step {...stage(c.events)} events={c.events} /></span>
+          </button>
         ))}
         {sorted.map((r) => (
           <button key={r.id} ref={req === r.id ? selRef : undefined} className={`req-row ${req === r.id ? 'sel' : ''} ${fresh === r.id ? 'new' : ''}`}
@@ -79,6 +77,20 @@ function RequestDetail({ r, readings }: { r: HelpRequest; readings: ReadingRow[]
       {r.needs.length > 0 && <div className="chips">{r.needs.map((x) => <span key={x} className="chip">{x}</span>)}</div>}
       <p className="said">“{r.said}”</p>
       {r.events?.length ? <Log events={r.events} /> : <p className="dim">No steps recorded</p>}
+    </div>
+  );
+}
+
+const callMeta = (c: LiveCall) => `No help request yet · started ${clockAt(c.started_at)}`;
+
+function CallDetail({ c }: { c: LiveCall }) {
+  const { pill, label } = stage(c.events);
+  return (
+    <div className="scroll detail">
+      <h3>Call in progress</h3>
+      <span className="sub">{callMeta(c)}</span>
+      <p className="status"><span className={`st ${pill}`}>{label}</span></p>
+      {c.events.length ? <Log events={c.events} /> : <p className="dim">No steps recorded</p>}
     </div>
   );
 }

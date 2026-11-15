@@ -6,7 +6,7 @@ import type { HelpRequest, RequestHelpOutput, RequestStatus } from '../../../../
 import { db } from '../shared/db';
 import { resolveLocation } from '../shared/find-sites';
 import { hashPhone } from '../shared/phone';
-import { eventsOf, logEvent } from './events';
+import { callIdOf, eventsOf, logEvent } from './events';
 import { blastNeighbors, spokenPhone, volunteerPhoneFor } from './neighbors';
 
 const FAILED =
@@ -114,7 +114,7 @@ export const INBOX_COLUMNS = 'id, status, help_type, said, location, zip, lat, l
 export async function listOpenRequests(): Promise<HelpRequest[]> {
   if (!db) return [];
   const { rows } = await db.query(
-    `select ${INBOX_COLUMNS}, ${eventsOf('requests.conversation_id')} events
+    `select ${INBOX_COLUMNS}, ${callIdOf('requests.conversation_id')} call_id, ${eventsOf('requests.conversation_id')} events
      from requests where status in ('requesting', 'incoming') order by created_at`,
   );
   return rows;
