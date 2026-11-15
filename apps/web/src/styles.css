@@ -80,7 +80,7 @@ h1, h2, h3, p { margin: 0; }
 .top { position: fixed; z-index: 500; top: 16px; left: 16px; right: 16px; display: flex; gap: 10px; align-items: center; pointer-events: none; }
 .top > * { pointer-events: auto; }
 .pill { height: 52px; padding: 0 18px; display: flex; align-items: center; gap: 12px; border-radius: 26px; white-space: nowrap; }
-.brand { padding-left: 9px; }
+.brand { padding-left: 9px; color: inherit; text-decoration: none; }   /* links to the resident home page at / */
 .brand .tk { width: 34px; height: 34px; background: var(--zone); color: #fff; }
 .brand b { font-weight: 500; font-size: 17px; letter-spacing: -.01em; }
 .brand span { color: var(--ink-2); }

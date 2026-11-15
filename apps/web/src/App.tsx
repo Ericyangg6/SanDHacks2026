@@ -37,10 +37,10 @@ export function App() {
   return <>
     <MapView sites={sites} calls={d?.calls ?? []} requests={requests} zone={zone} req={req} onZone={pickZone} onReq={pickReq} />
     <header className="top">
-      <div className="glass pill brand">
+      <a className="glass pill brand" href="/" title="Shade home page">
         <div className="tk" dangerouslySetInnerHTML={{ __html: AST }} />
         <b>Shade</b><span>County operations</span>
-      </div>
+      </a>
       {a && <div className="glass pill alert" role="status">
         <i></i><b>{ALERT[a.kind] + (d.alerts.length > 1 ? ` +${d.alerts.length - 1} more` : '')}</b>
         <span>{[`${a.zips.length} zip${a.zips.length === 1 ? '' : 's'}`, a.expires_at && `until ${clockAt(String(a.expires_at))}`].filter(Boolean).join(', ')}</span>
