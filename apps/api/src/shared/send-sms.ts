@@ -1,8 +1,3 @@
-// STUB until M4 ships the real Twilio sender. Keep the signature; M4 replaces the body.
-import type { SendSmsInput, SendSmsOutput } from '../../../../data/schema/types';
-import { maskPhone } from './phone';
-
-export async function sendSms(input: SendSmsInput): Promise<SendSmsOutput> {
-  console.log(`[send_sms stub] would text site ${input.site_id} (${input.language ?? 'en'}) to ${maskPhone(input.to)}`);
-  return { ok: true };
-}
+// send_sms (owner: M4). The real sender lives in ../m4/sms/send-sms.ts: site lookup, message text, opt-out check,
+// Twilio send and the outbound calls row. Set M4_SMS_DRY_RUN=1 to log texts instead of sending them.
+export { sendSms } from '../m4/sms/send-sms';
