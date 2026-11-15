@@ -245,7 +245,7 @@ create table requests (
   neighbors_messaged int,                     -- how many neighbors the blast reached; null until it has run
   volunteer_hash  text,                       -- subscribers.phone_hash of the neighbor who said yes
   language        text,
-  phone_e164      text,                       -- raw callback number while the request is open, sent only to the neighbor who said yes; null after close
+  phone_e164      text,                       -- raw callback number while the request is open; null after decline or close
   created_at      timestamptz not null default now(),
   updated_at      timestamptz not null default now()
 );

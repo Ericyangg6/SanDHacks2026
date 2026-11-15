@@ -9,7 +9,7 @@ Product context: `PRODUCT.md`. Architecture: `docs/PROJECT.md`.
 ## Locked implementation decisions
 
 - **No dispatcher.** A neighbor's YES is the only thing that confirms help. No model output changes status.
-- **Request status:** `requesting -> incoming` when the first neighbor in the request's zip replies `YES <id>` (one atomic update), then `incoming -> closed` when that same neighbor replies `DONE <id>` (or `LISTO <id>`); a closed request leaves the dashboard. `declined` stays in the enum, unused. Dashboard labels stay "Requesting" and "Incoming".
+- **Request status:** `requesting -> incoming` when the first neighbor in the request's zip replies `YES <id>` (one atomic update). `declined` and `closed` stay in the enum, unused. Dashboard labels stay "Requesting" and "Incoming".
 - **Who gets asked:** volunteers. A Messenger subscriber opts in with `JOIN <zip> VOLUNTEER` (or `VOLUNTARIO`), which sets `subscribers.volunteer_at`. A JOIN without it turns volunteering off; START keeps what is on file. Only a volunteer from the request's zip can take it.
 - **Blast:** on `request_help`, every volunteer in the caller's zip, except the caller's own linked profile, gets one message with the area and needs. Messenger only: SMS is carrier-blocked and WhatsApp is parked (`apps/api/src/m4/AGENTS.md`). Only volunteers who wrote to the Page in the last 24 hours can be reached.
 - **Location privacy:** the blast names an intersection, landmark or neighborhood, else the zip, never a street address. The exact location, needs and the caller's words go only to the neighbor who said yes. A YES from another zip learns nothing.
