@@ -92,6 +92,12 @@ h1, h2, h3, p { margin: 0; }
 .btn:hover { background: #075985; }
 .btn:active { transform: scale(.97); }
 .btn:disabled { background: rgba(11, 60, 110, .12); color: var(--ink-2); cursor: default; }
+/* Test alert by zip (SendAlert.tsx): pushed to the right end of the top bar. */
+.sendalert { margin-left: auto; padding-right: 8px; gap: 10px; }
+.sendalert label { font-weight: 500; }
+.sendalert input { width: 72px; height: 36px; padding: 0 12px; font: inherit; color: var(--ink); text-align: center; letter-spacing: .04em; background: rgba(255, 255, 255, .6); border: 1px solid var(--line); border-radius: 999px; }
+.sendalert .ok { color: var(--blue); }
+.sendalert .err { color: #b4361f; }
 
 .panel { position: fixed; z-index: 500; top: 84px; bottom: 16px; display: flex; flex-direction: column; overflow: hidden; }
 #zones { left: 16px; width: 340px; }
