@@ -1,6 +1,6 @@
 # Data evidence
 
-*Generated 2026-11-14 23:19 UTC by `ingest/report.ts`. Every number below is computed from the pipeline's logs, caches, git history and seed files, not typed in. Re-run it to refresh.*
+*Generated 2026-11-15 00:45 UTC by `ingest/report.ts`. Every number below is computed from the pipeline's logs, caches, git history and seed files, not typed in. Re-run it to refresh.*
 
 ## What this is
 
@@ -10,17 +10,17 @@ A maintained, verified dataset of free public cooling spaces in San Diego County
 
 | | |
 |---|---|
-| Sites in the seed | 271 |
-| Official (published by a government or county source) | 115 |
-| Discovered (found on the open web) | 156 |
-| ZIP codes covered | 85 |
-| Hours confirmed by two independent sources | 40 |
-| Source disagreements flagged (call ahead) | 9 |
+| Sites in the seed | 411 |
+| Official (published by a government or county source) | 116 |
+| Discovered (found on the open web) | 295 |
+| ZIP codes covered | 86 |
+| Hours confirmed by two independent sources | 44 |
+| Source disagreements flagged (call ahead) | 10 |
 | Sites with capacity known | 80 |
 | Stated as open to everyone | 101 |
 | Access restricted (age, members, students) | 3 |
 
-By type: library 74, rec_center 81, senior_center 29, mall 13, community_center 31, other 42, cool_zone 1.
+By type: library 86, rec_center 101, senior_center 29, mall 16, community_center 39, other 139, cool_zone 1.
 
 ### Growth (from git history of `data/seed/sites.json`)
 
@@ -29,24 +29,25 @@ By type: library 74, rec_center 81, senior_center 29, mall 13, community_center 
 | Nov 14 12:59 | `dc00068` | 67 | Add seed snapshot, schema proposal and Neon branch loader |
 | Nov 14 13:38 | `3f7f907` | 138 | Add official county Cool Zones source, sorted seed and richer verifica |
 | Nov 14 14:05 | `146d2e8` | 149 | Add on-demand search, extraction cache, matching fix and 149-site seed |
-| Nov 14 15:19 | `4135345` | 271 | entireb ackend omg help |
+| Nov 14 15:20 | `6c3baf5` | 271 | entire backend help |
+| Nov 14 15:42 | `eafca3f` | 271 | Adopt M2 schema additions; production-safe loader; stable site ids; ca |
 
 ## How the data was collected
 
 | | |
 |---|---|
-| Search-result pages cached (Bright Data SERP) | 506 |
-| Web pages cached | 811 |
-| Page fetches recorded in the version log | 1363 |
-| Distinct URLs fetched | 1041 |
-| Fetches that succeeded (target returned content) | 904 (66%) |
-| Fetches refused by Bright Data's policy (government domains) | 137 |
-| Government-domain pages fetched successfully (served by a second fetcher, since Bright Data refuses .gov) | 229 |
-| Fetches that failed for other reasons | 322 (target statuses: 0×143, 200×96, 402×3, 403×14, 429×10, 502×56) |
-| Google Maps places (Bright Data Maps scraper) | 243 |
-| Pages whose content changed between fetches | 20 |
+| Search-result pages cached (Bright Data SERP) | 537 |
+| Web pages cached | 1094 |
+| Page fetches recorded in the version log | 1878 |
+| Distinct URLs fetched | 1325 |
+| Fetches that succeeded (target returned content) | 1190 (63%) |
+| Fetches refused by Bright Data's policy (government domains) | 244 |
+| Government-domain pages fetched successfully (served by a second fetcher, since Bright Data refuses .gov) | 251 |
+| Fetches that failed for other reasons | 444 (target statuses: 0×143, 200×176, 402×9, 403×14, 429×10, 502×92) |
+| Google Maps places (Bright Data Maps scraper) | 484 |
+| Pages whose content changed between fetches | 24 |
 
-**A real scraping problem we handled.** Bright Data's Web Unlocker answers HTTP 200 even when the target site failed or the domain is refused. We request the JSON envelope and read the *target's* real status and the `x-brd-error` header, so a refusal is detected and logged instead of being mistaken for an empty page. Government domains are refused by policy; 137 such fetches are in the log, and those pages are routed to a second fetcher.
+**A real scraping problem we handled.** Bright Data's Web Unlocker answers HTTP 200 even when the target site failed or the domain is refused. We request the JSON envelope and read the *target's* real status and the `x-brd-error` header, so a refusal is detected and logged instead of being mistaken for an empty page. Government domains are refused by policy; 244 such fetches are in the log, and those pages are routed to a second fetcher.
 
 **Search results sometimes carry only redirect links.** About 60% of Google results come back as opaque redirects. We rebuild the real URL from the visible address when it is complete and drop the result otherwise, so nothing is guessed.
 
@@ -56,20 +57,20 @@ Every extracted site must carry a quote copied from the source page, and the cod
 
 | | |
 |---|---|
-| Records the extractor produced | 832 |
-| Passed the verbatim-quote check | 801 (96%) |
-| Rejected (quote not found in the source) | 31 (4%) |
+| Records the extractor produced | 797 |
+| Passed the verbatim-quote check | 765 (96%) |
+| Rejected (quote not found in the source) | 32 (4%) |
 
 Hours from the site's own page are then compared, in code, against Google Maps hours: they agree within 30 minutes, or the site is flagged. That comparison is deterministic and auditable, so no model decides whether two sources agree.
 
 ### Disagreements caught
 
+- **San Diego County Library – Del Mar Branch**: tue: maps 12:00-19:00 vs web 00:00-19:00
 - **La Jolla Recreation Center**: sat: maps 09:00-15:00 vs web 10:00-14:00; fri: maps 10:00-19:00 vs web 12:00-18:00
 - **Lakeside Community Center**: thu: maps 12:00-20:00 vs web 10:00-18:00; wed: maps 12:00-20:00 vs web 10:00-18:00
 - **San Diego County Library – Lakeside**: fri: maps 10:00-17:00 vs web 09:00-20:00; thu: maps 10:00-18:00 vs web 09:00-20:00
 - **San Marcos Community Center**: thu: maps 08:30-17:30 vs web 10:00-18:00; wed: maps 08:30-17:30 vs web 10:00-18:00
 - **Santee Public Library**: wed: maps 10:00-18:00 vs web 12:00-19:00
-- **City Heights Recreation Center**: fri: maps 11:00-19:00 vs web 10:00-19:00; thu: maps 11:00-19:00 vs web 10:00-19:00
 
 ### Evidence quotes, examples
 
@@ -80,7 +81,7 @@ Hours from the site's own page are then compared, in code, against Google Maps h
 
 ## The data keeps itself current
 
-Every fetch is recorded with a content hash. A new hash means the page changed, and the added and removed lines are stored. 20 page(s) have changed between fetches so far. Re-running `./ingest/run-all.sh --refresh` re-checks every page, and `ingest/alert-refresh.ts` does the same for the ZIPs in a forecast zone when the National Weather Service issues a heat or air-quality alert.
+Every fetch is recorded with a content hash. A new hash means the page changed, and the added and removed lines are stored. 24 page(s) have changed between fetches so far. Re-running `./ingest/run-all.sh --refresh` re-checks every page, and `ingest/alert-refresh.ts` does the same for the ZIPs in a forecast zone when the National Weather Service issues a heat or air-quality alert.
 
 ## Where coverage is thin (and the process for it)
 

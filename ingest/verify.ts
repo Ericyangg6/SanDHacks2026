@@ -76,7 +76,9 @@ async function main() {
     await c.connect();
     await c.query("set default_transaction_read_only = on");
     const db = (await c.query("select * from sites order by id")).rows;
-    check(db.length === sites.length, `production has ${db.length} sites = seed ${sites.length}`, `production ${db.length} vs seed ${sites.length}`);
+    const seedIds = new Set(sites.map((s) => s.id));
+    const retained = db.filter((r: any) => !seedIds.has(r.id));
+    check(sites.every((s) => db.some((r: any) => r.id === s.id)) && retained.length <= 5, `production has all ${sites.length} seed sites${retained.length ? ` plus ${retained.length} retained from earlier loads (the loader never deletes): ${retained.map((r: any) => r.name).join("; ")}` : ""}`, `production is missing seed sites or holds ${retained.length} unexplained extras`);
     const byId = new Map(db.map((r: any) => [r.id, r]));
     const diff = sites.filter((s) => { const r: any = byId.get(s.id); return !r || r.name !== s.name || r.address !== s.address || JSON.stringify(r.hours?.weekly) !== JSON.stringify(s.hours.weekly); }).length;
     check(diff === 0, "every site matches production (id, name, address, weekly hours)", `${diff} sites differ from production; run: load-neon.ts --prod --yes`);
